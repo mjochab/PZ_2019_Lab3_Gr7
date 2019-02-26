@@ -23,11 +23,11 @@ Raproty:
   * raporty dotyczace sprzedaży
   
 ## Autorzy
-* Kamil Bania
-* Mateusz Gawlak
 * Paweł Durda
-* Adrian Gajewski
+* Mateusz Gawlak
 * Wojciech Gałka
+* Adrian Gajewski
+* Kamil Bania
 
 ## Licencja
 
