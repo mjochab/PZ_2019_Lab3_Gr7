@@ -16,3 +16,13 @@ Dane gromadzone w systemie:
   - dane dotyczące towaru w sklepie (ilość, cena)
   - dane sprzedażowe
   
+## Autorzy
+* Kamil Bania
+* Mateusz Gawlak
+* Paweł Durda
+* Adrian Gajewski
+* Wojciech Gałka
+
+## Licencja
+
+Projekt objęty jest licencją MIT - sprawdź szczegóły w pliku [LICENSE.md](google.pl)
