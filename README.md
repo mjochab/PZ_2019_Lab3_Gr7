@@ -1,8 +1,8 @@
-# PZ_2019_Lab3_Gr7
+PZ_2019_Lab3_Gr7
 
-Aplikacja do zarządzania siecią sklepów.
+# Aplikacja do zarządzania siecią sklepów.
 
-Oprogramowanie ma służyć do ewidencjonowania sprzedaży w sklepach, kontroli stanu magazynowego, zgłaszania braków w asortymencie oraz analizowania danych sprzedażowych.
+**Oprogramowanie ma służyć do ewidencjonowania sprzedaży w sklepach, kontroli stanu magazynowego, zgłaszania braków w asortymencie oraz analizowania danych sprzedażowych.**
 
 Użytkownicy systemu:
   - Administrator
