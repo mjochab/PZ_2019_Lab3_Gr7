@@ -22,6 +22,12 @@ Dane gromadzone w systemie:
 Raproty:
   * raporty dotyczace sprzedaży (administrator, analityk)
   
+User stories:
+  * Pracownik sklepu, może przeglądać dostępne towary na magazynie oraz sklepie, w przypadku ich braku może zamówić towar z magazynu. Wprowadza dane klientów do systemu oraz je odczytać.
+  * Pracownik magazynu, może odczytać braki magazynowe sklepu oraz zamowić towar z innych magazynów.
+  * 
+
+  
 ## Autorzy
 * Paweł Durda
 * Mateusz Gawlak
