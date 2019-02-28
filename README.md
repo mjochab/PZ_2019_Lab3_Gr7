@@ -12,15 +12,15 @@ Użytkownicy systemu:
   * Pracownik działu logistycznego
 
 Dane gromadzone w systemie:
-  * dane dotyczące towaru na magazynie (ilość)
-  * dane dotyczące towaru w sklepie (ilość, cena)
-  * dane sprzedażowe
-  * dane dotyczące transportu towarów
-  * dane pracowników
-  * dane klientów
+  * dane dotyczące towaru na magazynie (administrator, pracownik magazynu)
+  * dane dotyczące towaru w sklepie (administrator ,pracownik sklepu)
+  * dane sprzedażowe (administrator, analityk)
+  * dane dotyczące transportu towarów (administrator, pracownik działu logistycznego)
+  * dane pracowników (administrator)
+  * dane klientów (administrator, pracownik sklepu)
 
 Raproty:
-  * raporty dotyczace sprzedaży
+  * raporty dotyczace sprzedaży (administrator, analityk)
   
 ## Autorzy
 * Paweł Durda
