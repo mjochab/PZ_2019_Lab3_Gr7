@@ -29,12 +29,10 @@ Funkcjonalności:
   * Analityk generuje raport, zmienia ceny produktów, ma dostęp do informacji ile dany pracownik sklepu sprzedał produktów.
   * Administrator może wykonywać wszystkie w/w czynności oraz możliwość dodawania nowych pracowników do systemu.
   
-![Image of Yaktocat](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/class%20diagram.png)
-![Image of Yaktocat](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/sequence%20diagram.png)
-![Image of Yaktocat](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/state%20diagram.png)
-![Image of Yaktocat](
-        PZ_2019_Lab3_Gr7/diagramy/usecase diagram.png
-      )
+![Diagram Klas](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/class%20diagram.png)
+![Diagram Sekwencji](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/sequence%20diagram.png)
+![Diagram Stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/state%20diagram.png)
+![Diagram Przypadków Użycia](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/usecase%20diagram.png)
 
 
   
