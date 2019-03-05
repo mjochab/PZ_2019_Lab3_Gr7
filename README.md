@@ -29,7 +29,7 @@ Funkcjonalności:
   * Analityk generuje raport, zmienia ceny produktów, ma dostęp do informacji ile dany pracownik sklepu sprzedał produktów.
   * Administrator może wykonywać wszystkie w/w czynności oraz możliwość dodawania nowych pracowników do systemu.
 ## Diagram przypadków użycia
-![Diagram przypadków użycia](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/usecase%20diagram.png)
+![Diagram przypadków użycia](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/usecase%20diagram1.png)
 ## Diagram stanów
 ![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/state%20diagram.png)
 ## Diagram sekwencji
