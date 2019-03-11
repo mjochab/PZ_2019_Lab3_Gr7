@@ -23,22 +23,22 @@ Raproty:
   * raporty dotyczace sprzedaży (administrator, analityk)
   
 Funkcjonalności:
-  * Pracownik sklepu:
+* Pracownik sklepu:
     *może przeglądać dostępne towary na magazynie oraz sklepie, 
     *w przypadku ich braku może zamówić towar z magazynu. 
     *Wprowadza dane klientów do systemu oraz może je odczytać, 
     *tworzy zamówienia dla klientów.
-  * Pracownik magazynu, 
+* Pracownik magazynu, 
     *może odczytać braki magazynowe sklepu oraz 
     *zamowić towar z innych magazynów.
-  * Pracownik działu logistycznego, 
-    *odczytuje zamówienia pracownika magazynu. 
+* Pracownik działu logistycznego, 
+  *odczytuje zamówienia pracownika magazynu. 
     *Potwierdza odbiór oraz dostarczenie towarów z magazynów.
-  * Analityk 
+* Analityk 
     *generuje raport, 
     *zmienia ceny produktów, 
     *ma dostęp do informacji ile dany pracownik sklepu sprzedał produktów.
-  * Administrator 
+* Administrator 
     *może wykonywać wszystkie w/w czynności oraz 
     *możliwość dodawania nowych pracowników do systemu.
     
