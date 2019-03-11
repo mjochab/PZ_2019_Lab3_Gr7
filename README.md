@@ -31,18 +31,18 @@ Funkcjonalności:
   * odczytanie danych o klientach
   * tworzenie zamówień dla klientów
 * Pracownik magazynu: 
-  * może odczytać braki magazynowe sklepu oraz 
-  * zamowić towar z innych magazynów.
-* Pracownik działu logistycznego, 
-  * odczytuje zamówienia pracownika magazynu. 
-  * Potwierdza odbiór oraz dostarczenie towarów z magazynów.
+  * odczytanie braków magazynowych 
+  * zamówienie towarów z innego magazynu
+* Pracownik działu logistycznego:
+  * odczytanie zamówienia pracownika magazynu
+  * potwierdzenie odbioru oraz dostarczenia towaru
 * Analityk: 
-  * generuje raport, 
-  * zmienia ceny produktów, 
-  * ma dostęp do informacji ile dany pracownik sklepu sprzedał produktów.
+  * generowanie raportów
+  * zmienianie cen prduktów 
+  * przeglądanie informacji o sprzedaży
 * Administrator: 
-  * może wykonywać wszystkie w/w czynności oraz 
-  * możliwość dodawania nowych pracowników do systemu.
+  * wykonywanie wszystkiech wyżej wymienionych czynności 
+  * dodawanie oraz usuwanie użytkowników
     
 ## Diagram przypadków użycia
 ![Diagram przypadków użycia](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/usecase%20diagram1.png)
