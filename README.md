@@ -65,4 +65,4 @@ Funkcjonalności:
 
 ## Licencja
 
-Projekt objęty jest licencją MIT - sprawdź szczegóły w pliku [LICENSE.md](google.pl)
+Projekt objęty jest licencją MIT - sprawdź szczegóły w pliku [LICENSE.md](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/LICENSE)
