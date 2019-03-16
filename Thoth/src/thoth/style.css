@@ -13,3 +13,25 @@ and open the template in the editor.
     -fx-background-image: url("bluebg.png");
     -fx-background-size: 100%;
 }
+
+.bluebutton {
+    -fx-background-color: #6486ff;
+    -fx-border-color: black;
+    -fx-border-radius: 5;
+    -fx-background-insets: 0;
+    -fx-background-radius: 5;
+    -fx-font-size: 14px;
+}
+
+.bluebutton:hover{
+    -fx-background-color: #2757ff;
+}
+
+.textarea {
+    -fx-background-color: #dde4ff;
+    -fx-border-color: black;
+    -fx-border-radius: 5;
+    -fx-background-insets: 0;
+    -fx-background-radius: 5;
+    -fx-font-size: 14px;
+}
