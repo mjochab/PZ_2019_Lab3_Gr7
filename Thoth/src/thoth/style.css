@@ -10,12 +10,12 @@ and open the template in the editor.
 
 .background {
     -fx-background-color: #202020;
-    -fx-background-image: url("bluebg.png");
+    -fx-background-image: url("../images/tlo.png");
     -fx-background-size: 100%;
 }
 
 .bluebutton {
-    -fx-background-color: #6486ff;
+    -fx-background-color: #ff9900;
     -fx-border-color: black;
     -fx-border-radius: 5;
     -fx-background-insets: 0;
@@ -24,7 +24,7 @@ and open the template in the editor.
 }
 
 .bluebutton:hover{
-    -fx-background-color: #2757ff;
+    -fx-background-color: #ff6600;
 }
 
 .textarea {
