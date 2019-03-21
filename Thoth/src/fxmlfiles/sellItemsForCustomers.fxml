@@ -45,7 +45,7 @@
         </AnchorPane>
         <AnchorPane layoutX="641.0" layoutY="14.0" prefHeight="780.0" prefWidth="630.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="640.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
             <children>
-                <Label layoutX="195.0" layoutY="14.0" text="Tworzenie zamówienia" textFill="#da8618">
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutY="14.0" prefHeight="35.0" prefWidth="630.0" text="Tworzenie zamówienia" textAlignment="CENTER" textFill="#da8618" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <font>
                         <Font size="24.0" />
                     </font>
@@ -66,7 +66,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <HBox prefHeight="25.0" prefWidth="605.0" spacing="15.0">
+                  <HBox alignment="CENTER" prefHeight="25.0" prefWidth="605.0" spacing="15.0">
                      <children>
                         <TextField prefWidth="190.0" text="imie">
                            <opaqueInsets>

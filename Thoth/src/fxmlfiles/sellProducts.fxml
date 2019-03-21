@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane minHeight="800.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
@@ -44,33 +45,24 @@
       </AnchorPane>
       <AnchorPane layoutX="641.0" layoutY="14.0" prefHeight="780.0" prefWidth="630.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="640.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
-            <Label layoutX="194.0" layoutY="14.0" text="Produkty na paragonie" textFill="#da8618">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="68.0" prefHeight="36.0" prefWidth="495.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="67.0">
+            <VBox alignment="CENTER" layoutX="10.0" layoutY="-51.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                <children>
-                  <TextField prefHeight="36.0" prefWidth="336.0" />
-                  <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #ff9900;" text="Szukaj" textAlignment="CENTER">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Button>
+                  <Label text="Produkty na paragonie" textFill="#da8618">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <TableView minWidth="496.0" prefHeight="626.0" prefWidth="610.0">
+                     <columns>
+                        <TableColumn prefWidth="53.0" text="id" />
+                        <TableColumn prefWidth="310.0" text="nazwa" />
+                        <TableColumn prefWidth="102.0" text="cena" />
+                        <TableColumn minWidth="0.0" prefWidth="78.0" text="ilosc" />
+                     </columns>
+                  </TableView>
+                  <Button maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #ff9900;" text="Zatwierdź" />
                </children>
-               <opaqueInsets>
-                  <Insets bottom="10.0" top="10.0" />
-               </opaqueInsets>
-            </HBox>
-            <TableView layoutX="58.0" layoutY="115.0" minWidth="496.0" prefHeight="605.0" prefWidth="544.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="115.0">
-               <columns>
-                  <TableColumn prefWidth="53.0" text="id" />
-                  <TableColumn prefWidth="310.0" text="nazwa" />
-                  <TableColumn prefWidth="102.0" text="cena" />
-                  <TableColumn minWidth="0.0" prefWidth="78.0" text="ilosc" />
-               </columns>
-            </TableView>
-            <Button layoutX="584.0" layoutY="730.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #ff9900;" text="Zatwierdź" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            </VBox>
          </children>
       </AnchorPane>
    </children>
