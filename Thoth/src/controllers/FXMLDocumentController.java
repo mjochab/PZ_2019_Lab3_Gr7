@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controllers;
 
 import java.io.IOException;
@@ -14,25 +19,21 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+/**
+ *
+ * @author Admin
+ */
 public class FXMLDocumentController implements Initializable {
 
+    @FXML
+    private StackPane mainStackPane;
+
+    /**
+     * To zmieni scene na inną
+     */
+
     public void switchscene(ActionEvent event) throws IOException {
-        System.out.println(event.getSource().toString());
-
-        Parent temporaryLoginParent = null;
-        if(event.getSource().toString().contains("login_btn") == true) //logowanie
-        {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/TemporaryLogIn.fxml"));
-        }
-        if(event.getSource().toString().contains("back") == true) //tu bedzie id = "back", przycisk powrotu
-        {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/FXMLDocument.fxml"));
-        }
-        if(event.getSource().toString().contains("employee_warehouse") == true) //okno magazynu
-        {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_warehouse.fxml"));
-        }
-
+        Parent temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/TemporaryLogin.fxml"));
         Scene temporaryLoginScene = new Scene(temporaryLoginParent);
 
         // To pobiera informacje o scenie
