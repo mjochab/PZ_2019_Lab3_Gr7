@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="582.0" prefWidth="941.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewUsersController">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="582.0" prefWidth="941.0" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewUsersController">
     <children>
-        <VBox layoutX="-6.0" prefHeight="780.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="0.0">
+        <VBox layoutX="-6.0" prefHeight="780.0" prefWidth="1280.0" stylesheets="@../thoth/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="0.0">
             <children>
                 <Label prefHeight="47.0" prefWidth="283.0" text="Dodaj nowego pracownika">
                     <font>

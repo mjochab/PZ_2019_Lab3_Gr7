@@ -8,17 +8,31 @@
 
 <AnchorPane id="main_view_employee" styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewUsersController">
     <children>
-        <VBox prefHeight="761.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <MenuBar prefHeight="25.0" prefWidth="1280.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Menu">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Zamknij" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Pomoc">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+        <VBox layoutY="25.0" prefHeight="736.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
             <children>
-                <HBox prefHeight="37.0" prefWidth="933.0">
+                <HBox prefHeight="31.0" prefWidth="1341.0">
                     <children>
-                        <TextField prefHeight="36.0" prefWidth="336.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
-                        <Button id="search" mnemonicParsing="false" prefHeight="36.0" prefWidth="149.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
+                        <TextField prefHeight="20.0" prefWidth="315.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
+                        <Button id="search" mnemonicParsing="false" prefHeight="36.0" prefWidth="157.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </Button>
-                        <Button id="add_employee" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#switchscene" onMouseClicked="#switchscene" prefHeight="36.0" prefWidth="154.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Nowy pracownik">
+                        <Button id="add_employee" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#switchscene" onMouseClicked="#switchscene" prefHeight="32.0" prefWidth="162.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Nowy pracownik">
                             <font>
                                 <Font size="18.0" />
                             </font>
@@ -28,7 +42,7 @@
                         </Button>
                     </children>
                 </HBox>
-                <TableView editable="true" prefHeight="768.0" prefWidth="656.0">
+                <TableView editable="true" prefHeight="704.0" prefWidth="1280.0" stylesheets="@../thoth/style.css">
                     <columns>
                         <TableColumn maxWidth="250.0" prefWidth="100.0" resizable="false" text="ID" />
                         <TableColumn maxWidth="500.0" minWidth="0.0" prefWidth="300.0" text="Nazwa" />
