@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane minHeight="800.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane layoutY="29.0" prefHeight="780.0" prefWidth="630.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
@@ -36,7 +35,7 @@
                   <TableColumn minWidth="0.0" prefWidth="78.0" text="ilosc" />
               </columns>
             </TableView>
-            <Label layoutX="127.0" layoutY="14.0" text="Wszystkie produkty w sklepie" textFill="#da8618">
+            <Label layoutX="130.0" layoutY="14.0" text="Produkty dostępne w sklepie" textFill="#da8618">
                <font>
                   <Font size="24.0" />
                </font>
