@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea">
-      <Button layoutX="258.0" layoutY="66.0" mnemonicParsing="false" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Admin" />
-      <Button layoutX="230.0" layoutY="103.0" mnemonicParsing="false" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Pracownik sklepu" />
-      <Button layoutX="219.0" layoutY="145.0" mnemonicParsing="false" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Pracownik Magazynu" />
-      <Button layoutX="214.0" layoutY="242.0" mnemonicParsing="false" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Pracownik Logistyczny" />
-      <Button layoutX="260.0" layoutY="200.0" mnemonicParsing="false" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Analityk" />
-      <Button layoutX="270.0" layoutY="302.0" mnemonicParsing="false" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Wróć">
-         <effect>
-            <InnerShadow choke="0.45" height="35.83" radius="30.015" width="86.23" />
-         </effect>
-      </Button>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLDocumentController">
+    <children>
+        <Button layoutX="258.0" layoutY="66.0" mnemonicParsing="false" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Admin" />
+        <Button layoutX="230.0" layoutY="103.0" mnemonicParsing="false" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Pracownik sklepu" />
+        <Button id="employee_warehouse" layoutX="219.0" layoutY="145.0" mnemonicParsing="false" onAction="#switchscene" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Pracownik Magazynu" />
+        <Button layoutX="214.0" layoutY="242.0" mnemonicParsing="false" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Pracownik Logistyczny" />
+        <Button layoutX="260.0" layoutY="200.0" mnemonicParsing="false" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Analityk" />
+        <Button id="back" layoutX="270.0" layoutY="302.0" mnemonicParsing="false" onAction="#switchscene" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Wróć">
+            <effect>
+                <InnerShadow choke="0.45" height="35.83" radius="30.015" width="86.23" />
+            </effect>
+        </Button>
+    </children>
 </AnchorPane>

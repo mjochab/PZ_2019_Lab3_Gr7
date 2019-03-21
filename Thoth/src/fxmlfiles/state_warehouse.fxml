@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.StateWarehouseController">
+   <children>
+      <VBox prefHeight="761.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox prefHeight="37.0" prefWidth="933.0">
+               <children>
+                  <TextField prefHeight="36.0" prefWidth="336.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
+                  <Button id="search" mnemonicParsing="false" prefHeight="36.0" prefWidth="149.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Button id="new_order" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#switchscene" prefHeight="36.0" prefWidth="154.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Nowe zamówienie">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="650.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <TableView editable="true" prefHeight="768.0" prefWidth="656.0">
+               <columns>
+                  <TableColumn prefWidth="322.0" text="Ilość" />
+                  <TableColumn minWidth="0.0" prefWidth="332.0" text="Nazwa" />
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
