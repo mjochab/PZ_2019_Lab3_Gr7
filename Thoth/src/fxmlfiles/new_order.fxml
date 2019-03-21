@@ -26,10 +26,10 @@
             <HBox prefHeight="781.0" prefWidth="1280.0">
                <children>
                   <TableView editable="true" prefHeight="768.0" prefWidth="656.0">
-                    <columns>
-                      <TableColumn prefWidth="322.0" text="Ilość" />
-                      <TableColumn minWidth="0.0" prefWidth="332.0" text="Nazwa" />
-                    </columns>
+                     <columns>
+                        <TableColumn prefWidth="322.0" text="Ilość" />
+                        <TableColumn minWidth="0.0" prefWidth="332.0" text="Nazwa" />
+                     </columns>
                   </TableView>
                   <TableView editable="true" prefHeight="768.0" prefWidth="656.0">
                      <columns>
