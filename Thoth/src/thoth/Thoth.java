@@ -10,7 +10,7 @@ public class Thoth extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../fxmlfiles/FXMLDocument.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../fxmlfiles/SalesView.fxml"));
         
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Thoth.class.getResource("style.css").toExternalForm());
