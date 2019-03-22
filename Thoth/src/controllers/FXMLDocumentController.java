@@ -32,6 +32,10 @@ public class FXMLDocumentController implements Initializable {
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_warehouse.fxml"));
         }
+        if(event.getSource().toString().contains("employee_shop") == true) //okno sklepu
+        {
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/shopView.fxml"));
+        }
 
         Scene temporaryLoginScene = new Scene(temporaryLoginParent);
 
