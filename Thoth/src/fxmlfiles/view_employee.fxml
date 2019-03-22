@@ -8,20 +8,21 @@
 
 <AnchorPane id="main_view_employee" styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewUsersController">
     <children>
-      <MenuBar prefHeight="25.0" prefWidth="1280.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="Menu">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Wyloguj" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Pomoc">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
+        <VBox prefHeight="761.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <MenuBar prefHeight="25.0" prefWidth="1280.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="Menu">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Wyloguj" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Pomoc">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
         <VBox layoutY="25.0" prefHeight="736.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
             <children>
                 <HBox prefHeight="31.0" prefWidth="1341.0">
@@ -46,13 +47,14 @@
                     <columns>
                         <TableColumn maxWidth="250.0" prefWidth="100.0" resizable="false" text="ID" />
                         <TableColumn maxWidth="500.0" minWidth="0.0" prefWidth="300.0" text="Nazwa" />
-                  <TableColumn maxWidth="300.0" minWidth="0.0" prefWidth="300.0" resizable="false" text="Pensja" />
-                  <TableColumn maxWidth="250.0" minWidth="0.0" prefWidth="200.0" text="ID Magazynu" />
-                  <TableColumn maxWidth="200.0" minWidth="0.0" prefWidth="150.0" resizable="false" text="Rola" />
-                  <TableColumn maxWidth="400.0" minWidth="0.0" prefWidth="250.0" resizable="false" text="Nidl" />
+                        <TableColumn maxWidth="300.0" minWidth="0.0" prefWidth="300.0" resizable="false" text="Pensja" />
+                        <TableColumn maxWidth="250.0" minWidth="0.0" prefWidth="200.0" text="ID Magazynu" />
+                        <TableColumn maxWidth="200.0" minWidth="0.0" prefWidth="150.0" resizable="false" text="Rola" />
+                        <TableColumn maxWidth="400.0" minWidth="0.0" prefWidth="250.0" resizable="false" text="Nidl" />
                     </columns>
                 </TableView>
             </children>
+        </VBox>
         </VBox>
     </children>
 </AnchorPane>
