@@ -1,3 +1,4 @@
+
 package thoth;
 
 import javafx.application.Application;
