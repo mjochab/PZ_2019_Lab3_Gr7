@@ -27,7 +27,7 @@
                   <TableColumn maxWidth="300.0" minWidth="0.0" prefWidth="300.0" resizable="false" text="Pensja" />
                   <TableColumn maxWidth="250.0" minWidth="0.0" prefWidth="200.0" text="ID Magazynu" />
                   <TableColumn maxWidth="200.0" minWidth="0.0" prefWidth="150.0" resizable="false" text="Rola" />
-                  <TableColumn maxWidth="400.0" minWidth="0.0" prefWidth="250.0" resizable="false" text="Nidl" />
+                  <TableColumn maxWidth="400.0" minWidth="0.0" prefWidth="250.0" resizable="false" text="Nick" />
                </columns>
             </TableView>
          </children>
