@@ -14,28 +14,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.StateWarehouseController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox layoutX="258.0" layoutY="111.0" prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <MenuBar prefHeight="35.0" prefWidth="1280.0">
-               <menus>
-                  <Menu mnemonicParsing="false" text="Menu">
-                     <items>
-                        <MenuItem fx:id="back" mnemonicParsing="false" onAction="#menuitemaction" text="Powrót" />
-                        <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#menuitemaction" text="Wyloguj" />
-                     </items>
-                  </Menu>
-                  <Menu mnemonicParsing="false" text="Pomoc">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
-                     </items>
-                  </Menu>
-               </menus>
-            </MenuBar>
             <HBox prefHeight="37.0" prefWidth="933.0">
                <children>
-                  <TextField prefHeight="41.0" prefWidth="425.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
+                  <TextField prefHeight="33.0" prefWidth="378.0" promptText="Przeszukaj magazyny" styleClass="textarea" stylesheets="@../thoth/style.css" />
                   <Button id="search" mnemonicParsing="false" prefHeight="41.0" prefWidth="205.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
                      <font>
                         <Font size="18.0" />
@@ -44,7 +29,7 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button id="new_order" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#switchscene" prefHeight="41.0" prefWidth="319.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zamów">
+                  <Button contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="41.0" prefWidth="319.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zamów">
                      <font>
                         <Font size="18.0" />
                      </font>

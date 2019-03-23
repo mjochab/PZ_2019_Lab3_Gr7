@@ -35,6 +35,15 @@
                                     </children></AnchorPane>
                             </content>
                         </Tab>
+                  <Tab text="Nowe zamówienie">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <fx:include source="new_order.fxml" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
                         <Tab text="Dodaj nowy produkt">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">

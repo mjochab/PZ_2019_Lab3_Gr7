@@ -12,21 +12,13 @@
          <children>
             <HBox prefHeight="37.0" prefWidth="933.0">
                <children>
-                  <TextField prefHeight="41.0" prefWidth="425.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
-                  <Button id="search" mnemonicParsing="false" prefHeight="41.0" prefWidth="205.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
+                  <TextField prefHeight="33.0" prefWidth="272.0" promptText="Przeszukaj magazyn" styleClass="textarea" stylesheets="@../thoth/style.css" />
+                  <Button id="search" mnemonicParsing="false" prefHeight="33.0" prefWidth="96.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
                      <font>
                         <Font size="18.0" />
                      </font>
                      <HBox.margin>
                         <Insets left="10.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button id="new_order" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#switchscene" prefHeight="41.0" prefWidth="319.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Nowe zamówienie">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="650.0" />
                      </HBox.margin>
                   </Button>
                </children>

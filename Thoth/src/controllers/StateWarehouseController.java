@@ -32,17 +32,13 @@ public class StateWarehouseController implements Initializable {
     }
 
     @FXML
-    MenuItem logout, back;
+    MenuItem logout;
 
     Stage stage;
     @FXML Parent root;
 
-    public void menuitemaction(ActionEvent actionEvent) throws IOException { //cofanie i wylogowanie na MENU ITEM
+    public void menuitemaction(ActionEvent actionEvent) throws IOException { //wylogowanie na MENU ITEM
         stage = (Stage) root.getScene().getWindow();
-        if(actionEvent.getSource() == back)
-        {
-            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_warehouse.fxml"));
-        }
         if(actionEvent.getSource() == logout)
         {
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/FXMLDocument.fxml"));
