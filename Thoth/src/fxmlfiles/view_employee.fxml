@@ -23,10 +23,11 @@
             <TableView editable="true" prefHeight="729.0" prefWidth="1280.0" stylesheets="@../thoth/style.css">
                <columns>
                   <TableColumn maxWidth="250.0" prefWidth="100.0" resizable="false" text="ID" />
-                  <TableColumn maxWidth="500.0" minWidth="0.0" prefWidth="300.0" text="Nazwa" />
-                  <TableColumn maxWidth="300.0" minWidth="0.0" prefWidth="300.0" resizable="false" text="Pensja" />
-                  <TableColumn maxWidth="250.0" minWidth="0.0" prefWidth="200.0" text="ID Magazynu" />
+                  <TableColumn maxWidth="300.0" minWidth="0.0" prefWidth="250.0" text="Nazwa" />
+                  <TableColumn maxWidth="150.0" minWidth="0.0" prefWidth="150.0" resizable="false" text="Pensja" />
+                  <TableColumn maxWidth="200.0" minWidth="0.0" prefWidth="180.0" text="ID Magazynu" />
                   <TableColumn maxWidth="200.0" minWidth="0.0" prefWidth="150.0" resizable="false" text="Rola" />
+                  <TableColumn maxWidth="230.0" minWidth="0.0" prefWidth="200.0" resizable="false" text="Ulica" />
                   <TableColumn maxWidth="400.0" minWidth="0.0" prefWidth="250.0" resizable="false" text="Nick" />
                </columns>
             </TableView>
