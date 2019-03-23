@@ -32,7 +32,7 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <fx:include source="simple_order_details.fxml" />
+                              <fx:include source="complex_order_details.fxml" />
                            </children>
                         </AnchorPane>
                     </content>
