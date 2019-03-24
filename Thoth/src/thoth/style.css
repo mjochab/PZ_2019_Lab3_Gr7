@@ -25,3 +25,7 @@
     -fx-background-radius: 5;
     -fx-font-size: 15px;
 }
+
+.whitelabel {
+    -fx-font-color: #ffffff;
+}

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -11,11 +16,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlfiles.SalesCreator">
+<AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AnalystController">
    <children>
-      <VBox layoutX="10.0" layoutY="20.0" prefHeight="830.0" prefWidth="1290.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="10.0" layoutY="20.0" prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox prefHeight="787.0" prefWidth="1280.0">
+            <HBox prefHeight="875.0" prefWidth="1280.0">
                <children>
                   <VBox prefHeight="787.0" prefWidth="640.0">
                      <children>
@@ -32,7 +37,7 @@
                                  </HBox.margin>
                               </Button>
                            </children></HBox>
-                        <TableView prefHeight="650.0" prefWidth="672.0">
+                        <TableView prefHeight="834.0" prefWidth="640.0">
                            <columns>
                               <TableColumn prefWidth="78.0" text="id_produkt" />
                               <TableColumn prefWidth="388.99998474121094" text="nazwa" />
@@ -42,7 +47,7 @@
                         </TableView>
                      </children>
                   </VBox>
-                  <VBox prefHeight="787.0" prefWidth="640.0">
+                  <VBox prefHeight="885.0" prefWidth="640.0">
                      <children>
                         <HBox prefHeight="21.0" prefWidth="672.0">
                            <children>
@@ -60,7 +65,7 @@
                                  </font>
                               </Label>
                            </children></HBox>
-                        <TableView prefHeight="650.0" prefWidth="708.0">
+                        <TableView prefHeight="996.0" prefWidth="640.0">
                           <columns>
                             <TableColumn prefWidth="78.0" text="id_produkt" />
                             <TableColumn prefWidth="374.0" text="nazwa" />
