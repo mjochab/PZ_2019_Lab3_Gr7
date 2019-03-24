@@ -36,7 +36,7 @@ public class AnalystController implements Initializable {
     @FXML
     Parent root;
 
-    public void generate_raport_alert (ActionEvent event){
+    public void generate_raport_alert (ActionEvent actionEvent){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Raport utworzony pomyślnie");
         alert.setHeaderText("Utworzono w lokalizacji:");

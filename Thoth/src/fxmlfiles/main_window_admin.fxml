@@ -122,6 +122,15 @@
                            </children></AnchorPane>
                     </content>
                   </Tab>
+                  <Tab text="zamówienia">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <fx:include source="logistic_orders.fxml" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
                     </tabs>
                 </TabPane>
             </children>
