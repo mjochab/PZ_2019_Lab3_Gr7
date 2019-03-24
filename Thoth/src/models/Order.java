@@ -12,12 +12,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Order {
+    private Boolean isComplex;
     private SimpleStringProperty number;
     private ArrayList<OrderProductRecord> productList;
     private Button button;
 
     public Order()
     {
+        isComplex = false;
         number = new SimpleStringProperty("");
         productList = new ArrayList<>();
         button = new Button("Akcja!");
@@ -34,6 +36,16 @@ public class Order {
             }
             stg.setScene(new Scene(par));
         });
+    }
+
+    public Boolean isComplex()
+    {
+        return this.isComplex;
+    }
+
+    public void setComplex(Boolean bool)
+    {
+        this.isComplex = bool;
     }
 
     public String getNumber() {
