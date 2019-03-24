@@ -8,7 +8,7 @@
 
 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="582.0" prefWidth="941.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox prefHeight="780.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label prefHeight="47.0" prefWidth="283.0" text="Dodaj nowy produkt">
                <font>
@@ -21,73 +21,58 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </Label>
-            <HBox prefHeight="0.0" prefWidth="1280.0">
+            <HBox minHeight="-Infinity" prefHeight="50.0" prefWidth="1280.0">
                <children>
-                  <Label prefHeight="5.0" prefWidth="117.0" text="Nazwa:">
+                  <Label maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="87.0" text="Nazwa:">
                      <font>
                         <Font size="18.0" />
                      </font>
                      <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
                      </padding>
                      <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextArea prefHeight="61.0" prefWidth="470.0">
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </TextArea>
+                  <TextField maxWidth="-Infinity" prefHeight="41.0" prefWidth="272.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
                </children>
             </HBox>
-            <HBox prefHeight="0.0" prefWidth="1280.0">
+            <HBox minHeight="-Infinity" prefHeight="50.0" prefWidth="1280.0">
                <children>
-                  <Label prefHeight="5.0" prefWidth="117.0" text="Ilość:">
+                  <Label minHeight="-Infinity" prefHeight="40.0" prefWidth="86.0" text="Ilość:">
                      <font>
                         <Font size="18.0" />
                      </font>
                      <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
                      </padding>
                      <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextArea prefHeight="61.0" prefWidth="470.0">
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </TextArea>
+                  <TextField maxWidth="-Infinity" prefHeight="41.0" prefWidth="273.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
                </children>
             </HBox>
-            <HBox prefHeight="0.0" prefWidth="1280.0">
+            <HBox minHeight="-Infinity" prefHeight="50.0" prefWidth="941.0">
                <children>
-                  <Label prefHeight="5.0" prefWidth="117.0" text="Cena:">
+                  <Label minHeight="-Infinity" prefHeight="40.0" prefWidth="85.0" text="Cena:">
                      <font>
                         <Font size="18.0" />
                      </font>
                      <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
                      </padding>
                      <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextArea prefHeight="61.0" prefWidth="470.0">
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </TextArea>
+                  <TextField maxWidth="-Infinity" prefHeight="41.0" prefWidth="274.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
                </children>
             </HBox>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="47.0" prefWidth="606.0" text="Zatwierdź">
+            <Button alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="359.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zatwierdź">
                <font>
                   <Font size="18.0" />
                </font>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
