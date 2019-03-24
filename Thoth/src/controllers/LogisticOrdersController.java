@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import models.Order;
 import models.Product;
 
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -51,7 +52,14 @@ public class LogisticOrdersController implements Initializable {
 
         for(TableColumn tc : columns)
         {
-            tc.setCellValueFactory(new PropertyValueFactory<>("number"));
+            if(tc.getText().equals("Akcja"))
+            {
+                tc.setCellValueFactory(new PropertyValueFactory<>("button"));
+            }
+            else
+            {
+                tc.setCellValueFactory(new PropertyValueFactory<>("number"));
+            }
         }
 
         ordersReadyForShipment.setItems(displayedOrdersReadyForShipment);

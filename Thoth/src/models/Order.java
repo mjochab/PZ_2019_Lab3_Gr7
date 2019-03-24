@@ -1,17 +1,39 @@
 package models;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Order {
     private SimpleStringProperty number;
     private ArrayList<OrderProductRecord> productList;
+    private Button button;
 
     public Order()
     {
         number = new SimpleStringProperty("");
         productList = new ArrayList<>();
+        button = new Button("Akcja!");
+
+        button.setOnAction(event -> {
+            Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            Parent par = null;
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/logistic_simple_order_details.fxml"));
+                par = loader.load();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stg.setScene(new Scene(par));
+        });
     }
 
     public String getNumber() {
@@ -25,5 +47,10 @@ public class Order {
     public void addProduct(Product product, Integer count)
     {
         this.productList.add(new OrderProductRecord(product, count));
+    }
+
+    public Button getButton()
+    {
+        return this.button;
     }
 }
