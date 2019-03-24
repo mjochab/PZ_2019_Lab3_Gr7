@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="800.0" prefWidth="1280.0" styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AnalystController">
+<AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AnalystController">
    <children>
       <VBox layoutY="10.0" prefHeight="810.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox prefHeight="40.0" prefWidth="1280.0">
                <children>
-                  <TextField prefHeight="41.0" prefWidth="425.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
+                  <TextField prefHeight="41.0" prefWidth="226.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
                   <Button id="search" mnemonicParsing="false" prefHeight="41.0" prefWidth="190.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
                      <font>
                         <Font size="18.0" />
@@ -24,15 +25,7 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button id="discount" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#switchscene" prefHeight="41.0" prefWidth="319.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zniżka">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button id="change" contentDisplay="RIGHT" layoutX="1068.0" layoutY="10.0" mnemonicParsing="false" onAction="#switchscene" prefHeight="41.0" prefWidth="319.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zmień">
+                  <Button id="change" contentDisplay="RIGHT" layoutX="1068.0" layoutY="10.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="319.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zmień">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -49,8 +42,10 @@
                <children>
                   <TreeTableView layoutX="130.0" layoutY="25.0" prefHeight="740.0" prefWidth="1280.0" AnchorPane.bottomAnchor="-540.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
-                      <TreeTableColumn prefWidth="377.0" text="Zysk / Strata" />
-                      <TreeTableColumn prefWidth="901.0" />
+                      <TreeTableColumn prefWidth="147.00001525878906" text="id_produktu" />
+                      <TreeTableColumn prefWidth="730.0" text="nazwa" />
+                        <TreeTableColumn prefWidth="250.0" text="cena" />
+                        <TreeTableColumn prefWidth="152.0" text="zniżka" />
                     </columns>
                   </TreeTableView>
                </children>
