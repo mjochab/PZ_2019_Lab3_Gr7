@@ -24,9 +24,9 @@
                <Font name="Consolas Bold" size="27.0" />
             </font>
          </Label>
-      <VBox prefHeight="800.0" prefWidth="850.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="430.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="800.0" prefWidth="388.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="892.0" AnchorPane.topAnchor="0.0">
          <children>
-               <TextField id="login_field" maxWidth="-Infinity" prefHeight="41.0" prefWidth="300.0" promptText="Login" styleClass="textarea" stylesheets="@../thoth/style.css">
+               <TextField id="login_field" prefHeight="25.0" prefWidth="239.0" promptText="Login" styleClass="textarea" stylesheets="@../thoth/style.css">
                <VBox.margin>
                   <Insets bottom="5.0" left="100.0" right="10.0" top="200.0" />
                </VBox.margin>
@@ -36,7 +36,7 @@
                   <Insets left="100.0" right="10.0" />
                </VBox.margin>
             </Label>
-               <PasswordField id="password_field" maxWidth="-Infinity" prefHeight="41.0" prefWidth="300.0" promptText="Hasło" styleClass="textarea" stylesheets="@../thoth/style.css">
+               <PasswordField id="password_field" promptText="Hasło" styleClass="textarea" stylesheets="@../thoth/style.css">
                <VBox.margin>
                   <Insets bottom="5.0" left="100.0" right="10.0" top="5.0" />
                </VBox.margin>
@@ -46,7 +46,7 @@
                   <Insets left="100.0" right="10.0" />
                </VBox.margin>
             </Label>
-               <Button id="login_btn" maxWidth="-Infinity" mnemonicParsing="false" onAction="#switchscene" prefHeight="25.0" prefWidth="300.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zaloguj" textAlignment="CENTER">
+               <Button id="login_btn" mnemonicParsing="false" onAction="#switchscene" prefHeight="26.0" prefWidth="541.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zaloguj" textAlignment="CENTER">
                   <font>
                      <Font name="System Bold" size="12.0" />
                   </font>
