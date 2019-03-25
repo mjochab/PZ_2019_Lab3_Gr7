@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -16,13 +17,15 @@ public class Order {
     private SimpleStringProperty number;
     private ArrayList<OrderProductRecord> productList;
     private Button button;
+    private HBox buttons;
 
     public Order()
     {
         isComplex = false;
         number = new SimpleStringProperty("");
         productList = new ArrayList<>();
-        button = new Button("Akcja!");
+        button = new Button("Podglad");
+        buttons = new HBox();
 
         button.setOnAction(event -> {
             Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -42,6 +45,8 @@ public class Order {
             }
             stg.setScene(new Scene(par));
         });
+
+        buttons.getChildren().addAll(button);
     }
 
     public Boolean isComplex()
@@ -70,5 +75,10 @@ public class Order {
     public Button getButton()
     {
         return this.button;
+    }
+
+    public void setButtonText(String text)
+    {
+        this.button.setText(text);
     }
 }
