@@ -92,6 +92,10 @@ public class LogisticOrdersController implements Initializable {
     @FXML public void toShipmentDetailsAction(ActionEvent event) throws IOException {
         Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();
         Order order = (Order) ordersReadyForShipment.getSelectionModel().getSelectedItem();
+
+        if(order == null)
+            return;
+
         FXMLLoader loader = null;
 
         if(order.isComplex())
@@ -111,7 +115,12 @@ public class LogisticOrdersController implements Initializable {
     @FXML
     public void inRealizationDetailsAction(ActionEvent event) throws IOException {
         Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();
+
         Order order = (Order) ordersInRealization.getSelectionModel().getSelectedItem();
+
+        if(order == null)
+            return;
+
         FXMLLoader loader = null;
 
         if(order.isComplex())
