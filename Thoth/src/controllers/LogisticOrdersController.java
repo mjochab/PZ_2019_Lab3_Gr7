@@ -3,14 +3,22 @@ package controllers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.event.ActionEvent;
+import javafx.stage.Stage;
 import models.Order;
 import models.Product;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -20,12 +28,15 @@ public class LogisticOrdersController implements Initializable {
 
     @FXML private TableView ordersInRealization;
 
+    @FXML private Button toShipmentDetails;
+
+    @FXML private Button inRealizationDetails;
+
     private ObservableList displayedOrdersReadyForShipment = FXCollections.observableArrayList();
     private ObservableList displayedOrdersInRealization = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println(hello());
         System.out.println(ordersReadyForShipment);
         System.out.println(ordersInRealization);
 
@@ -50,10 +61,6 @@ public class LogisticOrdersController implements Initializable {
         order2.setComplex(true);
         order3.setComplex(false);
 
-        order1.setButtonText("Odbierz");
-        order2.setButtonText("Odbierz");
-        order3.setButtonText("Dostarcz");
-
         ArrayList<Order> orders = new ArrayList<>();
         ArrayList<Order> orders2 = new ArrayList<>();
 
@@ -73,7 +80,7 @@ public class LogisticOrdersController implements Initializable {
 
         ObservableList<TableColumn> columns2 = ordersInRealization.getColumns();
 
-        for(TableColumn tc : columns)
+        for(TableColumn tc : columns2)
         {
             tc.setCellValueFactory(new PropertyValueFactory<>("number"));
         }
@@ -82,14 +89,42 @@ public class LogisticOrdersController implements Initializable {
         ordersInRealization.setItems(displayedOrdersInRealization);
     }
 
-    public String hello()
-    {
-        return "Hello from inner FXML Controller!";
+    @FXML public void toShipmentDetailsAction(ActionEvent event) throws IOException {
+        Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Order order = (Order) ordersReadyForShipment.getSelectionModel().getSelectedItem();
+        FXMLLoader loader = null;
+
+        if(order.isComplex())
+        {
+            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
+        }
+        else
+        {
+            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/simple_order_details.fxml"));
+        }
+
+        Parent pane = loader.load();
+
+        stg.setScene(new Scene(pane));
     }
 
-    public void setOrdersForShipment(ArrayList ordersList)
-    {
-        displayedOrdersReadyForShipment.addAll(ordersList);
-    }
+    @FXML
+    public void inRealizationDetailsAction(ActionEvent event) throws IOException {
+        Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Order order = (Order) ordersInRealization.getSelectionModel().getSelectedItem();
+        FXMLLoader loader = null;
 
+        if(order.isComplex())
+        {
+            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
+        }
+        else
+        {
+            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/simple_order_details.fxml"));
+        }
+
+        Parent pane = loader.load();
+
+        stg.setScene(new Scene(pane));
+    }
 }

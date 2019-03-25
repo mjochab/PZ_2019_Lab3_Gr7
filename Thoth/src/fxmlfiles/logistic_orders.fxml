@@ -26,12 +26,12 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Button mnemonicParsing="false" text="Odbierz">
+                        <Button fx:id="toShipmentDetails" onAction="#toShipmentDetailsAction" mnemonicParsing="false" text="Podglad">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button alignment="TOP_RIGHT" mnemonicParsing="false" text="Podglad" />
+                        <Button alignment="TOP_RIGHT" mnemonicParsing="false" text="Odbierz" />
                      </children>
                   </HBox>
                   <TableView fx:id="ordersReadyForShipment" prefHeight="710.0" prefWidth="500.0">
@@ -59,7 +59,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Button mnemonicParsing="false" text="Podglad">
+                        <Button fx:id="inRealizationDetails" onAction="#inRealizationDetailsAction" mnemonicParsing="false" text="Podglad">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
