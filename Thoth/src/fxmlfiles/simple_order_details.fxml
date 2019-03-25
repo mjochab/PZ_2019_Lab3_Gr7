@@ -11,9 +11,9 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SimpleOrderDetailsController">
    <children>
-      <Button layoutX="33.0" layoutY="18.0" mnemonicParsing="false" text="Powrót">
+      <Button fx:id="backButton" onAction="#goBack" layoutX="33.0" layoutY="18.0" mnemonicParsing="false" text="Powrót">
          <font>
             <Font size="18.0" />
          </font>
