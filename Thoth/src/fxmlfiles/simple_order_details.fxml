@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button layoutX="33.0" layoutY="18.0" mnemonicParsing="false" text="Powrót">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <HBox alignment="CENTER" layoutX="328.0" layoutY="7.0" prefHeight="61.0" prefWidth="253.0">
+         <children>
+            <Label text="Status:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <Label text="W realizacji">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <VBox layoutX="114.0" layoutY="93.0" prefHeight="657.0" prefWidth="468.0">
+         <children>
+            <Label text="Zawartość zamówienia">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TableView prefHeight="642.0" prefWidth="468.0">
+              <columns>
+                <TableColumn prefWidth="333.60003662109375" text="Nazwa" />
+                <TableColumn prefWidth="133.60003662109375" text="Ilość" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

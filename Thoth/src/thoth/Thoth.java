@@ -1,3 +1,4 @@
+
 package thoth;
 
 import javafx.application.Application;
@@ -7,11 +8,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Thoth extends Application {
-
+    
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../fxmlfiles/FXMLDocument.fxml"));
-
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Thoth.class.getResource("style.css").toExternalForm());
         stage.setScene(scene);
@@ -21,5 +21,6 @@ public class Thoth extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
+    
 }
+
