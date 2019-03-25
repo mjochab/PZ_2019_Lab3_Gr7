@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class FXMLDocumentController implements Initializable {
@@ -32,6 +29,25 @@ public class FXMLDocumentController implements Initializable {
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_warehouse.fxml"));
         }
+        if(event.getSource().toString().contains("employee_shop") == true) //okno sklepu
+        {
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_shop.fxml"));
+        }
+        if(event.getSource().toString().contains("analyst") == true) //okno analityka
+        {
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_analyst.fxml"));
+        }
+
+        if(event.getSource().toString().contains("employee_logistic") == true) // okno widoku pracownika działy logistycznego
+        {
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_view_logistic.fxml"));
+        }
+
+        if(event.getSource().toString().contains("admin_view") == true) // okno widoku admina
+        {
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_admin.fxml"));
+        }
+
 
         Scene temporaryLoginScene = new Scene(temporaryLoginParent);
 
@@ -45,6 +61,6 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
+
 }

@@ -1,31 +1,26 @@
 package controllers;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
-import models.Order;
-import models.Product;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class MainViewLogisticController implements Initializable {
-
+public class ViewUsersController implements Initializable {
 
     @FXML
     MenuItem logout;
+    MenuItem back;
+
     Stage stage;
-    Parent root;
+
+    @FXML Parent root;
 
     public void logout(ActionEvent actionEvent) throws IOException {
         if(actionEvent.getSource()==logout){
@@ -36,12 +31,12 @@ public class MainViewLogisticController implements Initializable {
             stage.setScene(scene);
             stage.show();
         }
-    }
 
-    @FXML private LogisticOrdersController ordersController;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Hello from MainController");
+
     }
+
 }

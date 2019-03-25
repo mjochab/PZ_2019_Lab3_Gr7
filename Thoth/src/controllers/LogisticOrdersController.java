@@ -2,6 +2,7 @@ package controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,8 +17,6 @@ import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import models.Order;
 import models.Product;
-
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -88,6 +87,7 @@ public class LogisticOrdersController implements Initializable {
         ordersReadyForShipment.setItems(displayedOrdersReadyForShipment);
         ordersInRealization.setItems(displayedOrdersInRealization);
     }
+
 
     @FXML public void toShipmentDetailsAction(ActionEvent event) throws IOException {
         Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();

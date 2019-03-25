@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLDocumentController">
+    <children>
+        <VBox prefHeight="761.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox prefHeight="31.0" prefWidth="1341.0">
+               <children>
+                  <TextField prefHeight="20.0" prefWidth="315.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
+                  <Button id="search" mnemonicParsing="false" prefHeight="36.0" prefWidth="157.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <TableView editable="true" prefHeight="729.0" prefWidth="1280.0" stylesheets="@../thoth/style.css">
+               <columns>
+                  <TableColumn maxWidth="250.0" prefWidth="100.0" resizable="false" text="ID" />
+                  <TableColumn maxWidth="300.0" minWidth="0.0" prefWidth="250.0" text="Nazwa" />
+                  <TableColumn maxWidth="150.0" minWidth="0.0" prefWidth="150.0" resizable="false" text="Pensja" />
+                  <TableColumn maxWidth="200.0" minWidth="0.0" prefWidth="180.0" text="ID Magazynu" />
+                  <TableColumn maxWidth="200.0" minWidth="0.0" prefWidth="150.0" resizable="false" text="Rola" />
+                  <TableColumn maxWidth="230.0" minWidth="0.0" prefWidth="200.0" resizable="false" text="Ulica" />
+                  <TableColumn maxWidth="400.0" minWidth="0.0" prefWidth="250.0" resizable="false" text="Nick" />
+               </columns>
+            </TableView>
+         </children>
+        </VBox>
+    </children>
+</AnchorPane>

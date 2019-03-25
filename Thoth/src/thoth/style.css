@@ -1,0 +1,31 @@
+.background {
+    -fx-background-color: #202020;
+    -fx-background-image: url("../images/tlo.png");
+    -fx-background-size: 100%;
+}
+
+.bluebutton {
+    -fx-background-color: #ff9900;
+    -fx-border-color: black;
+    -fx-border-radius: 5;
+    -fx-background-insets: 0;
+    -fx-background-radius: 5;
+    -fx-font-size: 15px;
+}
+
+.bluebutton:hover{
+    -fx-background-color: #ff6600;
+}
+
+.textarea {
+    -fx-background-color: #fafbff;
+    -fx-border-color: black;
+    -fx-border-radius: 5;
+    -fx-background-insets: 0;
+    -fx-background-radius: 5;
+    -fx-font-size: 15px;
+}
+
+.whitelabel {
+    -fx-font-color: #ffffff;
+}
