@@ -6,11 +6,8 @@
 
 .bluebutton {
     -fx-background-color: #ff9900;
-    -fx-border-color: black;
-    -fx-border-radius: 5;
-    -fx-background-insets: 0;
-    -fx-background-radius: 5;
-    -fx-font-size: 15px;
+    -fx-font-family:  Arial;
+    -fx-font-size: 14px;
 }
 
 .bluebutton:hover{
@@ -19,13 +16,10 @@
 
 .textarea {
     -fx-background-color: #fafbff;
-    -fx-border-color: black;
-    -fx-border-radius: 5;
-    -fx-background-insets: 0;
-    -fx-background-radius: 5;
-    -fx-font-size: 15px;
 }
 
 .whitelabel {
-    -fx-font-color: #ffffff;
+    -fx-text-fill: #ffffff;
+    -fx-font-family:  Arial;
+    -fx-font-size: 14px;
 }

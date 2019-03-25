@@ -20,21 +20,12 @@
          <children>
             <HBox prefHeight="37.0" prefWidth="933.0">
                <children>
-                  <TextField prefHeight="33.0" prefWidth="378.0" promptText="Przeszukaj magazyny" styleClass="textarea" stylesheets="@../thoth/style.css" />
-                  <Button id="search" mnemonicParsing="false" prefHeight="41.0" prefWidth="205.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
+                  <Button contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zamów">
                      <font>
                         <Font size="18.0" />
                      </font>
                      <HBox.margin>
                         <Insets left="10.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="41.0" prefWidth="319.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zamów">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="650.0" />
                      </HBox.margin>
                   </Button>
                </children>
@@ -44,20 +35,12 @@
             </HBox>
             <HBox prefHeight="781.0" prefWidth="1280.0">
                <children>
-                  <TableView editable="true" prefHeight="707.0" prefWidth="650.0">
+                  <TableView editable="true" prefHeight="754.0" prefWidth="1325.0">
                      <columns>
                         <TableColumn prefWidth="100.0" text="id_produkt" />
-                        <TableColumn minWidth="0.0" prefWidth="330.0" text="nazwa" />
-                        <TableColumn minWidth="0.0" prefWidth="72.0" text="cena" />
-                        <TableColumn minWidth="0.0" prefWidth="137.0" text="ilosc" />
-                     </columns>
-                  </TableView>
-                  <TableView editable="true" prefHeight="707.0" prefWidth="650.0">
-                     <columns>
-                        <TableColumn prefWidth="100.0" text="id_produkt" />
-                        <TableColumn minWidth="0.0" prefWidth="330.0" text="nazwa" />
-                        <TableColumn minWidth="0.0" prefWidth="72.0" text="cena" />
-                        <TableColumn minWidth="0.0" prefWidth="137.0" text="ilosc" />
+                        <TableColumn minWidth="0.0" prefWidth="982.0" text="nazwa" />
+                        <TableColumn minWidth="0.0" prefWidth="90.0" text="cena" />
+                        <TableColumn minWidth="0.0" prefWidth="107.0" text="ilosc" />
                      </columns>
                   </TableView>
                </children>
