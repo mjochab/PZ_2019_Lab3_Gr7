@@ -24,7 +24,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <HBox alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="36.0" prefWidth="161.0">
+      <HBox alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="34.0" prefWidth="181.0">
          <children>
             <Label styleClass="whitelabel" text="Status:">
                <font>

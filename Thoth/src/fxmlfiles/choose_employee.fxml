@@ -13,53 +13,53 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLDocumentController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLDocumentController">
     <children>
-      <VBox layoutX="14.0" layoutY="39.0" prefHeight="800.0" prefWidth="1280.0" styleClass="background" stylesheets="@../thoth/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="14.0" layoutY="12.0" prefHeight="221.0" prefWidth="300.0">
          <children>
-              <Button id="admin_view" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#switchscene" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Admin" textAlignment="CENTER">
+              <Button id="admin_view" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#switchscene" prefHeight="26.0" prefWidth="300.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Admin" textAlignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                  <Insets bottom="10.0" />
                </VBox.margin>
             </Button>
-            <ComboBox prefHeight="25.0" prefWidth="244.0" promptText="Wybierz magazyn">
+            <ComboBox prefHeight="26.0" prefWidth="300.0" promptText="Wybierz magazyn">
                <VBox.margin>
-                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                  <Insets bottom="10.0" />
                </VBox.margin>
             </ComboBox>
-              <Button id="employee_shop" mnemonicParsing="false" onAction="#switchscene" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Pracownik sklepu">
+              <Button id="employee_shop" mnemonicParsing="false" onAction="#switchscene" prefHeight="26.0" prefWidth="300.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Pracownik sklepu">
                <font>
                   <Font size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                  <Insets bottom="10.0" />
                </VBox.margin>
             </Button>
-              <Button id="employee_warehouse" mnemonicParsing="false" onAction="#switchscene" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Pracownik Magazynu">
+              <Button id="employee_warehouse" mnemonicParsing="false" onAction="#switchscene" prefHeight="26.0" prefWidth="300.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Pracownik Magazynu">
                <font>
                   <Font size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                  <Insets bottom="10.0" />
                </VBox.margin>
             </Button>
-              <Button id="employee_logistic" mnemonicParsing="false" onAction="#switchscene" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Pracownik Logistyczny">
+              <Button id="employee_logistic" mnemonicParsing="false" onAction="#switchscene" prefHeight="26.0" prefWidth="300.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Pracownik Logistyczny">
                <font>
                   <Font size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                  <Insets bottom="10.0" />
                </VBox.margin>
             </Button>
-              <Button id="analyst" mnemonicParsing="false" onAction="#switchscene" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Analityk">
+              <Button id="analyst" mnemonicParsing="false" onAction="#switchscene" prefHeight="26.0" prefWidth="300.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Analityk">
                <font>
                   <Font size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                  <Insets bottom="10.0" />
                </VBox.margin>
             </Button>
          </children>
