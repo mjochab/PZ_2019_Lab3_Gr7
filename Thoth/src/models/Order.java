@@ -28,7 +28,13 @@ public class Order {
             Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();
             Parent par = null;
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/logistic_simple_order_details.fxml"));
+                FXMLLoader loader = null;
+
+                if(isComplex)
+                    loader = new FXMLLoader(getClass().getResource("../fxmlfiles/logistic_complex_order_details.fxml"));
+                else
+                    loader = new FXMLLoader(getClass().getResource("../fxmlfiles/logistic_simple_order_details.fxml"));
+
                 par = loader.load();
 
             } catch (IOException e) {

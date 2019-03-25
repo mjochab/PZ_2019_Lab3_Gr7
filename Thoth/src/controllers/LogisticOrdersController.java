@@ -42,6 +42,9 @@ public class LogisticOrdersController implements Initializable {
         order1.addProduct(product2, 2);
         order2.addProduct(product1, 3);
 
+        order1.setComplex(false);
+        order2.setComplex(true);
+
         ArrayList<Order> orders = new ArrayList<>();
         orders.add(order1);
         orders.add(order2);
