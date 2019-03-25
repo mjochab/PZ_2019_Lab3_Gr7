@@ -24,18 +24,20 @@ public class MainViewLogisticController implements Initializable {
 
     @FXML
     MenuItem logout;
+
     Stage stage;
+    @FXML
     Parent root;
 
-    public void logout(ActionEvent actionEvent) throws IOException {
-        if(actionEvent.getSource()==logout){
-            stage = (Stage) root.getScene().getWindow();
+    public void menuitemaction(ActionEvent actionEvent) throws IOException { //wylogowanie na MENU ITEM
+        stage = (Stage) root.getScene().getWindow();
+        if(actionEvent.getSource() == logout)
+        {
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/FXMLDocument.fxml"));
-
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
         }
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML private LogisticOrdersController ordersController;

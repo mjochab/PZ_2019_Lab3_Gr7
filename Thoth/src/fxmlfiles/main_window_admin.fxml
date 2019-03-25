@@ -47,86 +47,11 @@
                            </children></AnchorPane>
                             </content>
                         </Tab>
-                  <Tab text="Nowe zamówienie">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <fx:include source="new_order.fxml" />
-                           </children></AnchorPane>
-                     </content>
-                  </Tab>
-                  <Tab text="Dodaj nowy ptodukt">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <fx:include source="new_product.fxml" />
-                           </children></AnchorPane>
-                     </content>
-                  </Tab>
-                  <Tab text="Stan magazynu">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <fx:include source="state_warehouse.fxml" />
-                           </children></AnchorPane>
-                     </content>
-                  </Tab>
                   <Tab text="Dane sprzedażowe">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <fx:include source="sales_data.fxml" />
-                           </children>
-                        </AnchorPane>
-                    </content>
-                  </Tab>
-                  <Tab text="Ceny">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <fx:include source="prices.fxml" />
-                           </children>
-                        </AnchorPane>
-                    </content>
-                  </Tab>
-                  <Tab text="Zniżka">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <fx:include source="sales_creator.fxml" />
-                           </children>
-                        </AnchorPane>
-                    </content>
-                  </Tab>
-                  <Tab text="Sprzedaż produktów">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <fx:include source="sellProducts.fxml" />
-                           </children></AnchorPane>
-                    </content>
-                  </Tab>
-                  <Tab text="Tworzenie zamówienia">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <fx:include source="sellItemsForCustomers.fxml" />
-                           </children></AnchorPane>
-                    </content>
-                  </Tab>
-                  <Tab text="Zamówienia klientów">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <fx:include source="showOrders.fxml" />
-                           </children></AnchorPane>
-                    </content>
-                  </Tab>
-                  <Tab text="zamówienia">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <fx:include source="logistic_orders.fxml" />
                            </children>
                         </AnchorPane>
                     </content>
