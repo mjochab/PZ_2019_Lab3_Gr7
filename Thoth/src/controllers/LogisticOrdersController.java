@@ -68,30 +68,14 @@ public class LogisticOrdersController implements Initializable {
 
         for(TableColumn tc : columns)
         {
-            if(tc.getText().equals("Akcja"))
-            {
-                System.out.println("Akcja");
-                tc.setCellValueFactory(new PropertyValueFactory<>("buttons"));
-            }
-            else
-            {
-                System.out.println("WTF");
-                tc.setCellValueFactory(new PropertyValueFactory<>("number"));
-            }
+            tc.setCellValueFactory(new PropertyValueFactory<>("number"));
         }
 
         ObservableList<TableColumn> columns2 = ordersInRealization.getColumns();
 
-        for(TableColumn tc : columns2)
+        for(TableColumn tc : columns)
         {
-            if(tc.getText().equals("Akcja"))
-            {
-                tc.setCellValueFactory(new PropertyValueFactory<>("button"));
-            }
-            else
-            {
-                tc.setCellValueFactory(new PropertyValueFactory<>("number"));
-            }
+            tc.setCellValueFactory(new PropertyValueFactory<>("number"));
         }
 
         ordersReadyForShipment.setItems(displayedOrdersReadyForShipment);
