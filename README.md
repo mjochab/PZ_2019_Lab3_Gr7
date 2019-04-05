@@ -57,7 +57,10 @@ Funkcjonalności:
 
 
 
+## Biblioteki
 
+![JDBC Driver] (https://dev.mysql.com/downloads/file/?id=480091)
+![Hibernate] (https://sourceforge.net/projects/hibernate/files/hibernate-orm/5.4.2.Final/hibernate-release-5.4.2.Final.zip/download)
   
 ## Autorzy
 * Paweł Durda
