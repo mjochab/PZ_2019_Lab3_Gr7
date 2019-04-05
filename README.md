@@ -70,11 +70,11 @@ przechodzimy do zakładki Libraries wciskamy plus a nastepnie java i wybieramy o
 
 ### Hibernate 
 
-![Diagram ERD](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/hibernatejars.png)
+![Diagram ERD](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/DEVELOPE/diagramy/hibernatejars.png)
 
 ### JDBC driver
 
-![Diagram ERD](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/mysqlconnectorjar.png)
+![Diagram ERD](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/DEVELOPE/diagramy/mysqlconnectrorjar.png)
 
 ## Autorzy
 * Paweł Durda
