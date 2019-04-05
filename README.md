@@ -59,9 +59,23 @@ Funkcjonalności:
 
 ## Biblioteki
 
-[JDBC Driver](https://dev.mysql.com/downloads/file/?id=480091)
-[Hibernate](https://sourceforge.net/projects/hibernate/files/hibernate-orm/5.4.2.Final/hibernate-release-5.4.2.Final.zip/download)
-  
+![JDBC Driver](https://dev.mysql.com/downloads/file/?id=480091)
+![Hibernate](https://sourceforge.net/projects/hibernate/files/hibernate-orm/5.4.2.Final/hibernate-release-5.4.2.Final.zip/download)
+
+## Dodawanie bibliotek w IntelliJ
+
+w oknie projektu wciskamy kombinację
+``` CTRL + SHIFT + ALT + S```
+przechodzimy do zakładki Libraries wciskamy plus a nastepnie java i wybieramy odpowiedni katalog
+
+### Hibernate 
+
+![Diagram ERD](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/hibernatejars.png)
+
+### JDBC driver
+
+![Diagram ERD](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/mysqlconnectorjar.png)
+
 ## Autorzy
 * Paweł Durda
 * Mateusz Gawlak
