@@ -7,6 +7,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 public class Thoth extends Application {
     
     @Override
@@ -19,6 +23,12 @@ public class Thoth extends Application {
     }
 
     public static void main(String[] args) {
+
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myDatabase");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        entityManager.close();
+        entityManagerFactory.close();
         launch(args);
     }
     
