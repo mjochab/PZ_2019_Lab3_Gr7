@@ -45,13 +45,16 @@ Funkcjonalności:
   * dodawanie oraz usuwanie użytkowników
     
 ## Diagram przypadków użycia
-![Diagram przypadków użycia](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/usecase%20diagram2.png)
+![Diagram przypadków użycia](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/usecase%20diagramv3.png)
 ## Diagram stanów
 ![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/state%20diagram.png)
 ## Diagram sekwencji
 ![Diagram sekwencji](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/sequence%20diagram.png)
 ## Diagram klas  
 ![Diagram klas](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/class%20diagram.png)
+## Diagram ERD  
+![Diagram ERD](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/erd%20diagram.png)
+
 
 
 
