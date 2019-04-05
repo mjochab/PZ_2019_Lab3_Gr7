@@ -66,7 +66,7 @@ Funkcjonalności:
 
 w oknie projektu wciskamy kombinację
 ``` CTRL + SHIFT + ALT + S```
-przechodzimy do zakładki Libraries wciskamy plus a nastepnie java i wybieramy odpowiedni katalog
+przechodzimy do zakładki ```Libraries``` wciskamy ```+``` a nastepnie ```java``` i wybieramy odpowiedni katalog
 
 ### Hibernate 
 
