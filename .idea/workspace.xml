@@ -52,7 +52,11 @@
       </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Thoth/src/database/zapytania_analityk.sql">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="9" column="51" lean-forward="true" selection-start-line="9" selection-start-column="51" selection-end-line="9" selection-end-column="51" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -144,6 +148,7 @@
         <option value="$PROJECT_DIR$/Database/zapytania.txt" />
         <option value="$PROJECT_DIR$/Database/zapytania admin, analityk.txt" />
         <option value="$PROJECT_DIR$/Database/zapytania admin, analityk i  inserty.txt" />
+        <option value="$PROJECT_DIR$/Thoth/src/database/zapytania_analityk.sql" />
       </list>
     </option>
   </component>
@@ -221,7 +226,7 @@
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554585396772" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554585621161" />
     <property name="jdk.selected.JAVA_MODULE" value="1.8" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/Thoth/lib/txw2-2.3.1.jar!/" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -332,14 +337,22 @@
       <option name="project" value="LOCAL" />
       <updated>1554503402205</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Dodano zapytania SQL do modułu analityka, I19L3GR7-61">
+      <created>1554585500342</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1554585500342</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="59226000" />
+    <option name="totallyTimeSpent" value="59504000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="222" y="77" width="1514" height="864" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.7712264" visible="true" weight="0.29504815" />
       <window_info id="Structure" order="1" sideWeight="0.22877358" side_tool="true" weight="0.35854766" />
@@ -427,7 +440,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="biblioteki potrzebne do polaczenia z baza danych i hibernate" />
     <MESSAGE value="VisualParadigm ERD file" />
-    <option name="LAST_COMMIT_MESSAGE" value="VisualParadigm ERD file" />
+    <MESSAGE value="Dodano zapytania SQL do modułu analityka, I19L3GR7-61" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dodano zapytania SQL do modułu analityka, I19L3GR7-61" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Thoth/src/fxmlfiles/showOrders.fxml" />
@@ -696,7 +710,11 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Thoth/src/database/zapytania_analityk.sql">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="51" lean-forward="true" selection-start-line="9" selection-start-column="51" selection-end-line="9" selection-end-column="51" />
+        </state>
+      </provider>
     </entry>
   </component>
   <component name="masterDetails">
