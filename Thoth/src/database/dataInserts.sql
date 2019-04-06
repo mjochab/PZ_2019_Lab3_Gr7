@@ -30,3 +30,7 @@ insert into user_object (ObjectId, UserId)  values ('3','2');
 insert into user_object (ObjectId, UserId)  values ('4','3');
 insert into user_object (ObjectId, UserId)  values ('4','4');
 insert into user_object (ObjectId, UserId)  values ('1','5');
+
+
+INSERT INTO `product`(`ProductId`, `Name`, `Price`, `Discount`) VALUES (null, 'Motorola Moto Z3 Play', '1000', '0');
+INSERT INTO `product`(`ProductId`, `Name`, `Price`, `Discount`) VALUES (null, 'Huawei P9 Lite', '1100', '0');
