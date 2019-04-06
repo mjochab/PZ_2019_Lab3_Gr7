@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="505d9756-07ed-4d47-88b3-069161296adb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Thoth/src/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/Thoth/src/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Thoth/src/thoth/Thoth.java" beforeDir="false" afterPath="$PROJECT_DIR$/Thoth/src/thoth/Thoth.java" afterDir="false" />
     </list>
     <ignored path="C:\Users\Admin\Desktop\JavaFX aplication\PZ_2019_Lab3_Gr7\.idea\shelf/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -60,7 +58,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Thoth/src/entity/User.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1293">
+            <state relative-caret-position="33">
               <caret line="40" column="120" selection-start-line="40" selection-start-column="120" selection-end-line="40" selection-end-column="120" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -274,7 +272,7 @@
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554581519007" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554581593217" />
     <property name="jdk.selected.JAVA_MODULE" value="1.8" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/Thoth/lib/txw2-2.3.1.jar!/" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -402,7 +400,14 @@
       <option name="project" value="LOCAL" />
       <updated>1554580077338</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="test insertu do bazy">
+      <created>1554581566493</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1554581566493</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -499,7 +504,8 @@
     <MESSAGE value="biblioteki potrzebne do polaczenia z baza danych i hibernate" />
     <MESSAGE value="VisualParadigm ERD file" />
     <MESSAGE value="lib folder" />
-    <option name="LAST_COMMIT_MESSAGE" value="lib folder" />
+    <MESSAGE value="test insertu do bazy" />
+    <option name="LAST_COMMIT_MESSAGE" value="test insertu do bazy" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Thoth/build.xml" />
@@ -709,7 +715,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Thoth/src/entity/User.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1293">
+        <state relative-caret-position="33">
           <caret line="40" column="120" selection-start-line="40" selection-start-column="120" selection-end-line="40" selection-end-column="120" />
           <folding>
             <element signature="imports" expanded="true" />
