@@ -30,9 +30,6 @@ public class User {
     private int roleId;
 
     @Column(name = "State")
-    private int status;
-
-    @Column(name = "State")
     private int state;
 
     @Column(name = "ObjectId")
@@ -99,14 +96,6 @@ public class User {
         this.roleId = roleId;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
     public int getState() {
         return state;
     }
@@ -132,7 +121,8 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
                 ", roleId=" + roleId +
-                ", status=" + status +
+                ", state=" + state +
+                ", objectId=" + objectId +
                 '}';
     }
 }

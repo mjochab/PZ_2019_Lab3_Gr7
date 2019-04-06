@@ -29,6 +29,7 @@ public class Thoth extends Application {
 
         entityManager.close();
         entityManagerFactory.close();
+
         launch(args);
     }
     
