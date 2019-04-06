@@ -21,7 +21,7 @@ public class CreateUser {
         try {
             // create a user object
             System.out.println("Tworzenie nowego uzytkownika");
-            User tempUser = new User("admin","admin","admin","admin",1,1);
+            User tempUser = new User("admin","admin","admin","admin",1,1,1);
 
             // start a transaction
             session.beginTransaction();
