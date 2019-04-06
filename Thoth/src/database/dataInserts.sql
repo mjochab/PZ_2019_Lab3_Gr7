@@ -41,12 +41,39 @@ INSERT INTO `state_on_object`(`ProductId`, `ObjectId`, `Amount`) VALUES ('3', '2
 INSERT INTO `state_on_object`(`ProductId`, `ObjectId`, `Amount`) VALUES ('1', '2', '2');
 INSERT INTO `state_on_object`(`ProductId`, `ObjectId`, `Amount`) VALUES ('5', '2', '5');
 
+
 INSERT INTO `receipt`(`ReceiptId`, `ObjectId`, `TotalValue`, `UserId`, `Date`) VALUES (null, '1', '0', '1', '2019-04-06');
 INSERT INTO `receipt`(`ReceiptId`, `ObjectId`, `TotalValue`, `UserId`, `Date`) VALUES (null, '1', '0', '1', '2019-04-06');
+
 
 INSERT INTO `product_receipt`(`ProductId`, `ReceiptId`, `Amount`, `Price`) VALUES ('1', '1', '1', (SELECT Price FROM product WHERE ProductId = 1));
 INSERT INTO `product_receipt`(`ProductId`, `ReceiptId`, `Amount`, `Price`) VALUES ('2', '1', '1', (SELECT Price FROM product WHERE ProductId = 2));
 INSERT INTO `product_receipt`(`ProductId`, `ReceiptId`, `Amount`, `Price`) VALUES ('1', '2', '1', (SELECT Price FROM product WHERE ProductId = 1));
 
+
 UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE ReceiptId = 1) WHERE ReceiptId = 1;
-UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE ReceiptId = 2) WHERE ReceiptId = 2
+UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE ReceiptId = 2) WHERE ReceiptId = 2;
+
+
+INSERT INTO `customer`(`CustomerId`, `FirstName`, `LastName`, `PhoneNumber`) VALUES (null, 'Jan', 'Nosacz', '555444333');
+INSERT INTO `customer`(`CustomerId`, `FirstName`, `LastName`, `PhoneNumber`) VALUES (null, 'Halina', 'Nosaczowa', '444555333');
+
+
+INSERT INTO `state`(`StateId`, `Name`) VALUES (null, 'W realizacji');
+INSERT INTO `state`(`StateId`, `Name`) VALUES (null, 'Oczekuje na transport');
+INSERT INTO `state`(`StateId`, `Name`) VALUES (null, 'W transporcie');
+INSERT INTO `state`(`StateId`, `Name`) VALUES (null, 'Oczekuje na potwierdzenie odbioru');
+INSERT INTO `state`(`StateId`, `Name`) VALUES (null, 'Zrealizowane');
+
+
+INSERT INTO `order`(`OrderId`, `ObjectId_need`, `CustomerId`, `ObjectId_delivery`, `DateOfOrder`, `ParentId`) VALUES (null, '1', null, '3', '2019-04-07', null);
+INSERT INTO `order`(`OrderId`, `ObjectId_need`, `CustomerId`, `ObjectId_delivery`, `DateOfOrder`, `ParentId`) VALUES (null, '2', null, '3', '2019-04-07', null);
+
+
+INSERT INTO `order_product`(`Id`, `OrderId`, `ProductId`, `Amount`) VALUES (null, '1', '1', '3');
+INSERT INTO `order_product`(`Id`, `OrderId`, `ProductId`, `Amount`) VALUES (null, '1', '2', '1');
+INSERT INTO `order_product`(`Id`, `OrderId`, `ProductId`, `Amount`) VALUES (null, '2', '3', '2');
+INSERT INTO `order_product`(`Id`, `OrderId`, `ProductId`, `Amount`) VALUES (null, '2', '4', '2');
+
+
+INSERT INTO `state_of_order`(`Id`, `UserId`, `OrderId`, `StateId`) VALUES (null, '2', '1', '1');

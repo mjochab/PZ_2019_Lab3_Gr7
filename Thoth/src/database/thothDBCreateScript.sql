@@ -213,7 +213,7 @@ DROP TABLE IF EXISTS `Thoth`.`order` ;
 CREATE TABLE IF NOT EXISTS `Thoth`.`order` (
   `OrderId` INT(11) NOT NULL AUTO_INCREMENT,
   `ObjectId_need` INT(11) NOT NULL,
-  `CustomerId` INT(11) NOT NULL,
+  `CustomerId` INT(11) NULL,
   `ObjectId_delivery` INT(11) NOT NULL,
   `DateOfOrder` DATE NOT NULL,
   `ParentId` INT(11) NULL,
