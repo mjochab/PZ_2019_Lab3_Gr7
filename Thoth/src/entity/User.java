@@ -1,10 +1,6 @@
 package entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 
 @Entity
 @Table(name="user")
@@ -12,9 +8,10 @@ public class User {
 
     @Id
     @Column(name = "UserId")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int userId;
 
-    @Column(name = "Login")
+    @Column(name = "Login", unique = true)
     private String login;
 
     @Column(name = "FirstName")
@@ -26,13 +23,15 @@ public class User {
     @Column(name = "Password")
     private String password;
 
-    @Column(name = "RoleId")
+    @ManyToOne
+    @JoinColumn(name = "RoleId")
     private int roleId;
 
     @Column(name = "State")
     private int state;
 
-    @Column(name = "ObjectId")
+    @ManyToOne
+    @JoinColumn(name = "ObjectId")
     private int objectId;
 
     public User() {

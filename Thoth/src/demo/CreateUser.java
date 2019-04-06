@@ -17,7 +17,6 @@ public class CreateUser {
 
         // create session
         Session session = factory.getCurrentSession();
-
         try {
             // create a user object
             System.out.println("Tworzenie nowego uzytkownika");
