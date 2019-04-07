@@ -11,11 +11,11 @@ public class Order_product {
     @Column(name = "Id")
     private int id;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Order.class, optional = false)
     @JoinColumn(name = "OrderId")
     private int orderId;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Product.class)
     @JoinColumn(name = "ProductId")
     private int productId;
 

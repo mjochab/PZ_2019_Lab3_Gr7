@@ -23,14 +23,14 @@ public class User {
     @Column(name = "Password")
     private String password;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Role.class)
     @JoinColumn(name = "RoleId")
     private int roleId;
 
     @Column(name = "State")
     private int state;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Shop.class)
     @JoinColumn(name = "ObjectId")
     private int objectId;
 

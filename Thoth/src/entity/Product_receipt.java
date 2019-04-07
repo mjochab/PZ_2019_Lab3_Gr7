@@ -7,13 +7,17 @@ import java.math.BigDecimal;
 @Table(name = "product_receipt")
 public class Product_receipt {
 
+    @Id
+    @Column(name = "Id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Product.class)
     @JoinColumn(name = "ProductId")
     private int productId;
 
-    @ManyToOne
-    @JoinColumn(name = "RezeiptId")
+    @ManyToOne(targetEntity = Receipt.class)
+    @JoinColumn(name = "ReceiptId")
     private int receiptId;
 
     @Column(name = "Amount")

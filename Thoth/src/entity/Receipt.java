@@ -13,15 +13,15 @@ public class Receipt {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int receiptId;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Shop.class)
     @JoinColumn(name = "ObjectId")
     private int objectId;
 
     @Column(name = "TotalValue")
     private BigDecimal totalValue;
 
-    @ManyToOne
-    @JoinColumn(name = "ObjectId")
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "UserId")
     private int userId;
 
     @Column(name = "Date")

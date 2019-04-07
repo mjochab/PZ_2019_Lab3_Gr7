@@ -7,11 +7,16 @@ import javax.persistence.*;
 @Table(name = "state_on_object")
 public class State_on_object {
 
-    @ManyToOne
+    @Id
+    @Column(name = "Id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
+    @ManyToOne(targetEntity = Product.class)
     @JoinColumn(name = "ProductId")
     private int productId;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Shop.class)
     @JoinColumn(name = "ObjectId")
     private int objectId;
 

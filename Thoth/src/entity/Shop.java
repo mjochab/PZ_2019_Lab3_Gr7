@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "object")
-public class Object {
+public class Shop {
 
     @Id
     @Column(name = "ObjectId")
@@ -23,11 +23,11 @@ public class Object {
     @Column(name = "IsShop")
     private Boolean idShop;
 
-    public Object(){
+    public Shop(){
 
     }
 
-    public Object(String zipCode, String city, String street, Boolean idShop) {
+    public Shop(String zipCode, String city, String street, Boolean idShop) {
         this.zipCode = zipCode;
         this.city = city;
         this.street = street;
@@ -76,7 +76,7 @@ public class Object {
 
     @Override
     public String toString() {
-        return "Object{" +
+        return "Shop{" +
                 "objectId=" + objectId +
                 ", zipCode='" + zipCode + '\'' +
                 ", city='" + city + '\'' +

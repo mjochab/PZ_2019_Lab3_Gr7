@@ -1,19 +1,21 @@
 package entity;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "user_object")
 public class User_object {
 
-    @ManyToOne
+    @Id
+    @Column(name = "Id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
+    @ManyToOne(targetEntity = Shop.class)
     @JoinColumn(name = "ObjectId")
     private int objectId;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "UserId")
     private int userId;
 

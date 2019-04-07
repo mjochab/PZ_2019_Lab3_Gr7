@@ -11,15 +11,15 @@ public class State_of_order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "UserId")
     private int userId;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Order.class)
     @JoinColumn(name = "OrderId")
     private int orderId;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = State.class)
     @JoinColumn(name = "StateId")
     private int stateId;
 
