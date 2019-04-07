@@ -8,7 +8,7 @@ public class Role {
 
     @Id
     @Column(name = "RoleId")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int roleId;
 
     @Column(name = "Position")
@@ -18,8 +18,7 @@ public class Role {
 
     }
 
-    public Role(int roleId, String position) {
-        this.roleId = roleId;
+    public Role(String position) {
         this.position = position;
     }
 

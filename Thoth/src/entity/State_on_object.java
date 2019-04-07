@@ -9,7 +9,7 @@ public class State_on_object {
 
     @Id
     @Column(name = "Id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne(targetEntity = Product.class)
@@ -31,6 +31,14 @@ public class State_on_object {
         this.productId = productId;
         this.objectId = objectId;
         this.amount = amount;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getProductId() {
@@ -60,7 +68,8 @@ public class State_on_object {
     @Override
     public String toString() {
         return "State_on_object{" +
-                "productId=" + productId +
+                "id=" + id +
+                ", productId=" + productId +
                 ", objectId=" + objectId +
                 ", amount=" + amount +
                 '}';

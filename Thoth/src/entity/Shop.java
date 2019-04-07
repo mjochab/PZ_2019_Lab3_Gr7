@@ -8,7 +8,7 @@ public class Shop {
 
     @Id
     @Column(name = "ObjectId")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int objectId;
 
     @Column(name = "ZipCode")
@@ -23,7 +23,7 @@ public class Shop {
     @Column(name = "IsShop")
     private Boolean idShop;
 
-    public Shop(){
+    public Shop() {
 
     }
 

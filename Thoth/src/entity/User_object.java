@@ -8,7 +8,7 @@ public class User_object {
 
     @Id
     @Column(name = "Id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne(targetEntity = Shop.class)
@@ -26,6 +26,14 @@ public class User_object {
     public User_object(int objectId, int userId) {
         this.objectId = objectId;
         this.userId = userId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getObjectId() {
@@ -47,7 +55,8 @@ public class User_object {
     @Override
     public String toString() {
         return "User_object{" +
-                "objectId=" + objectId +
+                "id=" + id +
+                ", objectId=" + objectId +
                 ", userId=" + userId +
                 '}';
     }

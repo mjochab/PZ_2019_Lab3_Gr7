@@ -9,25 +9,41 @@ public class Order {
 
     @Id
     @Column(name = "OrderId")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
 
-    @ManyToOne(targetEntity = Shop.class)
-    @JoinColumn(name = "ObjectId_need")
+    @Column(name = "ObjectId_need")
     private int objectId_need;
 
-    @ManyToOne(targetEntity = Customer.class)
-    @JoinColumn(name = "CustomerId")
-    private int customerId;
+    public Order(){
 
-    @ManyToOne(targetEntity = Shop.class)
-    @JoinColumn(name = "ObjectId_delivery")
-    private int objectId_delivery;
+    }
 
-    @Column(name = "DateOfOrder")
-    private Date dateOfOrder;
+    public Order(int objectId_need) {
+        this.objectId_need = objectId_need;
+    }
 
-    @ManyToOne(targetEntity = Order.class)
-    @JoinColumn(name = "ParentId",nullable = true)
-    private int ParentId;
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public int getObjectId_need() {
+        return objectId_need;
+    }
+
+    public void setObjectId_need(int objectId_need) {
+        this.objectId_need = objectId_need;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", objectId_need=" + objectId_need +
+                '}';
+    }
 }

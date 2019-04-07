@@ -10,7 +10,7 @@ public class Receipt {
 
     @Id
     @Column(name = "ReceiptId")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int receiptId;
 
     @ManyToOne(targetEntity = Shop.class)

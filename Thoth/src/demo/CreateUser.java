@@ -12,19 +12,27 @@ public class CreateUser {
         // sesion factory
         SessionFactory factory = new Configuration()
                 .configure("hibernate.cfg.xml")
-                .addAnnotatedClass(User.class)
-                .addAnnotatedClass(Shop.class)
-                .addAnnotatedClass(Role.class)
-                .addAnnotatedClass(Customer.class)
-                .addAnnotatedClass(Order.class)
-                .addAnnotatedClass(Order_product.class)
-                .addAnnotatedClass(Product.class)
-                .addAnnotatedClass(Product_receipt.class)
-                .addAnnotatedClass(Receipt.class)
+                //tabele "Wolne"
                 .addAnnotatedClass(State.class)
-                .addAnnotatedClass(State_of_order.class)
-                .addAnnotatedClass(State_on_object.class)
-                .addAnnotatedClass(User_object.class)
+                .addAnnotatedClass(Role.class)
+                .addAnnotatedClass(Product.class)
+                .addAnnotatedClass(Shop.class)
+                .addAnnotatedClass(Customer.class)
+
+
+                //tabele łączone
+
+//                .addAnnotatedClass(State_on_object.class)
+//                .addAnnotatedClass(User.class)
+//                .addAnnotatedClass(User_object.class)
+
+//                .addAnnotatedClass(Receipt.class)
+
+
+//                .addAnnotatedClass(Product_receipt.class)
+//                .addAnnotatedClass(Order.class)
+//                .addAnnotatedClass(State_of_order.class)
+//                .addAnnotatedClass(Order_product.class)
                 .buildSessionFactory();
 
 //        // create session

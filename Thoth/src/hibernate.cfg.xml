@@ -12,7 +12,7 @@
       <property name="connection.password"></property>
 
 
-
+      <property name="dialect">org.hibernate.dialect.MariaDB53Dialect</property>
 
       <!-- Echo the SQL to stdout -->
       <property name="show_sql">true</property>

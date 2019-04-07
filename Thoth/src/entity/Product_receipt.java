@@ -9,7 +9,7 @@ public class Product_receipt {
 
     @Id
     @Column(name = "Id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne(targetEntity = Product.class)
@@ -35,6 +35,14 @@ public class Product_receipt {
         this.receiptId = receiptId;
         this.amount = amount;
         this.price = price;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getProductId() {
@@ -72,7 +80,8 @@ public class Product_receipt {
     @Override
     public String toString() {
         return "Product_receipt{" +
-                "productId=" + productId +
+                "id=" + id +
+                ", productId=" + productId +
                 ", receiptId=" + receiptId +
                 ", amount=" + amount +
                 ", price=" + price +

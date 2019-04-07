@@ -5,8 +5,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "customer")
 public class Customer {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CustomerId")
     private int customerId;
 
@@ -18,6 +19,16 @@ public class Customer {
 
     @Column(name = "PhoneNumber")
     private int phoneNumber;
+
+    public Customer(){
+
+    }
+
+    public Customer(String firstName, String lastName, int phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+    }
 
     public int getCustomerId() {
         return customerId;
