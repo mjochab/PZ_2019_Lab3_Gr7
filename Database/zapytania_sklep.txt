@@ -1,0 +1,47 @@
+---dodanie danych---
+
+insert into state_on_object (ProductId, ObjectId, Amount)
+values ('3', '1', '6')
+
+insert into state_on_object (ProductId, ObjectId, Amount)
+values ('4', '1', '3')
+
+insert into state_on_object (ProductId, ObjectId, Amount)
+values ('5', '1', '9')
+
+insert into state_on_object (ProductId, ObjectId, Amount)
+values ('6', '1', '2')
+
+
+--- przykładowe zapytania ---
+
+1) wyświetlenie wszystkich przedmiotów znajdujących się w obiekcie (w tym przupadku i objekcie od ID równym 1)
+
+select pr.ProductId, pr.Name, pr.Price, state.Amount
+from state_on_object state
+inner join product pr ON pr.ProductId = state.ProductId
+inner join object ob ON ob.ObjectId = state.ObjectId
+where ob.ObjectId = 1
+
+2) tworzenie paragonu
+
+insert into receipt (ReceiptId, ObjectId, TotalValue, UserId, Date)
+values ('1','1','0','1', curdate())
+
+3) wyświetlenie paragonu i wszystkich produktów, które zawiera
+
+select rec.ReceiptId, pr.ProductId, pr.Name, pr.Price, pr_rec.Amount
+from product_receipt pr_rec
+inner join product pr ON pr.ProductId = pr_rec.ProductId
+inner join receipt rec ON rec.ReceiptId = pr_rec.ReceiptId
+inner join object ob ON ob.ObjectId = rec.ObjectId
+where rec.ReceiptId = 1
+
+4) wyswietlenie zamowien dla klientow
+
+SELECT ord.OrderId, st.Name, ord.DateOfOrder, cus.FirstName, cus.LastName, cus.PhoneNumber
+from state_of_order stateord
+inner join a_order ord ON ord.OrderId = stateord.OrderId
+inner join customer cus ON cus.CustomerId = ord.CustomerId
+inner join state st ON st.StateId = stateord.StateId
+where ord.ObjectId_need = 1
