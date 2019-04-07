@@ -12,13 +12,13 @@ public class State_on_object {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(targetEntity = Product.class)
+    @ManyToOne
     @JoinColumn(name = "ProductId")
-    private int productId;
+    private Product productId;
 
-    @ManyToOne(targetEntity = Shop.class)
+    @ManyToOne
     @JoinColumn(name = "ObjectId")
-    private int objectId;
+    private Shop objectId;
 
     @Column(name = "Amount")
     private int amount;
@@ -27,7 +27,7 @@ public class State_on_object {
 
     }
 
-    public State_on_object(int productId, int objectId, int amount) {
+    public State_on_object(Product productId, Shop objectId, int amount) {
         this.productId = productId;
         this.objectId = objectId;
         this.amount = amount;
@@ -41,19 +41,19 @@ public class State_on_object {
         this.id = id;
     }
 
-    public int getProductId() {
+    public Product getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(Product productId) {
         this.productId = productId;
     }
 
-    public int getObjectId() {
+    public Shop getObjectId() {
         return objectId;
     }
 
-    public void setObjectId(int objectId) {
+    public void setObjectId(Shop objectId) {
         this.objectId = objectId;
     }
 

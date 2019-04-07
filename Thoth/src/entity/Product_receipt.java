@@ -12,13 +12,13 @@ public class Product_receipt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(targetEntity = Product.class)
+    @ManyToOne
     @JoinColumn(name = "ProductId")
-    private int productId;
+    private Product productId;
 
-    @ManyToOne(targetEntity = Receipt.class)
+    @ManyToOne
     @JoinColumn(name = "ReceiptId")
-    private int receiptId;
+    private Receipt receiptId;
 
     @Column(name = "Amount")
     private int amount;
@@ -30,7 +30,7 @@ public class Product_receipt {
 
     }
 
-    public Product_receipt(int productId, int receiptId, int amount, BigDecimal price) {
+    public Product_receipt(Product productId, Receipt receiptId, int amount, BigDecimal price) {
         this.productId = productId;
         this.receiptId = receiptId;
         this.amount = amount;
@@ -45,19 +45,19 @@ public class Product_receipt {
         this.id = id;
     }
 
-    public int getProductId() {
+    public Product getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(Product productId) {
         this.productId = productId;
     }
 
-    public int getReceiptId() {
+    public Receipt getReceiptId() {
         return receiptId;
     }
 
-    public void setReceiptId(int receiptId) {
+    public void setReceiptId(Receipt receiptId) {
         this.receiptId = receiptId;
     }
 

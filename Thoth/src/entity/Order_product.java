@@ -7,20 +7,30 @@ import java.math.BigDecimal;
 @Table(name = "order_product")
 public class Order_product {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     private int id;
 
-    @ManyToOne(targetEntity = Order.class, optional = false)
+    @ManyToOne
     @JoinColumn(name = "OrderId")
-    private int orderId;
+    private Order orderId;
 
-    @ManyToOne(targetEntity = Product.class)
+    @ManyToOne
     @JoinColumn(name = "ProductId")
-    private int productId;
+    private Product productId;
 
     @Column(name = "Amount")
-    private BigDecimal amount;
+    private int amount;
+
+    public Order_product(){
+
+    }
+
+    public Order_product(Order orderId, Product productId, int amount) {
+        this.orderId = orderId;
+        this.productId = productId;
+        this.amount = amount;
+    }
 
     public int getId() {
         return id;
@@ -30,27 +40,27 @@ public class Order_product {
         this.id = id;
     }
 
-    public int getOrderId() {
+    public Order getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(Order orderId) {
         this.orderId = orderId;
     }
 
-    public int getProductId() {
+    public Product getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(Product productId) {
         this.productId = productId;
     }
 
-    public BigDecimal getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 

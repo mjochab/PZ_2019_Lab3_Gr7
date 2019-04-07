@@ -13,11 +13,6 @@ public class CreateUser {
         SessionFactory factory = new Configuration()
                 .configure("hibernate.cfg.xml")
                 //tabele "Wolne"
-                .addAnnotatedClass(State.class)
-                .addAnnotatedClass(Role.class)
-                .addAnnotatedClass(Product.class)
-                .addAnnotatedClass(Shop.class)
-                .addAnnotatedClass(Customer.class)
 
 
                 //tabele łączone

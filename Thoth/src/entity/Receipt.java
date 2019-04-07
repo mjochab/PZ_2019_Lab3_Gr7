@@ -13,16 +13,16 @@ public class Receipt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int receiptId;
 
-    @ManyToOne(targetEntity = Shop.class)
+    @ManyToOne
     @JoinColumn(name = "ObjectId")
-    private int objectId;
+    private Shop objectId;
 
     @Column(name = "TotalValue")
     private BigDecimal totalValue;
 
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne
     @JoinColumn(name = "UserId")
-    private int userId;
+    private User userId;
 
     @Column(name = "Date")
     private Date date;
@@ -31,7 +31,7 @@ public class Receipt {
 
     }
 
-    public Receipt(int objectId, BigDecimal totalValue, int userId, Date date) {
+    public Receipt(Shop objectId, BigDecimal totalValue, User userId, Date date) {
         this.objectId = objectId;
         this.totalValue = totalValue;
         this.userId = userId;
@@ -46,11 +46,11 @@ public class Receipt {
         this.receiptId = receiptId;
     }
 
-    public int getObjectId() {
+    public Shop getObjectId() {
         return objectId;
     }
 
-    public void setObjectId(int objectId) {
+    public void setObjectId(Shop objectId) {
         this.objectId = objectId;
     }
 
@@ -62,11 +62,11 @@ public class Receipt {
         this.totalValue = totalValue;
     }
 
-    public int getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 

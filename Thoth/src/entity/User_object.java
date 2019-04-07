@@ -1,5 +1,6 @@
 package entity;
 
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
 
 @Entity
@@ -11,19 +12,19 @@ public class User_object {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(targetEntity = Shop.class)
+    @ManyToOne
     @JoinColumn(name = "ObjectId")
-    private int objectId;
+    private Shop objectId;
 
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne
     @JoinColumn(name = "UserId")
-    private int userId;
+    private User userId;
 
     public User_object(){
 
     }
 
-    public User_object(int objectId, int userId) {
+    public User_object(Shop objectId, User userId) {
         this.objectId = objectId;
         this.userId = userId;
     }
@@ -36,19 +37,19 @@ public class User_object {
         this.id = id;
     }
 
-    public int getObjectId() {
+    public Shop getObjectId() {
         return objectId;
     }
 
-    public void setObjectId(int objectId) {
+    public void setObjectId(Shop objectId) {
         this.objectId = objectId;
     }
 
-    public int getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 

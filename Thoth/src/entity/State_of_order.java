@@ -11,23 +11,23 @@ public class State_of_order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne
     @JoinColumn(name = "UserId")
-    private int userId;
+    private User userId;
 
-    @ManyToOne(targetEntity = Order.class)
+    @ManyToOne
     @JoinColumn(name = "OrderId")
-    private int orderId;
+    private Order orderId;
 
-    @ManyToOne(targetEntity = State.class)
+    @ManyToOne
     @JoinColumn(name = "StateId")
-    private int stateId;
+    private State stateId;
 
     public State_of_order(){
 
     }
 
-    public State_of_order(int userId, int orderId, int stateId) {
+    public State_of_order(User userId, Order orderId, State stateId) {
         this.userId = userId;
         this.orderId = orderId;
         this.stateId = stateId;
@@ -41,27 +41,27 @@ public class State_of_order {
         this.id = id;
     }
 
-    public int getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
-    public int getOrderId() {
+    public Order getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(Order orderId) {
         this.orderId = orderId;
     }
 
-    public int getStateId() {
+    public State getStateId() {
         return stateId;
     }
 
-    public void setStateId(int stateId) {
+    public void setStateId(State stateId) {
         this.stateId = stateId;
     }
 

@@ -23,21 +23,21 @@ public class User {
     @Column(name = "Password")
     private String password;
 
-    @ManyToOne(targetEntity = Role.class)
+    @ManyToOne
     @JoinColumn(name = "RoleId")
-    private int roleId;
+    private Role roleId;
 
     @Column(name = "State")
     private int state;
 
-    @ManyToOne(targetEntity = Shop.class)
+    @ManyToOne
     @JoinColumn(name = "ObjectId")
-    private int objectId;
+    private Shop objectId;
 
     public User() {
     }
 
-    public User(String login, String firstName, String lastName, String password, int roleId, int state, int objectId) {
+    public User(String login, String firstName, String lastName, String password, Role roleId, int state, Shop objectId) {
         this.login = login;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -87,11 +87,11 @@ public class User {
         this.password = password;
     }
 
-    public int getRoleId() {
+    public Role getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(Role roleId) {
         this.roleId = roleId;
     }
 
@@ -103,11 +103,11 @@ public class User {
         this.state = state;
     }
 
-    public int getObjectId() {
+    public Shop getObjectId() {
         return objectId;
     }
 
-    public void setObjectId(int objectId) {
+    public void setObjectId(Shop objectId) {
         this.objectId = objectId;
     }
 
