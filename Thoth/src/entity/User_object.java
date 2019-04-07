@@ -13,11 +13,11 @@ public class User_object {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "ObjectId")
+    @JoinColumn(name = "ObjectId",nullable = false)
     private Shop objectId;
 
     @ManyToOne
-    @JoinColumn(name = "UserId")
+    @JoinColumn(name = "UserId",nullable = false)
     private User userId;
 
     public User_object(){

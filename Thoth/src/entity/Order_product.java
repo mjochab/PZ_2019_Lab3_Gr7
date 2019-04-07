@@ -12,14 +12,14 @@ public class Order_product {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "OrderId")
+    @JoinColumn(name = "OrderId",nullable = false)
     private Order orderId;
 
     @ManyToOne
-    @JoinColumn(name = "ProductId")
+    @JoinColumn(name = "ProductId",nullable = false)
     private Product productId;
 
-    @Column(name = "Amount")
+    @Column(name = "Amount",nullable = false)
     private int amount;
 
     public Order_product(){

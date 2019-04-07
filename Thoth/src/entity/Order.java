@@ -13,18 +13,18 @@ public class Order {
     private int orderId;
 
     @ManyToOne
-    @JoinColumn(name = "ObjectId_need", referencedColumnName = "ObjectId")
+    @JoinColumn(name = "ObjectId_need", referencedColumnName = "ObjectId",nullable = false)
     private Shop objectId_need;
 
     @ManyToOne
-    @JoinColumn(name = "ObjectId_delivery", referencedColumnName = "ObjectId")
+    @JoinColumn(name = "ObjectId_delivery", referencedColumnName = "ObjectId",nullable = false)
     private Shop objectId_delivery;
 
     @ManyToOne
-    @JoinColumn(name = "CustomerId")
+    @JoinColumn(name = "CustomerId",nullable = false)
     private Customer customerId;
 
-    @Column(name = "DateOfOrder")
+    @Column(name = "DateOfOrder",nullable = false)
     private Date dateOfOrder;
 
     @ManyToOne

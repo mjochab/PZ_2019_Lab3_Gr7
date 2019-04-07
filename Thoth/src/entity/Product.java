@@ -12,13 +12,13 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productId;
 
-    @Column(name = "Name")
+    @Column(name = "Name",nullable = false)
     private String name;
 
-    @Column(name = "Price")
+    @Column(name = "Price",nullable = false)
     private BigDecimal price;
 
-    @Column(name = "Discount", nullable = true)
+    @Column(name = "Discount")
     private int discount;
 
     public Product(){

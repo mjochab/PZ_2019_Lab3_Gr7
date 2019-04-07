@@ -12,15 +12,15 @@ public class State_of_order {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "UserId")
+    @JoinColumn(name = "UserId",nullable = false)
     private User userId;
 
     @ManyToOne
-    @JoinColumn(name = "OrderId")
+    @JoinColumn(name = "OrderId",nullable = false)
     private Order orderId;
 
     @ManyToOne
-    @JoinColumn(name = "StateId")
+    @JoinColumn(name = "StateId",nullable = false)
     private State stateId;
 
     public State_of_order(){

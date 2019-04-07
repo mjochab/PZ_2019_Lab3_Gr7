@@ -11,27 +11,27 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
 
-    @Column(name = "Login", unique = true)
+    @Column(name = "Login", unique = true, nullable = false)
     private String login;
 
-    @Column(name = "FirstName")
+    @Column(name = "FirstName",nullable = false)
     private String firstName;
 
-    @Column(name = "LastName")
+    @Column(name = "LastName",nullable = false)
     private String lastName;
 
-    @Column(name = "Password")
+    @Column(name = "Password",nullable = false)
     private String password;
 
     @ManyToOne
-    @JoinColumn(name = "RoleId")
+    @JoinColumn(name = "RoleId",nullable = false)
     private Role roleId;
 
-    @Column(name = "State")
+    @Column(name = "State",nullable = false)
     private int state;
 
     @ManyToOne
-    @JoinColumn(name = "ObjectId")
+    @JoinColumn(name = "ObjectId",nullable = false)
     private Shop objectId;
 
     public User() {

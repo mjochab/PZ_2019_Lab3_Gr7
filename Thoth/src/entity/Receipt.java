@@ -14,17 +14,17 @@ public class Receipt {
     private int receiptId;
 
     @ManyToOne
-    @JoinColumn(name = "ObjectId")
+    @JoinColumn(name = "ObjectId",nullable = false)
     private Shop objectId;
 
-    @Column(name = "TotalValue")
+    @Column(name = "TotalValue",nullable = false)
     private BigDecimal totalValue;
 
     @ManyToOne
-    @JoinColumn(name = "UserId")
+    @JoinColumn(name = "UserId",nullable = false)
     private User userId;
 
-    @Column(name = "Date")
+    @Column(name = "Date",nullable = false)
     private Date date;
 
     public Receipt(){

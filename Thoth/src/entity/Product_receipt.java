@@ -13,17 +13,17 @@ public class Product_receipt {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "ProductId")
+    @JoinColumn(name = "ProductId",nullable = false)
     private Product productId;
 
     @ManyToOne
-    @JoinColumn(name = "ReceiptId")
+    @JoinColumn(name = "ReceiptId",nullable = false)
     private Receipt receiptId;
 
-    @Column(name = "Amount")
+    @Column(name = "Amount",nullable = false)
     private int amount;
 
-    @Column(name = "Price")
+    @Column(name = "Price",nullable = false)
     private BigDecimal price;
 
     public Product_receipt(){

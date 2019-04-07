@@ -11,16 +11,16 @@ public class Shop {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int objectId;
 
-    @Column(name = "ZipCode")
+    @Column(name = "ZipCode",nullable = false)
     private String zipCode;
 
-    @Column(name = "City")
+    @Column(name = "City",nullable = false)
     private String city;
 
-    @Column(name = "Street")
+    @Column(name = "Street",nullable = false)
     private String street;
 
-    @Column(name = "IsShop")
+    @Column(name = "IsShop",nullable = false)
     private Boolean idShop;
 
     public Shop() {

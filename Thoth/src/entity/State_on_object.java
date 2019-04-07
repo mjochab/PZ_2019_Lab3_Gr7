@@ -13,14 +13,14 @@ public class State_on_object {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "ProductId")
+    @JoinColumn(name = "ProductId",nullable = false)
     private Product productId;
 
     @ManyToOne
-    @JoinColumn(name = "ObjectId")
+    @JoinColumn(name = "ObjectId",nullable = false)
     private Shop objectId;
 
-    @Column(name = "Amount")
+    @Column(name = "Amount",nullable = false)
     private int amount;
 
     public State_on_object(){
