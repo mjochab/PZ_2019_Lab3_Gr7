@@ -1,0 +1,20 @@
+-- Moduł Magazyn
+--przeszukanie listy produktów dla danego magazynu , gdzie stan > 1
+SELECT `product`.`ProductId`,`product`.`Name`,`product`.`Price`,`state_on_object`.`Amount`,`product`.`Discount`
+FROM `product`
+INNER JOIN `state_on_object` ON `product`.`ProductId` = `state_on_object`.`ProductId`
+INNER JOIN `object`ON `state_on_object`.`ObjectId` = `object`.`ObjectId`
+WHERE `object`.`City` = "Rzeszów"
+AND `state_on_object`.`Amount` > 0
+
+--dodawanie nowego produktu
+INSERT INTO `product`(`ProductId`, `Name`, `Price`, `Discount`) VALUES ('', '', '', '');
+
+--nowe zamowienie
+SELECT `product`.`ProductId`,`product`.`Name`,`product`.`Price`,`state_on_object`.`Amount`
+FROM `product`
+INNER JOIN `state_on_object` ON `product`.`ProductId` = `state_on_object`.`ProductId`
+INNER JOIN `object`ON `state_on_object`.`ObjectId` = `object`.`ObjectId`
+WHERE `product`.`Name` = "Huawei P9 Lite"
+AND `state_on_object`.`Amount` > 0
+
