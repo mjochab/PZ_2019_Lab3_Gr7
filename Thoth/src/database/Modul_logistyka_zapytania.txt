@@ -1,0 +1,51 @@
+Moduł logistyka:
+1. Wypisanie wszystkich zamówień oczekujących(Skąd, Do, Nr zamówienia, Status)
+ SELECT obj_delivery.City AS `Skad - miasto`, obj_delivery.Street AS `Skad - ulica`, obj_need.City AS `Do - miasto`, obj_need.Street AS `Do - ulica`, `order`.`OrderId` AS `Nr zamowienia`, state.Name AS `Status` 
+ FROM `order` 
+ INNER JOIN state_of_order ON `order`.OrderId = state_of_order.OrderId 
+ INNER JOIN state ON state.StateId = state_of_order.StateId
+ INNER JOIN `object` obj_need ON obj_need.`ObjectId` = `order`.`ObjectId_need`
+ INNER JOIN `object` obj_delivery ON obj_delivery.`ObjectId` = `order`.`ObjectId_delivery`
+ WHERE state.Name = 'Oczekuje na transport';
+
+2. Wypisanie wszystkich zamówień w realizacji (Skąd, Do, Nr zamówienia, Status)
+	 SELECT obj_delivery.City AS `Skad - miasto`, obj_delivery.Street AS `Skad - ulica`, obj_need.City AS `Do - miasto`, obj_need.Street AS `Do - ulica`, `order`.`OrderId` AS `Nr zamowienia`, state.Name AS `Status` 
+	 FROM `order` 
+	 INNER JOIN state_of_order ON `order`.OrderId = state_of_order.OrderId 
+	 INNER JOIN state ON state.StateId = state_of_order.StateId
+	 INNER JOIN `object` obj_need ON obj_need.`ObjectId` = `order`.`ObjectId_need`
+	 INNER JOIN `object` obj_delivery ON obj_delivery.`ObjectId` = `order`.`ObjectId_delivery`
+	 WHERE state.Name = 'W transporcie';
+
+3. Podgląd zamówienia prostego ((listing produktów - nazwa, ilość), status)
+
+	a) Wyświetlenie statusu zamówienia
+		SELECT `state`.Name AS `Status`  
+		FROM `order`
+		INNER JOIN `state_of_order` ON `order`.`OrderId` = `state_of_order`.`OrderId`
+		INNER JOIN `state` ON `state`.`StateId` = `state_of_order`.`StateId`
+		WHERE `order`.`OrderId` = 1;
+		
+	b) Wyświetlenie produktów w zamówieniu
+		SELECT `product`.`Name` AS `Nazwa`, `order_product`.`Amount` AS `Ilosc`  
+		FROM `order`
+		INNER JOIN `order_product` ON `order`.`OrderId` = `order_product`.`OrderId`
+		INNER JOIN `product` ON `product`.`ProductId` = `order_product`.`ProductId`
+		WHERE `order`.`OrderId` = 1;
+		
+4. Podgląd zamówienia złożonego (complex) (listing zamówień prostych, status)
+
+	a) Czy zamówienie jest zamówieniem złożonym (complex)
+		SELECT * 
+		FROM `order`
+		WHERE ParentId = 1; // jeżeli dla konkretnego ParentId liczba rekordów będzie wieksza niż zero, to zamówienie o Id równym temu ParentId jest zamówieniem złożonym
+	
+	b) Wyświetlenie statusu zamówienia
+		Tak jak przy 3 a
+	
+	c) Wyświetlenie produktów z zamówienia prostego - dla każdego zamówienia:
+		SELECT `product`.`Name` AS `Nazwa`, `order_product`.`Amount` AS `Ilosc`  
+		FROM `order`
+		INNER JOIN `order_product` ON `order`.`OrderId` = `order_product`.`OrderId`
+		INNER JOIN `product` ON `product`.`ProductId` = `order_product`.`ProductId`
+		WHERE `order`.`OrderId` = 1 AND `order`.ParentId = 1;
