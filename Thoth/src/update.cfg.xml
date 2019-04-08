@@ -8,7 +8,7 @@
       <!-- JDBC Database connection settings -->
       <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
       <!--<property name="connection.url">jdbc:mysql://localhost:3306/thoth</property>-->
-      <property name="connection.url">jdbc:mysql://localhost:3306/testThoth?createDatabaseIfNotExist=true</property>
+      <property name="connection.url">jdbc:mysql://localhost:3306/thoth?createDatabaseIfNotExist=true</property>
       <property name="connection.username">root</property>
       <property name="connection.password"></property>
 
@@ -21,7 +21,7 @@
 
       <!-- Set the current session context -->
       <property name="current_session_context_class">thread</property>
-      <property name="hibernate.hbm2ddl.auto">create</property>
+      <property name="hibernate.hbm2ddl.auto">update</property>
       <property name="hibernate.hbm2ddl.import_files">/import.sql</property>
 
       <!-- Tabele bez kluczy obcych -->

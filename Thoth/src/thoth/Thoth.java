@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -23,7 +25,9 @@ public class Thoth extends Application {
     }
 
     public static void main(String[] args) {
-
+        SessionFactory factory = new Configuration()
+                .configure("update.cfg.xml")
+                .buildSessionFactory();
         launch(args);
     }
     
