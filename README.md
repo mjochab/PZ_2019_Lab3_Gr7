@@ -53,12 +53,29 @@ Funkcjonalności:
 ## Diagram klas  
 ![Diagram klas](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/class%20diagram.png)
 ## Diagram ERD  
-![Diagram ERD](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/erd%20diagram%20simple.png)
+![Diagram ERD](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/DEVELOPE/diagramy/erd2.PNG)
 
 
 
+## Biblioteki
 
-  
+* [JDBC Driver](https://dev.mysql.com/downloads/file/?id=480091)
+* [Hibernate](https://sourceforge.net/projects/hibernate/files/hibernate-orm/5.4.2.Final/hibernate-release-5.4.2.Final.zip/download)
+
+## Dodawanie bibliotek w IntelliJ
+
+w oknie projektu wciskamy kombinację
+``` CTRL + SHIFT + ALT + S```
+przechodzimy do zakładki ```Libraries``` wciskamy ```+``` a nastepnie ```java``` i wybieramy odpowiednie pliki jar:
+
+### Hibernate 
+
+![Diagram ERD](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/DEVELOPE/diagramy/hibernatejars.png)
+
+### JDBC driver
+
+![Diagram ERD](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/DEVELOPE/diagramy/mysqlconnectorjar.png)
+
 ## Autorzy
 * Paweł Durda
 * Mateusz Gawlak

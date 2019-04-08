@@ -1,0 +1,18 @@
+-----------------------------------------------------------------------------------------
+ADMIN
+
+/dodawanie pracownika/
+insert into User (FirstName, LastName, Login, Password, RoleId) values(?, ?, ?, ?, ?);
+
+/przegladanie pracownikow/
+select * from User
+
+/status/
+update User set Status = "?" where UserID = "?"   aktywny/nieaktywny
+-------------------------------------------------------------------------------------------
+PRACOWNIK MAGAZYNU
+
+/stan magazynu/
+insert into Product (Name, Quantity, Price) values (?, ?, ?)
+
+-------------------------------------------------------------------------------------------
