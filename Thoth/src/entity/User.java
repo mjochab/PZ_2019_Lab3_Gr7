@@ -31,20 +31,10 @@ public class User {
     private int state;
 
     @ManyToOne
-    @JoinColumn(name = "ObjectId",nullable = false)
-    private Shop objectId;
+    @JoinColumn(name = "ShopId",nullable = false)
+    private Shop shopId;
 
     public User() {
-    }
-
-    public User(String login, String firstName, String lastName, String password, Role roleId, int state, Shop objectId) {
-        this.login = login;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.roleId = roleId;
-        this.state = state;
-        this.objectId = objectId;
     }
 
     public int getUserId() {
@@ -103,25 +93,11 @@ public class User {
         this.state = state;
     }
 
-    public Shop getObjectId() {
-        return objectId;
+    public Shop getShopId() {
+        return shopId;
     }
 
-    public void setObjectId(Shop objectId) {
-        this.objectId = objectId;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", login='" + login + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", password='" + password + '\'' +
-                ", roleId=" + roleId +
-                ", state=" + state +
-                ", objectId=" + objectId +
-                '}';
+    public void setShopId(Shop shopId) {
+        this.shopId = shopId;
     }
 }

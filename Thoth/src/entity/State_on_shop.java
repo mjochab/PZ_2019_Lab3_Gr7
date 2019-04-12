@@ -4,8 +4,8 @@ package entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "state_on_object")
-public class State_on_object {
+@Table(name = "state_on_shop")
+public class State_on_shop {
 
     @Id
     @Column(name = "Id")
@@ -17,20 +17,14 @@ public class State_on_object {
     private Product productId;
 
     @ManyToOne
-    @JoinColumn(name = "ObjectId",nullable = false)
-    private Shop objectId;
+    @JoinColumn(name = "ShopId",nullable = false)
+    private Shop shopId;
 
     @Column(name = "Amount",nullable = false)
     private int amount;
 
-    public State_on_object(){
+    public State_on_shop(){
 
-    }
-
-    public State_on_object(Product productId, Shop objectId, int amount) {
-        this.productId = productId;
-        this.objectId = objectId;
-        this.amount = amount;
     }
 
     public int getId() {
@@ -49,12 +43,12 @@ public class State_on_object {
         this.productId = productId;
     }
 
-    public Shop getObjectId() {
-        return objectId;
+    public Shop getShopId() {
+        return shopId;
     }
 
-    public void setObjectId(Shop objectId) {
-        this.objectId = objectId;
+    public void setShopId(Shop shopId) {
+        this.shopId = shopId;
     }
 
     public int getAmount() {
@@ -63,15 +57,5 @@ public class State_on_object {
 
     public void setAmount(int amount) {
         this.amount = amount;
-    }
-
-    @Override
-    public String toString() {
-        return "State_on_object{" +
-                "id=" + id +
-                ", productId=" + productId +
-                ", objectId=" + objectId +
-                ", amount=" + amount +
-                '}';
     }
 }

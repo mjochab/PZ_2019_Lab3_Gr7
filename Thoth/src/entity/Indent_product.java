@@ -1,19 +1,18 @@
 package entity;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
-@Table(name = "order_product")
-public class Order_product {
+@Table(name = "indent_product")
+public class Indent_product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "OrderId",nullable = false)
-    private Order orderId;
+    @JoinColumn(name = "IndentId",nullable = false)
+    private Indent indentId;
 
     @ManyToOne
     @JoinColumn(name = "ProductId",nullable = false)
@@ -22,14 +21,8 @@ public class Order_product {
     @Column(name = "Amount",nullable = false)
     private int amount;
 
-    public Order_product(){
+    public Indent_product(){
 
-    }
-
-    public Order_product(Order orderId, Product productId, int amount) {
-        this.orderId = orderId;
-        this.productId = productId;
-        this.amount = amount;
     }
 
     public int getId() {
@@ -40,12 +33,12 @@ public class Order_product {
         this.id = id;
     }
 
-    public Order getOrderId() {
-        return orderId;
+    public Indent getIndentId() {
+        return indentId;
     }
 
-    public void setOrderId(Order orderId) {
-        this.orderId = orderId;
+    public void setIndentId(Indent indentId) {
+        this.indentId = indentId;
     }
 
     public Product getProductId() {
@@ -62,15 +55,5 @@ public class Order_product {
 
     public void setAmount(int amount) {
         this.amount = amount;
-    }
-
-    @Override
-    public String toString() {
-        return "Order_product{" +
-                "id=" + id +
-                ", orderId=" + orderId +
-                ", productId=" + productId +
-                ", amount=" + amount +
-                '}';
     }
 }

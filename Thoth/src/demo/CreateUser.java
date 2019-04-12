@@ -17,17 +17,17 @@ public class CreateUser {
 
                 //tabele łączone
 
-//                .addAnnotatedClass(State_on_object.class)
+//                .addAnnotatedClass(State_on_shop.class)
 //                .addAnnotatedClass(User.class)
-//                .addAnnotatedClass(User_object.class)
+//                .addAnnotatedClass(User_shop.class)
 
 //                .addAnnotatedClass(Receipt.class)
 
 
 //                .addAnnotatedClass(Product_receipt.class)
-//                .addAnnotatedClass(Order.class)
-//                .addAnnotatedClass(State_of_order.class)
-//                .addAnnotatedClass(Order_product.class)
+//                .addAnnotatedClass(Indent.class)
+//                .addAnnotatedClass(State_of_indent.class)
+//                .addAnnotatedClass(Indent_product.class)
                 .buildSessionFactory();
 
 //        // create session

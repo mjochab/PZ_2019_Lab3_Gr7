@@ -3,8 +3,8 @@ package entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "state_of_order")
-public class State_of_order {
+@Table(name = "state_of_indent")
+public class State_of_indent {
 
     @Id
     @Column(name = "Id")
@@ -16,21 +16,15 @@ public class State_of_order {
     private User userId;
 
     @ManyToOne
-    @JoinColumn(name = "OrderId",nullable = false)
-    private Order orderId;
+    @JoinColumn(name = "IndentId",nullable = false)
+    private Indent indentId;
 
     @ManyToOne
     @JoinColumn(name = "StateId",nullable = false)
     private State stateId;
 
-    public State_of_order(){
+    public State_of_indent(){
 
-    }
-
-    public State_of_order(User userId, Order orderId, State stateId) {
-        this.userId = userId;
-        this.orderId = orderId;
-        this.stateId = stateId;
     }
 
     public int getId() {
@@ -49,12 +43,12 @@ public class State_of_order {
         this.userId = userId;
     }
 
-    public Order getOrderId() {
-        return orderId;
+    public Indent getIndentId() {
+        return indentId;
     }
 
-    public void setOrderId(Order orderId) {
-        this.orderId = orderId;
+    public void setIndentId(Indent indentId) {
+        this.indentId = indentId;
     }
 
     public State getStateId() {
@@ -63,15 +57,5 @@ public class State_of_order {
 
     public void setStateId(State stateId) {
         this.stateId = stateId;
-    }
-
-    @Override
-    public String toString() {
-        return "State_of_order{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", orderId=" + orderId +
-                ", stateId=" + stateId +
-                '}';
     }
 }

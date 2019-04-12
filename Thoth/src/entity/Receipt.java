@@ -14,8 +14,8 @@ public class Receipt {
     private int receiptId;
 
     @ManyToOne
-    @JoinColumn(name = "ObjectId",nullable = false)
-    private Shop objectId;
+    @JoinColumn(name = "ShopId",nullable = false)
+    private Shop shopId;
 
     @Column(name = "TotalValue",nullable = false)
     private BigDecimal totalValue;
@@ -31,13 +31,6 @@ public class Receipt {
 
     }
 
-    public Receipt(Shop objectId, BigDecimal totalValue, User userId, Date date) {
-        this.objectId = objectId;
-        this.totalValue = totalValue;
-        this.userId = userId;
-        this.date = date;
-    }
-
     public int getReceiptId() {
         return receiptId;
     }
@@ -46,12 +39,12 @@ public class Receipt {
         this.receiptId = receiptId;
     }
 
-    public Shop getObjectId() {
-        return objectId;
+    public Shop getShopId() {
+        return shopId;
     }
 
-    public void setObjectId(Shop objectId) {
-        this.objectId = objectId;
+    public void setShopId(Shop shopId) {
+        this.shopId = shopId;
     }
 
     public BigDecimal getTotalValue() {
@@ -76,16 +69,5 @@ public class Receipt {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    @Override
-    public String toString() {
-        return "Receipt{" +
-                "receiptId=" + receiptId +
-                ", objectId=" + objectId +
-                ", totalValue=" + totalValue +
-                ", userId=" + userId +
-                ", date=" + date +
-                '}';
     }
 }

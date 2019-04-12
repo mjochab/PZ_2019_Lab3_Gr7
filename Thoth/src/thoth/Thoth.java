@@ -26,7 +26,7 @@ public class Thoth extends Application {
 
     public static void main(String[] args) {
         SessionFactory factory = new Configuration()
-                .configure("update.cfg.xml")
+                .configure("hibernate.cfg.xml")
                 .buildSessionFactory();
         launch(args);
     }
