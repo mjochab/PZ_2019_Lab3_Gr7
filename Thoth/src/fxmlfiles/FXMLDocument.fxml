@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="RootScene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLDocumentController">
+<AnchorPane id="RootScene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLDocumentController">
    <children>
          <Label contentDisplay="RIGHT" ellipsisString="" layoutX="930.0" layoutY="36.0" prefHeight="103.0" prefWidth="284.0" text="Thoth" textAlignment="RIGHT" textFill="WHITE">
             <font>
@@ -61,5 +58,12 @@
             </Label>
          </children>
       </VBox>
+      <TextField id="delete" fx:id="delete" layoutX="930.0" layoutY="243.0" onAction="#resetdb" prefHeight="25.0" prefWidth="275.0" promptText="DELETE" styleClass="textarea" stylesheets="@../thoth/style.css" />
+      <Button id="delete_btn" layoutX="930.0" layoutY="291.0" mnemonicParsing="false" onAction="#resetdb" prefHeight="26.0" prefWidth="274.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Reset bazy danych" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Label fx:id="reset_label" layoutX="930.0" layoutY="317.0" onDragDetected="#resetdb" prefHeight="17.0" prefWidth="274.0" textFill="RED" />
    </children>
 </AnchorPane>

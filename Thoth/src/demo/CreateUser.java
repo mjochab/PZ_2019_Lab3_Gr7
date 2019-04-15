@@ -1,8 +1,6 @@
 package demo;
 
 
-import entity.*;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -11,7 +9,7 @@ public class CreateUser {
 
         // sesion factory
         SessionFactory factory = new Configuration()
-                .configure("hibernate.cfg.xml")
+                .configure("create.cfg.xml")
                 //tabele "Wolne"
 
 
