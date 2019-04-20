@@ -22,7 +22,7 @@
       <!-- Set the current session context -->
       <property name="current_session_context_class">thread</property>
       <property name="hibernate.hbm2ddl.auto">update</property>
-      <property name="hibernate.hbm2ddl.import_files">/import.sql</property>
+      <property name="hibernate.hbm2ddl.import_files">import_1.sql</property>
 
       <!-- Tabele bez kluczy obcych -->
       <mapping class="entity.State" />

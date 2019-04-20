@@ -1,9 +1,11 @@
 package controllers;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,11 +13,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
+import org.hibernate.query.Query;
 
 public class FXMLDocumentController implements Initializable {
 
@@ -66,16 +71,33 @@ public class FXMLDocumentController implements Initializable {
         window.show();
     }
 
-    @FXML private TextField delete;
-    @FXML private Label reset_label;
+    @FXML private TextField loginTextField;
+    @FXML private TextField passwordTextField;
+    @FXML private Button loginButton;
+
+    private SessionFactory sessionFactory = new Configuration().configure("update.cfg.xml").buildSessionFactory();
+    private Session session = sessionFactory.openSession();
+
+
+    public void login (ActionEvent event) throws IOException{
+        List lista;
+        User user = new User();
+        Query query = session.createQuery("select User.login, User.password from User where login = test1");
+        lista = query.list();
+        System.out.println(lista.toString());
+    }
+
+    @FXML private TextField resetDbButton;
+    @FXML private Label resetDbLabel;
     public void resetdb (ActionEvent event) throws IOException {
-        System.out.println(delete.getText());
-        if(delete.getText().contentEquals("DELETE")){
+        System.out.println(resetDbButton.getText());
+        if(resetDbButton.getText().contentEquals("DELETE")){
             SessionFactory factory = new Configuration()
                     .configure("create.cfg.xml").buildSessionFactory();
-            reset_label.setText("");
+            resetDbLabel.setText("");
+            factory.close();
         }
-        else reset_label.setText("Niepoprawny ciąg znaków");
+        else resetDbLabel.setText("Niepoprawny ciąg znaków");
     }
 
     @Override

@@ -100,4 +100,18 @@ public class User {
     public void setShopId(Shop shopId) {
         this.shopId = shopId;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", login='" + login + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", roleId=" + roleId +
+                ", state=" + state +
+                ", shopId=" + shopId +
+                '}';
+    }
 }
