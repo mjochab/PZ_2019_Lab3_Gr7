@@ -30,9 +30,6 @@ public class User {
     @Column(name = "State",nullable = false)
     private int state;
 
-    @ManyToOne
-    @JoinColumn(name = "ShopId",nullable = false)
-    private Shop shopId;
 
     public User() {
     }
@@ -93,14 +90,6 @@ public class User {
         this.state = state;
     }
 
-    public Shop getShopId() {
-        return shopId;
-    }
-
-    public void setShopId(Shop shopId) {
-        this.shopId = shopId;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -111,7 +100,6 @@ public class User {
                 ", password='" + password + '\'' +
                 ", roleId=" + roleId +
                 ", state=" + state +
-                ", shopId=" + shopId +
                 '}';
     }
 }

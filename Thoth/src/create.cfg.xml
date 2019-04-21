@@ -36,7 +36,7 @@
       <mapping class="entity.Receipt" />
       <mapping class="entity.Product_receipt" />
       <mapping class="entity.State_on_shop" />
-      <mapping class="entity.User_shop" />
+      <mapping class="entity.UserShop" />
       <mapping class="entity.Indent" />
       <mapping class="entity.State_of_indent" />
       <mapping class="entity.Indent_product" />
