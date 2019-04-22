@@ -1,23 +1,18 @@
 package controllers;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
-import models.Order;
-import models.Product;
 
 public class MainViewLogisticController implements Initializable {
 
@@ -33,7 +28,7 @@ public class MainViewLogisticController implements Initializable {
         stage = (Stage) root.getScene().getWindow();
         if(actionEvent.getSource() == logout)
         {
-            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/FXMLDocument.fxml"));
+            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
         }
         Scene scene = new Scene(root);
         stage.setScene(scene);

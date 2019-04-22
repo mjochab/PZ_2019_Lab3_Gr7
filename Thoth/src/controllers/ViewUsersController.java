@@ -25,7 +25,7 @@ public class ViewUsersController implements Initializable {
     public void logout(ActionEvent actionEvent) throws IOException {
         if(actionEvent.getSource()==logout){
             stage = (Stage) root.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/FXMLDocument.fxml"));
+            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
 
             Scene scene = new Scene(root);
             stage.setScene(scene);

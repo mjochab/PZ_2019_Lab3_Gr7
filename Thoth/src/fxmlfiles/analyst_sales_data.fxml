@@ -39,7 +39,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button id="raport" alignment="CENTER" contentDisplay="RIGHT" layoutX="1068.0" layoutY="10.0" mnemonicParsing="false" onAction="#generate_raport_alert" prefHeight="26.0" prefWidth="200.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Raport">
+                  <Button id="raport" alignment="CENTER" contentDisplay="RIGHT" layoutX="1068.0" layoutY="10.0" mnemonicParsing="false" onAction="#generateRaport" prefHeight="26.0" prefWidth="200.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Raport">
                      <font>
                         <Font size="18.0" />
                      </font>

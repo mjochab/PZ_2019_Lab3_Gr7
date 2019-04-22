@@ -22,7 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import org.hibernate.query.Query;
 
-public class FXMLDocumentController implements Initializable {
+public class MainWindowController implements Initializable {
 
     private String ADMIN = "Admin";
     private String STOREKEEPER = "Magazynier";
@@ -40,7 +40,7 @@ public class FXMLDocumentController implements Initializable {
         }
         if (event.getSource().toString().contains("back") == true) //tu bedzie id = "back", przycisk powrotu
         {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/FXMLDocument.fxml"));
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
         }
         if (event.getSource().toString().contains("employee_warehouse") == true) //okno magazynu
         {
@@ -86,18 +86,19 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button loginButton;
 
-    private SessionFactory sessionFactory = new Configuration().configure("update.cfg.xml").buildSessionFactory();
-    private Session session = sessionFactory.openSession();
+    public static final SessionFactory sessionFactory = new Configuration().configure("update.cfg.xml").buildSessionFactory();
 
 
     public void login(ActionEvent event) throws IOException {
         loginErrorLabel.setText("");
         List<User> user;
 
+        Session session = sessionFactory.openSession();
         Query query = session.createQuery("from User U where login = :login and password = :password");
         query.setParameter("login", loginTextField.getText());
         query.setParameter("password", passwordTextField.getText());
         user = query.list();
+        session.close();
         try {
             System.out.println(user.get(0).getRoleId().getPosition().getClass());
 

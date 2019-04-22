@@ -7,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
@@ -43,7 +42,7 @@ public class StateWarehouseController implements Initializable {
         stage = (Stage) root.getScene().getWindow();
         if(actionEvent.getSource() == logout)
         {
-            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/FXMLDocument.fxml"));
+            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
         }
         Scene scene = new Scene(root);
         stage.setScene(scene);
