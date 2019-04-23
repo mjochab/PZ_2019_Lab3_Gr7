@@ -7,6 +7,7 @@ public class ProductShop {
     private Double price;
     private Integer amount;
 
+
     public ProductShop(Integer id, String name, Double price, Integer amount) {
         this.id = id;
         this.name = name;

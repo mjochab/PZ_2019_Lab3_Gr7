@@ -29,15 +29,15 @@
                     <tabs>
                         <Tab text="Dane sprzedażowe">
                      <content>
-                        <fx:include source="sales_data.fxml" />
+                        <fx:include source="analyst_sales_data.fxml" />
                      </content></Tab>
                         <Tab text="Ceny">
                      <content>
-                        <fx:include source="prices.fxml" />
+                        <fx:include source="analyst_prices.fxml" />
                      </content></Tab>
                   <Tab text="Zniżka">
                      <content>
-                        <fx:include source="sales_creator.fxml" />
+                        <fx:include source="analyst_sales_creator.fxml" />
                      </content>
                   </Tab>
                     </tabs>

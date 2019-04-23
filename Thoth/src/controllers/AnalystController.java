@@ -1,5 +1,7 @@
 package controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,15 +9,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import static controllers.MainWindowController.*;
+import entity.Product;
+import org.hibernate.Session;
 
 public class AnalystController implements Initializable {
 
@@ -36,7 +42,7 @@ public class AnalystController implements Initializable {
     @FXML
     Parent root;
 
-    public void generate_raport_alert (ActionEvent actionEvent){
+    public void generateRaport(ActionEvent actionEvent){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Raport utworzony pomyślnie");
         alert.setHeaderText("Utworzono w lokalizacji:");
@@ -52,16 +58,16 @@ public class AnalystController implements Initializable {
         stage = (Stage) root.getScene().getWindow();
         if(actionEvent.getSource() == logout)
         {
-            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/FXMLDocument.fxml"));
+            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
         }
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
+
+
 }

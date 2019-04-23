@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "user_shop")
-public class User_shop {
+public class UserShop {
 
     @Id
     @Column(name = "Id")
@@ -20,7 +20,7 @@ public class User_shop {
     @JoinColumn(name = "UserId",nullable = false)
     private User userId;
 
-    public User_shop(){
+    public UserShop(){
 
     }
 

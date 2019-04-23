@@ -25,12 +25,12 @@ INSERT INTO product (ProductId, Name, Price, Discount) VALUES (null, 'Samsung Wa
 INSERT INTO customer (CustomerId, FirstName, LastName, PhoneNumber) VALUES (null, 'Jan', 'Nosacz', '555444333');
 INSERT INTO customer (CustomerId, FirstName, LastName, PhoneNumber) VALUES (null, 'Halina', 'Nosaczowa', '444555333');
 
-insert into user (FirstName, LastName, Login, Password, RoleId, State, ShopId) values ('Adam', 'Kowalski', 'test1', 'test1', '1', '1', '1');
-insert into user (FirstName, LastName, Login, Password, RoleId, State, ShopId) values ('Bartosz', 'Nowacki', 'test2', 'test2', '2', '1', '2');
-insert into user (FirstName, LastName, Login, Password, RoleId, State, ShopId) values ('Tadeusz', 'Malinowski', 'test3', 'test3', '3', '1', '3');
-insert into user (FirstName, LastName, Login, Password, RoleId, State, ShopId) values ('Patryk', 'Nowakowski', 'test4', 'test4', '4', '1', '4');
-insert into user (FirstName, LastName, Login, Password, RoleId, State, ShopId) values ('Artur', 'Dębski', 'test5', 'test5', '5', '5', '4');
-insert into user (FirstName, LastName, Login, Password, RoleId, State, ShopId) values ('Mateusz', 'Dąbrowski', 'test6', 'test6', '5', '1', '3');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Adam', 'Kowalski', 'test1', 'test1', '1', '1');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Bartosz', 'Nowacki', 'test2', 'test2', '2', '1');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Tadeusz', 'Malinowski', 'test3', 'test3', '3', '1');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Patryk', 'Nowakowski', 'test4', 'test4', '4', '1');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Artur', 'Dębski', 'test5', 'test5', '5', '5');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Mateusz', 'Dąbrowski', 'test6', 'test6', '5', '1');
 
 
 insert into user_shop (ShopId, UserId)  values ('1','1');

@@ -17,7 +17,7 @@ public class CreateUser {
 
 //                .addAnnotatedClass(State_on_shop.class)
 //                .addAnnotatedClass(User.class)
-//                .addAnnotatedClass(User_shop.class)
+//                .addAnnotatedClass(UserShop.class)
 
 //                .addAnnotatedClass(Receipt.class)
 
