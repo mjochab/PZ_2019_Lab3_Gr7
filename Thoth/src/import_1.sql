@@ -68,6 +68,7 @@ INSERT INTO indent_product (Id, IndentId, ProductId, Amount) VALUES (null, '1', 
 INSERT INTO indent_product (Id, IndentId, ProductId, Amount) VALUES (null, '1', '2', '1');
 INSERT INTO indent_product (Id, IndentId, ProductId, Amount) VALUES (null, '2', '3', '2');
 INSERT INTO indent_product (Id, IndentId, ProductId, Amount) VALUES (null, '2', '4', '2');
+INSERT INTO indent_product (Id, IndentId, ProductId, Amount) VALUES (null, '3', '2', '1');
 
 
 INSERT INTO state_of_indent (Id, UserId, IndentId, StateId) VALUES (null, 2, 1, 1);
