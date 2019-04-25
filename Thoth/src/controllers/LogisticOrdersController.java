@@ -1,5 +1,10 @@
 package controllers;
 
+import entity.Indent;
+import entity.State;
+import entity.State_of_indent;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,86 +19,87 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import models.Order;
-import models.Product;
+import models.IndentTableView;
+import org.hibernate.Session;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
-public class LogisticOrdersController implements Initializable {
-    @FXML private TableView ordersReadyForShipment;
+import static controllers.MainWindowController.sessionFactory;
 
-    @FXML private TableView ordersInRealization;
+public class LogisticOrdersController implements Initializable {
+    @FXML private TableView<IndentTableView> ordersReadyForShipment;
+
+    @FXML private TableView<IndentTableView> ordersInRealization;
 
     @FXML private Button toShipmentDetails;
 
     @FXML private Button inRealizationDetails;
 
-    private ObservableList displayedOrdersReadyForShipment = FXCollections.observableArrayList();
+    // for shipment table view
+    @FXML private TableColumn<IndentTableView, String> fromForShipment;
+    @FXML private TableColumn<IndentTableView, String> toForShipment;
+    @FXML private TableColumn<IndentTableView, Integer> idForShipment;
+    @FXML private TableColumn<IndentTableView, String> stateForShipment;
+
+    // in realization table view
+    @FXML private TableColumn<IndentTableView, String> fromInRealization;
+    @FXML private TableColumn<IndentTableView, String> toInRealization;
+    @FXML private TableColumn<IndentTableView, Integer> idInRealization;
+    @FXML private TableColumn<IndentTableView, String> stateInRealization;
+
+    private ObservableList<IndentTableView> displayedOrdersReadyForShipment = FXCollections.observableArrayList();
     private ObservableList displayedOrdersInRealization = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println(ordersReadyForShipment);
-        System.out.println(ordersInRealization);
+        fromForShipment.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getOrder().getShopId_delivery().getCity()));
+        toForShipment.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getOrder().getShopId_need().getCity()));
+        idForShipment.setCellValueFactory(indentData -> new SimpleIntegerProperty(indentData.getValue().getOrder().getIndentId()).asObject());
+        stateForShipment.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getState().getStateId().getName()));
 
-        Product product1 = new Product("Produkt 1", 15.0);
-        Product product2 = new Product("Produkt 2", 25.0);
-        Product product3 = new Product("Produkt 3", 20.0);
-
-        Order order1 = new Order();
-        Order order2 = new Order();
-        Order order3 = new Order();
-
-        order1.setNumber("abcd1");
-        order2.setNumber("abcd2");
-        order3.setNumber("abcd3");
-
-        order1.addProduct(product1, 1);
-        order1.addProduct(product2, 2);
-        order2.addProduct(product1, 3);
-        order3.addProduct(product3, 2);
-
-        order1.setComplex(false);
-        order2.setComplex(true);
-        order3.setComplex(false);
-
-        ArrayList<Order> orders = new ArrayList<>();
-        ArrayList<Order> orders2 = new ArrayList<>();
-
-        orders.add(order1);
-        orders.add(order2);
-        orders2.add(order3);
-
-        displayedOrdersReadyForShipment = FXCollections.observableList(orders);
-        displayedOrdersInRealization = FXCollections.observableList(orders2);
-
-        ObservableList<TableColumn> columns = ordersReadyForShipment.getColumns();
-
-        for(TableColumn tc : columns)
-        {
-            tc.setCellValueFactory(new PropertyValueFactory<>("number"));
-        }
-
-        ObservableList<TableColumn> columns2 = ordersInRealization.getColumns();
-
-        for(TableColumn tc : columns2)
-        {
-            tc.setCellValueFactory(new PropertyValueFactory<>("number"));
-        }
+        displayedOrdersReadyForShipment.addAll(getIndentsReadyForShipment());
 
         ordersReadyForShipment.setItems(displayedOrdersReadyForShipment);
-        ordersInRealization.setItems(displayedOrdersInRealization);
+        //ordersInRealization.setItems(displayedOrdersInRealization);
     }
 
+    public ObservableList<IndentTableView> getIndentsReadyForShipment()
+    {
+        ObservableList<IndentTableView> listOfIndents = FXCollections.observableArrayList();
+        Session session = sessionFactory.openSession();
+
+        // pobranie odpowiedniego stanu
+        State readyForShipmentState = (State) session.createQuery("from State where name = 'Oczekuje na transport'").getSingleResult();
+
+        // pobranie zamowien o stanie pobranym wyzej
+        List<State_of_indent> state_of_indents = session.createQuery("from State_of_indent where StateId = :sid")
+                                                        .setParameter("sid", readyForShipmentState.getStateId()).list();
+
+        System.out.println(state_of_indents.size());
+        for(State_of_indent soi: state_of_indents)
+        {
+            IndentTableView indentTableView = new IndentTableView();
+            indentTableView.setOrder(soi.getIndentId());
+            indentTableView.setState(soi);
+            listOfIndents.add(indentTableView);
+        }
+
+        session.close();
+        return listOfIndents;
+    }
 
     @FXML public void toShipmentDetailsAction(ActionEvent event) throws IOException {
+    /*
         Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();
         Order order = (Order) ordersReadyForShipment.getSelectionModel().getSelectedItem();
 
         if(order == null)
             return;
+
 
         FXMLLoader loader = null;
 
@@ -108,11 +114,12 @@ public class LogisticOrdersController implements Initializable {
 
         Parent pane = loader.load();
 
-        stg.setScene(new Scene(pane));
+        stg.setScene(new Scene(pane));*/
     }
 
     @FXML
     public void inRealizationDetailsAction(ActionEvent event) throws IOException {
+        /*
         Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();
 
         Order order = (Order) ordersInRealization.getSelectionModel().getSelectedItem();
@@ -133,6 +140,6 @@ public class LogisticOrdersController implements Initializable {
 
         Parent pane = loader.load();
 
-        stg.setScene(new Scene(pane));
+        stg.setScene(new Scene(pane));*/
     }
 }
