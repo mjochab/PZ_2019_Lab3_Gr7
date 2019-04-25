@@ -82,6 +82,18 @@ public class LogisticOrdersController implements Initializable {
         System.out.println(state_of_indents.size());
         for(State_of_indent soi: state_of_indents)
         {
+            int numberOfSubIndents = session.createQuery("select count(indent) From Indent indent where ParentId = :pid group by ParentId")
+                                     .setParameter("pid", soi.getIndentId().getIndentId()).getFirstResult();
+
+            if(numberOfSubIndents > 0)
+            {
+                soi.getIndentId().setIsComplex(true);
+            }
+            else
+            {
+                soi.getIndentId().setIsComplex(false);
+            }
+
             IndentTableView indentTableView = new IndentTableView();
             indentTableView.setOrder(soi.getIndentId());
             indentTableView.setState(soi);
@@ -93,17 +105,21 @@ public class LogisticOrdersController implements Initializable {
     }
 
     @FXML public void toShipmentDetailsAction(ActionEvent event) throws IOException {
-    /*
         Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        Order order = (Order) ordersReadyForShipment.getSelectionModel().getSelectedItem();
 
-        if(order == null)
+        // pobranie wybranego wiersza
+        IndentTableView orderView = ordersReadyForShipment.getSelectionModel().getSelectedItem();
+
+        // sprawdzenie czy jakikolwiek wiersz zostal wybrany
+        if(orderView == null)
             return;
-
 
         FXMLLoader loader = null;
 
-        if(order.isComplex())
+        // czy wybrany wiersz zawiera zamowienie zlozone
+        // tak -> zaladuj widok zamowienia zlozonego (complex)
+        // nie -> zaladuj widok zamowienia prostego
+        if(orderView.getOrder().isComplex())
         {
             loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
         }
@@ -114,22 +130,22 @@ public class LogisticOrdersController implements Initializable {
 
         Parent pane = loader.load();
 
-        stg.setScene(new Scene(pane));*/
+        stg.setScene(new Scene(pane));
     }
 
     @FXML
     public void inRealizationDetailsAction(ActionEvent event) throws IOException {
-        /*
+
         Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();
 
-        Order order = (Order) ordersInRealization.getSelectionModel().getSelectedItem();
+        IndentTableView orderView = ordersInRealization.getSelectionModel().getSelectedItem();
 
-        if(order == null)
+        if(orderView == null)
             return;
 
         FXMLLoader loader = null;
 
-        if(order.isComplex())
+        if(orderView.getOrder().isComplex())
         {
             loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
         }
@@ -140,6 +156,6 @@ public class LogisticOrdersController implements Initializable {
 
         Parent pane = loader.load();
 
-        stg.setScene(new Scene(pane));*/
+        stg.setScene(new Scene(pane));
     }
 }
