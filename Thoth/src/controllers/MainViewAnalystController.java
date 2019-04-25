@@ -42,17 +42,6 @@ public class MainViewAnalystController implements Initializable {
     @FXML
     Parent root;
 
-    public void generateRaport(ActionEvent actionEvent){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Raport utworzony pomyślnie");
-        alert.setHeaderText("Utworzono w lokalizacji:");
-        alert.setContentText("c:/programy/raport.pdf");
-        ButtonType view_raport = new ButtonType("Podgląd");
-        ButtonType confirm = new ButtonType("Ok", ButtonBar.ButtonData.APPLY);
-
-        alert.getButtonTypes().setAll(view_raport, confirm);
-        alert.showAndWait();
-    }
 
     public void menuitemaction(ActionEvent actionEvent) throws IOException { //cofanie i wylogowanie na MENU ITEM
         stage = (Stage) root.getScene().getWindow();
