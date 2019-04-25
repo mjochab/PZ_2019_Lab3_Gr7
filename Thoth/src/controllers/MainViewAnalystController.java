@@ -23,7 +23,7 @@ import static controllers.MainWindowController.*;
 import entity.Product;
 import org.hibernate.Session;
 
-public class AnalystController implements Initializable {
+public class MainViewAnalystController implements Initializable {
 
     public void switchscene(ActionEvent event) throws IOException { //zmiana sceny BUTTON
         System.out.println(event.getSource().toString());
