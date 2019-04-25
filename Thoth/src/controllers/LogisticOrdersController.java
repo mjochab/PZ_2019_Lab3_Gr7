@@ -129,6 +129,11 @@ public class LogisticOrdersController implements Initializable {
         }
 
         Parent pane = loader.load();
+        // wstrzykniecie wybranego obiektu do widoku szczegolowego
+        SimpleOrderDetailsController controller = loader.getController();
+        controller.setOrder(orderView.getOrder());
+        controller.initController();
+
 
         stg.setScene(new Scene(pane));
     }
