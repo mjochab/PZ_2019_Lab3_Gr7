@@ -31,6 +31,7 @@ public class Indent {
     @JoinColumn(name = "ParentId",referencedColumnName = "IndentId")
     private Indent parentId;
 
+    private Boolean isComplex;
 
     public Indent(){
 
@@ -82,5 +83,15 @@ public class Indent {
 
     public void setParentId(Indent parentId) {
         this.parentId = parentId;
+    }
+
+    public Boolean isComplex()
+    {
+        return isComplex;
+    }
+
+    public void setIsComplex(Boolean isComplex)
+    {
+        this.isComplex = isComplex;
     }
 }
