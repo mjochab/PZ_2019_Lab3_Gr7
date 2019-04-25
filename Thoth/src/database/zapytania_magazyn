@@ -1,16 +1,15 @@
 -- Moduł Magazyn
 --przeszukanie listy produktów dla danego magazynu , gdzie stan > 1
-SELECT `product`.`ProductId`,`product`.`Name`,`product`.`Price`,`state_on_object`.`Amount`,`product`.`Discount`
+SELECT `product`.`ProductId`,`product`.`Name`,`product`.`Price`,`state_on_shop`.`Amount`,`product`.`Discount`
 FROM `product`
-INNER JOIN `state_on_object` ON `product`.`ProductId` = `state_on_object`.`ProductId`
-INNER JOIN `object`ON `state_on_object`.`ObjectId` = `object`.`ObjectId`
-WHERE `object`.`City` = "Rzeszów"
-AND `state_on_object`.`Amount` > 0
+INNER JOIN `state_on_shop` ON `product`.`ProductId` = `state_on_shop`.`ProductId`
+INNER JOIN `shop` ON `state_on_shop`.`ShopId` = `shop`.`ShopId`
+WHERE `shop`.`City` like "R%" AND `state_on_shop`.`Amount` > 0 --AND `product`.`Name` like 'M%' dla wyszukiwania produktu
 
 --dodawanie nowego produktu
 INSERT INTO `product`(`ProductId`, `Name`, `Price`, `Discount`) VALUES ('', '', '', '');
 
---nowe zamowienie 1/2
+--nowe zamowienie 1/2 --poprawić OBJECT
 SELECT `product`.`ProductId`,`product`.`Name`,`product`.`Price`,`state_on_object`.`Amount`
 FROM `product`
 INNER JOIN `state_on_object` ON `product`.`ProductId` = `state_on_object`.`ProductId`
