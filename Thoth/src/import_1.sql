@@ -61,6 +61,7 @@ UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE
 
 INSERT INTO Indent (IndentId, ShopId_need, CustomerId, ShopId_delivery, DateOfOrder, ParentId) VALUES (null, '1', null, '3', '2019-04-07', null);
 INSERT INTO Indent (IndentId, ShopId_need, CustomerId, ShopId_delivery, DateOfOrder, ParentId) VALUES (null, '2', null, '3', '2019-04-07', null);
+INSERT INTO Indent (IndentId, ShopId_need, CustomerId, ShopId_delivery, DateOfOrder, ParentId) VALUES (null, '1', null, '2', '2019-04-25', null);
 
 
 INSERT INTO indent_product (Id, IndentId, ProductId, Amount) VALUES (null, '1', '1', '3');
@@ -69,5 +70,7 @@ INSERT INTO indent_product (Id, IndentId, ProductId, Amount) VALUES (null, '2', 
 INSERT INTO indent_product (Id, IndentId, ProductId, Amount) VALUES (null, '2', '4', '2');
 
 
-
 INSERT INTO state_of_indent (Id, UserId, IndentId, StateId) VALUES (null, 2, 1, 1);
+INSERT INTO state_of_indent (Id, UserId, IndentId, StateId) VALUES (null, 2, 2, 2);
+INSERT INTO state_of_indent (Id, UserId, IndentId, StateId) VALUES (null, 2, 3, 2);
+
