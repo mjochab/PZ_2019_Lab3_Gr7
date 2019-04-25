@@ -45,14 +45,14 @@
             </HBox>
             <TableView fx:id="employeeTable" prefHeight="800.0" prefWidth="1280.0" stylesheets="@../thoth/style.css">
                <columns>
-                  <TableColumn fx:id="USERID" maxWidth="250.0" resizable="false" text="Id_user" />
-                  <TableColumn fx:id="FIRSTNAME" maxWidth="300.0" minWidth="0.0" prefWidth="150.0" text="Imię" />
-                  <TableColumn fx:id="LASTNAME" maxWidth="400.0" minWidth="0.0" prefWidth="150.0" resizable="false" text="Nazwisko" />
-                  <TableColumn fx:id="LOGIN" maxWidth="400.0" minWidth="0.0" prefWidth="150.0" resizable="false" text="Login" />
+                  <TableColumn fx:id="USERID" maxWidth="250.0" prefWidth="49.0" resizable="false" text="Id_user" />
+                  <TableColumn fx:id="FIRSTNAME" maxWidth="300.0" minWidth="0.0" prefWidth="156.0" text="Imię" />
+                  <TableColumn fx:id="LASTNAME" maxWidth="400.0" minWidth="0.0" prefWidth="168.0" resizable="false" text="Nazwisko" />
+                  <TableColumn fx:id="LOGIN" maxWidth="400.0" minWidth="0.0" prefWidth="157.0" resizable="false" text="Login" />
                   <TableColumn fx:id="PASSWORD" maxWidth="150.0" minWidth="0.0" prefWidth="150.0" resizable="false" text="Hasło" />
-                  <TableColumn fx:id="STATE" maxWidth="200.0" minWidth="0.0" prefWidth="150.0" text="Status" />
-                  <TableColumn fx:id="OBJECTID" maxWidth="212.0" minWidth="0.0" prefWidth="206.0" resizable="false" text="Id_obiektu" />
-                  <TableColumn fx:id="ROLEID" maxWidth="225.0" minWidth="0.0" prefWidth="169.0" resizable="false" text="Rola" />
+                  <TableColumn fx:id="STATE" maxWidth="200.0" minWidth="0.0" prefWidth="57.0" text="Status" />
+                  <TableColumn fx:id="OBJECTID" maxWidth="387.0" minWidth="0.0" prefWidth="387.0" resizable="false" text="Adres" />
+                  <TableColumn fx:id="ROLEID" maxWidth="225.0" minWidth="0.0" prefWidth="155.0" resizable="false" text="Rola" />
                </columns>
             </TableView>
          </children>
