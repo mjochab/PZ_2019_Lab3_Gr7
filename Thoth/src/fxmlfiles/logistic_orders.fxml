@@ -36,10 +36,10 @@
                   </HBox>
                   <TableView fx:id="ordersReadyForShipment" prefHeight="800.0" prefWidth="640.0">
                     <columns>
-                      <TableColumn prefWidth="126.40004271268845" text="Skad" />
-                      <TableColumn prefWidth="117.5999755859375" text="Do" />
-                        <TableColumn prefWidth="149.5998992919922" text="Nr zamowienia" />
-                        <TableColumn prefWidth="107.20001220703125" text="Status" />
+                      <TableColumn fx:id="fromForShipment" prefWidth="126.40004271268845" text="Skad" />
+                      <TableColumn fx:id="toForShipment" prefWidth="117.5999755859375" text="Do" />
+                        <TableColumn fx:id="idForShipment" prefWidth="149.5998992919922" text="Nr zamowienia" />
+                        <TableColumn fx:id="stateForShipment" prefWidth="107.20001220703125" text="Status" />
                     </columns>
                   </TableView>
                </children>
@@ -69,10 +69,10 @@
                   </HBox>
                   <TableView fx:id="ordersInRealization" prefHeight="800.0" prefWidth="500.0">
                      <columns>
-                        <TableColumn prefWidth="120.00000154972076" text="Skad" />
-                        <TableColumn prefWidth="124.79998016357422" text="Do" />
-                        <TableColumn prefWidth="147.20001220703125" text="Nr zamowienia" />
-                        <TableColumn prefWidth="108.0" text="Status" />
+                        <TableColumn fx:id="fromInRealization" prefWidth="120.00000154972076" text="Skad" />
+                        <TableColumn fx:id="toInRealization" prefWidth="124.79998016357422" text="Do" />
+                        <TableColumn fx:id="idInRealization" prefWidth="147.20001220703125" text="Nr zamowienia" />
+                        <TableColumn fx:id="stateInRealization" prefWidth="108.0" text="Status" />
                      </columns>
                   </TableView>
                </children>
