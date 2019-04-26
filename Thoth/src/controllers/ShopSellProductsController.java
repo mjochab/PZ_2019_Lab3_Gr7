@@ -1,5 +1,8 @@
 package controllers;
 
+import entity.Product;
+import entity.State_on_shop;
+import models.ShopSell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,12 +18,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import models.Product;
-import models.ProductShop;
+import org.hibernate.Session;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import static controllers.MainWindowController.sessionFactory;
 
 public class ShopSellProductsController implements Initializable {
 
@@ -28,45 +34,49 @@ public class ShopSellProductsController implements Initializable {
     MenuItem logout;
 
     @FXML
-    private TableView<ProductShop> productsTable;
+    private TableView productsTable;
 
     @FXML
-    public TableColumn<ProductShop, Integer> id_col, amount_col;
+    public TableColumn id_col;
 
     @FXML
-    public TableColumn<ProductShop, String> name_col;
+    public TableColumn name_col;
 
     @FXML
-    public TableColumn<ProductShop, Double> price_col;
+    public TableColumn price_col;
+
+    @FXML
+    public TableColumn amount_col;
 
 
     Stage stage;
     @FXML Parent root;
 
-    ObservableList<ProductShop> data = FXCollections.observableArrayList(
-            new ProductShop(1,"Samsung Galaxy S8", 1999.90,4),
-            new ProductShop(2,"produkt 2", 1999.90,6),
-            new ProductShop(3,"produkt 3", 59.90,2),
-            new ProductShop(4,"produkt 4", 1299.90,6),
-            new ProductShop(5,"produkt 5", 2339.90,2),
-            new ProductShop(6,"produkt 6", 19.90,3),
-            new ProductShop(7,"produkt 7", 1999.90,5),
-            new ProductShop(8,"produkt 8", 29.90,7),
-            new ProductShop(9,"produtk 9", 199.90,12)
-    );
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        id_col.setCellValueFactory(new PropertyValueFactory<>("id"));
+        id_col.setCellValueFactory(new PropertyValueFactory<>("productId"));
         name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
         price_col.setCellValueFactory(new PropertyValueFactory<>("price"));
         amount_col.setCellValueFactory(new PropertyValueFactory<>("amount"));
 
-        productsTable.setItems(data);
+        productsTable.setItems(getProducts());
 
     }
+
+    public ObservableList<ShopSell> getProducts() {
+        ObservableList<ShopSell> productList = FXCollections.observableArrayList();
+        Session session = sessionFactory.openSession();
+        List<ShopSell> eList = session.createQuery("select new models.ShopSell(pr.productId, pr.name, pr.price, sop.amount) from State_on_shop sop inner join sop.productId pr where sop.shopId=1").list();
+        for (ShopSell ent : eList) {
+            productList.add(ent);
+            System.out.println(ent.getProductId() + " " + ent.getName());
+        }
+        session.close();
+        return productList;
+    }
+
+
 
 }
 
