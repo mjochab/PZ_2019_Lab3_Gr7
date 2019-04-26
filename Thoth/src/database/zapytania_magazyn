@@ -20,11 +20,12 @@ AND `state_on_object`.`Amount` > 0
 --zamowienie produktu
 
 --status zamowienia
-SELECT `object`.`City`,`state`.`Name`,`order`.`OrderId` --moze być też state name do wyswietlenia
-FROM `state`
-       INNER JOIN `state_of_order` ON `state`.`StateId` = `state_of_order`.`StateId`
-       INNER JOIN `order` ON `state_of_order`.`OrderId` = `order`.`OrderId`
-       INNER JOIN `object` ON `order`.`ObjectId_need` = `object`.`ObjectId`
+SELECT `shop`.`City`,`state`.`Name`,`indent`.`IndentId`
+FROM `state_of_indent`
+INNER JOIN `indent` ON `state_of_indent`.`IndentId` = `indent`.`IndentId`
+INNER JOIN `state` ON `state_of_indent`.`StateId` = `state`.`StateId`
+INNER JOIN `shop` ON `indent`.`ShopId_need` = `shop`.`ShopId`
+WHERE `shop`.`City` like 'R%'
 
 UPDATE `state` SET `StateId` = " " WHERE `StateId` = " "
 
