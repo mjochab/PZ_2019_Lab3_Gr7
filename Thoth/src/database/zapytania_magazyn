@@ -18,6 +18,15 @@ WHERE `product`.`Name` = "Huawei P9 Lite"
 AND `state_on_object`.`Amount` > 0
 
 --zamowienie produktu
+SELECT `product`.`ProductId` , `product`.`Name` , `product`.`Price` , `indent_product`.`Amount`
+FROM `shop`
+INNER JOIN `state_on_shop` ON `shop`.`ShopId` = `state_on_shop`.`ShopId`
+INNER JOIN `product` ON `state_on_shop`.`ProductId` = `product`.`ProductId`
+INNER JOIN `indent_product` ON `product`.`ProductId` = `indent_product`.`ProductId`
+INNER JOIN `indent` ON `shop`.`ShopId` = `indent`.`ShopId_need`
+INNER JOIN `state_of_indent` ON `indent`.`IndentId` = `state_of_indent`.`IndentId`
+INNER JOIN `state` ON `state_of_indent`.`StateId` = `state`.`StateId`
+WHERE `shop`.`City` like 'R%' AND `state`.`Name` = 'W realizacji'
 
 --status zamowienia
 SELECT `shop`.`City`,`state`.`Name`,`indent`.`IndentId`
