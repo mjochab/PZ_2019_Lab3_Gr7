@@ -66,4 +66,9 @@ public class Shop {
     public void setIdShop(Boolean idShop) {
         this.idShop = idShop;
     }
+
+    @Override
+    public String toString() {
+        return getCity() + ", " + getStreet() + ", " + getZipCode();
+    }
 }

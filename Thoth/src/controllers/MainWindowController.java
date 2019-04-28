@@ -5,7 +5,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import entity.Shop;
 import entity.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -122,7 +126,10 @@ public class MainWindowController implements Initializable {
             }
             if (ADMIN.equals(user.get(0).getRoleId().getPosition())) // okno widoku admina
             {
-                temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
+                temporaryLoginParent = loader.load();
+                MainWindowController mainController = loader.getController();
+                mainController.setComboList();
             }
 
 
@@ -153,6 +160,29 @@ public class MainWindowController implements Initializable {
             resetDbLabel.setText("");
             factory.close();
         } else resetDbLabel.setText("Niepoprawny ciąg znaków");
+    }
+
+
+    @FXML
+    private ComboBox<Shop> comboList;
+
+    private ObservableList<Shop> getShops()
+    {
+        ObservableList<Shop> shops = FXCollections.observableArrayList();
+        Session session = sessionFactory.openSession();
+        List<Shop> shopsList = session.createQuery("from Shop").list();
+
+        shops.addAll(shopsList);
+
+        session.close();
+        System.out.println("Zwracam sklepy");
+        return shops;
+
+    }
+
+    public void setComboList()
+    {
+        this.comboList.getItems().addAll(getShops());
     }
 
     @Override
