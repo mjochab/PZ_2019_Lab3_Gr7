@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="800.0" minWidth="1280.0" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ShopViewController">
+<AnchorPane minHeight="800.0" minWidth="1280.0" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ShopShowOrdersController">
     <children>
       <VBox prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -37,15 +37,15 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </HBox>
-                <TableView prefHeight="822.0" prefWidth="1280.0">
+                <TableView fx:id="ordersTable" prefHeight="822.0" prefWidth="1280.0">
                     <columns>
-                  <TableColumn prefWidth="76.0" text="checkbox" />
-                        <TableColumn prefWidth="108.0" text="id_zamowienia" />
-                  <TableColumn prefWidth="151.0" text="status" />
-                  <TableColumn prefWidth="115.0" text="data" />
-                        <TableColumn prefWidth="143.0" text="imie_klienta" />
-                        <TableColumn prefWidth="190.0" text="nazwisko_klienta" />
-                        <TableColumn minWidth="0.0" prefWidth="153.0" text="telefon" />
+                  <TableColumn fx:id="checkbox_fld" prefWidth="76.0" text="checkbox" />
+                        <TableColumn fx:id="id_order" prefWidth="108.0" text="id_zamowienia" />
+                  <TableColumn fx:id="status" prefWidth="151.0" text="status" />
+                  <TableColumn fx:id="date" prefWidth="115.0" text="data" />
+                        <TableColumn fx:id="customer_name" prefWidth="143.0" text="imie_klienta" />
+                        <TableColumn fx:id="customer_surname" prefWidth="190.0" text="nazwisko_klienta" />
+                        <TableColumn fx:id="phone_number" minWidth="0.0" prefWidth="153.0" text="telefon" />
                     </columns>
                 </TableView>
          </children>
