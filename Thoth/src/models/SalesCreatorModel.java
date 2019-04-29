@@ -8,17 +8,9 @@ public class SalesCreatorModel {
     private String name;
     private BigDecimal price;
     private Integer discount;
-    private Integer amount;
+    private Long amount;
 
     public SalesCreatorModel() {
-    }
-
-    public SalesCreatorModel(Integer productId, String name, BigDecimal price, Integer discount, Integer amount) {
-        this.productId = productId;
-        this.name = name;
-        this.price = price;
-        this.discount = discount;
-        this.amount = amount;
     }
 
     public SalesCreatorModel(Integer productId, String name, BigDecimal price, Integer discount, Long amount) {
@@ -26,7 +18,7 @@ public class SalesCreatorModel {
         this.name = name;
         this.price = price;
         this.discount = discount;
-        this.amount = Integer.valueOf(amount.intValue());
+        this.amount = amount;
     }
 
     public Integer getProductId() {
@@ -61,11 +53,11 @@ public class SalesCreatorModel {
         this.discount = discount;
     }
 
-    public Integer getAmount() {
+    public Long getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Long amount) {
         this.amount = amount;
     }
 }
