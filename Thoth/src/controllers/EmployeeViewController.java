@@ -10,8 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.hibernate.Session;
 
+import org.hibernate.Session;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -59,6 +59,7 @@ public class EmployeeViewController implements Initializable {
             //us.getRoleId().getPosition();
             us.getUserId();
             userList.add(us);
+
 
         }
         session.close();
