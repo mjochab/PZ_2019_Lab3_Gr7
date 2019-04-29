@@ -29,32 +29,24 @@ import java.util.ResourceBundle;
 import static controllers.MainWindowController.sessionFactory;
 
 public class ShopSellProductsController implements Initializable {
-
     @FXML
     MenuItem logout;
-
     @FXML
     private TableView productsTable;
-
     @FXML
     public TableColumn id_col;
-
     @FXML
     public TableColumn name_col;
-
     @FXML
     public TableColumn price_col;
-
     @FXML
     public TableColumn amount_col;
-
-
+    @FXML
+    Parent root;
     Stage stage;
-    @FXML Parent root;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         id_col.setCellValueFactory(new PropertyValueFactory<>("productId"));
         name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
         price_col.setCellValueFactory(new PropertyValueFactory<>("price"));
@@ -63,6 +55,7 @@ public class ShopSellProductsController implements Initializable {
         productsTable.setItems(getProducts());
 
     }
+
 
     public ObservableList<ShopSell> getProducts() {
         ObservableList<ShopSell> productList = FXCollections.observableArrayList();
@@ -75,7 +68,6 @@ public class ShopSellProductsController implements Initializable {
         session.close();
         return productList;
     }
-
 
 
 }

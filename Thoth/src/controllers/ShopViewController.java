@@ -14,15 +14,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ShopViewController implements Initializable {
-
     @FXML
     MenuItem logout;
+    @FXML
+    Parent root;
 
     Stage stage;
-    @FXML Parent root;
 
     public void logout(ActionEvent actionEvent) throws IOException {
-        if(actionEvent.getSource()==logout){
+        if (actionEvent.getSource() == logout) {
             stage = (Stage) root.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
 
@@ -32,9 +32,9 @@ public class ShopViewController implements Initializable {
         }
     }
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
 
 }

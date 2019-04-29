@@ -20,8 +20,7 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionFactory;
 
-public class AnalystSalesCreatorViewController  implements Initializable {
-
+public class AnalystSalesCreatorViewController implements Initializable {
     @FXML
     public TableView productsTable;
     @FXML
@@ -45,7 +44,6 @@ public class AnalystSalesCreatorViewController  implements Initializable {
         productsTable.setItems(getProducts());
         System.out.println(getProducts().toString());
     }
-
 
     public ObservableList<SalesCreatorModel> getProducts() {
         ObservableList<SalesCreatorModel> productList = FXCollections.observableArrayList();

@@ -28,7 +28,6 @@ import javafx.scene.control.Label;
 import org.hibernate.query.Query;
 
 public class MainWindowController implements Initializable {
-
     private String ADMIN = "Admin";
     private String STOREKEEPER = "Magazynier";
     private String SHOP_ASSISTANT = "Sprzedawca";
@@ -37,25 +36,21 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private ComboBox<Shop> comboList;
+    @FXML
+    private TextField loginTextField;
+    @FXML
+    private TextField passwordTextField;
+    @FXML
+    private Label loginErrorLabel;
+    @FXML
+    private Button loginButton;
+    @FXML
+    private TextField resetDbButton;
+    @FXML
+    private Label resetDbLabel;
 
-    private ObservableList<Shop> getShops()
-    {
-        ObservableList<Shop> shops = FXCollections.observableArrayList();
-        Session session = sessionFactory.openSession();
-        List<Shop> shopsList = session.createQuery("from Shop").list();
+    public static final SessionFactory sessionFactory = new Configuration().configure("update.cfg.xml").buildSessionFactory();
 
-        shops.addAll(shopsList);
-
-        session.close();
-        System.out.println("Zwracam sklepy!");
-        return shops;
-    }
-
-    // dodaje sklepy do ComboListy
-    public void setComboList()
-    {
-        //this.comboList.getItems().addAll(getShops());
-    }
 
     public void switchscene(ActionEvent event) throws IOException {
         System.out.println(event.getSource().toString());
@@ -94,32 +89,17 @@ public class MainWindowController implements Initializable {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
         }
 
-
         Scene temporaryLoginScene = new Scene(temporaryLoginParent);
-
         // To pobiera informacje o scenie
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
         window.setScene(temporaryLoginScene);
         window.show();
     }
-
-    @FXML
-    private TextField loginTextField;
-    @FXML
-    private TextField passwordTextField;
-    @FXML
-    private Label loginErrorLabel;
-    @FXML
-    private Button loginButton;
-
-    public static final SessionFactory sessionFactory = new Configuration().configure("update.cfg.xml").buildSessionFactory();
 
 
     public void login(ActionEvent event) throws IOException {
         loginErrorLabel.setText("");
         List<User> user;
-
         Session session = sessionFactory.openSession();
         Query query = session.createQuery("from User U where login = :login and password = :password");
         query.setParameter("login", loginTextField.getText());
@@ -170,10 +150,6 @@ public class MainWindowController implements Initializable {
 
     }
 
-    @FXML
-    private TextField resetDbButton;
-    @FXML
-    private Label resetDbLabel;
 
     public void resetdb(ActionEvent event) throws IOException {
         System.out.println(resetDbButton.getText());
@@ -186,11 +162,7 @@ public class MainWindowController implements Initializable {
     }
 
 
-    @FXML
-    private ComboBox<Shop> comboList;
-
-    private ObservableList<Shop> getShops()
-    {
+    private ObservableList<Shop> getShops() {
         ObservableList<Shop> shops = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<Shop> shopsList = session.createQuery("from Shop").list();
@@ -203,10 +175,11 @@ public class MainWindowController implements Initializable {
 
     }
 
-    public void setComboList()
-    {
+
+    public void setComboList() {
         this.comboList.getItems().addAll(getShops());
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

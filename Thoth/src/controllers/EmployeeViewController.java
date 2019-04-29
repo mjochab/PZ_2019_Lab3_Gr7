@@ -15,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import models.EmployeeView;
 import org.hibernate.Session;
 import javafx.beans.property.SimpleStringProperty;
+
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -22,7 +23,6 @@ import java.util.ResourceBundle;
 import static controllers.MainWindowController.sessionFactory;
 
 public class EmployeeViewController implements Initializable {
-
     @FXML
     public TableView<EmployeeView> employeeTable;
     @FXML
@@ -57,6 +57,7 @@ public class EmployeeViewController implements Initializable {
         System.out.println(getEmployee().toString());
     }
 
+
     public ObservableList<EmployeeView> getEmployee() {
         ObservableList<EmployeeView> userList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
@@ -68,8 +69,7 @@ public class EmployeeViewController implements Initializable {
             if (shops.size() > 0) {
                 System.out.println("Sa elementy!");
                 ev.setShop(shops.get(0).getShopId());
-            }
-            else {
+            } else {
                 System.out.println("Brak elementow!");
                 ev.setShop(new Shop());
             }

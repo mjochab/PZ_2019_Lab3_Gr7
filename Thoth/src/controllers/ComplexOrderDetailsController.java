@@ -26,21 +26,20 @@ import static controllers.MainWindowController.sessionFactory;
 public class ComplexOrderDetailsController implements Initializable {
     @FXML
     private Button backButton;
-
     @FXML
     private Accordion indentsAccordion;
-
     private Indent order;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
 
-    public void setOrder(Indent order)
-    {
+
+    public void setOrder(Indent order) {
         this.order = order;
     }
+
 
     public void initController() throws IOException {
         indentsAccordion.getPanes().clear();
@@ -53,8 +52,7 @@ public class ComplexOrderDetailsController implements Initializable {
         List<Indent> subOrders = session.createQuery("from Indent where ParentId = :pid").setParameter("pid", order.getIndentId()).list();
         List<TitledPane> subOrdersPanes = new ArrayList<>();
 
-        for(Indent subOrder : subOrders)
-        {
+        for (Indent subOrder : subOrders) {
             // dla kazdego podzamowienia tworzony jest TitledPane
             subOrdersPanes.add(createSubOrderPane(subOrder));
         }
@@ -64,24 +62,23 @@ public class ComplexOrderDetailsController implements Initializable {
         session.close();
     }
 
-    public TitledPane createSubOrderPane(Indent order) throws IOException
-    {
+
+    public TitledPane createSubOrderPane(Indent order) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/suborder_details.fxml"));
         Parent parent = loader.load();
         SimpleOrderDetailsController controller = loader.getController();
         controller.setOrder(order);
         controller.initSubOrderController();
 
-        TitledPane subOrderPane = new TitledPane("Zamowienie nr: " +String.valueOf(order.getIndentId()), parent);
+        TitledPane subOrderPane = new TitledPane("Zamowienie nr: " + String.valueOf(order.getIndentId()), parent);
 
         return subOrderPane;
     }
 
 
     @FXML
-    public void goBack(ActionEvent event)
-    {
-        Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();
+    public void goBack(ActionEvent event) {
+        Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent par = null;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/main_view_logistic.fxml"));

@@ -31,25 +31,34 @@ import java.util.ResourceBundle;
 import static controllers.MainWindowController.sessionFactory;
 
 public class LogisticOrdersController implements Initializable {
-    @FXML private TableView<IndentTableView> ordersReadyForShipment;
-
-    @FXML private TableView<IndentTableView> ordersInRealization;
-
-    @FXML private Button toShipmentDetails;
-
-    @FXML private Button inRealizationDetails;
+    @FXML
+    private TableView<IndentTableView> ordersReadyForShipment;
+    @FXML
+    private TableView<IndentTableView> ordersInRealization;
+    @FXML
+    private Button toShipmentDetails;
+    @FXML
+    private Button inRealizationDetails;
 
     // for shipment table view
-    @FXML private TableColumn<IndentTableView, String> fromForShipment;
-    @FXML private TableColumn<IndentTableView, String> toForShipment;
-    @FXML private TableColumn<IndentTableView, Integer> idForShipment;
-    @FXML private TableColumn<IndentTableView, String> stateForShipment;
+    @FXML
+    private TableColumn<IndentTableView, String> fromForShipment;
+    @FXML
+    private TableColumn<IndentTableView, String> toForShipment;
+    @FXML
+    private TableColumn<IndentTableView, Integer> idForShipment;
+    @FXML
+    private TableColumn<IndentTableView, String> stateForShipment;
 
     // in realization table view
-    @FXML private TableColumn<IndentTableView, String> fromInRealization;
-    @FXML private TableColumn<IndentTableView, String> toInRealization;
-    @FXML private TableColumn<IndentTableView, Integer> idInRealization;
-    @FXML private TableColumn<IndentTableView, String> stateInRealization;
+    @FXML
+    private TableColumn<IndentTableView, String> fromInRealization;
+    @FXML
+    private TableColumn<IndentTableView, String> toInRealization;
+    @FXML
+    private TableColumn<IndentTableView, Integer> idInRealization;
+    @FXML
+    private TableColumn<IndentTableView, String> stateInRealization;
 
     private ObservableList<IndentTableView> displayedOrdersReadyForShipment = FXCollections.observableArrayList();
     private ObservableList displayedOrdersInRealization = FXCollections.observableArrayList();
@@ -67,8 +76,8 @@ public class LogisticOrdersController implements Initializable {
         //ordersInRealization.setItems(displayedOrdersInRealization);
     }
 
-    public ObservableList<IndentTableView> getIndentsReadyForShipment()
-    {
+
+    public ObservableList<IndentTableView> getIndentsReadyForShipment() {
         ObservableList<IndentTableView> listOfIndents = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
 
@@ -77,29 +86,24 @@ public class LogisticOrdersController implements Initializable {
 
         // pobranie zamowien o stanie pobranym wyzej
         List<State_of_indent> state_of_indents = session.createQuery("from State_of_indent where StateId = :sid")
-                                                        .setParameter("sid", readyForShipmentState.getStateId()).list();
+                .setParameter("sid", readyForShipmentState.getStateId()).list();
 
         System.out.println(state_of_indents.size());
-        for(State_of_indent soi: state_of_indents)
-        {
+        for (State_of_indent soi : state_of_indents) {
             System.out.println("parent id = " + soi.getIndentId().getIndentId());
             List<Indent> subIndents = session.createQuery("From Indent indent where ParentId = :pid")
-                                     .setParameter("pid", soi.getIndentId().getIndentId()).list();
+                    .setParameter("pid", soi.getIndentId().getIndentId()).list();
 
             System.out.println(subIndents.size());
 
-            if(subIndents.size() > 0)
-            {
+            if (subIndents.size() > 0) {
                 soi.getIndentId().setIsComplex(true);
-            }
-            else
-            {
+            } else {
                 soi.getIndentId().setIsComplex(false);
             }
 
             // jesli zamowienie jest podzamowieniem, nie wyswietlaj go w glownej liscie
-            if(soi.getIndentId().getParentId() != null)
-            {
+            if (soi.getIndentId().getParentId() != null) {
                 continue;
             }
 
@@ -113,14 +117,16 @@ public class LogisticOrdersController implements Initializable {
         return listOfIndents;
     }
 
-    @FXML public void toShipmentDetailsAction(ActionEvent event) throws IOException {
-        Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();
+
+    @FXML
+    public void toShipmentDetailsAction(ActionEvent event) throws IOException {
+        Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         // pobranie wybranego wiersza
         IndentTableView orderView = ordersReadyForShipment.getSelectionModel().getSelectedItem();
 
         // sprawdzenie czy jakikolwiek wiersz zostal wybrany
-        if(orderView == null)
+        if (orderView == null)
             return;
 
         FXMLLoader loader = null;
@@ -129,26 +135,20 @@ public class LogisticOrdersController implements Initializable {
         // tak -> zaladuj widok zamowienia zlozonego (complex)
         // nie -> zaladuj widok zamowienia prostego
         System.out.println(orderView.getOrder().isComplex());
-        if(orderView.getOrder().isComplex())
-        {
+        if (orderView.getOrder().isComplex()) {
             loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
-        }
-        else
-        {
+        } else {
             loader = new FXMLLoader(getClass().getResource("../fxmlfiles/simple_order_details.fxml"));
         }
 
         Parent pane = loader.load();
 
         // wstrzykniecie wybranego obiektu do widoku szczegolowego
-        if(orderView.getOrder().isComplex())
-        {
+        if (orderView.getOrder().isComplex()) {
             ComplexOrderDetailsController controller = loader.getController();
             controller.setOrder(orderView.getOrder());
             controller.initController();
-        }
-        else
-        {
+        } else {
             SimpleOrderDetailsController controller = loader.getController();
             controller.setOrder(orderView.getOrder());
             controller.initController();
@@ -157,24 +157,22 @@ public class LogisticOrdersController implements Initializable {
         stg.setScene(new Scene(pane));
     }
 
+
     @FXML
     public void inRealizationDetailsAction(ActionEvent event) throws IOException {
 
-        Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         IndentTableView orderView = ordersInRealization.getSelectionModel().getSelectedItem();
 
-        if(orderView == null)
+        if (orderView == null)
             return;
 
         FXMLLoader loader = null;
 
-        if(orderView.getOrder().isComplex())
-        {
+        if (orderView.getOrder().isComplex()) {
             loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
-        }
-        else
-        {
+        } else {
             loader = new FXMLLoader(getClass().getResource("../fxmlfiles/simple_order_details.fxml"));
         }
 

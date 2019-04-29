@@ -19,7 +19,6 @@ import java.util.ResourceBundle;
 import static controllers.MainWindowController.sessionFactory;
 
 public class AnalystPricesViewController implements Initializable {
-
     @FXML
     public TableView<Product> priceTable;
     @FXML

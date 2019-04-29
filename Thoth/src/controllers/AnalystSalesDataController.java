@@ -21,7 +21,6 @@ import java.util.ResourceBundle;
 import static controllers.MainWindowController.sessionFactory;
 
 public class AnalystSalesDataController implements Initializable {
-
     @FXML
     public TableView<SalesDataModel> salesDataTable;
     @FXML
@@ -35,7 +34,6 @@ public class AnalystSalesDataController implements Initializable {
 
 
     @Override
-
     public void initialize(URL location, ResourceBundle resources) {
         ZIPCODE.setCellValueFactory(new PropertyValueFactory<>("zipCode"));
         CITY.setCellValueFactory(new PropertyValueFactory<Product, String>("city"));
@@ -44,6 +42,7 @@ public class AnalystSalesDataController implements Initializable {
         salesDataTable.setItems(getProducts());
         System.out.println(getProducts().toString());
     }
+
 
     public ObservableList<SalesDataModel> getProducts() {
         ObservableList<SalesDataModel> productList = FXCollections.observableArrayList();
@@ -57,6 +56,7 @@ public class AnalystSalesDataController implements Initializable {
         return productList;
     }
 
+
     public void generateRaport(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Raport utworzony pomyślnie");
@@ -68,5 +68,4 @@ public class AnalystSalesDataController implements Initializable {
         alert.getButtonTypes().setAll(view_raport, confirm);
         alert.showAndWait();
     }
-
 }

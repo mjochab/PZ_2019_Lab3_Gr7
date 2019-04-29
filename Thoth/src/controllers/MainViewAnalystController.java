@@ -24,6 +24,13 @@ import entity.Product;
 import org.hibernate.Session;
 
 public class MainViewAnalystController implements Initializable {
+    @FXML
+    MenuItem logout;
+    @FXML
+    MenuItem back;
+    @FXML
+    Parent root;
+    Stage stage;
 
     public void switchscene(ActionEvent event) throws IOException { //zmiana sceny BUTTON
         System.out.println(event.getSource().toString());
@@ -34,13 +41,6 @@ public class MainViewAnalystController implements Initializable {
         window.setScene(temporaryLoginScene);
         window.show();
     }
-
-    @FXML
-    MenuItem logout, back;
-    Stage stage;
-
-    @FXML
-    Parent root;
 
 
     public void menuitemaction(ActionEvent actionEvent) throws IOException { //cofanie i wylogowanie na MENU ITEM
@@ -53,6 +53,7 @@ public class MainViewAnalystController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

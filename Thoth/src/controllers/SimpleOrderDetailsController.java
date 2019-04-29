@@ -30,89 +30,70 @@ import static controllers.MainWindowController.sessionFactory;
 public class SimpleOrderDetailsController implements Initializable {
     @FXML
     private TableView<IndentProductsView> orderProducts;
-
     @FXML
     private TableColumn<IndentProductsView, String> productName;
-
     @FXML
     private TableColumn<IndentProductsView, Integer> productQuantity;
-
     @FXML
     private Button backButton;
-
     @FXML
     private Label orderStatus;
-
     @FXML
     private Label operatingShop;
-
     private Indent order;
-
     private ObservableList products;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-    public void setOrder(Indent order)
-    {
+
+    public void setOrder(Indent order) {
         this.order = order;
     }
 
     // wyswietlanie zamowienia prostego
-    public void initController()
-    {
+    public void initController() {
         productName.setCellValueFactory(indent -> new SimpleStringProperty(indent.getValue().getProducts().getProductId().getName()));
         productQuantity.setCellValueFactory(indent -> new SimpleIntegerProperty(indent.getValue().getProducts().getAmount()).asObject());
-
         products = getIndentProducts(order.getIndentId());
-
         orderProducts.setItems(products);
     }
 
-    // wyswietlanie zamowienia jako podzamowienia zamowienia zlozonego (complex)
-    public void initSubOrderController()
-    {
-        initController();
 
+    // wyswietlanie zamowienia jako podzamowienia zamowienia zlozonego (complex)
+    public void initSubOrderController() {
+        initController();
         this.orderStatus.setText(getOrderStatus().getName());
         this.operatingShop.setText(order.getShopId_delivery().toString());
     }
 
-    public State getOrderStatus()
-    {
+
+    public State getOrderStatus() {
         Session session = sessionFactory.openSession();
-
         List<State_of_indent> soi = session.createQuery("from State_of_indent where IndentId = :iid").setParameter("iid", order.getIndentId()).list();
-
         // wybierz pierwszy (jedyny) element z listy i zwroc jego status (obiekt State)
         return soi.get(0).getStateId();
-
     }
 
-    public ObservableList<IndentProductsView> getIndentProducts(int indentId)
-    {
+
+    public ObservableList<IndentProductsView> getIndentProducts(int indentId) {
         ObservableList<IndentProductsView> products = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-
         List<Indent_product> indent_products = session.createQuery("from Indent_product where IndentId = :iid").setParameter("iid", indentId).list();
-
-        for(Indent_product indent_product : indent_products)
-        {
+        for (Indent_product indent_product : indent_products) {
             IndentProductsView indentProductsView = new IndentProductsView();
             indentProductsView.setProducts(indent_product);
             products.add(indentProductsView);
         }
-
         session.close();
         return products;
     }
 
 
     @FXML
-    public void goBack(ActionEvent event)
-    {
-        Stage stg = (Stage) ((Node)event.getSource()).getScene().getWindow();
+    public void goBack(ActionEvent event) {
+        Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent par = null;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/main_view_logistic.fxml"));
@@ -122,6 +103,5 @@ public class SimpleOrderDetailsController implements Initializable {
             e.printStackTrace();
         }
         stg.setScene(new Scene(par));
-
     }
 }

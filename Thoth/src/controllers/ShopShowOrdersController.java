@@ -27,40 +27,29 @@ import static controllers.MainWindowController.sessionFactory;
 public class ShopShowOrdersController implements Initializable {
     @FXML
     MenuItem logout;
-
     @FXML
     private TableView ordersTable;
-
     @FXML
     public TableColumn checkbox_fld;
-
     @FXML
     public TableColumn id_order;
-
     @FXML
     public TableColumn status;
-
     @FXML
     public TableColumn date;
-
     @FXML
     public TableColumn customer_name;
-
     @FXML
     public TableColumn customer_surname;
-
     @FXML
     public TableColumn phone_number;
-
-
-
-    Stage stage;
     @FXML
     Parent root;
 
+    Stage stage;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         checkbox_fld.setCellValueFactory(new PropertyValueFactory<>("checkbox_fld"));
         id_order.setCellValueFactory(new PropertyValueFactory<>("id_order"));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -68,16 +57,15 @@ public class ShopShowOrdersController implements Initializable {
         customer_name.setCellValueFactory(new PropertyValueFactory<>("customer_name"));
         customer_surname.setCellValueFactory(new PropertyValueFactory<>("customer_surname"));
         phone_number.setCellValueFactory(new PropertyValueFactory<>("phone_number"));
-
         ordersTable.setItems(getOrders());
-
     }
+
 
     public ObservableList<ShopOrders> getOrders() {
         ObservableList<ShopOrders> enseignantList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<ShopOrders> eList = session.createQuery("select new models.ShopOrders(ind.indentId, st.name, ind.dateOfOrder, cus.firstName, cus.lastName, cus.phoneNumber) from Indent ind, State_of_indent soi, State st, Customer cus " +
-                "where st.stateId = soi.stateId AND soi.indentId = ind.indentId AND ind.shopId_need = 1").list();
+                "where st.stateId = soi.stateId AND soi.indentId = ind.indentId AND cus.customerId = ind.customerId").list();
         System.out.println(eList.toString());
         for (ShopOrders ent : eList) {
             enseignantList.add(ent);

@@ -28,24 +28,42 @@ import java.util.ResourceBundle;
 import static controllers.MainWindowController.sessionFactory;
 
 public class StateWarehouseController implements Initializable {
-
     @FXML
-    public TableView stateWarehouse,new_order,stateOrderWarehouse,newOrderShop;
+    public TableView stateWarehouse;
     @FXML
-    public TableColumn PRODUCTID,NAME,PRICE,AMOUNT,DISCOUNT,CITY,STATE,ORDERNR;
-
+    public TableView new_order;
+    @FXML
+    public TableView stateOrderWarehouse;
+    @FXML
+    public TableView newOrderShop;
+    @FXML
+    public TableColumn PRODUCTID;
+    @FXML
+    public TableColumn NAME;
+    @FXML
+    public TableColumn PRICE;
+    @FXML
+    public TableColumn AMOUNT;
+    @FXML
+    public TableColumn DISCOUNT;
+    @FXML
+    public TableColumn CITY;
+    @FXML
+    public TableColumn STATE;
+    @FXML
+    public TableColumn ORDERNR;
     @FXML
     MenuItem logout;
+    @FXML
+    Parent root;
 
     Stage stage;
-    @FXML Parent root;
 
     String nazwaMagazynu = null; //nazwa magazynu do przeszukiwania zawartości
 
     public void menuitemaction(ActionEvent actionEvent) throws IOException { //wylogowanie na MENU ITEM
         stage = (Stage) root.getScene().getWindow();
-        if(actionEvent.getSource() == logout)
-        {
+        if (actionEvent.getSource() == logout) {
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
         }
         Scene scene = new Scene(root);
@@ -56,8 +74,7 @@ public class StateWarehouseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if(location.toString().contains("state_warehouse"))
-        {
+        if (location.toString().contains("state_warehouse")) {
             PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
             NAME.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
             PRICE.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
@@ -66,8 +83,7 @@ public class StateWarehouseController implements Initializable {
             stateWarehouse.setItems(getProducts(nazwaMagazynu));
             System.out.println(getProducts(nazwaMagazynu).toString());
         }
-        if(location.toString().contains("new_order_warehouse"))
-        {
+        if (location.toString().contains("new_order_warehouse")) {
             PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
             NAME.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
             PRICE.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
@@ -75,8 +91,7 @@ public class StateWarehouseController implements Initializable {
             new_order.setItems(getProducts(nazwaMagazynu));
             System.out.println(getProducts(nazwaMagazynu).toString());
         }
-        if(location.toString().contains("new_order_shop"))
-        {
+        if (location.toString().contains("new_order_shop")) {
             PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
             NAME.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
             PRICE.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
@@ -84,8 +99,7 @@ public class StateWarehouseController implements Initializable {
             newOrderShop.setItems(getOrderProducts(nazwaMagazynu));
             System.out.println(getOrderProducts(nazwaMagazynu).toString());
         }
-        if(location.toString().contains("state_order_warehouse"))
-        {
+        if (location.toString().contains("state_order_warehouse")) {
             CITY.setCellValueFactory(new PropertyValueFactory<>("city"));
             STATE.setCellValueFactory(new PropertyValueFactory<Product, String>("state"));
             ORDERNR.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("orderid"));
@@ -94,6 +108,7 @@ public class StateWarehouseController implements Initializable {
         }
 
     }
+
 
     public ObservableList<SalesCreatorModel> getProducts(String nazwaMagazynu) {
         ObservableList<SalesCreatorModel> productList = FXCollections.observableArrayList();
@@ -108,6 +123,7 @@ public class StateWarehouseController implements Initializable {
         session.close();
         return productList;
     }
+
 
     public ObservableList<StateOrderModel> getOrder(String nazwaMagazynu) {
         ObservableList<StateOrderModel> orderList = FXCollections.observableArrayList();
@@ -125,6 +141,7 @@ public class StateWarehouseController implements Initializable {
         session.close();
         return orderList;
     }
+
 
     public ObservableList<SalesCreatorModel> getOrderProducts(String nazwaMagazynu) {
         ObservableList<SalesCreatorModel> productList = FXCollections.observableArrayList();

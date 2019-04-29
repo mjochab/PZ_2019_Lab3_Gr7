@@ -15,27 +15,22 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
 public class MainViewLogisticController implements Initializable {
-
-
     @FXML
     MenuItem logout;
-
-    Stage stage;
     @FXML
     Parent root;
+    Stage stage;
+
 
     public void menuitemaction(ActionEvent actionEvent) throws IOException { //wylogowanie na MENU ITEM
         stage = (Stage) root.getScene().getWindow();
-        if(actionEvent.getSource() == logout)
-        {
+        if (actionEvent.getSource() == logout) {
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
         }
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
-
-    @FXML private LogisticOrdersController ordersController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
