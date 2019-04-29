@@ -1,8 +1,6 @@
 package controllers;
 
-import entity.Indent;
-import entity.Indent_product;
-import entity.Product;
+import entity.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -14,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
@@ -41,6 +40,12 @@ public class SimpleOrderDetailsController implements Initializable {
     @FXML
     private Button backButton;
 
+    @FXML
+    private Label orderStatus;
+
+    @FXML
+    private Label operatingShop;
+
     private Indent order;
 
     private ObservableList products;
@@ -54,6 +59,7 @@ public class SimpleOrderDetailsController implements Initializable {
         this.order = order;
     }
 
+    // wyswietlanie zamowienia prostego
     public void initController()
     {
         productName.setCellValueFactory(indent -> new SimpleStringProperty(indent.getValue().getProducts().getProductId().getName()));
@@ -62,6 +68,26 @@ public class SimpleOrderDetailsController implements Initializable {
         products = getIndentProducts(order.getIndentId());
 
         orderProducts.setItems(products);
+    }
+
+    // wyswietlanie zamowienia jako podzamowienia zamowienia zlozonego (complex)
+    public void initSubOrderController()
+    {
+        initController();
+
+        this.orderStatus.setText(getOrderStatus().getName());
+        this.operatingShop.setText(order.getShopId_delivery().toString());
+    }
+
+    public State getOrderStatus()
+    {
+        Session session = sessionFactory.openSession();
+
+        List<State_of_indent> soi = session.createQuery("from State_of_indent where IndentId = :iid").setParameter("iid", order.getIndentId()).list();
+
+        // wybierz pierwszy (jedyny) element z listy i zwroc jego status (obiekt State)
+        return soi.get(0).getStateId();
+
     }
 
     public ObservableList<IndentProductsView> getIndentProducts(int indentId)
