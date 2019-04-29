@@ -82,16 +82,25 @@ public class LogisticOrdersController implements Initializable {
         System.out.println(state_of_indents.size());
         for(State_of_indent soi: state_of_indents)
         {
-            int numberOfSubIndents = session.createQuery("select count(indent) From Indent indent where ParentId = :pid group by ParentId")
-                                     .setParameter("pid", soi.getIndentId().getIndentId()).getFirstResult();
+            System.out.println("parent id = " + soi.getIndentId().getIndentId());
+            List<Indent> subIndents = session.createQuery("From Indent indent where ParentId = :pid")
+                                     .setParameter("pid", soi.getIndentId().getIndentId()).list();
 
-            if(numberOfSubIndents > 0)
+            System.out.println(subIndents.size());
+
+            if(subIndents.size() > 0)
             {
                 soi.getIndentId().setIsComplex(true);
             }
             else
             {
                 soi.getIndentId().setIsComplex(false);
+            }
+
+            // jesli zamowienie jest podzamowieniem, nie wyswietlaj go w glownej liscie
+            if(soi.getIndentId().getParentId() != null)
+            {
+                continue;
             }
 
             IndentTableView indentTableView = new IndentTableView();
@@ -119,6 +128,7 @@ public class LogisticOrdersController implements Initializable {
         // czy wybrany wiersz zawiera zamowienie zlozone
         // tak -> zaladuj widok zamowienia zlozonego (complex)
         // nie -> zaladuj widok zamowienia prostego
+        System.out.println(orderView.getOrder().isComplex());
         if(orderView.getOrder().isComplex())
         {
             loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
@@ -129,11 +139,20 @@ public class LogisticOrdersController implements Initializable {
         }
 
         Parent pane = loader.load();
-        // wstrzykniecie wybranego obiektu do widoku szczegolowego
-        SimpleOrderDetailsController controller = loader.getController();
-        controller.setOrder(orderView.getOrder());
-        controller.initController();
 
+        // wstrzykniecie wybranego obiektu do widoku szczegolowego
+        if(orderView.getOrder().isComplex())
+        {
+            ComplexOrderDetailsController controller = loader.getController();
+            controller.setOrder(orderView.getOrder());
+            controller.initController();
+        }
+        else
+        {
+            SimpleOrderDetailsController controller = loader.getController();
+            controller.setOrder(orderView.getOrder());
+            controller.initController();
+        }
 
         stg.setScene(new Scene(pane));
     }
