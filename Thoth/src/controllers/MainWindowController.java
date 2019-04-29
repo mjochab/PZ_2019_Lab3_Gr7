@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -33,6 +34,28 @@ public class MainWindowController implements Initializable {
     private String SHOP_ASSISTANT = "Sprzedawca";
     private String ANALYST = "Analityk";
     private String LOGISTICIAN = "Logistyk";
+
+    @FXML
+    private ComboBox<Shop> comboList;
+
+    private ObservableList<Shop> getShops()
+    {
+        ObservableList<Shop> shops = FXCollections.observableArrayList();
+        Session session = sessionFactory.openSession();
+        List<Shop> shopsList = session.createQuery("from Shop").list();
+
+        shops.addAll(shopsList);
+
+        session.close();
+        System.out.println("Zwracam sklepy!");
+        return shops;
+    }
+
+    // dodaje sklepy do ComboListy
+    public void setComboList()
+    {
+        //this.comboList.getItems().addAll(getShops());
+    }
 
     public void switchscene(ActionEvent event) throws IOException {
         System.out.println(event.getSource().toString());

@@ -68,6 +68,7 @@ public class Shop {
     }
 
     @Override
+
     public String toString() {
         return getCity() + ", " + getStreet() + ", " + getZipCode();
     }
