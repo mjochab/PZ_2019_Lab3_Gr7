@@ -10,11 +10,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import models.SalesCreatorModel;
 import org.hibernate.Session;
-import org.hibernate.criterion.ProjectionList;
 
-import java.math.BigDecimal;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -50,7 +47,8 @@ public class AnalystSalesCreatorViewController  implements Initializable {
     public ObservableList<SalesCreatorModel> getProducts() {
         ObservableList<SalesCreatorModel> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<SalesCreatorModel> eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, SUM(s.amount)) FROM Product p INNER JOIN State_on_shop s on p.productId = s.productId GROUP by p.productId ORDER by SUM(s.amount) DESC").list();
+        List<SalesCreatorModel> eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, SUM(s.amount)) " +
+                "FROM Product p INNER JOIN State_on_shop s on p.productId = s.productId GROUP by p.productId ORDER by SUM(s.amount) DESC").list();
         System.out.println(eList);
         for (SalesCreatorModel ent : eList) {
             productList.add(ent);

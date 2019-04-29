@@ -1,10 +1,8 @@
 package controllers;
 
 
-import entity.Shop;
+import entity.Role;
 import entity.User;
-import entity.UserShop;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,9 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import models.EmployeeView;
+
 import org.hibernate.Session;
-import javafx.beans.property.SimpleStringProperty;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,57 +21,45 @@ import static controllers.MainWindowController.sessionFactory;
 public class EmployeeViewController implements Initializable {
 
     @FXML
-    public TableView<EmployeeView> employeeTable;
+    public TableView<User> employeeTable;
     @FXML
-    public TableColumn<EmployeeView, Integer> USERID;
+    public TableColumn<User, Integer> USERID;
     @FXML
-    public TableColumn<EmployeeView, String> LOGIN;
+    public TableColumn<User, String> LOGIN;
     @FXML
-    public TableColumn<EmployeeView, String> FIRSTNAME;
+    public TableColumn<User, String> FIRSTNAME;
     @FXML
-    public TableColumn<EmployeeView, String> LASTNAME;
+    public TableColumn<User, String> LASTNAME;
     @FXML
-    public TableColumn<EmployeeView, String> PASSWORD;
+    public TableColumn<User, String> PASSWORD;
     @FXML
-    public TableColumn<EmployeeView, Integer> STATE;
+    public TableColumn<User, Integer> STATE;
     @FXML
-    public TableColumn<EmployeeView, String> ROLEID;
-    @FXML
-    public TableColumn<EmployeeView, String> OBJECTID;
+    public TableColumn<Role, Integer> ROLEID;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        USERID.setCellValueFactory(userData -> new SimpleIntegerProperty(userData.getValue().getUser().getUserId()).asObject());
-        FIRSTNAME.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getFirstName()));
-        LASTNAME.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getLastName()));
-        LOGIN.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getLogin()));
-        PASSWORD.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getPassword()));
-        STATE.setCellValueFactory(userData -> new SimpleIntegerProperty(userData.getValue().getUser().getState()).asObject());
-        ROLEID.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getRoleId().getPosition()));
-        OBJECTID.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getShop().toString()));
+        USERID.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        LOGIN.setCellValueFactory(new PropertyValueFactory<User, String>("login"));
+        FIRSTNAME.setCellValueFactory(new PropertyValueFactory<User, String>("firstName"));
+        LASTNAME.setCellValueFactory(new PropertyValueFactory<User, String>("lastName"));
+        PASSWORD.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
+        STATE.setCellValueFactory(new PropertyValueFactory<User, Integer>("state"));
+        ROLEID.setCellValueFactory(new PropertyValueFactory<Role, Integer>("roleId"));
         employeeTable.setItems(getEmployee());
         System.out.println(getEmployee().toString());
     }
 
-    public ObservableList<EmployeeView> getEmployee() {
-        ObservableList<EmployeeView> userList = FXCollections.observableArrayList();
+    public ObservableList<User> getEmployee() {
+        ObservableList<User> userList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<User> usList = session.createQuery("from User").list();
+        List<User> usList = session.createQuery("from User ").list();
         for (User us : usList) {
-            EmployeeView ev = new EmployeeView();
-            ev.setUser(us);
-            List<UserShop> shops = session.createQuery("from UserShop WHERE userId = :uid").setInteger("uid", us.getUserId()).list();
-            if (shops.size() > 0) {
-                System.out.println("Sa elementy!");
-                ev.setShop(shops.get(0).getShopId());
-            }
-            else {
-                System.out.println("Brak elementow!");
-                ev.setShop(new Shop());
-            }
+            //us.getRoleId().getPosition();
+            us.getUserId();
+            userList.add(us);
 
-            userList.add(ev);
 
         }
         session.close();
