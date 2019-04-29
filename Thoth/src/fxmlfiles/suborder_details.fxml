@@ -20,7 +20,7 @@
                   <Insets right="20.0" />
                </HBox.margin>
             </Label>
-            <Label text="W realizacji">
+            <Label fx:id="orderStatus" text="W realizacji">
                <font>
                   <Font size="18.0" />
                </font>
@@ -37,17 +37,17 @@
                   <Insets right="20.0" />
                </HBox.margin>
             </Label>
-            <Label text=" Magazyn nr 1">
+            <Label fx:id="operatingShop" text=" Magazyn nr 1">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
          </children>
       </HBox>
-      <TableView>
+      <TableView fx:id="orderProducts">
          <columns>
-            <TableColumn prefWidth="270.0" text="Nazwa" />
-            <TableColumn minWidth="4.0" prefWidth="115.99995727539061" text="Ilość" />
+            <TableColumn fx:id="productName" prefWidth="270.0" text="Nazwa" />
+            <TableColumn fx:id="productQuantity" minWidth="4.0" prefWidth="115.99995727539061" text="Ilość" />
          </columns>
       </TableView>
    </children>
