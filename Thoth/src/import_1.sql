@@ -10,10 +10,10 @@ INSERT INTO state (StateId, Name) VALUES (null, 'W transporcie');
 INSERT INTO state (StateId, Name) VALUES (null, 'Oczekuje na potwierdzenie odbioru');
 INSERT INTO state (StateId, Name) VALUES (null, 'Zrealizowane');
 
-insert into shop (ZipCode, City, Street, IsShop) values ('35-311', 'Rzeszów', 'Powstańców Warszawy', 1);
-insert into shop (ZipCode, City, Street, IsShop) values ('32-336', 'Kraków', 'Warszawska', 1);
+insert into shop (ZipCode, City, Street, IsShop) values ('35-311', 'Rzeszow', 'Powstancow Warszawy', 1);
+insert into shop (ZipCode, City, Street, IsShop) values ('32-336', 'Krakow', 'Warszawska', 1);
 insert into shop (ZipCode, City, Street, IsShop) values ('36-006', 'Warszawa', 'Krakowska', 0);
-insert into shop (ZipCode, City, Street, IsShop) values ('34-056', 'Poznań', 'Aleja Wolności', 1);
+insert into shop (ZipCode, City, Street, IsShop) values ('34-056', 'Poznan', 'Aleja Wolnosci', 1);
 
 INSERT INTO product (ProductId, Name, Price, Discount) VALUES (null, 'Motorola Moto Z3 Play', '1000', '0');
 INSERT INTO product (ProductId, Name, Price, Discount) VALUES (null, 'Huawei P9 Lite', '1100', '0');
@@ -29,8 +29,7 @@ insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('
 insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Bartosz', 'Nowacki', 'test2', 'test2', '2', '1');
 insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Tadeusz', 'Malinowski', 'test3', 'test3', '3', '1');
 insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Patryk', 'Nowakowski', 'test4', 'test4', '4', '1');
-insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Artur', 'Dębski', 'test5', 'test5', '5', '5');
-insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Mateusz', 'Dąbrowski', 'test6', 'test6', '5', '1');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Artur', 'Krasicki', 'test5', 'test5', '5', '1');
 
 
 insert into user_shop (ShopId, UserId)  values ('1','1');

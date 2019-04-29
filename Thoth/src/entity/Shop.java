@@ -68,9 +68,8 @@ public class Shop {
     }
 
     @Override
-    public String toString()
-    {
-        return this.getCity() + " " + this.getStreet() + " " + this.getZipCode();
-    }
 
+    public String toString() {
+        return getCity() + ", " + getStreet() + ", " + getZipCode();
+    }
 }

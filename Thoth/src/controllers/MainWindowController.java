@@ -150,7 +150,6 @@ public class MainWindowController implements Initializable {
             if (ADMIN.equals(user.get(0).getRoleId().getPosition())) // okno widoku admina
             {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
-                //temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
                 temporaryLoginParent = loader.load();
                 MainWindowController mainController = loader.getController();
                 mainController.setComboList();
@@ -184,6 +183,29 @@ public class MainWindowController implements Initializable {
             resetDbLabel.setText("");
             factory.close();
         } else resetDbLabel.setText("Niepoprawny ciąg znaków");
+    }
+
+
+    @FXML
+    private ComboBox<Shop> comboList;
+
+    private ObservableList<Shop> getShops()
+    {
+        ObservableList<Shop> shops = FXCollections.observableArrayList();
+        Session session = sessionFactory.openSession();
+        List<Shop> shopsList = session.createQuery("from Shop").list();
+
+        shops.addAll(shopsList);
+
+        session.close();
+        System.out.println("Zwracam sklepy");
+        return shops;
+
+    }
+
+    public void setComboList()
+    {
+        this.comboList.getItems().addAll(getShops());
     }
 
     @Override
