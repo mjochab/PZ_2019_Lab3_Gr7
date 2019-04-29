@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
 import javafx.stage.Stage;
 import org.hibernate.Session;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.io.IOException;
 import java.net.URL;
@@ -43,9 +44,8 @@ public class ComplexOrderDetailsController implements Initializable {
 
     public void initController() throws IOException {
         indentsAccordion.getPanes().clear();
-        indentsAccordion.getPanes().add(new TitledPane("Id zamowienia to: " + String.valueOf(order.getIndentId()), new Button("Dupa")));
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/suborder_details.fxml"));
-        //TitledPane subOrder = new TitledPane("Zamowienie to: " + String.valueOf(order.getIndentId()), loader.load());
 
         Session session = sessionFactory.openSession();
 
@@ -61,14 +61,20 @@ public class ComplexOrderDetailsController implements Initializable {
 
         // dodanie TitledPanes do Accordion
         indentsAccordion.getPanes().addAll(subOrdersPanes);
+        session.close();
     }
 
     public TitledPane createSubOrderPane(Indent order) throws IOException
     {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/suborder_details.fxml"));
-        TitledPane pane = new TitledPane("Zamowienie nr: " +String.valueOf(order.getIndentId()), loader.load());
+        Parent parent = loader.load();
+        SimpleOrderDetailsController controller = loader.getController();
+        controller.setOrder(order);
+        controller.initSubOrderController();
 
-        return pane;
+        TitledPane subOrderPane = new TitledPane("Zamowienie nr: " +String.valueOf(order.getIndentId()), parent);
+
+        return subOrderPane;
     }
 
 
