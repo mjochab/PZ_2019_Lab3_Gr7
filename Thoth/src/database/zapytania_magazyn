@@ -1,15 +1,16 @@
 -- Moduł Magazyn
 --przeszukanie listy produktów dla danego magazynu , gdzie stan > 1
-SELECT `product`.`ProductId`,`product`.`Name`,`product`.`Price`,`state_on_shop`.`Amount`,`product`.`Discount`
+SELECT `product`.`ProductId`,`product`.`Name`,`product`.`Price`,`state_on_object`.`Amount`,`product`.`Discount`
 FROM `product`
-INNER JOIN `state_on_shop` ON `product`.`ProductId` = `state_on_shop`.`ProductId`
-INNER JOIN `shop` ON `state_on_shop`.`ShopId` = `shop`.`ShopId`
-WHERE `shop`.`City` like "R%" AND `state_on_shop`.`Amount` > 0 --AND `product`.`Name` like 'M%' dla wyszukiwania produktu
+INNER JOIN `state_on_object` ON `product`.`ProductId` = `state_on_object`.`ProductId`
+INNER JOIN `object`ON `state_on_object`.`ObjectId` = `object`.`ObjectId`
+WHERE `object`.`City` = "Rzeszów"
+AND `state_on_object`.`Amount` > 0
 
 --dodawanie nowego produktu
 INSERT INTO `product`(`ProductId`, `Name`, `Price`, `Discount`) VALUES ('', '', '', '');
 
---nowe zamowienie 1/2 --poprawić OBJECT
+--nowe zamowienie 1/2
 SELECT `product`.`ProductId`,`product`.`Name`,`product`.`Price`,`state_on_object`.`Amount`
 FROM `product`
 INNER JOIN `state_on_object` ON `product`.`ProductId` = `state_on_object`.`ProductId`
@@ -18,23 +19,13 @@ WHERE `product`.`Name` = "Huawei P9 Lite"
 AND `state_on_object`.`Amount` > 0
 
 --zamowienie produktu
-SELECT `product`.`ProductId` , `product`.`Name` , `product`.`Price` , `indent_product`.`Amount`
-FROM `shop`
-INNER JOIN `state_on_shop` ON `shop`.`ShopId` = `state_on_shop`.`ShopId`
-INNER JOIN `product` ON `state_on_shop`.`ProductId` = `product`.`ProductId`
-INNER JOIN `indent_product` ON `product`.`ProductId` = `indent_product`.`ProductId`
-INNER JOIN `indent` ON `shop`.`ShopId` = `indent`.`ShopId_need`
-INNER JOIN `state_of_indent` ON `indent`.`IndentId` = `state_of_indent`.`IndentId`
-INNER JOIN `state` ON `state_of_indent`.`StateId` = `state`.`StateId`
-WHERE `shop`.`City` like 'R%' AND `state`.`Name` = 'W realizacji'
 
 --status zamowienia
-SELECT `shop`.`City`,`state`.`Name`,`indent`.`IndentId`
-FROM `state_of_indent`
-INNER JOIN `indent` ON `state_of_indent`.`IndentId` = `indent`.`IndentId`
-INNER JOIN `state` ON `state_of_indent`.`StateId` = `state`.`StateId`
-INNER JOIN `shop` ON `indent`.`ShopId_need` = `shop`.`ShopId`
-WHERE `shop`.`City` like 'R%'
+SELECT `object`.`City`,`state`.`Name`,`order`.`OrderId` --moze być też state name do wyswietlenia
+FROM `state`
+       INNER JOIN `state_of_order` ON `state`.`StateId` = `state_of_order`.`StateId`
+       INNER JOIN `order` ON `state_of_order`.`OrderId` = `order`.`OrderId`
+       INNER JOIN `object` ON `order`.`ObjectId_need` = `object`.`ObjectId`
 
 UPDATE `state` SET `StateId` = " " WHERE `StateId` = " "
 
