@@ -36,10 +36,12 @@ public class ComplexOrderDetailsController implements Initializable {
         this.order = order;
     }
 
-    public void initController()
-    {
+    public void initController() throws IOException {
         indentsAccordion.getPanes().clear();
         indentsAccordion.getPanes().add(new TitledPane("Id zamowienia to: " + String.valueOf(order.getIndentId()), new Button("Dupa")));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/suborder_details.fxml"));
+        TitledPane subOrder = new TitledPane("Zamowienie to: " + String.valueOf(order.getIndentId()), loader.load());
+        indentsAccordion.getPanes().add(subOrder);
     }
 
 
