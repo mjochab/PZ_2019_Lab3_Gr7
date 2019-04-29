@@ -66,7 +66,7 @@ public class ShopShowOrdersController implements Initializable {
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
         customer_name.setCellValueFactory(new PropertyValueFactory<>("customer_name"));
-        customer_surname.setCellValueFactory(new PropertyValueFactory<>("customer_name"));
+        customer_surname.setCellValueFactory(new PropertyValueFactory<>("customer_surname"));
         phone_number.setCellValueFactory(new PropertyValueFactory<>("phone_number"));
 
         ordersTable.setItems(getOrders());
