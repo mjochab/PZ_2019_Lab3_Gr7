@@ -3,13 +3,13 @@ package entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "object")
+@Table(name = "Shop")
 public class Shop {
 
     @Id
-    @Column(name = "ObjectId")
+    @Column(name = "ShopId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int objectId;
+    private int shopId;
 
     @Column(name = "ZipCode",nullable = false)
     private String zipCode;
@@ -27,19 +27,12 @@ public class Shop {
 
     }
 
-    public Shop(String zipCode, String city, String street, Boolean idShop) {
-        this.zipCode = zipCode;
-        this.city = city;
-        this.street = street;
-        this.idShop = idShop;
+    public int getShopId() {
+        return shopId;
     }
 
-    public int getObjectId() {
-        return objectId;
-    }
-
-    public void setObjectId(int objectId) {
-        this.objectId = objectId;
+    public void setShopId(int shopId) {
+        this.shopId = shopId;
     }
 
     public String getZipCode() {
@@ -75,13 +68,8 @@ public class Shop {
     }
 
     @Override
+
     public String toString() {
-        return "Shop{" +
-                "objectId=" + objectId +
-                ", zipCode='" + zipCode + '\'' +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'' +
-                ", idShop=" + idShop +
-                '}';
+        return getCity() + ", " + getStreet() + ", " + getZipCode();
     }
 }

@@ -1,8 +1,6 @@
 package demo;
 
 
-import entity.*;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -11,23 +9,23 @@ public class CreateUser {
 
         // sesion factory
         SessionFactory factory = new Configuration()
-                .configure("hibernate.cfg.xml")
+                .configure("create.cfg.xml")
                 //tabele "Wolne"
 
 
                 //tabele łączone
 
-//                .addAnnotatedClass(State_on_object.class)
+//                .addAnnotatedClass(State_on_shop.class)
 //                .addAnnotatedClass(User.class)
-//                .addAnnotatedClass(User_object.class)
+//                .addAnnotatedClass(UserShop.class)
 
 //                .addAnnotatedClass(Receipt.class)
 
 
 //                .addAnnotatedClass(Product_receipt.class)
-//                .addAnnotatedClass(Order.class)
-//                .addAnnotatedClass(State_of_order.class)
-//                .addAnnotatedClass(Order_product.class)
+//                .addAnnotatedClass(Indent.class)
+//                .addAnnotatedClass(State_of_indent.class)
+//                .addAnnotatedClass(Indent_product.class)
                 .buildSessionFactory();
 
 //        // create session

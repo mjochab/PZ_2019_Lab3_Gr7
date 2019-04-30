@@ -22,7 +22,7 @@
       <!-- Set the current session context -->
       <property name="current_session_context_class">thread</property>
       <property name="hibernate.hbm2ddl.auto">update</property>
-      <property name="hibernate.hbm2ddl.import_files">/import.sql</property>
+      <property name="hibernate.hbm2ddl.import_files">import_1.sql</property>
 
       <!-- Tabele bez kluczy obcych -->
       <mapping class="entity.State" />
@@ -35,10 +35,10 @@
       <mapping class="entity.User" />
       <mapping class="entity.Receipt" />
       <mapping class="entity.Product_receipt" />
-      <mapping class="entity.State_on_object" />
-      <mapping class="entity.User_object" />
-      <mapping class="entity.Order" />
-      <mapping class="entity.State_of_order" />
-      <mapping class="entity.Order_product" />
+      <mapping class="entity.State_on_shop" />
+      <mapping class="entity.UserShop" />
+      <mapping class="entity.Indent" />
+      <mapping class="entity.State_of_indent" />
+      <mapping class="entity.Indent_product" />
   </session-factory>
 </hibernate-configuration>

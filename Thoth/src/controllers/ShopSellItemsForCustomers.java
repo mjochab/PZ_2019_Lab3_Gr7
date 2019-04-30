@@ -1,8 +1,6 @@
 package controllers;
 
 import entity.Product;
-import entity.State_on_shop;
-import models.ShopSell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,7 +26,7 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionFactory;
 
-public class ShopSellProductsController implements Initializable {
+public class ShopSellItemsForCustomers implements Initializable {
     @FXML
     MenuItem logout;
     @FXML
@@ -40,35 +38,33 @@ public class ShopSellProductsController implements Initializable {
     @FXML
     public TableColumn price_col;
     @FXML
-    public TableColumn amount_col;
+    public TableColumn discount_col;
     @FXML
     Parent root;
+
     Stage stage;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         id_col.setCellValueFactory(new PropertyValueFactory<>("productId"));
         name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
         price_col.setCellValueFactory(new PropertyValueFactory<>("price"));
-        amount_col.setCellValueFactory(new PropertyValueFactory<>("amount"));
-
+        discount_col.setCellValueFactory(new PropertyValueFactory<>("discount"));
         productsTable.setItems(getProducts());
 
     }
 
 
-    public ObservableList<ShopSell> getProducts() {
-        ObservableList<ShopSell> productList = FXCollections.observableArrayList();
+    public ObservableList<Product> getProducts() {
+        ObservableList<Product> enseignantList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<ShopSell> eList = session.createQuery("select new models.ShopSell(pr.productId, pr.name, pr.price, sop.amount) from State_on_shop sop inner join sop.productId pr where sop.shopId=1").list();
-        for (ShopSell ent : eList) {
-            productList.add(ent);
-            System.out.println(ent.getProductId() + " " + ent.getName());
+        List<Product> eList = session.createQuery("from Product").list();
+        for (Product ent : eList) {
+            enseignantList.add(ent);
         }
         session.close();
-        return productList;
+        return enseignantList;
     }
-
-
 }
 

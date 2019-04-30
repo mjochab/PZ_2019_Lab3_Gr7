@@ -1,26 +1,30 @@
 package models;
 
+import java.math.BigDecimal;
 
-public class ProductShop {
-    private Integer id;
+public class ShopSell {
+    private Integer productId;
     private String name;
-    private Double price;
+    private BigDecimal price;
     private Integer amount;
 
+    public ShopSell(){
 
-    public ProductShop(Integer id, String name, Double price, Integer amount) {
-        this.id = id;
+    }
+
+    public ShopSell(Integer productId, String name, BigDecimal price, Integer amount) {
+        this.productId = productId;
         this.name = name;
         this.price = price;
         this.amount = amount;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public String getName() {
@@ -31,11 +35,11 @@ public class ProductShop {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

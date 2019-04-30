@@ -8,25 +8,24 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ViewUsersController implements Initializable {
-
     @FXML
     MenuItem logout;
+    @FXML
     MenuItem back;
-
+    @FXML
+    Parent root;
     Stage stage;
 
-    @FXML Parent root;
-
     public void logout(ActionEvent actionEvent) throws IOException {
-        if(actionEvent.getSource()==logout){
+        if (actionEvent.getSource() == logout) {
             stage = (Stage) root.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/FXMLDocument.fxml"));
-
+            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -34,9 +33,9 @@ public class ViewUsersController implements Initializable {
 
     }
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
 
 }

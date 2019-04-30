@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -10,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLDocumentController">
+<AnchorPane stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminController">
     <children>
         <VBox layoutX="-14.0" prefHeight="761.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -107,7 +112,7 @@
                                 <Insets />
                             </HBox.margin>
                         </Label>
-                        <ComboBox prefHeight="25.0" prefWidth="300.0" promptText="Wybierz stanowisko" stylesheets="@../thoth/style.css" />
+                        <ComboBox fx:id="comboRoleList" prefHeight="25.0" prefWidth="300.0" promptText="Wybierz stanowisko" stylesheets="@../thoth/style.css" />
                     </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -123,7 +128,7 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <ComboBox prefHeight="25.0" prefWidth="300.0" promptText="Wybierz obiekt" stylesheets="@../thoth/style.css" />
+                  <ComboBox fx:id="comboShopList" prefHeight="25.0" prefWidth="300.0" promptText="Wybierz obiekt" stylesheets="@../thoth/style.css" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
