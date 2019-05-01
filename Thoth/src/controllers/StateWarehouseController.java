@@ -10,11 +10,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import models.IndentTableView;
 import models.SalesCreatorModel;
 import models.StateOrderModel;
 import org.hibernate.Session;
@@ -53,13 +52,19 @@ public class StateWarehouseController implements Initializable {
     @FXML
     public TableColumn ORDERNR;
     @FXML
+    public Button searchStateWarehouse;
+    @FXML
+    public TextField searchSWCity;
+    @FXML
     MenuItem logout;
     @FXML
     Parent root;
 
     Stage stage;
 
-    String nazwaMagazynu = null; //nazwa magazynu do przeszukiwania zawartości
+    private ObservableList<IndentTableView> displayedOrdersReadyForShipment = FXCollections.observableArrayList();
+
+    String nazwaProduktu = null; //nazwa magazynu do przeszukiwania zawartości
 
     public void menuitemaction(ActionEvent actionEvent) throws IOException { //wylogowanie na MENU ITEM
         stage = (Stage) root.getScene().getWindow();
@@ -80,42 +85,53 @@ public class StateWarehouseController implements Initializable {
             PRICE.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
             AMOUNT.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
             DISCOUNT.setCellValueFactory(new PropertyValueFactory<Product, Integer>("discount"));
-            stateWarehouse.setItems(getProducts(nazwaMagazynu));
-            System.out.println(getProducts(nazwaMagazynu).toString());
+            stateWarehouse.setItems(getProducts(nazwaProduktu));
+            System.out.println(getProducts(nazwaProduktu).toString());
         }
         if (location.toString().contains("new_order_warehouse")) {
             PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
             NAME.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
             PRICE.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
             AMOUNT.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
-            new_order.setItems(getProducts(nazwaMagazynu));
-            System.out.println(getProducts(nazwaMagazynu).toString());
+            new_order.setItems(getProducts(nazwaProduktu));
+            System.out.println(getProducts(nazwaProduktu).toString());
         }
         if (location.toString().contains("new_order_shop")) {
             PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
             NAME.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
             PRICE.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
             AMOUNT.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
-            newOrderShop.setItems(getOrderProducts(nazwaMagazynu));
-            System.out.println(getOrderProducts(nazwaMagazynu).toString());
+            newOrderShop.setItems(getOrderProducts(nazwaProduktu));
+            System.out.println(getOrderProducts(nazwaProduktu).toString());
         }
         if (location.toString().contains("state_order_warehouse")) {
             CITY.setCellValueFactory(new PropertyValueFactory<>("city"));
             STATE.setCellValueFactory(new PropertyValueFactory<Product, String>("state"));
             ORDERNR.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("orderid"));
-            stateOrderWarehouse.setItems(getOrder(nazwaMagazynu));
-            System.out.println(getOrder(nazwaMagazynu).toString());
+            stateOrderWarehouse.setItems(getOrder(nazwaProduktu));
+            System.out.println(getOrder(nazwaProduktu).toString());
         }
 
     }
 
 
-    public ObservableList<SalesCreatorModel> getProducts(String nazwaMagazynu) {
+    public ObservableList<SalesCreatorModel> getProducts(String nazwaProduktu) {
         ObservableList<SalesCreatorModel> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<SalesCreatorModel> eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
-                "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE s.amount > 0 AND k.city like 'R%'"
-        ).list();
+        List<SalesCreatorModel> eList;
+        if(nazwaProduktu == null || nazwaProduktu.equals("")){
+            eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
+                    "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE s.amount > 0 AND k.city like 'R%'"
+            ).list();
+        } else
+        {
+            eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
+                    "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE s.amount > 0 AND k.city like 'R%' AND p.name like :produkt "
+            ).setParameter("produkt",nazwaProduktu).list();
+            searchSWCity.setText("");
+            nazwaProduktu = null;
+        }
+
         System.out.println(eList);
         for (SalesCreatorModel ent : eList) {
             productList.add(ent);
@@ -125,7 +141,7 @@ public class StateWarehouseController implements Initializable {
     }
 
 
-    public ObservableList<StateOrderModel> getOrder(String nazwaMagazynu) {
+    public ObservableList<StateOrderModel> getOrder(String nazwaProduktu) {
         ObservableList<StateOrderModel> orderList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<StateOrderModel> eList = session.createQuery("SELECT new models.StateOrderModel(p.city, s.name, i.indentId) FROM State_of_indent v " +
@@ -143,7 +159,7 @@ public class StateWarehouseController implements Initializable {
     }
 
 
-    public ObservableList<SalesCreatorModel> getOrderProducts(String nazwaMagazynu) {
+    public ObservableList<SalesCreatorModel> getOrderProducts(String nazwaProduktu) {
         ObservableList<SalesCreatorModel> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<SalesCreatorModel> eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, ip.amount) " +
@@ -163,4 +179,11 @@ public class StateWarehouseController implements Initializable {
         session.close();
         return productList;
     }
+
+
+    public void searchStateWarehouse(ActionEvent event) throws IOException {
+        nazwaProduktu = searchSWCity.getText();
+        stateWarehouse.setItems(getProducts(nazwaProduktu));
+    }
+
 }
