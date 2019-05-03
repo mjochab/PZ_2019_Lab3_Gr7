@@ -34,7 +34,7 @@ insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('
 
 insert into user_shop (ShopId, UserId)  values ('1','1');
 insert into user_shop (ShopId, UserId)  values ('2','1');
-insert into user_shop (ShopId, UserId)  values ('3','2');
+insert into user_shop (ShopId, UserId)  values ('1','2');
 insert into user_shop (ShopId, UserId)  values ('4','3');
 insert into user_shop (ShopId, UserId)  values ('4','4');
 insert into user_shop (ShopId, UserId)  values ('1','5');

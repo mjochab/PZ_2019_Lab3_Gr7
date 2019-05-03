@@ -24,7 +24,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static controllers.MainWindowController.sessionFactory;
+import static controllers.MainWindowController.*;
 
 public class StateWarehouseController implements Initializable {
     @FXML
@@ -86,7 +86,7 @@ public class StateWarehouseController implements Initializable {
             AMOUNT.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
             DISCOUNT.setCellValueFactory(new PropertyValueFactory<Product, Integer>("discount"));
             stateWarehouse.setItems(getProducts(nazwaProduktu));
-            System.out.println(getProducts(nazwaProduktu).toString());
+            //System.out.println(getProducts(nazwaProduktu).toString());
         }
         if (location.toString().contains("new_order_warehouse")) {
             PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
@@ -94,7 +94,7 @@ public class StateWarehouseController implements Initializable {
             PRICE.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
             AMOUNT.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
             new_order.setItems(getProducts(nazwaProduktu));
-            System.out.println(getProducts(nazwaProduktu).toString());
+            //System.out.println(getProducts(nazwaProduktu).toString());
         }
         if (location.toString().contains("new_order_shop")) {
             PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
@@ -102,14 +102,14 @@ public class StateWarehouseController implements Initializable {
             PRICE.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
             AMOUNT.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
             newOrderShop.setItems(getOrderProducts(nazwaProduktu));
-            System.out.println(getOrderProducts(nazwaProduktu).toString());
+            //System.out.println(getOrderProducts(nazwaProduktu).toString());
         }
         if (location.toString().contains("state_order_warehouse")) {
             CITY.setCellValueFactory(new PropertyValueFactory<>("city"));
             STATE.setCellValueFactory(new PropertyValueFactory<Product, String>("state"));
             ORDERNR.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("orderid"));
             stateOrderWarehouse.setItems(getOrder(nazwaProduktu));
-            System.out.println(getOrder(nazwaProduktu).toString());
+            //System.out.println(getOrder(nazwaProduktu).toString());
         }
 
     }
@@ -121,18 +121,18 @@ public class StateWarehouseController implements Initializable {
         List<SalesCreatorModel> eList;
         if(nazwaProduktu == null || nazwaProduktu.equals("")){
             eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
-                    "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE s.amount > 0 AND k.city like 'R%'"
-            ).list();
+                    "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE k.shopId = :idshop AND s.amount > 0  "
+            ).setParameter("idshop",shopID).list();
         } else
         {
             eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
-                    "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE s.amount > 0 AND k.city like 'R%' AND p.name like :produkt "
-            ).setParameter("produkt",nazwaProduktu).list();
+                    "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE k.shopId = :idshop AND s.amount > 0 AND p.name like :produkt "
+            ).setParameter("produkt","%"+nazwaProduktu+"%").setParameter("idshop",shopID).list();
             searchSWCity.setText("");
             nazwaProduktu = null;
         }
 
-        System.out.println(eList);
+        System.out.println("getProducts "+eList);
         for (SalesCreatorModel ent : eList) {
             productList.add(ent);
         }
@@ -148,9 +148,9 @@ public class StateWarehouseController implements Initializable {
                 "INNER JOIN Indent i ON i.indentId = v.indentId  " +
                 "INNER JOIN State s ON s.stateId = v.stateId  " +
                 "INNER JOIN Shop p ON p.shopId = i.shopId_need " +
-                "WHERE p.city like 'R%'"
-        ).list();
-        System.out.println(eList);
+                "WHERE p.shopId = :idshop "
+        ).setParameter("idshop",shopID).list();
+        System.out.println("getOrder "+eList);
         for (StateOrderModel ent : eList) {
             orderList.add(ent);
         }
@@ -170,9 +170,9 @@ public class StateWarehouseController implements Initializable {
                 "INNER JOIN Indent i ON sp.shopId = i.shopId_need " +
                 "INNER JOIN State_of_indent soi ON i.indentId = soi.indentId " +
                 "INNER JOIN State s ON soi.stateId = s.stateId " +
-                "WHERE sp.city like 'R%' AND s.name like 'W realizacji' "
-        ).list();
-        System.out.println(eList);
+                "WHERE sp.shopId = :idshop AND s.name like 'W realizacji' "
+        ).setParameter("idshop",shopID).list();
+        System.out.println("getOrderProducts "+eList);
         for (SalesCreatorModel ent : eList) {
             productList.add(ent);
         }

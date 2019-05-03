@@ -20,7 +20,11 @@
          <children>
             <HBox prefHeight="37.0" prefWidth="933.0">
                <children>
-                  <TextField prefHeight="33.0" prefWidth="378.0" promptText="Przeszukaj magazyny" styleClass="textarea" stylesheets="@../thoth/style.css" />
+                  <ComboBox fx:id="comboList" prefHeight="26.0" prefWidth="300.0" promptText="Wybierz magazyn">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </ComboBox>
                   <Button id="search" mnemonicParsing="false" prefHeight="41.0" prefWidth="205.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
                      <font>
                         <Font size="18.0" />
