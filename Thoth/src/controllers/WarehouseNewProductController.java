@@ -1,9 +1,13 @@
 package controllers;
 
+import entity.Product;
+import entity.Shop;
+import entity.State_on_shop;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.AmbientLight;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
@@ -11,11 +15,14 @@ import models.SalesCreatorModel;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import javax.naming.Name;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import static controllers.MainWindowController.sessionFactory;
+
+import static controllers.MainWindowController.*;
 
 
 public class WarehouseNewProductController implements Initializable {
@@ -38,23 +45,23 @@ public class WarehouseNewProductController implements Initializable {
 
     public void addInsert(ActionEvent event) throws IOException {
         if(isNumeric(AMOUNT.getText()) && isNumeric(PRICE.getText())){ //wprowadzono liczby
-            if(getNameProduct().size() == 0){ //brak takiego produktu, dodać do bazy
+            if(getNameProduct(tab[0]).size() == 0){ //brak takiego produktu, dodać do bazy
                 System.out.println("można dodać do bazy");
                 insertToDataBase();
             } else { //produkt jest już w bazie
-                System.out.println("Jest w bazie "+getNameProduct().get(0).getProductId());
+                System.out.println("Jest w bazie "+getNameProduct(tab[0]).get(0).getProductId());
             }
         } else {
             System.out.println("Wprowadź poprawne dane");
         }
     }
 
-    public ObservableList<SalesCreatorModel> getNameProduct(){
+    public ObservableList<SalesCreatorModel> getNameProduct(String qry){
         ObservableList<SalesCreatorModel> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<SalesCreatorModel> eList = session.createQuery(tab[0]+":nameDevice "
+        List<SalesCreatorModel> eList = session.createQuery(qry+":nameDevice "
         ).setParameter("nameDevice",NAME.getText()).list();
-        System.out.println("getOrder "+eList);
+        System.out.println("getNameProduct "+eList);
         for (SalesCreatorModel ent : eList) {
             productList.add(ent);
         }
@@ -62,14 +69,31 @@ public class WarehouseNewProductController implements Initializable {
         return productList;
     }
 
-    public void insertToDataBase(){
+    public ObservableList<Shop> getObjectShop(){
+        ObservableList<Shop> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        //uery qry = session.createQuery("INSERT INTO Product (ProductId, Name, Price, Discount) " +
-        //        "SELECT new models.ProductShop(p.productId,p.name,p.price,p.discount) FROM Product p " +
-         //       "WHERE p.productId = null AND p.name = 'teskt' AND p.price = 900 AND p.discount = 0 ");
-        //int result = qry.executeUpdate();
-        //System.out.println("Ilość dodanych rekordów "+result);
+        List<Shop> eList = session.createQuery("from Shop where shopId = :pid").setParameter("pid", shopID).list();
+        System.out.println("getObjectShop "+eList);
+        for (Shop ent : eList) {
+            productList.add(ent);
+        }
         session.close();
+        return productList;
+    }
+
+    public void insertToDataBase()
+    {
+        Session session = sessionFactory.openSession();
+        BigDecimal wojtekDziekiZaSuperTypy = new BigDecimal(PRICE.getText());
+        Product productOB =  new Product(NAME.getText(),wojtekDziekiZaSuperTypy ,0);
+        session.save(productOB);
+        System.out.println("Dodano produkt");
+        session.close();
+        session = sessionFactory.openSession();
+        State_on_shop product = new State_on_shop(productOB,getObjectShop().get(0),Integer.parseInt(AMOUNT.getText()));
+        session.save(product);
+        session.close();
+        System.out.println("Dodano ID sklepu do produktu");
     }
 
     // brak isDigit/isNumeric
