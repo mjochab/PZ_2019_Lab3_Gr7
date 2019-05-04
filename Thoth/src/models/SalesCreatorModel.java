@@ -29,6 +29,10 @@ public class SalesCreatorModel {
         this.amount = Integer.valueOf(amount.intValue());
     }
 
+    public SalesCreatorModel(Integer productId) {
+        this.productId = productId;
+    }
+
     public Integer getProductId() {
         return productId;
     }

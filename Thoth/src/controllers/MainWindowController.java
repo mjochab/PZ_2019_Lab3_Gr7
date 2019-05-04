@@ -110,10 +110,12 @@ public class MainWindowController implements Initializable {
         query.setParameter("password", passwordTextField.getText());
         user = query.list();
         session.close();
-        System.out.println("ID Sklepu " + whoLogin().get(0).getShopID().toString());
-        shopID = whoLogin().get(0).getShopID();
-        System.out.println("Miejscowość " + whoLogin().get(0).getShopName().toString());
-        shopName = whoLogin().get(0).getShopName().toString();
+        if(whoLogin() != null){
+            System.out.println("ID Sklepu " + whoLogin().get(0).getShopID().toString());
+            shopID = whoLogin().get(0).getShopID();
+            System.out.println("Miejscowość " + whoLogin().get(0).getShopName().toString());
+            shopName = whoLogin().get(0).getShopName().toString();
+        }
         try {
             System.out.println(user.get(0).getRoleId().getPosition().getClass());
 
@@ -205,7 +207,8 @@ public class MainWindowController implements Initializable {
             return productList;
         }
         System.out.println("Rozmiar <WHO> "+who.size());
-        who.remove(0);
+        who.remove(who.size()-1); //dla admina
+        System.out.println("Rozmiar <WHO> "+who.size());
         return null;
     }
 

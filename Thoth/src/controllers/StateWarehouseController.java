@@ -1,6 +1,7 @@
 package controllers;
 
 import entity.Product;
+import entity.Shop;
 import entity.State_on_shop;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,6 +57,8 @@ public class StateWarehouseController implements Initializable {
     @FXML
     public TextField searchSWCity;
     @FXML
+    private ComboBox<Shop> comboList;
+    @FXML
     MenuItem logout;
     @FXML
     Parent root;
@@ -94,6 +97,7 @@ public class StateWarehouseController implements Initializable {
             PRICE.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
             AMOUNT.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
             new_order.setItems(getProducts(nazwaProduktu));
+            setComboList();
             //System.out.println(getProducts(nazwaProduktu).toString());
         }
         if (location.toString().contains("new_order_shop")) {
@@ -131,7 +135,6 @@ public class StateWarehouseController implements Initializable {
             searchSWCity.setText("");
             nazwaProduktu = null;
         }
-
         System.out.println("getProducts "+eList);
         for (SalesCreatorModel ent : eList) {
             productList.add(ent);
@@ -184,6 +187,23 @@ public class StateWarehouseController implements Initializable {
     public void searchStateWarehouse(ActionEvent event) throws IOException {
         nazwaProduktu = searchSWCity.getText();
         stateWarehouse.setItems(getProducts(nazwaProduktu));
+    }
+
+    private ObservableList<Shop> getShops() {
+        ObservableList<Shop> shops = FXCollections.observableArrayList();
+        Session session = sessionFactory.openSession();
+        List<Shop> shopsList = session.createQuery("from Shop").list();
+
+        shops.addAll(shopsList);
+
+        session.close();
+        System.out.println("Zwracam sklepy");
+        return shops;
+
+    }
+
+    public void setComboList() {
+        this.comboList.getItems().addAll(getShops());
     }
 
 }
