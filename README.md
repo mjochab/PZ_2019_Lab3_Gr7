@@ -4,7 +4,13 @@ PZ_2019_Lab3_Gr7
 
 **Biblioteka służąca do tworzenia plików pdf**
 
+Usuwamie sledzenia git dla pliku
+```
+git rm -r --cached <file name>
 
+git add <file name>
+git commit -m "<commit message>"
+```
 ## Autorzy
 * Paweł Durda
 * Mateusz Gawlak
