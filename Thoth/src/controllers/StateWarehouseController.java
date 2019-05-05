@@ -96,7 +96,7 @@ public class StateWarehouseController implements Initializable {
             NAME.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
             PRICE.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
             AMOUNT.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
-            new_order.setItems(getProducts(nazwaProduktu));
+            new_order.setItems(getProductsForOtherShop(shopID));
             setComboList();
             //System.out.println(getProducts(nazwaProduktu).toString());
         }
@@ -127,8 +127,7 @@ public class StateWarehouseController implements Initializable {
             eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
                     "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE k.shopId = :idshop AND s.amount > 0  "
             ).setParameter("idshop",shopID).list();
-        } else
-        {
+        } else {
             eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
                     "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE k.shopId = :idshop AND s.amount > 0 AND p.name like :produkt "
             ).setParameter("produkt","%"+nazwaProduktu+"%").setParameter("idshop",shopID).list();
@@ -183,6 +182,21 @@ public class StateWarehouseController implements Initializable {
         return productList;
     }
 
+    public ObservableList<SalesCreatorModel> getProductsForOtherShop(int id) {
+        ObservableList<SalesCreatorModel> productList = FXCollections.observableArrayList();
+        Session session = sessionFactory.openSession();
+        List<SalesCreatorModel> eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
+                    "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE k.shopId = :idshop AND s.amount > 0  "
+            ).setParameter("idshop",id).list();
+            nazwaProduktu = null;
+        System.out.println("getProductsForOtherShop "+eList);
+        for (SalesCreatorModel ent : eList) {
+            productList.add(ent);
+        }
+        session.close();
+        return productList;
+    }
+
 
     public void searchStateWarehouse(ActionEvent event) throws IOException {
         nazwaProduktu = searchSWCity.getText();
@@ -204,6 +218,22 @@ public class StateWarehouseController implements Initializable {
 
     public void setComboList() {
         this.comboList.getItems().addAll(getShops());
+        comboList.getSelectionModel().select(shopID-1);
+    }
+
+    public void searchNewOrderWarehouse(){
+        //System.out.println("COMOBOBOX "+comboList.getItems().get(0).toString());
+        int id = comboList.getSelectionModel().getSelectedItem().getShopId();
+        PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
+        NAME.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
+        PRICE.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
+        AMOUNT.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
+        new_order.setItems(getProductsForOtherShop(id));
+    }
+
+    public void newOrderWarehouse(){
+        String orderView = new_order.getSelectionModel().getSelectedItem().toString();
+        System.out.println(orderView);
     }
 
 }

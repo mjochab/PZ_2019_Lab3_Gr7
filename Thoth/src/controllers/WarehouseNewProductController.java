@@ -94,6 +94,9 @@ public class WarehouseNewProductController implements Initializable {
         session.save(product);
         session.close();
         System.out.println("Dodano ID sklepu do produktu");
+        NAME.setText("");
+        PRICE.setText("");
+        AMOUNT.setText("");
     }
 
     // brak isDigit/isNumeric
