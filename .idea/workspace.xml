@@ -4,7 +4,6 @@
     <list default="true" id="505d9756-07ed-4d47-88b3-069161296adb" name="Default Changelist" comment="poprawa nazw tabel oraz insertów">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Thoth/src/controllers/WarehouseNewProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Thoth/src/controllers/WarehouseNewProductController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Thoth/src/fxmlfiles/new_order_warehouse.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Thoth/src/fxmlfiles/new_order_warehouse.fxml" afterDir="false" />
     </list>
     <ignored path="C:\Users\Admin\Desktop\JavaFX aplication\PZ_2019_Lab3_Gr7\.idea\shelf/" />
@@ -29,36 +28,14 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.2609536">
+    <splitter split-orientation="horizontal" split-proportion="0.59383035">
       <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/Thoth/src/database/zapytania_magazyn">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="306">
-                  <caret line="18" column="38" selection-start-line="18" selection-start-column="38" selection-end-line="18" selection-end-column="38" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/ComplexOrderDetailsController.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="458">
-                  <caret line="78" column="9" lean-forward="true" selection-start-line="78" selection-start-column="9" selection-end-line="78" selection-end-column="9" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/LogisticOrdersController.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-204">
-                  <caret line="34" column="29" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="29" />
+                <state relative-caret-position="662">
+                  <caret line="78" column="9" selection-start-line="78" selection-start-column="9" selection-end-line="78" selection-end-column="9" />
                 </state>
               </provider>
             </entry>
@@ -66,17 +43,31 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="631">
-                  <caret line="235" column="36" selection-start-line="235" selection-start-column="36" selection-end-line="235" selection-end-column="36" />
+                <state relative-caret-position="306">
+                  <caret line="110" column="47" selection-start-line="110" selection-start-column="37" selection-end-line="110" selection-end-column="47" />
                   <folding>
-                    <element signature="e#2327#2942#1" />
-                    <element signature="e#3008#3548#1" />
-                    <element signature="e#3609#4134#1" />
-                    <element signature="e#4202#4614#1" />
                     <element signature="method#getProducts#0;class#StateWarehouseController#0" />
                     <element signature="method#getOrder#0;class#StateWarehouseController#0" />
                     <element signature="method#getOrderProducts#0;class#StateWarehouseController#0" />
+                    <element signature="method#getProductsForOtherShop#0;class#StateWarehouseController#0" />
+                    <element signature="method#searchStateWarehouse#0;class#StateWarehouseController#0" />
                     <element signature="method#getShops#0;class#StateWarehouseController#0" />
+                    <element signature="method#searchNewOrderWarehouse#0;class#StateWarehouseController#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/WarehouseNewProductController.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="444">
+                  <caret line="57" lean-forward="true" selection-start-line="57" selection-end-line="57" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                    <element signature="method#getNameProduct#0;class#WarehouseNewProductController#0" />
+                    <element signature="method#getObjectShop#0;class#WarehouseNewProductController#0" />
+                    <element signature="method#isNumeric#0;class#WarehouseNewProductController#0" />
                   </folding>
                 </state>
               </provider>
@@ -84,24 +75,25 @@
           </file>
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Thoth/src/fxmlfiles/new_order_warehouse.fxml">
-              <provider editor-type-id="text-editor">
-                <state relative-caret-position="323">
-                  <caret line="46" column="27" lean-forward="true" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1003">
+                  <caret line="59" column="49" selection-start-line="59" selection-start-column="36" selection-end-line="59" selection-end-column="49" />
                 </state>
               </provider>
-              <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+              <provider editor-type-id="JavaFX-Scene-Builder" />
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/MainWindowController.java">
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/LogisticOrdersController.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="17">
-                  <caret line="47" column="34" selection-start-line="47" selection-start-column="34" selection-end-line="47" selection-end-column="34" />
+                <state relative-caret-position="408">
+                  <caret line="136" column="50" selection-start-line="136" selection-start-column="50" selection-end-line="136" selection-end-column="50" />
                   <folding>
-                    <element signature="method#switchscene#0;class#MainWindowController#0" />
-                    <element signature="method#resetdb#0;class#MainWindowController#0" />
-                    <element signature="method#getShops#0;class#MainWindowController#0" />
-                    <element signature="method#whoLogin#0;class#MainWindowController#0" />
+                    <element signature="method#getIndentsReadyForShipment#0;class#LogisticOrdersController#0" />
                   </folding>
                 </state>
               </provider>
@@ -141,7 +133,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Thoth/src/demo/CreateUser.java" />
         <option value="$PROJECT_DIR$/Thoth/src/entity/State_of_order.java" />
         <option value="$PROJECT_DIR$/Thoth/src/import.sql" />
         <option value="$PROJECT_DIR$/Thoth/src/entity/Order.java" />
@@ -190,16 +181,16 @@
         <option value="$PROJECT_DIR$/Thoth/src/models/Shop.java" />
         <option value="$PROJECT_DIR$/Thoth/src/controllers/ComplexOrderDetailsController.java" />
         <option value="$PROJECT_DIR$/Thoth/src/controllers/WarehouseNewProductController.java" />
+        <option value="$PROJECT_DIR$/Thoth/src/controllers/LogisticOrdersController.java" />
         <option value="$PROJECT_DIR$/Thoth/src/fxmlfiles/new_order_warehouse.fxml" />
         <option value="$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="174" />
-    <option name="y" value="166" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
+    <option name="x" value="953" />
+    <option name="width" value="974" />
+    <option name="height" value="1087" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -207,17 +198,13 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="PZ_2019_Lab3_Gr7" type="b2602c69:ProjectViewProjectNode" />
               <item name="PZ_2019_Lab3_Gr7" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PZ_2019_Lab3_Gr7" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PZ_2019_Lab3_Gr7" type="462c0819:PsiDirectoryNode" />
-              <item name="Database" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="PZ_2019_Lab3_Gr7" type="b2602c69:ProjectViewProjectNode" />
@@ -242,20 +229,6 @@
               <item name="PZ_2019_Lab3_Gr7" type="462c0819:PsiDirectoryNode" />
               <item name="Thoth" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="database" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PZ_2019_Lab3_Gr7" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PZ_2019_Lab3_Gr7" type="462c0819:PsiDirectoryNode" />
-              <item name="Thoth" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="entity" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PZ_2019_Lab3_Gr7" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PZ_2019_Lab3_Gr7" type="462c0819:PsiDirectoryNode" />
-              <item name="Thoth" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="fxmlfiles" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -264,6 +237,15 @@
               <item name="Thoth" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="models" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PZ_2019_Lab3_Gr7" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="PZ_2019_Lab3_Gr7" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; 1.8 &gt;" type="70bed36:NamedLibraryElementNode" />
             </path>
           </expand>
           <select />
@@ -280,14 +262,13 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557060407900" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557306670567" />
     <property name="jdk.selected.JAVA_MODULE" value="1.8" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/Thoth/lib/txw2-2.3.1.jar!/" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -404,7 +385,11 @@
       <workItem from="1556817206855" duration="1320000" />
       <workItem from="1556874620673" duration="24567000" />
       <workItem from="1556959366094" duration="27123000" />
-      <workItem from="1557052064525" duration="3408000" />
+      <workItem from="1557052064525" duration="3730000" />
+      <workItem from="1557075467591" duration="174000" />
+      <workItem from="1557245137268" duration="5704000" />
+      <workItem from="1557302782409" duration="3580000" />
+      <workItem from="1557315250791" duration="4074000" />
     </task>
     <task id="LOCAL-00001" summary="biblioteki potrzebne do polaczenia z baza danych i hibernate">
       <created>1554503048623</created>
@@ -445,13 +430,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="158290000" />
+    <option name="totallyTimeSpent" value="172144000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.76911074" side_tool="true" visible="true" weight="0.17270789" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.76911074" side_tool="true" visible="true" weight="0.1705757" />
       <window_info id="Structure" order="1" sideWeight="0.23088923" side_tool="true" weight="0.18763326" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -464,7 +449,7 @@
       <window_info id="Job Explorer" order="10" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3281412" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.5544629" visible="true" weight="0.22741432" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5544629" weight="0.22741432" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997923" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -555,21 +540,23 @@
     <MESSAGE value="poprawa nazw tabel oraz insertów" />
     <option name="LAST_COMMIT_MESSAGE" value="poprawa nazw tabel oraz insertów" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java</url>
+          <line>109</line>
+          <properties />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/AnalystPricesViewController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="61" column="10" selection-start-line="61" selection-start-column="10" selection-end-line="61" selection-end-column="10" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Thoth/src/database/zapytania admin, analityk i  inserty.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-222" />
@@ -595,13 +582,6 @@
             <element signature="e#475#476#0" expanded="true" />
             <element signature="e#515#516#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_192/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="2440" selection-start-line="2440" selection-end-line="2440" />
         </state>
       </provider>
     </entry>
@@ -879,29 +859,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/WarehouseNewProductController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="57" lean-forward="true" selection-start-line="57" selection-end-line="57" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#getNameProduct#0;class#WarehouseNewProductController#0" />
-            <element signature="method#isNumeric#0;class#WarehouseNewProductController#0" />
-          </folding>
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/Thoth/src/fxmlfiles/logistic_orders.fxml">
+      <provider selected="true" editor-type-id="text-editor" />
+      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Thoth/src/database/zapytania_magazyn">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="38" selection-start-line="18" selection-start-column="38" selection-end-line="18" selection-end-column="38" />
+        <state relative-caret-position="680">
+          <caret line="40" column="70" selection-start-line="40" selection-start-column="70" selection-end-line="40" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/out/production/PZ_2019_Lab3_Gr7/fxmlfiles/new_order_warehouse.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="456">
+          <caret line="59" column="66" selection-start-line="59" selection-start-column="66" selection-end-line="59" selection-end-column="66" />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_192/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1714">
+          <caret line="2706" selection-start-line="2706" selection-end-line="2706" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/MainWindowController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="47" column="34" selection-start-line="47" selection-start-column="34" selection-end-line="47" selection-end-column="34" />
+        <state relative-caret-position="232">
+          <caret line="125" selection-start-line="125" selection-end-line="125" />
           <folding>
             <element signature="method#switchscene#0;class#MainWindowController#0" />
             <element signature="method#resetdb#0;class#MainWindowController#0" />
@@ -911,24 +898,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/ComplexOrderDetailsController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="458">
-          <caret line="78" column="9" lean-forward="true" selection-start-line="78" selection-start-column="9" selection-end-line="78" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Thoth/src/fxmlfiles/logistic_orders.fxml">
-      <provider selected="true" editor-type-id="text-editor" />
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Thoth/src/fxmlfiles/new_order_warehouse.fxml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="46" column="27" lean-forward="true" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1003">
+          <caret line="59" column="49" selection-start-line="59" selection-start-column="36" selection-end-line="59" selection-end-column="49" />
         </state>
       </provider>
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Thoth/src/models/IndentTableView.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -939,24 +915,46 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/LogisticOrdersController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-204">
-          <caret line="34" column="29" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="29" />
+        <state relative-caret-position="408">
+          <caret line="136" column="50" selection-start-line="136" selection-start-column="50" selection-end-line="136" selection-end-column="50" />
+          <folding>
+            <element signature="method#getIndentsReadyForShipment#0;class#LogisticOrdersController#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/ComplexOrderDetailsController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="662">
+          <caret line="78" column="9" selection-start-line="78" selection-start-column="9" selection-end-line="78" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/WarehouseNewProductController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="57" lean-forward="true" selection-start-line="57" selection-end-line="57" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#getNameProduct#0;class#WarehouseNewProductController#0" />
+            <element signature="method#getObjectShop#0;class#WarehouseNewProductController#0" />
+            <element signature="method#isNumeric#0;class#WarehouseNewProductController#0" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="631">
-          <caret line="235" column="36" selection-start-line="235" selection-start-column="36" selection-end-line="235" selection-end-column="36" />
+        <state relative-caret-position="306">
+          <caret line="110" column="47" selection-start-line="110" selection-start-column="37" selection-end-line="110" selection-end-column="47" />
           <folding>
-            <element signature="e#2327#2942#1" />
-            <element signature="e#3008#3548#1" />
-            <element signature="e#3609#4134#1" />
-            <element signature="e#4202#4614#1" />
             <element signature="method#getProducts#0;class#StateWarehouseController#0" />
             <element signature="method#getOrder#0;class#StateWarehouseController#0" />
             <element signature="method#getOrderProducts#0;class#StateWarehouseController#0" />
+            <element signature="method#getProductsForOtherShop#0;class#StateWarehouseController#0" />
+            <element signature="method#searchStateWarehouse#0;class#StateWarehouseController#0" />
             <element signature="method#getShops#0;class#StateWarehouseController#0" />
+            <element signature="method#searchNewOrderWarehouse#0;class#StateWarehouseController#0" />
           </folding>
         </state>
       </provider>

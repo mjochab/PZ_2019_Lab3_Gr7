@@ -6,6 +6,8 @@ import entity.State_on_shop;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,6 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import models.IndentTableView;
 import models.SalesCreatorModel;
@@ -31,19 +35,19 @@ public class StateWarehouseController implements Initializable {
     @FXML
     public TableView stateWarehouse;
     @FXML
-    public TableView new_order;
+    public TableView new_order,add_new_order;
     @FXML
     public TableView stateOrderWarehouse;
     @FXML
     public TableView newOrderShop;
     @FXML
-    public TableColumn PRODUCTID;
+    public TableColumn PRODUCTID,PRODUCTID_ADD;
     @FXML
-    public TableColumn NAME;
+    public TableColumn NAME,NAME_ADD;
     @FXML
-    public TableColumn PRICE;
+    public TableColumn PRICE,PRICE_ADD;
     @FXML
-    public TableColumn AMOUNT;
+    public TableColumn AMOUNT,AMOUNT_ADD;
     @FXML
     public TableColumn DISCOUNT;
     @FXML
@@ -65,7 +69,7 @@ public class StateWarehouseController implements Initializable {
 
     Stage stage;
 
-    private ObservableList<IndentTableView> displayedOrdersReadyForShipment = FXCollections.observableArrayList();
+    private ObservableList<SalesCreatorModel> lista = FXCollections.observableArrayList();
 
     String nazwaProduktu = null; //nazwa magazynu do przeszukiwania zawartości
 
@@ -99,6 +103,16 @@ public class StateWarehouseController implements Initializable {
             new_order.setItems(getProductsForOtherShop(shopID));
             setComboList();
             //System.out.println(getProducts(nazwaProduktu).toString());
+            new_order.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if(new_order.getSelectionModel().getSelectedItem() != null){
+                        System.out.println("Wysłany "+new_order.getSelectionModel().getSelectedItem().toString());
+                        lista.add((SalesCreatorModel) new_order.getSelectionModel().getSelectedItem());
+                        addToTable(lista);
+                    }
+                }
+            });
         }
         if (location.toString().contains("new_order_shop")) {
             PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
@@ -115,7 +129,6 @@ public class StateWarehouseController implements Initializable {
             stateOrderWarehouse.setItems(getOrder(nazwaProduktu));
             //System.out.println(getOrder(nazwaProduktu).toString());
         }
-
     }
 
 
@@ -231,9 +244,23 @@ public class StateWarehouseController implements Initializable {
         new_order.setItems(getProductsForOtherShop(id));
     }
 
+    public void addToTable(ObservableList<SalesCreatorModel> item){
+        PRODUCTID_ADD.setCellValueFactory(new PropertyValueFactory<>("productId"));
+        NAME_ADD.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
+        PRICE_ADD.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
+        AMOUNT_ADD.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
+        System.out.println("Odebrane "+item.toString());
+        add_new_order.setItems(item);
+    }
+
+
+
     public void newOrderWarehouse(){
         String orderView = new_order.getSelectionModel().getSelectedItem().toString();
         System.out.println(orderView);
+
+
+
     }
 
 }
