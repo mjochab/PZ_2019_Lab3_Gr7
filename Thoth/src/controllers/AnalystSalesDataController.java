@@ -15,6 +15,7 @@ import org.hibernate.Session;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -58,6 +59,15 @@ public class AnalystSalesDataController implements Initializable {
 
 
     public void generateRaport(ActionEvent actionEvent) {
+
+        Session session = sessionFactory.openSession();
+//        List lista = session.createQuery("SELECT Shop.street, Shop.zipCode, Shop.City, SUM(receipt.TotalValue) FROM Receipt, Shop WHERE Receipt.shopId = Shop.shopId GROUP BY Receipt.shopId").list();
+        List lista = session.createQuery("SELECT s.zipCode, s.city, s.street, SUM(r.totalValue) FROM Shop s INNER JOIN Receipt r on s.shopId = r.shopId GROUP BY s.shopId").list();
+        System.out.println(lista.size());
+        System.out.println(lista.get(0));
+
+        session.close();
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Raport utworzony pomyślnie");
         alert.setHeaderText("Utworzono w lokalizacji:");
