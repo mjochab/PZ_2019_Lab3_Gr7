@@ -7,15 +7,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.AmbientLight;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import models.SalesCreatorModel;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
-import javax.naming.Name;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;

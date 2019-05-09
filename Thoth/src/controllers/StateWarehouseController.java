@@ -108,8 +108,17 @@ public class StateWarehouseController implements Initializable {
                 public void handle(MouseEvent event) {
                     if(new_order.getSelectionModel().getSelectedItem() != null){
                         System.out.println("Wysłany "+new_order.getSelectionModel().getSelectedItem().toString());
-                        lista.add((SalesCreatorModel) new_order.getSelectionModel().getSelectedItem());
-                        addToTable(lista);
+                        if(lista.isEmpty()){
+                            lista.add((SalesCreatorModel) new_order.getSelectionModel().getSelectedItem());
+                            addToTable(lista);
+                        } else {
+                            if(lista.contains((SalesCreatorModel) new_order.getSelectionModel().getSelectedItem())){
+                                System.out.println("Ten object już tam sie znajduje");
+                            } else {
+                                lista.add((SalesCreatorModel) new_order.getSelectionModel().getSelectedItem());
+                                addToTable(lista);
+                            }
+                        }
                     }
                 }
             });
@@ -249,7 +258,7 @@ public class StateWarehouseController implements Initializable {
         NAME_ADD.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
         PRICE_ADD.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
         AMOUNT_ADD.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
-        System.out.println("Odebrane "+item.toString());
+        System.out.println("Odebrane "+item.toString()+" rozmiar "+ item.size());
         add_new_order.setItems(item);
     }
 
