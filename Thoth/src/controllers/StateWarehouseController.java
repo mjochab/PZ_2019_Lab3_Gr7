@@ -133,6 +133,8 @@ public class StateWarehouseController implements Initializable {
                     if(event.getButton().equals(MouseButton.PRIMARY)){
                         if(event.getClickCount() == 2){
                             if(add_new_order.getSelectionModel().getSelectedItem() != null){
+                                lista.remove(add_new_order.getSelectionModel().getSelectedItem());
+                                addToTable(lista);
                                 System.out.println("Usuwany object "+add_new_order.getSelectionModel().getSelectedItem().toString());
                             }
                         }
@@ -276,7 +278,15 @@ public class StateWarehouseController implements Initializable {
         PRICE_ADD.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
         AMOUNT_ADD.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
         System.out.println("Odebrane "+item.toString()+" rozmiar "+ item.size());
-        add_new_order.setItems(item);
+        try{
+            if(!item.isEmpty()){
+                add_new_order.setItems(item);
+            } else {
+                //naprawić
+            }
+        } catch (NullPointerException e){
+            System.out.println("NullPointerException po odjęciu ostatniego elementu "+e);
+        }
     }
 
 

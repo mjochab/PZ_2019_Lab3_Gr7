@@ -30,8 +30,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="125" column="21" selection-start-line="125" selection-start-column="21" selection-end-line="125" selection-end-column="21" />
+            <state relative-caret-position="473">
+              <caret line="280" column="12" lean-forward="true" selection-start-line="280" selection-start-column="12" selection-end-line="280" selection-end-column="12" />
               <folding>
                 <element signature="method#getProducts#0;class#StateWarehouseController#0" />
                 <element signature="method#getOrder#0;class#StateWarehouseController#0" />
@@ -304,7 +304,7 @@
       <workItem from="1557245137268" duration="5704000" />
       <workItem from="1557302782409" duration="3580000" />
       <workItem from="1557315250791" duration="4074000" />
-      <workItem from="1557386483357" duration="3188000" />
+      <workItem from="1557386483357" duration="4546000" />
     </task>
     <task id="LOCAL-00001" summary="biblioteki potrzebne do polaczenia z baza danych i hibernate">
       <created>1554503048623</created>
@@ -345,7 +345,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="175635000" />
+    <option name="totallyTimeSpent" value="176993000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
@@ -832,8 +832,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="125" column="21" selection-start-line="125" selection-start-column="21" selection-end-line="125" selection-end-column="21" />
+        <state relative-caret-position="473">
+          <caret line="280" column="12" lean-forward="true" selection-start-line="280" selection-start-column="12" selection-end-line="280" selection-end-column="12" />
           <folding>
             <element signature="method#getProducts#0;class#StateWarehouseController#0" />
             <element signature="method#getOrder#0;class#StateWarehouseController#0" />
