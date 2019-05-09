@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="505d9756-07ed-4d47-88b3-069161296adb" name="Default Changelist" comment="poprawa nazw tabel oraz insertów">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/antlr_2_7_7.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Thoth/src/controllers/WarehouseNewProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Thoth/src/controllers/WarehouseNewProductController.java" afterDir="false" />
     </list>
     <ignored path="C:\Users\Admin\Desktop\JavaFX aplication\PZ_2019_Lab3_Gr7\.idea\shelf/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,11 +27,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1360">
-              <caret line="260" column="81" selection-start-line="260" selection-start-column="81" selection-end-line="260" selection-end-column="81" />
+            <state relative-caret-position="408">
+              <caret line="125" column="21" selection-start-line="125" selection-start-column="21" selection-end-line="125" selection-end-column="21" />
               <folding>
                 <element signature="method#getProducts#0;class#StateWarehouseController#0" />
                 <element signature="method#getOrder#0;class#StateWarehouseController#0" />
@@ -45,20 +41,6 @@
                 <element signature="method#getShops#0;class#StateWarehouseController#0" />
                 <element signature="method#searchNewOrderWarehouse#0;class#StateWarehouseController#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/file.txt">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="25" selection-start-line="25" selection-end-line="26" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -322,7 +304,7 @@
       <workItem from="1557245137268" duration="5704000" />
       <workItem from="1557302782409" duration="3580000" />
       <workItem from="1557315250791" duration="4074000" />
-      <workItem from="1557386483357" duration="2336000" />
+      <workItem from="1557386483357" duration="3188000" />
     </task>
     <task id="LOCAL-00001" summary="biblioteki potrzebne do polaczenia z baza danych i hibernate">
       <created>1554503048623</created>
@@ -363,13 +345,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="174783000" />
+    <option name="totallyTimeSpent" value="175635000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.76911074" side_tool="true" visible="true" weight="0.25266525" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.76911074" side_tool="true" visible="true" weight="0.25266525" />
       <window_info id="Structure" order="1" sideWeight="0.23088923" side_tool="true" weight="0.18763326" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -382,7 +364,7 @@
       <window_info id="Job Explorer" order="10" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3281412" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5544629" weight="0.22637591" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.5544629" visible="true" weight="0.22637591" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997923" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -838,10 +820,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" selection-start-line="25" selection-end-line="26" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/file.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1360">
-          <caret line="260" column="81" selection-start-line="260" selection-start-column="81" selection-end-line="260" selection-end-column="81" />
+        <state relative-caret-position="408">
+          <caret line="125" column="21" selection-start-line="125" selection-start-column="21" selection-end-line="125" selection-end-column="21" />
           <folding>
             <element signature="method#getProducts#0;class#StateWarehouseController#0" />
             <element signature="method#getOrder#0;class#StateWarehouseController#0" />
@@ -851,16 +843,6 @@
             <element signature="method#getShops#0;class#StateWarehouseController#0" />
             <element signature="method#searchNewOrderWarehouse#0;class#StateWarehouseController#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/file.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="25" selection-start-line="25" selection-end-line="26" selection-end-column="13" />
         </state>
       </provider>
     </entry>

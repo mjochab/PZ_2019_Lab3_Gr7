@@ -103,20 +103,37 @@ public class StateWarehouseController implements Initializable {
             new_order.setItems(getProductsForOtherShop(shopID));
             setComboList();
             //System.out.println(getProducts(nazwaProduktu).toString());
-            new_order.setOnMousePressed(new EventHandler<MouseEvent>() {
+            new_order.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    if(new_order.getSelectionModel().getSelectedItem() != null){
-                        System.out.println("Wysłany "+new_order.getSelectionModel().getSelectedItem().toString());
-                        if(lista.isEmpty()){
-                            lista.add((SalesCreatorModel) new_order.getSelectionModel().getSelectedItem());
-                            addToTable(lista);
-                        } else {
-                            if(lista.contains((SalesCreatorModel) new_order.getSelectionModel().getSelectedItem())){
-                                System.out.println("Ten object już tam sie znajduje");
-                            } else {
-                                lista.add((SalesCreatorModel) new_order.getSelectionModel().getSelectedItem());
-                                addToTable(lista);
+                    if(event.getButton().equals(MouseButton.PRIMARY)){
+                        if(event.getClickCount() == 2){
+                            if(new_order.getSelectionModel().getSelectedItem() != null){
+                                System.out.println("Wysłany "+new_order.getSelectionModel().getSelectedItem().toString());
+                                if(lista.isEmpty()){
+                                    lista.add((SalesCreatorModel) new_order.getSelectionModel().getSelectedItem());
+                                    addToTable(lista);
+                                } else {
+                                    if(lista.contains((SalesCreatorModel) new_order.getSelectionModel().getSelectedItem())){
+                                        System.out.println("Ten object już tam sie znajduje");
+                                    } else {
+                                        lista.add((SalesCreatorModel) new_order.getSelectionModel().getSelectedItem());
+                                        addToTable(lista);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            //-------------------------------------------------------------------------------------------------------
+            add_new_order.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if(event.getButton().equals(MouseButton.PRIMARY)){
+                        if(event.getClickCount() == 2){
+                            if(add_new_order.getSelectionModel().getSelectedItem() != null){
+                                System.out.println("Usuwany object "+add_new_order.getSelectionModel().getSelectedItem().toString());
                             }
                         }
                     }
