@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminController">
+<AnchorPane stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddEmployeeController">
     <children>
         <VBox layoutX="-14.0" prefHeight="761.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -29,7 +29,7 @@
                                 <Insets />
                             </HBox.margin>
                         </Label>
-                  <TextField prefHeight="25.0" prefWidth="300.0" styleClass="textarea" />
+                  <TextField fx:id="tfFirstName" prefHeight="25.0" prefWidth="300.0" styleClass="textarea" />
                     </children>
                <VBox.margin>
                   <Insets />
@@ -48,7 +48,7 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <TextField prefHeight="25.0" prefWidth="300.0" styleClass="textarea" />
+                  <TextField fx:id="tfLastName" prefHeight="25.0" prefWidth="300.0" styleClass="textarea" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -64,7 +64,7 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <TextField prefHeight="25.0" prefWidth="300.0" styleClass="textarea" />
+                  <TextField fx:id="tfLogin" prefHeight="25.0" prefWidth="300.0" styleClass="textarea" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -80,23 +80,7 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <TextField prefHeight="25.0" prefWidth="300.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
-               </children>
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="125.0">
-               <children>
-                  <Label prefHeight="5.0" prefWidth="120.0" styleClass="whitelabel" text="Adres:" textFill="WHITE">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Label>
-                  <TextField prefHeight="25.0" prefWidth="300.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
+                  <PasswordField fx:id="tfPassword" prefHeight="25.0" prefWidth="299.0" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -134,7 +118,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
-                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="420.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zatwierdź">
+                <Button fx:id="btnAddEmployee" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveEmployee" prefHeight="26.0" prefWidth="420.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zatwierdź">
                     <font>
                         <Font size="18.0" />
                     </font>

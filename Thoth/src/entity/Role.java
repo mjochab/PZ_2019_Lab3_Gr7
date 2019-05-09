@@ -40,9 +40,6 @@ public class Role {
 
     @Override
     public String toString() {
-        return "Role{" +
-                "roleId=" + roleId +
-                ", position='" + position + '\'' +
-                '}';
+        return this.getPosition();
     }
 }

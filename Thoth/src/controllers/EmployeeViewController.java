@@ -81,4 +81,8 @@ public class EmployeeViewController implements Initializable {
         return userList;
     }
 
+    public void reloadTableView() {
+        employeeTable.getItems().clear();
+        employeeTable.getItems().addAll(getEmployee());
+    }
 }

@@ -32,24 +32,18 @@ public class AdminController implements Initializable {
     MenuItem back;
     @FXML
     Parent root;
+    @FXML
+    AddEmployeeController addEmployeeController;
+    @FXML
+    EmployeeViewController employeeViewController;
+
 
     Stage stage;
 
     @FXML
-    private TextField tfFirstName;
-    @FXML
-    private TextField tfLastName;
-    @FXML
-    private TextField tfLogin;
-    @FXML
-    private PasswordField tfPassword;
-    @FXML
-    private ComboBox<Role> comboRoleList;
-    @FXML
-    private ComboBox<Shop> comboShopList;
-    @FXML
-    private Button btnAddEmployee;
-
+    public void reloadEmployeeView() {
+        employeeViewController.reloadTableView();
+    }
 
     public void switchscene(ActionEvent event) throws IOException { //zmiana sceny BUTTON
         System.out.println(event.getSource().toString());
@@ -71,54 +65,8 @@ public class AdminController implements Initializable {
         stage.show();
     }
 
-    public void addEmployee() { //dodawanie użytkownika do bazy
-        User u = new User();
-        UserShop us = new UserShop();
-        u.setFirstName(tfFirstName.getText());
-        u.setLastName(tfLastName.getText());
-        u.setPassword(tfPassword.getText());
-        //combo
-    }
 
-    private ObservableList<Shop> getShops() { // wybiera listę sklepów z bazy
-        ObservableList<Shop> shops = FXCollections.observableArrayList();
-        Session session = sessionFactory.openSession();
-        Shop sp = new Shop();
-        List<Shop> shopsList = session.createQuery("from Shop").list();
-        if (shops.size() > 0) {
-            sp.setCity(shops.get(0).getCity());
-            sp.setStreet(shops.get(0).getStreet());
-            sp.setZipCode(shops.get(0).getZipCode());
-            shops.addAll(shopsList);
-            session.close();
-        }
-        return shops;
-    }
 
-    public void setComboShopList() {
-        this.comboShopList.getItems().addAll(getShops());
-    }
-
-    private ObservableList<Role> getRoles() {// wybiera listę rul z bazy
-        ObservableList<Role> roles = FXCollections.observableArrayList();
-        Session session2 = sessionFactory.openSession();
-        Role rl = new Role();
-        List<Role> rolesList = session2.createQuery("SELECT r FROM Role r", Role.class).getResultList();
-        roles.addAll(rolesList);
-        session2.close();
-
-        if (roles.size() > 0) {
-            rl.setPosition(roles.get(0).getPosition());
-            // rl.addAll(rolesList);
-            session2.close();
-        }
-        session2.close();
-        return roles;
-    }
-
-    public void setComboRoleList () {
-        // this.comboRoleList.getItems.addAll(getRoles());
-    }
 
 
     @Override
