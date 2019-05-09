@@ -103,9 +103,8 @@ public class EmployeeViewController implements Initializable {
             session.getTransaction().begin();
             User userToUpdate = e.getTableView().getSelectionModel().getSelectedItem().getUser();
 
-
             try {
-                session.saveOrUpdate(userToUpdate);
+                session.update(userToUpdate);
                 session.getTransaction().commit();
 
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
