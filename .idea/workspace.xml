@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="505d9756-07ed-4d47-88b3-069161296adb" name="Default Changelist" comment="poprawa nazw tabel oraz insertów">
-      <change beforePath="$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="C:\Users\Admin\Desktop\JavaFX aplication\PZ_2019_Lab3_Gr7\.idea\shelf/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,8 +30,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="473">
-              <caret line="280" column="12" lean-forward="true" selection-start-line="280" selection-start-column="12" selection-end-line="280" selection-end-column="12" />
+            <state relative-caret-position="694">
+              <caret line="295" column="38" lean-forward="true" selection-start-line="295" selection-start-column="38" selection-end-line="295" selection-end-column="38" />
               <folding>
                 <element signature="method#getProducts#0;class#StateWarehouseController#0" />
                 <element signature="method#getOrder#0;class#StateWarehouseController#0" />
@@ -70,7 +70,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="pdfgeneratorLib" />
       </map>
     </option>
   </component>
@@ -254,7 +254,7 @@
         <item itemvalue="Application.CreateUser" />
         <item itemvalue="Application.Thoth" />
         <item itemvalue="Application.CreateUser" />
-        <item itemvalue="Application.CreateUser" />
+        <item itemvalue="Application.Thoth" />
       </list>
     </recent_temporary>
   </component>
@@ -304,7 +304,7 @@
       <workItem from="1557245137268" duration="5704000" />
       <workItem from="1557302782409" duration="3580000" />
       <workItem from="1557315250791" duration="4074000" />
-      <workItem from="1557386483357" duration="4546000" />
+      <workItem from="1557386483357" duration="6332000" />
     </task>
     <task id="LOCAL-00001" summary="biblioteki potrzebne do polaczenia z baza danych i hibernate">
       <created>1554503048623</created>
@@ -345,13 +345,12 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="176993000" />
+    <option name="totallyTimeSpent" value="178779000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.76911074" side_tool="true" visible="true" weight="0.25266525" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.76911074" side_tool="true" visible="true" weight="0.25266525" />
       <window_info id="Structure" order="1" sideWeight="0.23088923" side_tool="true" weight="0.18763326" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -364,7 +363,7 @@
       <window_info id="Job Explorer" order="10" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3281412" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.5544629" visible="true" weight="0.22637591" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5544629" weight="0.22637591" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997923" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -460,23 +459,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Thoth/src/models/Who.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
-          <folding>
-            <element signature="e#251#252#0" expanded="true" />
-            <element signature="e#280#281#0" expanded="true" />
-            <element signature="e#325#326#0" expanded="true" />
-            <element signature="e#361#362#0" expanded="true" />
-            <element signature="e#396#397#0" expanded="true" />
-            <element signature="e#427#428#0" expanded="true" />
-            <element signature="e#475#476#0" expanded="true" />
-            <element signature="e#515#516#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Thoth/src/fxmlfiles/analyst_prices.fxml">
       <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
@@ -830,10 +812,20 @@
     <entry file="file://$PROJECT_DIR$/file.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/PdfGeneratorLib/src/main/java/com/pdfgeneratorlib/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="35" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Thoth/src/controllers/StateWarehouseController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="473">
-          <caret line="280" column="12" lean-forward="true" selection-start-line="280" selection-start-column="12" selection-end-line="280" selection-end-column="12" />
+        <state relative-caret-position="694">
+          <caret line="295" column="38" lean-forward="true" selection-start-line="295" selection-start-column="38" selection-end-line="295" selection-end-column="38" />
           <folding>
             <element signature="method#getProducts#0;class#StateWarehouseController#0" />
             <element signature="method#getOrder#0;class#StateWarehouseController#0" />
