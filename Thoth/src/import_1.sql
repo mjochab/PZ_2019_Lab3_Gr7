@@ -46,8 +46,8 @@ INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('1', '2', '2');
 INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('5', '2', '5');
 
 
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '1', '2019-04-06');
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '1', '2019-04-06');
+INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '4', '2019-04-06');
+INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '4', '2019-04-06');
 
 
 INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('1', '1', '1', (SELECT Price FROM product WHERE ProductId = 1));
