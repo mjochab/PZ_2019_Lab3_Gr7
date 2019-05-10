@@ -9,6 +9,8 @@ import java.util.ResourceBundle;
 import entity.Shop;
 import entity.User;
 import entity.UserShop;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -83,11 +85,11 @@ public class MainWindowController implements Initializable {
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_view_logistic.fxml"));
         }
-        if (event.getSource().toString().contains("admin_view") == true) // okno widoku admina
+        if (event.getSource().toString().contains("admin_view") == true) // okno widoku admina - panel administracyjny, wybor sklepu/magazynu
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_admin.fxml"));
         }
-        if (event.getSource().toString().contains("admin_choose_employee") == true) // okno widoku admina
+        if (event.getSource().toString().contains("admin_choose_employee") == true) // okno widoku admina - pracownicy
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
         }
@@ -109,18 +111,26 @@ public class MainWindowController implements Initializable {
         query.setParameter("password", passwordTextField.getText());
         user = query.list();
         session.close();
+
         try {
             System.out.println(user.get(0).getRoleId().getPosition().getClass());
 
-            // Utworzenie sessionContext
-            UserShop userShopToLoadToSession = getLoggedUserData(user.get(0));
+            UserShop userShopToLoadToSession;
 
-            if(userShopToLoadToSession != null) {
-                sessionContext = new SessionContext(userShopToLoadToSession);
+            // Utworzenie sessionContext
+            if(ADMIN.equals(user.get(0).getRoleId().getPosition())) {
+                sessionContext = new SessionContext(user.get(0));
             }
             else {
-                System.out.println("Failed to load sessionContext");
-                sessionContext = null;
+                userShopToLoadToSession = getLoggedUserData(user.get(0));
+
+                if(userShopToLoadToSession != null) {
+                    sessionContext = new SessionContext(userShopToLoadToSession);
+                }
+                else {
+                    System.out.println("Failed to load sessionContext");
+                    sessionContext = null;
+                }
             }
 
             Parent temporaryLoginParent = null;
@@ -190,6 +200,17 @@ public class MainWindowController implements Initializable {
 
     public void setComboList() {
         this.comboList.getItems().addAll(getShops());
+
+        // jezeli zostanie wybrany inny sklep w comboboxie, zostanie on ustawiony w sessionContext
+        this.comboList.valueProperty().addListener(new ChangeListener<Shop>() {
+            @Override
+            public void changed(ObservableValue<? extends Shop> observable, Shop oldValue, Shop newValue) {
+                System.out.println("Poprzednia wartosc: "+ oldValue);
+                System.out.println("Nowa wartosc: "+ newValue);
+
+                sessionContext.setCurrentLoggedShop(newValue);
+            }
+        });
     }
 
 
@@ -212,7 +233,7 @@ public class MainWindowController implements Initializable {
                 userData = userDataList.get(0);
             }
             else {
-                System.out.println("Dzizaz, nie dziala");
+                System.out.println("Znaleziono 0 lub > 1 encji w UserShop");
             }
         }
         catch(Exception e) {
