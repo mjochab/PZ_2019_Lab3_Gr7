@@ -7,6 +7,9 @@ import java.util.ResourceBundle;
 
 import entity.Shop;
 import entity.User;
+import entity.UserShop;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,15 +19,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import models.SessionContext;
 import models.Who;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
 import org.hibernate.query.Query;
 
 public class MainWindowController implements Initializable {
@@ -55,9 +56,26 @@ public class MainWindowController implements Initializable {
 
     public static final SessionFactory sessionFactory = new Configuration().configure("update.cfg.xml").buildSessionFactory();
 
+    public static SessionContext sessionContext;
 
     public void switchscene(ActionEvent event) throws IOException {
         System.out.println("URL "+event.getSource().toString());
+
+        if(sessionContext.getCurrentLoggedUser().getRoleId().getPosition().equals(ADMIN))
+        {
+            if(!event.getSource().toString().contains("admin_view")) {
+                if(this.comboList.getSelectionModel().getSelectedItem() == null) {
+                    System.out.println("Nie wybrano sklepu!");
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Napotkano blad");
+                    alert.setContentText("Nie wybrano zadnego sklepu/magazynu!");
+                    alert.showAndWait();
+
+                    return;
+                }
+            }
+        }
 
         Parent temporaryLoginParent = null;
         if (event.getSource().toString().contains("login_btn") == true) //logowanie
@@ -84,11 +102,11 @@ public class MainWindowController implements Initializable {
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_view_logistic.fxml"));
         }
-        if (event.getSource().toString().contains("admin_view") == true) // okno widoku admina
+        if (event.getSource().toString().contains("admin_view") == true) // okno widoku admina - panel administracyjny, wybor sklepu/magazynu
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_admin.fxml"));
         }
-        if (event.getSource().toString().contains("admin_choose_employee") == true) // okno widoku admina
+        if (event.getSource().toString().contains("admin_choose_employee") == true) // okno widoku admina - pracownicy
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
         }
@@ -110,14 +128,36 @@ public class MainWindowController implements Initializable {
         query.setParameter("password", passwordTextField.getText());
         user = query.list();
         session.close();
+        
+        /* wersja Pawla
         if(whoLogin() != null){
             System.out.println("ID Sklepu " + whoLogin().get(0).getShopID().toString());
             shopID = whoLogin().get(0).getShopID();
             System.out.println("Miejscowość " + whoLogin().get(0).getShopName().toString());
             shopName = whoLogin().get(0).getShopName().toString();
         }
+        */
+      
         try {
             System.out.println(user.get(0).getRoleId().getPosition().getClass());
+
+            UserShop userShopToLoadToSession;
+
+            // Utworzenie sessionContext
+            if(ADMIN.equals(user.get(0).getRoleId().getPosition())) {
+                sessionContext = new SessionContext(user.get(0));
+            }
+            else {
+                userShopToLoadToSession = getLoggedUserData(user.get(0));
+
+                if(userShopToLoadToSession != null) {
+                    sessionContext = new SessionContext(userShopToLoadToSession);
+                }
+                else {
+                    System.out.println("Failed to load sessionContext");
+                    sessionContext = null;
+                }
+            }
 
             Parent temporaryLoginParent = null;
 
@@ -145,7 +185,6 @@ public class MainWindowController implements Initializable {
                 mainController.setComboList();
             }
 
-
             Scene temporaryLoginScene = new Scene(temporaryLoginParent);
 
             // To pobiera informacje o scenie
@@ -157,7 +196,6 @@ public class MainWindowController implements Initializable {
         } catch (IndexOutOfBoundsException e) {
             loginErrorLabel.setText("Nie ma konta o takim Loginie i Haśle");
         }
-
     }
 
 
@@ -188,8 +226,20 @@ public class MainWindowController implements Initializable {
 
     public void setComboList() {
         this.comboList.getItems().addAll(getShops());
-    }
 
+        // jezeli zostanie wybrany inny sklep w comboboxie, zostanie on ustawiony w sessionContext
+        this.comboList.valueProperty().addListener(new ChangeListener<Shop>() {
+            @Override
+            public void changed(ObservableValue<? extends Shop> observable, Shop oldValue, Shop newValue) {
+                System.out.println("Poprzednia wartosc: "+ oldValue);
+                System.out.println("Nowa wartosc: "+ newValue);
+
+                sessionContext.setCurrentLoggedShop(newValue);
+            }
+        });
+    }
+    
+    /* Wersja Pawla
     public ObservableList<Who> whoLogin(){
         ObservableList<Who> productList = FXCollections.observableArrayList();
         List<Who> who;
@@ -211,10 +261,36 @@ public class MainWindowController implements Initializable {
         System.out.println("Rozmiar <WHO> "+who.size());
         return null;
     }
+    */
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
 
+    public UserShop getLoggedUserData(User userToLogin) {
+        Session session = sessionFactory.openSession();
+
+        List<UserShop> userDataList;
+        UserShop userData = null;
+
+        try {
+            userDataList = session.createQuery("from UserShop us where UserId = :uid")
+                              .setParameter("uid", userToLogin.getUserId()).getResultList();
+
+            if(userDataList.size() == 1) {
+                userData = userDataList.get(0);
+            }
+            else {
+                System.out.println("Znaleziono 0 lub > 1 encji w UserShop");
+            }
+        }
+        catch(Exception e) {
+            System.out.println("Blad pobierania z bazy danych");
+        }
+
+        session.close();
+
+        return userData;
+    }
 }
