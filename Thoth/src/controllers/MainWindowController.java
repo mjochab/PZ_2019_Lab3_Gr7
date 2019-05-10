@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import entity.Shop;
 import entity.User;
+import entity.UserShop;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
+import models.SessionContext;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -51,6 +53,7 @@ public class MainWindowController implements Initializable {
 
     public static final SessionFactory sessionFactory = new Configuration().configure("update.cfg.xml").buildSessionFactory();
 
+    public static SessionContext sessionContext;
 
     public void switchscene(ActionEvent event) throws IOException {
         System.out.println(event.getSource().toString());
@@ -135,6 +138,14 @@ public class MainWindowController implements Initializable {
                 mainController.setComboList();
             }
 
+            UserShop userShopToLoadToSession = getLoggedUserData(user.get(0));
+
+            if(userShopToLoadToSession != null) {
+                sessionContext = new SessionContext(userShopToLoadToSession);
+            }
+            else {
+                sessionContext = null;
+            }
 
             Scene temporaryLoginScene = new Scene(temporaryLoginParent);
 
@@ -186,4 +197,29 @@ public class MainWindowController implements Initializable {
         // TODO
     }
 
+    public UserShop getLoggedUserData(User userToLogin) {
+        Session session = sessionFactory.openSession();
+
+        List<UserShop> userDataList;
+        UserShop userData = null;
+
+        try {
+            userDataList = session.createQuery("from UserShop us where UserId = :uid")
+                              .setParameter("uid", userToLogin.getUserId()).getResultList();
+
+            if(userDataList.size() == 1) {
+                userData = userDataList.get(0);
+            }
+            else {
+                System.out.println("Dzizaz, nie dziala");
+            }
+        }
+        catch(Exception e) {
+            System.out.println("Blad pobierania z bazy danych");
+        }
+
+        session.close();
+
+        return userData;
+    }
 }
