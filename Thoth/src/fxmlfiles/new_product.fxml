@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="582.0" prefWidth="941.0" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="582.0" prefWidth="941.0" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.WarehouseNewProductController">
    <children>
       <VBox>
          <children>
@@ -28,7 +31,7 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <TextField prefHeight="0.0" prefWidth="300.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
+                  <TextField fx:id="NAME" prefHeight="0.0" prefWidth="300.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -44,7 +47,7 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <TextField prefHeight="25.0" prefWidth="300.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
+                  <TextField fx:id="AMOUNT" prefHeight="25.0" prefWidth="300.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -60,13 +63,13 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <TextField prefHeight="25.0" prefWidth="300.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
+                  <TextField fx:id="PRICE" prefHeight="25.0" prefWidth="300.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="420.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zatwierdź">
+            <Button fx:id="addInsert" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addInsert" prefHeight="26.0" prefWidth="420.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zatwierdź">
                <font>
                   <Font size="18.0" />
                </font>

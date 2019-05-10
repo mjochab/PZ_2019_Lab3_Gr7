@@ -29,7 +29,7 @@
                                 <Insets right="10.0" />
                             </HBox.margin>
                         </Button>
-                        <Button id="change" contentDisplay="RIGHT" layoutX="1068.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zmień">
+                        <Button fx:id="change" contentDisplay="RIGHT" layoutX="1068.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zmień">
                             <font>
                                 <Font size="18.0" />
                             </font>
