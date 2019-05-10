@@ -1,12 +1,10 @@
 package controllers;
 
-import entity.Product;
 import entity.Shop;
-import entity.State_on_shop;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,22 +12,22 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import models.IndentTableView;
 import models.SalesCreatorModel;
 import models.StateOrderModel;
 import org.hibernate.Session;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static controllers.MainWindowController.*;
+import static controllers.MainWindowController.sessionFactory;
+import static controllers.MainWindowController.shopID;
+
 
 public class StateWarehouseController implements Initializable {
     @FXML
@@ -41,21 +39,21 @@ public class StateWarehouseController implements Initializable {
     @FXML
     public TableView newOrderShop;
     @FXML
-    public TableColumn PRODUCTID,PRODUCTID_ADD;
+    public TableColumn<SalesCreatorModel,String> PRODUCTID,PRODUCTID_ADD;
     @FXML
-    public TableColumn NAME,NAME_ADD;
+    public TableColumn<SalesCreatorModel,String> NAME,NAME_ADD;
     @FXML
-    public TableColumn PRICE,PRICE_ADD;
+    public TableColumn<SalesCreatorModel,String> PRICE,PRICE_ADD;
     @FXML
-    public TableColumn AMOUNT,AMOUNT_ADD;
+    public TableColumn<SalesCreatorModel,String> AMOUNT,AMOUNT_ADD;
     @FXML
-    public TableColumn DISCOUNT;
+    public TableColumn<SalesCreatorModel,String> DISCOUNT;
     @FXML
-    public TableColumn CITY;
+    public TableColumn<StateOrderModel,String> CITY;
     @FXML
-    public TableColumn STATE;
+    public TableColumn<StateOrderModel,String> STATE;
     @FXML
-    public TableColumn ORDERNR;
+    public TableColumn<StateOrderModel,String> ORDERNR;
     @FXML
     public Button searchStateWarehouse;
     @FXML
@@ -71,7 +69,7 @@ public class StateWarehouseController implements Initializable {
 
     private ObservableList<SalesCreatorModel> lista = FXCollections.observableArrayList();
 
-    String nazwaProduktu = null; //nazwa magazynu do przeszukiwania zawartości
+    String nazwaProduktu = null; //nazwa magazynu do przeszukiwania zawartości, do usunięcia!!!
 
     public void menuitemaction(ActionEvent actionEvent) throws IOException { //wylogowanie na MENU ITEM
         stage = (Stage) root.getScene().getWindow();
@@ -87,19 +85,19 @@ public class StateWarehouseController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (location.toString().contains("state_warehouse")) {
-            PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
-            NAME.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
-            PRICE.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
-            AMOUNT.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
-            DISCOUNT.setCellValueFactory(new PropertyValueFactory<Product, Integer>("discount"));
+            PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
+            NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
+            PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
+            AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+            DISCOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getDiscount())));
             stateWarehouse.setItems(getProducts(nazwaProduktu));
             //System.out.println(getProducts(nazwaProduktu).toString());
         }
         if (location.toString().contains("new_order_warehouse")) {
-            PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
-            NAME.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
-            PRICE.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
-            AMOUNT.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
+            PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
+            NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
+            PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
+            AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
             new_order.setItems(getProductsForOtherShop(shopID));
             setComboList();
             //System.out.println(getProducts(nazwaProduktu).toString());
@@ -131,7 +129,7 @@ public class StateWarehouseController implements Initializable {
                 @Override
                 public void handle(MouseEvent event) {
                     if(event.getButton().equals(MouseButton.PRIMARY)){
-                        if(event.getClickCount() == 2){
+                        if(event.getClickCount() == 3){
                             if(add_new_order.getSelectionModel().getSelectedItem() != null){
                                 lista.remove(add_new_order.getSelectionModel().getSelectedItem());
                                 addToTable(lista);
@@ -141,24 +139,24 @@ public class StateWarehouseController implements Initializable {
                     }
                 }
             });
+            setEditableAmount();
         }
         if (location.toString().contains("new_order_shop")) {
-            PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
-            NAME.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
-            PRICE.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
-            AMOUNT.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
+            PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
+            NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
+            PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
+            AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
             newOrderShop.setItems(getOrderProducts(nazwaProduktu));
             //System.out.println(getOrderProducts(nazwaProduktu).toString());
         }
         if (location.toString().contains("state_order_warehouse")) {
-            CITY.setCellValueFactory(new PropertyValueFactory<>("city"));
-            STATE.setCellValueFactory(new PropertyValueFactory<Product, String>("state"));
-            ORDERNR.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("orderid"));
+            CITY.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getCity()));
+            STATE.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getState()));
+            ORDERNR.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getOrderid())));
             stateOrderWarehouse.setItems(getOrder(nazwaProduktu));
             //System.out.println(getOrder(nazwaProduktu).toString());
         }
     }
-
 
     public ObservableList<SalesCreatorModel> getProducts(String nazwaProduktu) {
         ObservableList<SalesCreatorModel> productList = FXCollections.observableArrayList();
@@ -183,7 +181,6 @@ public class StateWarehouseController implements Initializable {
         return productList;
     }
 
-
     public ObservableList<StateOrderModel> getOrder(String nazwaProduktu) {
         ObservableList<StateOrderModel> orderList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
@@ -200,7 +197,6 @@ public class StateWarehouseController implements Initializable {
         session.close();
         return orderList;
     }
-
 
     public ObservableList<SalesCreatorModel> getOrderProducts(String nazwaProduktu) {
         ObservableList<SalesCreatorModel> productList = FXCollections.observableArrayList();
@@ -238,7 +234,6 @@ public class StateWarehouseController implements Initializable {
         return productList;
     }
 
-
     public void searchStateWarehouse(ActionEvent event) throws IOException {
         nazwaProduktu = searchSWCity.getText();
         stateWarehouse.setItems(getProducts(nazwaProduktu));
@@ -265,38 +260,49 @@ public class StateWarehouseController implements Initializable {
     public void searchNewOrderWarehouse(){
         //System.out.println("COMOBOBOX "+comboList.getItems().get(0).toString());
         int id = comboList.getSelectionModel().getSelectedItem().getShopId();
-        PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
-        NAME.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
-        PRICE.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
-        AMOUNT.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
+        PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
+        NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
+        PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
+        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
         new_order.setItems(getProductsForOtherShop(id));
     }
 
-    public void addToTable(ObservableList<SalesCreatorModel> item){
-        PRODUCTID_ADD.setCellValueFactory(new PropertyValueFactory<>("productId"));
-        NAME_ADD.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
-        PRICE_ADD.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("price"));
-        AMOUNT_ADD.setCellValueFactory(new PropertyValueFactory<State_on_shop, Integer>("amount"));
-        System.out.println("Odebrane "+item.toString()+" rozmiar "+ item.size());
-        try{
-            if(!item.isEmpty()){
+    public void addToTable(ObservableList<SalesCreatorModel> item) {
+        PRODUCTID_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
+        NAME_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
+        PRICE_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
+        AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+        System.out.println("Odebrane " + item.toString() + " rozmiar " + item.size());
+        try {
+            if (!item.isEmpty()) {
                 add_new_order.setItems(item);
             } else {
                 //naprawić
             }
-        } catch (NullPointerException e){
-            System.out.println("NullPointerException po odjęciu ostatniego elementu "+e);
+        } catch (NullPointerException e) {
+            System.out.println("NullPointerException po odjęciu ostatniego elementu " + e);
         }
     }
-
-
 
     public void newOrderWarehouse(){
         String orderView = new_order.getSelectionModel().getSelectedItem().toString();
         System.out.println(orderView);
+    } //button zapisz
 
+    private void setEditableAmount(){
+        AMOUNT_ADD.setCellFactory(TextFieldTableCell.forTableColumn());
 
-
+        AMOUNT_ADD.setOnEditCommit(e -> { // dodać walidacje try catch
+            System.out.println("PRZED"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+            int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue();
+            e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
+            System.out.println("PO"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+            if(e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() > 0 && e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() <= check){
+                System.out.println("większe od 0 i mniejsze od ");
+            } else {
+                e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
+                System.out.println("Powrót do poprzedniej liczby");
+            }
+        });
     }
-
 }
