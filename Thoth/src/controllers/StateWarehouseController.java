@@ -284,9 +284,11 @@ public class StateWarehouseController implements Initializable {
         }
     }
 
-    public void newOrderWarehouse(){
-        String orderView = new_order.getSelectionModel().getSelectedItem().toString();
-        System.out.println(orderView);
+    public void newOrderWarehouse(){ //add_new_order.getItems().clear();
+        System.out.println(lista.toString());
+        if(!lista.isEmpty()){
+            //zapytanie do bazy
+        }
     } //button zapisz
 
     private void setEditableAmount(){
@@ -302,6 +304,7 @@ public class StateWarehouseController implements Initializable {
             } else {
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
                 System.out.println("Powrót do poprzedniej liczby");
+                add_new_order.refresh();
             }
         });
     }
