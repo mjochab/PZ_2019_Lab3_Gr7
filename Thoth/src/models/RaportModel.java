@@ -1,20 +1,53 @@
 package models;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 public class RaportModel {
+    private Integer shopId;
     private String street;
     private String zipCode;
     private String city;
     private BigDecimal profit;
-    private RaportProductModel[] Products;
+    private RaportProductModel[] products;
+    private RaportUserModel[] users;
 
-    public RaportModel(String street, String zipCode, String city, BigDecimal profit, RaportProductModel[] products) {
+    public RaportModel(Integer shopId, String street, String zipCode, String city, BigDecimal profit, RaportProductModel[] products, RaportUserModel[] users) {
+        this.shopId = shopId;
         this.street = street;
         this.zipCode = zipCode;
         this.city = city;
         this.profit = profit;
-        Products = products;
+        this.products = products;
+        this.users = users;
+    }
+
+    public RaportModel(Integer shopId, String street, String zipCode, String city, BigDecimal profit) {
+        this.shopId = shopId;
+        this.street = street;
+        this.zipCode = zipCode;
+        this.city = city;
+        if(profit == null){
+            this.profit = new BigDecimal(0);
+        }
+        else {
+            this.profit = profit;
+        }
+    }
+
+    public RaportModel(Integer shopId, String street, String zipCode, String city) {
+        this.shopId = shopId;
+        this.street = street;
+        this.zipCode = zipCode;
+        this.city = city;
+    }
+
+    public Integer getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
     }
 
     public String getStreet() {
@@ -50,11 +83,32 @@ public class RaportModel {
     }
 
     public RaportProductModel[] getProducts() {
-        return Products;
+        return products;
     }
 
     public void setProducts(RaportProductModel[] products) {
-        Products = products;
+        this.products = products;
+    }
+
+    public RaportUserModel[] getUsers() {
+        return users;
+    }
+
+    public void setUsers(RaportUserModel[] users) {
+        this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return "RaportModel{" +
+                "shopId=" + shopId +
+                ", street='" + street + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", city='" + city + '\'' +
+                ", profit=" + profit +
+                ", products=" + Arrays.toString(products) +
+                ", users=" + Arrays.toString(users) +
+                '}';
     }
 }
 

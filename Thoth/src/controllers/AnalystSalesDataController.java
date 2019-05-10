@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import models.RaportModel;
+import models.RaportProductModel;
 import models.SalesCreatorModel;
 import models.SalesDataModel;
 import org.hibernate.Session;
@@ -62,9 +64,10 @@ public class AnalystSalesDataController implements Initializable {
 
         Session session = sessionFactory.openSession();
 //        List lista = session.createQuery("SELECT Shop.street, Shop.zipCode, Shop.City, SUM(receipt.TotalValue) FROM Receipt, Shop WHERE Receipt.shopId = Shop.shopId GROUP BY Receipt.shopId").list();
-        List lista = session.createQuery("SELECT s.zipCode, s.city, s.street, SUM(r.totalValue) FROM Shop s INNER JOIN Receipt r on s.shopId = r.shopId GROUP BY s.shopId").list();
-        System.out.println(lista.size());
-        System.out.println(lista.get(0));
+        List<RaportModel> shops = session.createQuery("SELECT new models.RaportModel(s.shopId, s.street, s.zipCode, s.city, SUM(r.totalValue)) from Shop s Left JOIN Receipt r ON s.shopId = r.shopId GROUP BY s.shopId").list();
+//        List<RaportProductModel> products = session.createQuery("").list();
+        System.out.println(shops.size());
+        System.out.println(shops.toString());
 
         session.close();
 

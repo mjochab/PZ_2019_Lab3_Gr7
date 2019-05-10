@@ -13,7 +13,7 @@ public class UserShop {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "ShopId",nullable = false)
+    @JoinColumn(name = "ShopId")
     private Shop ShopId;
 
     @ManyToOne
