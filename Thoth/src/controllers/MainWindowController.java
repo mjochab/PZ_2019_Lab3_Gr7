@@ -2,7 +2,6 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -20,15 +19,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import models.SessionContext;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
 import org.hibernate.query.Query;
 
 public class MainWindowController implements Initializable {
@@ -59,6 +55,22 @@ public class MainWindowController implements Initializable {
 
     public void switchscene(ActionEvent event) throws IOException {
         System.out.println(event.getSource().toString());
+
+        if(sessionContext.getCurrentLoggedUser().getRoleId().getPosition().equals(ADMIN))
+        {
+            if(!event.getSource().toString().contains("admin_view")) {
+                if(this.comboList.getSelectionModel().getSelectedItem() == null) {
+                    System.out.println("Nie wybrano sklepu!");
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Napotkano blad");
+                    alert.setContentText("Nie wybrano zadnego sklepu/magazynu!");
+                    alert.showAndWait();
+
+                    return;
+                }
+            }
+        }
 
         Parent temporaryLoginParent = null;
         if (event.getSource().toString().contains("login_btn") == true) //logowanie
