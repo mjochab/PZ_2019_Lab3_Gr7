@@ -112,6 +112,17 @@ public class MainWindowController implements Initializable {
         try {
             System.out.println(user.get(0).getRoleId().getPosition().getClass());
 
+            // Utworzenie sessionContext
+            UserShop userShopToLoadToSession = getLoggedUserData(user.get(0));
+
+            if(userShopToLoadToSession != null) {
+                sessionContext = new SessionContext(userShopToLoadToSession);
+            }
+            else {
+                System.out.println("Failed to load sessionContext");
+                sessionContext = null;
+            }
+
             Parent temporaryLoginParent = null;
 
             if (STOREKEEPER.equals(user.get(0).getRoleId().getPosition())) //okno magazynu
@@ -138,15 +149,6 @@ public class MainWindowController implements Initializable {
                 mainController.setComboList();
             }
 
-            UserShop userShopToLoadToSession = getLoggedUserData(user.get(0));
-
-            if(userShopToLoadToSession != null) {
-                sessionContext = new SessionContext(userShopToLoadToSession);
-            }
-            else {
-                sessionContext = null;
-            }
-
             Scene temporaryLoginScene = new Scene(temporaryLoginParent);
 
             // To pobiera informacje o scenie
@@ -158,7 +160,6 @@ public class MainWindowController implements Initializable {
         } catch (IndexOutOfBoundsException e) {
             loginErrorLabel.setText("Nie ma konta o takim Loginie i Haśle");
         }
-
     }
 
 
