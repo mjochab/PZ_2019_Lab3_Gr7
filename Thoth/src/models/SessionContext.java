@@ -18,6 +18,10 @@ public class SessionContext {
         setCurrentLoggedShop(shop);
     }
 
+    public SessionContext(User user) {
+        setCurrentLoggedUser(user);
+    }
+
     public User getCurrentLoggedUser() {
         return currentLoggedUser;
     }
@@ -30,7 +34,7 @@ public class SessionContext {
         return currentLoggedShop;
     }
 
-    private void setCurrentLoggedShop(Shop currentLoggedShop) {
+    public void setCurrentLoggedShop(Shop currentLoggedShop) {
         this.currentLoggedShop = currentLoggedShop;
     }
 }
