@@ -9,10 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import models.RaportModel;
-import models.RaportProductModel;
-import models.SalesCreatorModel;
-import models.SalesDataModel;
+import models.*;
 import org.hibernate.Session;
 
 import java.math.BigDecimal;
@@ -63,12 +60,55 @@ public class AnalystSalesDataController implements Initializable {
     public void generateRaport(ActionEvent actionEvent) {
 
         Session session = sessionFactory.openSession();
-//        List lista = session.createQuery("SELECT Shop.street, Shop.zipCode, Shop.City, SUM(receipt.TotalValue) FROM Receipt, Shop WHERE Receipt.shopId = Shop.shopId GROUP BY Receipt.shopId").list();
-        List<RaportModel> shops = session.createQuery("SELECT new models.RaportModel(s.shopId, s.street, s.zipCode, s.city, SUM(r.totalValue)) from Shop s Left JOIN Receipt r ON s.shopId = r.shopId GROUP BY s.shopId").list();
-//        List<RaportProductModel> products = session.createQuery("").list();
+//       select s.ShopId, p.Name, SUM(pr.Amount) ilosc_sprzedanych, SUM(pr.Price) cena_produktow  from receipt r INNER JOIN product_receipt pr ON r.ReceiptId = pr.ReceiptId INNER JOIN product p ON pr.ProductId = p.ProductId INNER JOIN shop s ON r.ShopId = s.ShopId where s.ShopId = 1 GROUP BY pr.ProductId
+        List<RaportModel> shops = session.createQuery("SELECT new models.RaportModel(s.shopId, s.street, s.zipCode, " +
+                "s.city, SUM(r.totalValue)) from Shop s Left JOIN Receipt r ON s.shopId = r.shopId GROUP BY s.shopId").list();
+
+        for (RaportModel shop : shops){
+            Integer shopidentifier = shop.getShopId();
+            List<RaportProductModel> products = session.createQuery("select new models.RaportProductModel(" +
+                    " s.shopId, p.name, SUM(pr.amount) as ilosc_sprzedanych, SUM(pr.price) as cena_produktow)  " +
+                    "from Receipt r " +
+                    "INNER JOIN Product_receipt pr ON r.receiptId = pr.receiptId " +
+                    "INNER JOIN Product p ON pr.productId = p.productId " +
+                    "INNER JOIN Shop s ON r.shopId = s.shopId " +
+                    "where s.shopId = :shopidentifier GROUP BY pr.productId ").setParameter("shopidentifier",shopidentifier).list();
+            shop.setProducts(products);
+
+            List<RaportUserModel> users = session.createQuery("select new models.RaportUserModel(u.userId, SUM(r.totalValue))" +
+                    " from User u " +
+                    "INNER JOIN UserShop us ON u.userId = us.userId " +
+                    "INNER JOIN Shop s ON us.shopId = s.shopId " +
+                    "LEFT JOIN Receipt r ON u.userId = r.userId " +
+                    "WHERE u.roleId = 4 AND s.shopId = :shopidentifier GROUP BY u.userId").setParameter("shopidentifier",shopidentifier).list();
+
+            shop.setUsers(users);
+        }
+
+//        List<RaportProductModel> products = session.createQuery("select new models.RaportProductModel(" +
+//                " s.shopId, p.name, SUM(pr.amount) as ilosc_sprzedanych, SUM(pr.price) as cena_produktow)  " +
+//                "from Receipt r " +
+//                "INNER JOIN Product_receipt pr ON r.receiptId = pr.receiptId " +
+//                "INNER JOIN Product p ON pr.productId = p.productId " +
+//                "INNER JOIN Shop s ON r.shopId = s.shopId " +
+//                "where s.shopId = 1 GROUP BY pr.productId ").list();
+//
+//
+//        List<RaportUserModel> users = session.createQuery("select new models.RaportUserModel(u.userId, SUM(r.totalValue))" +
+//                " from User u " +
+//                "INNER JOIN UserShop us ON u.userId = us.userId " +
+//                "INNER JOIN Shop s ON us.shopId = s.shopId " +
+//                "LEFT JOIN Receipt r ON u.userId = r.userId " +
+//                "WHERE u.roleId = 4 AND r.shopId = 1 GROUP BY u.userId").list();
         System.out.println(shops.size());
         System.out.println(shops.toString());
 
+
+//        System.out.println(products.size());
+//        System.out.println(products.toString());
+//
+//        System.out.println(users.size());
+//        System.out.println(users.toString());
         session.close();
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

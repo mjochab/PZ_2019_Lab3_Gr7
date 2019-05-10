@@ -14,7 +14,7 @@ public class UserShop {
 
     @ManyToOne
     @JoinColumn(name = "ShopId")
-    private Shop ShopId;
+    private Shop shopId;
 
     @ManyToOne
     @JoinColumn(name = "UserId",nullable = false)
@@ -33,11 +33,11 @@ public class UserShop {
     }
 
     public Shop getShopId() {
-        return ShopId;
+        return shopId;
     }
 
     public void setShopId(Shop shopId) {
-        ShopId = shopId;
+        shopId = shopId;
     }
 
     public User getUserId() {

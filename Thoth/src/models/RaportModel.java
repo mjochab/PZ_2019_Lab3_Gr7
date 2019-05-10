@@ -2,6 +2,7 @@ package models;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.List;
 
 public class RaportModel {
     private Integer shopId;
@@ -9,17 +10,17 @@ public class RaportModel {
     private String zipCode;
     private String city;
     private BigDecimal profit;
-    private RaportProductModel[] products;
-    private RaportUserModel[] users;
+    private List<RaportProductModel> products;
+    private List<RaportUserModel> users;
 
-    public RaportModel(Integer shopId, String street, String zipCode, String city, BigDecimal profit, RaportProductModel[] products, RaportUserModel[] users) {
+    public RaportModel(Integer shopId, String street, String zipCode, String city, BigDecimal profit, RaportProductModel products, RaportUserModel users) {
         this.shopId = shopId;
         this.street = street;
         this.zipCode = zipCode;
         this.city = city;
         this.profit = profit;
-        this.products = products;
-        this.users = users;
+        this.products.add(products);
+        this.users.add(users);
     }
 
     public RaportModel(Integer shopId, String street, String zipCode, String city, BigDecimal profit) {
@@ -82,19 +83,19 @@ public class RaportModel {
         this.profit = profit;
     }
 
-    public RaportProductModel[] getProducts() {
+    public List<RaportProductModel> getProducts() {
         return products;
     }
 
-    public void setProducts(RaportProductModel[] products) {
+    public void setProducts(List<RaportProductModel> products) {
         this.products = products;
     }
 
-    public RaportUserModel[] getUsers() {
+    public List<RaportUserModel> getUsers() {
         return users;
     }
 
-    public void setUsers(RaportUserModel[] users) {
+    public void setUsers(List<RaportUserModel> users) {
         this.users = users;
     }
 
@@ -106,8 +107,8 @@ public class RaportModel {
                 ", zipCode='" + zipCode + '\'' +
                 ", city='" + city + '\'' +
                 ", profit=" + profit +
-                ", products=" + Arrays.toString(products) +
-                ", users=" + Arrays.toString(users) +
+                ", products=" + products +
+                ", users=" + users +
                 '}';
     }
 }

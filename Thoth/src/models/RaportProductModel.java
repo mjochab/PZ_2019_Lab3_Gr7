@@ -3,16 +3,25 @@ package models;
 import java.math.BigDecimal;
 
 public class RaportProductModel {
+    private Integer shopId;
     private String name;
-    private BigDecimal price;
-    private Integer stateOnShop;
-    private Integer soldAmount;
+    private Long sold;
+    private BigDecimal total_price;
 
-    public RaportProductModel(String name, BigDecimal price, Integer stateOnShop, Integer soldAmount) {
+
+    public RaportProductModel(Integer shopId, String name, Long sold, BigDecimal total_price) {
+        this.shopId = shopId;
         this.name = name;
-        this.price = price;
-        this.stateOnShop = stateOnShop;
-        this.soldAmount = soldAmount;
+        this.sold = sold;
+        this.total_price = total_price;
+    }
+
+    public Integer getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
     }
 
     public String getName() {
@@ -23,27 +32,29 @@ public class RaportProductModel {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public Long getSold() {
+        return sold;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setSold(Long sold) {
+        this.sold = sold;
     }
 
-    public Integer getStateOnShop() {
-        return stateOnShop;
+    public BigDecimal getTotal_price() {
+        return total_price;
     }
 
-    public void setStateOnShop(Integer stateOnShop) {
-        this.stateOnShop = stateOnShop;
+    public void setTotal_price(BigDecimal total_price) {
+        this.total_price = total_price;
     }
 
-    public Integer getSoldAmount() {
-        return soldAmount;
-    }
-
-    public void setSoldAmount(Integer soldAmount) {
-        this.soldAmount = soldAmount;
+    @Override
+    public String toString() {
+        return "RaportProductModel{" +
+                "shopId=" + shopId +
+                ", name='" + name + '\'' +
+                ", sold=" + sold +
+                ", total_price=" + total_price +
+                '}';
     }
 }

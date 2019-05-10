@@ -66,12 +66,12 @@ INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('3', '2', '999');
 INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('4', '2', '999');
 
 
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '6', '2019-04-06');
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '6', '2019-04-06');
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '7', '2019-04-06');
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '8', '2019-04-06');
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '2', '0', '9', '2019-04-06');
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '2', '0', '10', '2019-04-06');
+INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES ('1', '1', '0', '6', '2019-04-06');
+INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES ('2', '1', '0', '6', '2019-04-06');
+INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES ('3', '1', '0', '7', '2019-04-06');
+INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES ('4', '1', '0', '8', '2019-04-06');
+INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES ('5', '2', '0', '9', '2019-04-06');
+INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES ('6', '2', '0', '10', '2019-04-06');
 
 
 INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('1', '1', '2', (SELECT Price FROM product WHERE ProductId = 1));
@@ -90,6 +90,10 @@ INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES 
 
 UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE ReceiptId = 1) WHERE ReceiptId = 1;
 UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE ReceiptId = 2) WHERE ReceiptId = 2;
+UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE ReceiptId = 3) WHERE ReceiptId = 3;
+UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE ReceiptId = 4) WHERE ReceiptId = 4;
+UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE ReceiptId = 5) WHERE ReceiptId = 5;
+UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE ReceiptId = 6) WHERE ReceiptId = 6;
 
 INSERT INTO Indent (IndentId, ShopId_need, CustomerId, ShopId_delivery, DateOfOrder, ParentId) VALUES (null, '1', null, '3', '2019-04-07', null);
 INSERT INTO Indent (IndentId, ShopId_need, CustomerId, ShopId_delivery, DateOfOrder, ParentId) VALUES (null, '2', null, '3', '2019-04-07', null);

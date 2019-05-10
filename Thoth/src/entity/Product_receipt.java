@@ -34,7 +34,8 @@ public class Product_receipt {
         this.productId = productId;
         this.receiptId = receiptId;
         this.amount = amount;
-        this.price = price;
+//        mnożenie przez ilosc sztuk poniewaz przy generowaniu raportu uzywamy SUM
+        this.price = price.multiply(new BigDecimal(amount));
     }
 
     public int getId() {
