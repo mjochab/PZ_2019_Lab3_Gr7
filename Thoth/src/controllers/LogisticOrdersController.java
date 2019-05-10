@@ -30,6 +30,9 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionFactory;
 
+/**
+ * Kontroler glownego okna modulu logistyki
+ */
 public class LogisticOrdersController implements Initializable {
     @FXML
     private TableView<IndentTableView> ordersReadyForShipment;
@@ -65,30 +68,47 @@ public class LogisticOrdersController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // value factories dla tableview z zamowieniami oczekujacymi na transport
         fromForShipment.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getOrder().getShopId_delivery().getCity()));
         toForShipment.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getOrder().getShopId_need().getCity()));
         idForShipment.setCellValueFactory(indentData -> new SimpleIntegerProperty(indentData.getValue().getOrder().getIndentId()).asObject());
         stateForShipment.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getState().getStateId().getName()));
 
         displayedOrdersReadyForShipment.addAll(getIndentsReadyForShipment());
-
         ordersReadyForShipment.setItems(displayedOrdersReadyForShipment);
-        //ordersInRealization.setItems(displayedOrdersInRealization);
+
+
+        // value factories dla tabelview z zamowieniami w realizacji
+        fromInRealization.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getOrder().getShopId_delivery().getCity()));
+        toInRealization.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getOrder().getShopId_need().getCity()));
+        idInRealization.setCellValueFactory(indentData -> new SimpleIntegerProperty(indentData.getValue().getOrder().getIndentId()).asObject());
+        stateInRealization.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getState().getStateId().getName()));
+
+        displayedOrdersInRealization.addAll(getIndentsInRealization());
+        ordersInRealization.setItems(displayedOrdersInRealization);
     }
 
-
-    public ObservableList<IndentTableView> getIndentsReadyForShipment() {
-        ObservableList<IndentTableView> listOfIndents = FXCollections.observableArrayList();
+    /**
+     * Metooda pobiera z bazy wszystkie zamowienia o okreslonym stanie
+     * @param state stan zamowien
+     * @return Lista obiektow {@link State_of_indent} State_of_indent
+     */
+    public List<State_of_indent> getIndentsByState(String state) {
         Session session = sessionFactory.openSession();
 
         // pobranie odpowiedniego stanu
-        State readyForShipmentState = (State) session.createQuery("from State where name = 'Oczekuje na transport'").getSingleResult();
+        State stateObject = (State) session.createQuery("from State where name = :state")
+                                                     .setParameter("state", state)
+                                                     .getSingleResult();
+
+        System.out.println(stateObject == null);
 
         // pobranie zamowien o stanie pobranym wyzej
         List<State_of_indent> state_of_indents = session.createQuery("from State_of_indent where StateId = :sid")
-                .setParameter("sid", readyForShipmentState.getStateId()).list();
+                .setParameter("sid", stateObject.getStateId()).list();
 
         System.out.println(state_of_indents.size());
+
         for (State_of_indent soi : state_of_indents) {
             System.out.println("parent id = " + soi.getIndentId().getIndentId());
             List<Indent> subIndents = session.createQuery("From Indent indent where ParentId = :pid")
@@ -101,22 +121,58 @@ public class LogisticOrdersController implements Initializable {
             } else {
                 soi.getIndentId().setIsComplex(false);
             }
+        }
+
+        session.close();
+
+        return state_of_indents;
+    }
+
+    /**
+     * Metoda zwraca {@link ObservableList} reprezentujaca zamowienia o stanie "Oczekuje na transport"
+     * @return Lista obserwowalna obiektow {@link IndentTableView}
+     */
+    public ObservableList<IndentTableView> getIndentsReadyForShipment() {
+        ObservableList<IndentTableView> listOfIndents = FXCollections.observableArrayList();
+
+        for(State_of_indent soi : getIndentsByState("Oczekuje na transport")) {
+            IndentTableView indentTableView = new IndentTableView();
+            indentTableView.setOrder(soi.getIndentId());
+            indentTableView.setState(soi);
 
             // jesli zamowienie jest podzamowieniem, nie wyswietlaj go w glownej liscie
             if (soi.getIndentId().getParentId() != null) {
                 continue;
             }
 
-            IndentTableView indentTableView = new IndentTableView();
-            indentTableView.setOrder(soi.getIndentId());
-            indentTableView.setState(soi);
             listOfIndents.add(indentTableView);
         }
 
-        session.close();
         return listOfIndents;
     }
 
+    /**
+     * Metoda zwraca {@link ObservableList} reprezentujaca zamowienia o stanie "Oczekuje potwierdzenie odbioru"
+     * @return Lista obserwowalna obiektow {@link IndentTableView}
+     */
+    public ObservableList<IndentTableView> getIndentsInRealization() {
+        ObservableList<IndentTableView> listOfIndents = FXCollections.observableArrayList();
+
+        for(State_of_indent soi : getIndentsByState("Oczekuje na potwierdzenie odbioru")) {
+            IndentTableView indentTableView = new IndentTableView();
+            indentTableView.setOrder(soi.getIndentId());
+            indentTableView.setState(soi);
+
+            // jesli zamowienie jest podzamowieniem, nie wyswietlaj go w glownej liscie
+            if (soi.getIndentId().getParentId() != null) {
+                continue;
+            }
+
+            listOfIndents.add(indentTableView);
+        }
+
+        return listOfIndents;
+    }
 
     @FXML
     public void toShipmentDetailsAction(ActionEvent event) throws IOException {
@@ -177,6 +233,17 @@ public class LogisticOrdersController implements Initializable {
         }
 
         Parent pane = loader.load();
+
+        // wstrzykniecie wybranego obiektu do widoku szczegolowego
+        if (orderView.getOrder().isComplex()) {
+            ComplexOrderDetailsController controller = loader.getController();
+            controller.setOrder(orderView.getOrder());
+            controller.initController();
+        } else {
+            SimpleOrderDetailsController controller = loader.getController();
+            controller.setOrder(orderView.getOrder());
+            controller.initController();
+        }
 
         stg.setScene(new Scene(pane));
     }

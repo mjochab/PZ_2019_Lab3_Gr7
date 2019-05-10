@@ -27,6 +27,12 @@ public class State_on_shop {
 
     }
 
+    public State_on_shop(Product productId, Shop shopId, int amount) {
+        this.productId = productId;
+        this.shopId = shopId;
+        this.amount = amount;
+    }
+
     public int getId() {
         return id;
     }

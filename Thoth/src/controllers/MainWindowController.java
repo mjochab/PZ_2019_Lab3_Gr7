@@ -22,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import models.SessionContext;
+import models.Who;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -33,6 +34,10 @@ public class MainWindowController implements Initializable {
     private String SHOP_ASSISTANT = "Sprzedawca";
     private String ANALYST = "Analityk";
     private String LOGISTICIAN = "Logistyk";
+
+    public static String login;
+    public static int shopID;
+    public static String shopName;
 
     @FXML
     private ComboBox<Shop> comboList;
@@ -54,7 +59,7 @@ public class MainWindowController implements Initializable {
     public static SessionContext sessionContext;
 
     public void switchscene(ActionEvent event) throws IOException {
-        System.out.println(event.getSource().toString());
+        System.out.println("URL "+event.getSource().toString());
 
         if(sessionContext.getCurrentLoggedUser().getRoleId().getPosition().equals(ADMIN))
         {
@@ -123,7 +128,16 @@ public class MainWindowController implements Initializable {
         query.setParameter("password", passwordTextField.getText());
         user = query.list();
         session.close();
-
+        
+        /* wersja Pawla
+        if(whoLogin() != null){
+            System.out.println("ID Sklepu " + whoLogin().get(0).getShopID().toString());
+            shopID = whoLogin().get(0).getShopID();
+            System.out.println("Miejscowość " + whoLogin().get(0).getShopName().toString());
+            shopName = whoLogin().get(0).getShopName().toString();
+        }
+        */
+      
         try {
             System.out.println(user.get(0).getRoleId().getPosition().getClass());
 
@@ -224,7 +238,30 @@ public class MainWindowController implements Initializable {
             }
         });
     }
-
+    
+    /* Wersja Pawla
+    public ObservableList<Who> whoLogin(){
+        ObservableList<Who> productList = FXCollections.observableArrayList();
+        List<Who> who;
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("SELECT new models.Who(s.shopId, s.city) FROM User u " +
+                "INNER JOIN UserShop us ON u.userId = us.userId " +
+                "INNER JOIN Shop s ON us.ShopId = s.shopId " +
+                "WHERE u.login LIKE :login ").setParameter("login",loginTextField.getText());
+        who = query.list();
+        for (Who ent : who) {
+            productList.add(ent);
+        }
+        session.close();
+        if(who.size() == 1){
+            return productList;
+        }
+        System.out.println("Rozmiar <WHO> "+who.size());
+        who.remove(who.size()-1); //dla admina
+        System.out.println("Rozmiar <WHO> "+who.size());
+        return null;
+    }
+    */
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

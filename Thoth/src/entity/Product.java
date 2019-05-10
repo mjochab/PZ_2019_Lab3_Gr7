@@ -21,7 +21,7 @@ public class Product {
     @Column(name = "Discount")
     private int discount;
 
-    public Product(){
+    public Product() {
 
     }
 

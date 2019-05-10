@@ -16,8 +16,8 @@
          <children>
             <HBox>
                <children>
-                  <TextField prefHeight="33.0" prefWidth="272.0" promptText="Przeszukaj magazyn" styleClass="textarea" stylesheets="@../thoth/style.css" />
-                  <Button id="search" mnemonicParsing="false" prefHeight="33.0" prefWidth="96.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
+                  <TextField fx:id="searchSWCity" prefHeight="33.0" prefWidth="272.0" promptText="Przeszukaj magazyn" styleClass="textarea" stylesheets="@../thoth/style.css" />
+                  <Button fx:id="searchStateWarehouse" mnemonicParsing="false" onAction="#searchStateWarehouse" prefHeight="33.0" prefWidth="96.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
                      <font>
                         <Font size="18.0" />
                      </font>

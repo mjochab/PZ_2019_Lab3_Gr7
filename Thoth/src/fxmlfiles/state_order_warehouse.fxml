@@ -28,14 +28,14 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Podgląd zamówienia">
+                  <!--<Button contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Podgląd zamówienia">
                      <font>
                         <Font size="18.0" />
                      </font>
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
-                  </Button>
+                  </Button> -->
                </children>
                <VBox.margin>
                   <Insets />
