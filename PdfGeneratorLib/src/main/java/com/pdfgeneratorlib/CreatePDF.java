@@ -51,7 +51,7 @@ public class CreatePDF {
                     table.addCell(productsTable);
                 }
 
-
+                table.addCell("raporcik");
 
                 if(!shop.getUsers().isEmpty()) {
                     Table userTable = new Table(2);
