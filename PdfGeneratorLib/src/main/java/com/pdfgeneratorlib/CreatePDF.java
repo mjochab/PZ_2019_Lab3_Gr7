@@ -19,7 +19,7 @@ public class CreatePDF {
     public static void createPdf(List<RaportModel> data, String destination) throws IOException {
 
         //tworzenie pliku w którym będzie zapisany dokument
-        FileOutputStream fos = new FileOutputStream(destination);
+        FileOutputStream fos = new FileOutputStream(destination+"\\raport.pdf");
 
         //tworzenie obiektu zapisującego
         PdfWriter writer = new PdfWriter(fos);
@@ -35,6 +35,10 @@ public class CreatePDF {
 
         if (!data.isEmpty()) {
             for (RaportModel shop : data) {
+
+                Paragraph para = new Paragraph (shop.getStreet()+" "+shop.getZipCode()+" "+shop.getCity());
+                document.add(para);
+
                 Table table = new Table(1);
                 Cell shopAdress = new Cell();
                 Cell productsRaport = new Cell();
@@ -71,8 +75,6 @@ public class CreatePDF {
                 }
 
                 document.add(table);
-                Paragraph para = new Paragraph ("THOTH raport");
-                document.add(para);
             }
         }
 
