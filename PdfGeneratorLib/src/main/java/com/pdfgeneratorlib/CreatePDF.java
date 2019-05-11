@@ -30,8 +30,8 @@ public class CreatePDF {
         document.add(new Paragraph("THOTH raport sprzedażowy."));
 
         if (!data.isEmpty()) {
+            Table table = new Table(1);
             for (RaportModel shop : data) {
-                Table table = new Table(1);
                 Cell shopAdress = new Cell();
                 Cell productsRaport = new Cell();
                 Cell usersRaport = new Cell();
@@ -39,27 +39,30 @@ public class CreatePDF {
                 shopAdress.add(shop.getStreet() + " " + shop.getZipCode() + " " + shop.getCity() + " Zysk:" + shop.getProfit());         // Adding content to the cell
                 table.addCell(shopAdress);      // Adding cell to the table
 
-                Table productsTable = new Table(3);
+
                 if(!shop.getProducts().isEmpty()) {
+                    Table productsTable = new Table(3);
                     for (RaportProductModel product : shop.getProducts()) {
 
-                        productsTable.addCell(product.getName());
-                        productsTable.addCell(product.getSold().toString());
-                        productsTable.addCell(product.getTotal_price().toString());
+                        productsTable.addCell(" "+product.getName());
+                        productsTable.addCell(" "+product.getSold().toString());
+                        productsTable.addCell(" "+product.getTotal_price().toString());
                     }
+                    table.addCell(productsTable);
                 }
-                table.addCell(productsTable);
 
-//                Table userTable = new Table(2);
-//                if(shop.getUsers().isEmpty()) {
-//                    for (RaportUserModel user : shop.getUsers()) {
-//                        userTable.addCell(user.getUserId().toString());
-//                        userTable.addCell(user.getTotal().toString());
-//                    }
-//                }
-//                table.addCell(userTable);
-                document.add(table);
+
+
+                if(!shop.getUsers().isEmpty()) {
+                    Table userTable = new Table(2);
+                    for (RaportUserModel user : shop.getUsers()) {
+                        userTable.addCell(" "+user.getUserId().toString());
+                        userTable.addCell(" "+user.getTotal().toString());
+                    }
+                    table.addCell(userTable);
+                }
             }
+            document.add(table);
         }
 
         document.close();
