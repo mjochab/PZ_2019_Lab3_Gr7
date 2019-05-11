@@ -1,6 +1,7 @@
 package controllers;
 
 
+import com.itextpdf.kernel.pdf.PdfDocument;
 import entity.Product;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -60,7 +61,7 @@ public class AnalystSalesDataController implements Initializable {
     }
 
 
-    public void generateRaport(ActionEvent actionEvent) {
+    public void generateRaport(ActionEvent actionEvent) throws IOException {
 
         Session session = sessionFactory.openSession();
 //       select s.ShopId, p.Name, SUM(pr.Amount) ilosc_sprzedanych, SUM(pr.Price) cena_produktow  from receipt r INNER JOIN product_receipt pr ON r.ReceiptId = pr.ReceiptId INNER JOIN product p ON pr.ProductId = p.ProductId INNER JOIN shop s ON r.ShopId = s.ShopId where s.ShopId = 1 GROUP BY pr.ProductId
@@ -88,44 +89,11 @@ public class AnalystSalesDataController implements Initializable {
             shop.setUsers(users);
         }
 
-            OutputStream ops = null;
-            ObjectOutputStream objOps = null;
-            try {
-                ops = new FileOutputStream("ahops.object");
-                objOps = new ObjectOutputStream(ops);
-                objOps.writeObject(shops);
-                objOps.flush();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally{
-                try{
-                    if(objOps != null) objOps.close();
-                } catch (Exception ex){
 
-                }
-            }
-
-//        List<RaportProductModel> products = session.createQuery("select new models.RaportProductModel(" +
-//                " s.shopId, p.name, SUM(pr.amount) as ilosc_sprzedanych, SUM(pr.price) as cena_produktow)  " +
-//                "from Receipt r " +
-//                "INNER JOIN Product_receipt pr ON r.receiptId = pr.receiptId " +
-//                "INNER JOIN Product p ON pr.productId = p.productId " +
-//                "INNER JOIN Shop s ON r.shopId = s.shopId " +
-//                "where s.shopId = 1 GROUP BY pr.productId ").list();
-//
-//
-//        List<RaportUserModel> users = session.createQuery("select new models.RaportUserModel(u.userId, SUM(r.totalValue))" +
-//                " from User u " +
-//                "INNER JOIN UserShop us ON u.userId = us.userId " +
-//                "INNER JOIN Shop s ON us.shopId = s.shopId " +
-//                "LEFT JOIN Receipt r ON u.userId = r.userId " +
-//                "WHERE u.roleId = 4 AND r.shopId = 1 GROUP BY u.userId").list();
         System.out.println(shops.size());
         System.out.println(shops.toString());
 
-
+        CreatePDF.createPdf(shops,"C:\\Users\\wgalk\\Desktop\\Java FX Project\\file.pdf");
 //        System.out.println(products.size());
 //        System.out.println(products.toString());
 //
