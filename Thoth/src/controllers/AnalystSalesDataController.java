@@ -93,7 +93,7 @@ public class AnalystSalesDataController implements Initializable {
         System.out.println(shops.size());
         System.out.println(shops.toString());
 
-        CreatePDF.createPdf(shops,"C:\\Users\\wgalk\\Desktop\\Java FX Project\\file.pdf");
+        CreatePDF.createPdf(shops,"C:\\Users\\wgalk\\Desktop\\Java FX Project\\");
 //        System.out.println(products.size());
 //        System.out.println(products.toString());
 //
