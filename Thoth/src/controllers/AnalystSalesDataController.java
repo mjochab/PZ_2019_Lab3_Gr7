@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.pdfgeneratorlib.*;
+
 import static controllers.MainWindowController.sessionFactory;
 
 public class AnalystSalesDataController implements Initializable {
@@ -62,12 +64,12 @@ public class AnalystSalesDataController implements Initializable {
 
         Session session = sessionFactory.openSession();
 //       select s.ShopId, p.Name, SUM(pr.Amount) ilosc_sprzedanych, SUM(pr.Price) cena_produktow  from receipt r INNER JOIN product_receipt pr ON r.ReceiptId = pr.ReceiptId INNER JOIN product p ON pr.ProductId = p.ProductId INNER JOIN shop s ON r.ShopId = s.ShopId where s.ShopId = 1 GROUP BY pr.ProductId
-        List<RaportModel> shops = session.createQuery("SELECT new models.RaportModel(s.shopId, s.street, s.zipCode, " +
+        List<RaportModel> shops = session.createQuery("SELECT new com.pdfgeneratorlib.RaportModel(s.shopId, s.street, s.zipCode, " +
                 "s.city, SUM(r.totalValue)) from Shop s Left JOIN Receipt r ON s.shopId = r.shopId GROUP BY s.shopId").list();
 
         for (RaportModel shop : shops){
             Integer shopidentifier = shop.getShopId();
-            List<RaportProductModel> products = session.createQuery("select new models.RaportProductModel(" +
+            List<RaportProductModel> products = session.createQuery("select new com.pdfgeneratorlib.RaportProductModel(" +
                     " s.shopId, p.name, SUM(pr.amount) as ilosc_sprzedanych, SUM(pr.price) as cena_produktow)  " +
                     "from Receipt r " +
                     "INNER JOIN Product_receipt pr ON r.receiptId = pr.receiptId " +
@@ -76,7 +78,7 @@ public class AnalystSalesDataController implements Initializable {
                     "where s.shopId = :shopidentifier GROUP BY pr.productId ").setParameter("shopidentifier",shopidentifier).list();
             shop.setProducts(products);
 
-            List<RaportUserModel> users = session.createQuery("select new models.RaportUserModel(u.userId, SUM(r.totalValue))" +
+            List<RaportUserModel> users = session.createQuery("select new com.pdfgeneratorlib.RaportUserModel(u.userId, SUM(r.totalValue))" +
                     " from User u " +
                     "INNER JOIN UserShop us ON u.userId = us.userId " +
                     "INNER JOIN Shop s ON us.shopId = s.shopId " +
