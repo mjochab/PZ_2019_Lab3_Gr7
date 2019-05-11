@@ -8,11 +8,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import models.*;
 import org.hibernate.Session;
 
+import java.awt.*;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -25,6 +31,9 @@ import com.pdfgeneratorlib.*;
 import static controllers.MainWindowController.sessionFactory;
 
 public class AnalystSalesDataController implements Initializable {
+
+    @FXML
+    private AnchorPane pane;
     @FXML
     public TableView<SalesDataModel> salesDataTable;
     @FXML
@@ -63,6 +72,18 @@ public class AnalystSalesDataController implements Initializable {
 
     public void generateRaport(ActionEvent actionEvent) throws IOException {
 
+        DirectoryChooser chooser = new DirectoryChooser();
+
+        Stage stage = (Stage) pane.getScene().getWindow();
+
+        File file = chooser.showDialog(stage);
+
+        String path = null;
+
+        if(file != null){
+            path = file.getAbsolutePath();
+        }
+
         Session session = sessionFactory.openSession();
 //       select s.ShopId, p.Name, SUM(pr.Amount) ilosc_sprzedanych, SUM(pr.Price) cena_produktow  from receipt r INNER JOIN product_receipt pr ON r.ReceiptId = pr.ReceiptId INNER JOIN product p ON pr.ProductId = p.ProductId INNER JOIN shop s ON r.ShopId = s.ShopId where s.ShopId = 1 GROUP BY pr.ProductId
         List<RaportModel> shops = session.createQuery("SELECT new com.pdfgeneratorlib.RaportModel(s.shopId, s.street, s.zipCode, " +
@@ -93,22 +114,19 @@ public class AnalystSalesDataController implements Initializable {
         System.out.println(shops.size());
         System.out.println(shops.toString());
 
-        CreatePDF.createPdf(shops,"C:\\Users\\wgalk\\Desktop\\Java FX Project\\");
-//        System.out.println(products.size());
-//        System.out.println(products.toString());
-//
-//        System.out.println(users.size());
-//        System.out.println(users.toString());
+        CreatePDF.createPdf(shops,path);
+
         session.close();
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Raport utworzony pomyślnie");
         alert.setHeaderText("Utworzono w lokalizacji:");
-        alert.setContentText("c:/programy/raport.pdf");
-        ButtonType view_raport = new ButtonType("Podgląd");
+        alert.setContentText(path);
         ButtonType confirm = new ButtonType("Ok", ButtonBar.ButtonData.APPLY);
 
-        alert.getButtonTypes().setAll(view_raport, confirm);
+
+
+        alert.getButtonTypes().setAll(confirm);
         alert.showAndWait();
     }
 }
