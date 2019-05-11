@@ -50,14 +50,14 @@ public class CreatePDF {
                 }
                 table.addCell(productsTable);
 
-                Table userTable = new Table(2);
-                if(!shop.getUsers().isEmpty()) {
-                    for (RaportUserModel user : shop.getUsers()) {
-                        userTable.addCell(user.getUserId().toString());
-                        userTable.addCell(user.getTotal().toString());
-                    }
-                }
-                table.addCell(userTable);
+//                Table userTable = new Table(2);
+//                if(shop.getUsers().isEmpty()) {
+//                    for (RaportUserModel user : shop.getUsers()) {
+//                        userTable.addCell(user.getUserId().toString());
+//                        userTable.addCell(user.getTotal().toString());
+//                    }
+//                }
+//                table.addCell(userTable);
                 document.add(table);
             }
         }
