@@ -58,10 +58,10 @@ public class CreatePDF {
                     for (RaportUserModel user : shop.getUsers()) {
                         userTable.addCell(user.getUserId());
                         userTable.addCell(user.getTotal());
-                        }
                     }
                     table.addCell(userTable);
                 }
+
                 document.add(table);
                 AreaBreak aB = new AreaBreak();
                 document.add(aB);
