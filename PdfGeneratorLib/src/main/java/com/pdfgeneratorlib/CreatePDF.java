@@ -10,8 +10,10 @@ import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import org.apache.log4j.helpers.DateTimeDateFormat;
 
 import java.io.*;
+import java.util.Date;
 import java.util.List;
 
 public class CreatePDF {
@@ -19,7 +21,7 @@ public class CreatePDF {
     public static void createPdf(List<RaportModel> data, String destination) throws IOException {
 
         //tworzenie pliku w którym będzie zapisany dokument
-        FileOutputStream fos = new FileOutputStream(destination+"\\raport.pdf");
+        FileOutputStream fos = new FileOutputStream(destination+"\\raport"+new Date().toString() +".pdf");
 
         //tworzenie obiektu zapisującego
         PdfWriter writer = new PdfWriter(fos);
