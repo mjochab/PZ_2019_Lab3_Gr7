@@ -9,7 +9,11 @@ public class RaportUserModel implements Serializable {
 
     public RaportUserModel(Integer userId, BigDecimal total) {
         this.userId = userId;
-        this.total = total;
+        if (total == null) {
+            this.total = new BigDecimal(0);
+        } else {
+            this.total = total;
+        }
     }
 
     public String getUserId() {
