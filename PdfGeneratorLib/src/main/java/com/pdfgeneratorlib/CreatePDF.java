@@ -57,8 +57,7 @@ public class CreatePDF {
                     Table userTable = new Table(2);
                     for (RaportUserModel user : shop.getUsers()) {
                         userTable.addCell(user.getUserId());
-                        if(user.getTotal() == null){
-                            System.out.println("xd");
+                        userTable.addCell(user.getTotal());
                         }
                     }
                     table.addCell(userTable);
