@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import models.SalesCreatorModel;
 import models.SalesDataModel;
 import org.hibernate.Session;
 
@@ -74,7 +73,6 @@ public class AnalystSalesDataController implements Initializable {
         alert.setContentText("c:/programy/raport.pdf");
         ButtonType view_raport = new ButtonType("Podgląd");
         ButtonType confirm = new ButtonType("Ok", ButtonBar.ButtonData.APPLY);
-
         alert.getButtonTypes().setAll(view_raport, confirm);
         alert.showAndWait();
     }

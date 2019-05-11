@@ -69,7 +69,7 @@ public class WarehouseNewProductController implements Initializable {
     public ObservableList<Shop> getObjectShop(){
         ObservableList<Shop> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<Shop> eList = session.createQuery("from Shop where shopId = :pid").setParameter("pid", shopID).list();
+        List<Shop> eList = session.createQuery("from Shop where shopId = :pid").setParameter("pid", sessionContext.getCurrentLoggedShop().getShopId()).list();
         System.out.println("getObjectShop "+eList);
         for (Shop ent : eList) {
             productList.add(ent);
