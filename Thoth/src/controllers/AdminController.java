@@ -24,6 +24,8 @@ import java.util.ResourceBundle;
 import static controllers.MainWindowController.*;
 import org.hibernate.Session;
 
+import static controllers.MainWindowController.sessionContext;
+
 public class AdminController implements Initializable {
 
     @FXML
@@ -71,6 +73,5 @@ public class AdminController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
 }

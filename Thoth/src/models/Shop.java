@@ -1,33 +1,16 @@
-package entity;
+package models;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "Shop")
 public class Shop {
 
-    @Id
-    @Column(name = "ShopId")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int shopId;
-
-    @Column(name = "ZipCode",nullable = false)
     private String zipCode;
-
-    @Column(name = "City",nullable = false)
     private String city;
-
-    @Column(name = "Street",nullable = false)
     private String street;
-
-    @Column(name = "IsShop",nullable = false)
     private Boolean idShop;
 
-    public Shop() {
-
+    public Shop(int shopId) {
+        this.shopId = shopId;
     }
-
-
 
     public int getShopId() {
         return shopId;
@@ -67,11 +50,5 @@ public class Shop {
 
     public void setIdShop(Boolean idShop) {
         this.idShop = idShop;
-    }
-
-    @Override
-
-    public String toString() {
-        return getCity() + ", " + getStreet() + ", " + getZipCode();
     }
 }
