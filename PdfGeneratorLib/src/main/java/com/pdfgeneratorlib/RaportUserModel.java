@@ -25,7 +25,11 @@ public class RaportUserModel implements Serializable {
     }
 
     public void setTotal(BigDecimal total) {
-        this.total = total;
+        if (total == null) {
+            this.total = new BigDecimal(0);
+        } else {
+            this.total = total;
+        }
     }
 
     @Override
