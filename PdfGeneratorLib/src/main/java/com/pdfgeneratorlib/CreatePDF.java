@@ -59,7 +59,7 @@ public class CreatePDF {
                         if (user.getTotal() == null) {
                             userTable.addCell("0");
                         } else {
-                            userTable.addCell("Total" + user.getTotal());
+                            userTable.addCell("Total");
                         }
                     }
                     table.addCell(userTable);
