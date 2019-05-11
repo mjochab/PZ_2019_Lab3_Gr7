@@ -11,11 +11,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import models.*;
+
 import org.hibernate.Session;
 
 import java.awt.*;
@@ -123,10 +125,9 @@ public class AnalystSalesDataController implements Initializable {
         alert.setHeaderText("Utworzono w lokalizacji:");
         alert.setContentText(path);
         ButtonType confirm = new ButtonType("Ok", ButtonBar.ButtonData.APPLY);
-
-
-
+      
         alert.getButtonTypes().setAll(confirm);
+
         alert.showAndWait();
     }
 }

@@ -25,11 +25,11 @@ INSERT INTO product (ProductId, Name, Price, Discount) VALUES (null, 'Samsung Wa
 INSERT INTO customer (CustomerId, FirstName, LastName, PhoneNumber) VALUES (null, 'Jan', 'Nosacz', '555444333');
 INSERT INTO customer (CustomerId, FirstName, LastName, PhoneNumber) VALUES (null, 'Halina', 'Nosaczowa', '444555333');
 
-insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Adam', 'Kowalski', 'test1', 'test1', '1', '1');
-insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Bartosz', 'Nowacki', 'test2', 'test2', '2', '1');
-insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Tadeusz', 'Malinowski', 'test3', 'test3', '3', '1');
-insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Patryk', 'Nowakowski', 'test4', 'test4', '4', '1');
-insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Artur', 'Krasicki', 'test5', 'test5', '5', '1');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Adam', 'Kowalski', 'admin', 'admin', '1', '1');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Bartosz', 'Nowacki', 'magazyn', 'magazyn', '2', '1');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Tadeusz', 'Malinowski', 'analityk', 'analityk', '3', '1');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Patryk', 'Nowakowski', 'sklep', 'sklep', '4', '1');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Artur', 'Krasicki', 'logistyk', 'logistyk', '5', '1');
 
 
 --sprzedawcy
@@ -41,8 +41,9 @@ insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('
 
 
 insert into user_shop (ShopId, UserId)  values ('1','1');
-insert into user_shop (ShopId, UserId)  values ('2','2');
-insert into user_shop (ShopId, UserId)  values ('1','3');
+insert into user_shop (ShopId, UserId)  values ('2','1');
+insert into user_shop (ShopId, UserId)  values ('1','2');
+insert into user_shop (ShopId, UserId)  values ('4','3');
 insert into user_shop (ShopId, UserId)  values ('4','4');
 insert into user_shop (ShopId, UserId)  values ('4','5');
 
@@ -66,12 +67,8 @@ INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('3', '2', '999');
 INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('4', '2', '999');
 
 
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES ('1', '1', '0', '6', '2019-04-06');
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES ('2', '1', '0', '6', '2019-04-06');
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES ('3', '1', '0', '7', '2019-04-06');
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES ('4', '1', '0', '8', '2019-04-06');
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES ('5', '2', '0', '9', '2019-04-06');
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES ('6', '2', '0', '10', '2019-04-06');
+INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '4', '2019-04-06');
+INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '4', '2019-04-06');
 
 
 INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('1', '1', '2', (SELECT Price FROM product WHERE ProductId = 1));

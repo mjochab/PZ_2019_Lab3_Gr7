@@ -14,6 +14,8 @@ import java.util.ResourceBundle;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
+import static controllers.MainWindowController.sessionContext;
+
 public class MainViewLogisticController implements Initializable {
     @FXML
     MenuItem logout;
@@ -34,6 +36,8 @@ public class MainViewLogisticController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("Aktualnie zaloogwany User: " + sessionContext.getCurrentLoggedUser());
+        System.out.println("Obiekt zalogowanego User'a: " + sessionContext.getCurrentLoggedShop());
         System.out.println("Hello from MainController");
     }
 }

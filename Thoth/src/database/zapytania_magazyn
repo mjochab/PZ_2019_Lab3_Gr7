@@ -1,13 +1,26 @@
+-- zwraca 2 adminów
+SELECT `user_shop`.`ShopId`, `user`.`FirstName`, `shop`.`City`
+FROM `user`
+            INNER JOIN `user_shop` ON `user`.`UserId` = `user_shop`.`UserId`
+            INNER JOIN `shop` ON `user_shop`.`ShopId` = `shop`.`ShopId`
+WHERE `user`.`Login` like "magazyn"
+
 -- Moduł Magazyn
 --przeszukanie listy produktów dla danego magazynu , gdzie stan > 1
 SELECT `product`.`ProductId`,`product`.`Name`,`product`.`Price`,`state_on_shop`.`Amount`,`product`.`Discount`
 FROM `product`
-       INNER JOIN `state_on_shop` ON `product`.`ProductId` = `state_on_shop`.`ProductId`
-       INNER JOIN `shop` ON `state_on_shop`.`ShopId` = `shop`.`ShopId`
-WHERE `shop`.`City` like "R%" AND `state_on_shop`.`Amount` > 0 --AND `product`.`Name` like 'M%' dla wyszukiwania produktu
+            INNER JOIN `state_on_shop` ON `product`.`ProductId` = `state_on_shop`.`ProductId`
+            INNER JOIN `shop` ON `state_on_shop`.`ShopId` = `shop`.`ShopId`
+WHERE `shop`.`ShopId` = 1 AND `state_on_shop`.`Amount` > 0 --AND `product`.`Name` like 'M%' dla wyszukiwania produktu
+--ZAKONCZONO!
 
-  --dodawanie nowego produktu
-  INSERT INTO `product`(`ProductId`, `Name`, `Price`, `Discount`) VALUES ('', '', '', '');
+--dodawanie nowego produktu
+--sprawdzić czy już nie ma tekigo w bazie
+SELECT `ProductId` FROM `product` WHERE `Name` like "nazwa nowego urządzenia"
+INSERT INTO product (ProductId, Name, Price, Discount) VALUES (tu bedzie ID bo jest AutoINC, 'Nokia N95', '50', '0')
+--pobrać nowe ID
+SELECT `ProductId` FROM `product` WHERE `Name` like "nazwa nowego urządzenia"
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES (tu ma być być to nowe ID, '1', '10')
 
 --nowe zamowienie 1/2 --poprawić OBJECT
 SELECT `product`.`ProductId`,`product`.`Name`,`product`.`Price`,`state_on_object`.`Amount`
