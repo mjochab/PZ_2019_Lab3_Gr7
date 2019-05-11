@@ -30,8 +30,8 @@ public class CreatePDF {
         document.add(new Paragraph("THOTH raport sprzedażowy."));
 
         if (!data.isEmpty()) {
-            Table table = new Table(1);
             for (RaportModel shop : data) {
+                Table table = new Table(1);
                 Cell shopAdress = new Cell();
                 Cell productsRaport = new Cell();
                 Cell usersRaport = new Cell();
@@ -40,29 +40,28 @@ public class CreatePDF {
                 table.addCell(shopAdress);      // Adding cell to the table
 
 
-                if(!shop.getProducts().isEmpty()) {
+                if (!shop.getProducts().isEmpty()) {
                     Table productsTable = new Table(3);
                     for (RaportProductModel product : shop.getProducts()) {
-
-                        productsTable.addCell(" "+product.getName());
-                        productsTable.addCell(" "+product.getSold().toString());
-                        productsTable.addCell(" "+product.getTotal_price().toString());
+                        productsTable.addCell(" " + product.getName());
+                        productsTable.addCell(" " + product.getSold().toString());
+                        productsTable.addCell(" " + product.getTotal_price().toString());
                     }
                     productsRaport.add(productsTable);
                     table.addCell(productsRaport);
                 }
 
 
-                if(!shop.getUsers().isEmpty()) {
+                if (!shop.getUsers().isEmpty()) {
                     Table userTable = new Table(2);
                     for (RaportUserModel user : shop.getUsers()) {
-                        userTable.addCell("UserId");
-                        userTable.addCell("Total");
+                        userTable.addCell("UserId" + user.getUserId());
+                        userTable.addCell("Total" + user.getTotal());
                     }
                     table.addCell(userTable);
                 }
+                document.add(table);
             }
-            document.add(table);
         }
 
         document.close();

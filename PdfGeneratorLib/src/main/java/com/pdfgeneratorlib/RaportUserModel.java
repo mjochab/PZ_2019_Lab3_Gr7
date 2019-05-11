@@ -12,16 +12,16 @@ public class RaportUserModel implements Serializable {
         this.total = total;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getUserId() {
+        return userId.toString();
     }
 
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public BigDecimal getTotal() {
-        return total;
+    public String getTotal() {
+        return total.toString();
     }
 
     public void setTotal(BigDecimal total) {
