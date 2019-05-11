@@ -16,12 +16,12 @@
             <children>
                 <HBox>
                     <children>
-                        <TextField prefHeight="25.0" prefWidth="300.0" promptText="Nazwa produktu" styleClass="textarea" stylesheets="@../thoth/style.css">
+                        <TextField fx:id="searchTF" prefHeight="25.0" prefWidth="300.0" promptText="Nazwa produktu" styleClass="textarea" stylesheets="@../thoth/style.css">
                             <HBox.margin>
                                 <Insets right="10.0" />
                             </HBox.margin>
                         </TextField>
-                        <Button id="search" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
+                        <Button fx:id="search" onAction="#searchAnalystPrices" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
                             <font>
                                 <Font size="18.0" />
                             </font>

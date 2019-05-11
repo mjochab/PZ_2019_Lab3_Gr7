@@ -25,8 +25,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static controllers.MainWindowController.sessionFactory;
-import static controllers.MainWindowController.shopID;
+import static controllers.MainWindowController.*;
 
 
 public class StateWarehouseController implements Initializable {
@@ -69,7 +68,7 @@ public class StateWarehouseController implements Initializable {
 
     private ObservableList<SalesCreatorModel> lista = FXCollections.observableArrayList();
 
-    String nazwaProduktu = null; //nazwa magazynu do przeszukiwania zawartości, do usunięcia!!!
+    String nazwaProduktu = null;
 
     public void menuitemaction(ActionEvent actionEvent) throws IOException { //wylogowanie na MENU ITEM
         stage = (Stage) root.getScene().getWindow();
@@ -98,7 +97,7 @@ public class StateWarehouseController implements Initializable {
             NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
             PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
             AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
-            new_order.setItems(getProductsForOtherShop(shopID));
+            new_order.setItems(getProductsForOtherShop(sessionContext.getCurrentLoggedShop().getShopId()));
             setComboList();
             //System.out.println(getProducts(nazwaProduktu).toString());
             new_order.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -165,11 +164,11 @@ public class StateWarehouseController implements Initializable {
         if(nazwaProduktu == null || nazwaProduktu.equals("")){
             eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
                     "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE k.shopId = :idshop AND s.amount > 0  "
-            ).setParameter("idshop",shopID).list();
+            ).setParameter("idshop",sessionContext.getCurrentLoggedShop().getShopId()).list();
         } else {
             eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
                     "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE k.shopId = :idshop AND s.amount > 0 AND p.name like :produkt "
-            ).setParameter("produkt","%"+nazwaProduktu+"%").setParameter("idshop",shopID).list();
+            ).setParameter("produkt","%"+nazwaProduktu+"%").setParameter("idshop",sessionContext.getCurrentLoggedShop().getShopId()).list();
             searchSWCity.setText("");
             nazwaProduktu = null;
         }
@@ -189,7 +188,7 @@ public class StateWarehouseController implements Initializable {
                 "INNER JOIN State s ON s.stateId = v.stateId  " +
                 "INNER JOIN Shop p ON p.shopId = i.shopId_need " +
                 "WHERE p.shopId = :idshop "
-        ).setParameter("idshop",shopID).list();
+        ).setParameter("idshop",sessionContext.getCurrentLoggedShop().getShopId()).list();
         System.out.println("getOrder "+eList);
         for (StateOrderModel ent : eList) {
             orderList.add(ent);
@@ -210,7 +209,7 @@ public class StateWarehouseController implements Initializable {
                 "INNER JOIN State_of_indent soi ON i.indentId = soi.indentId " +
                 "INNER JOIN State s ON soi.stateId = s.stateId " +
                 "WHERE sp.shopId = :idshop AND s.name like 'W realizacji' "
-        ).setParameter("idshop",shopID).list();
+        ).setParameter("idshop",sessionContext.getCurrentLoggedShop().getShopId()).list();
         System.out.println("getOrderProducts "+eList);
         for (SalesCreatorModel ent : eList) {
             productList.add(ent);
@@ -254,7 +253,7 @@ public class StateWarehouseController implements Initializable {
 
     public void setComboList() {
         this.comboList.getItems().addAll(getShops());
-        comboList.getSelectionModel().select(shopID-1);
+        comboList.getSelectionModel().select(sessionContext.getCurrentLoggedShop().getShopId()-1);
     }
 
     public void searchNewOrderWarehouse(){

@@ -1,6 +1,5 @@
 package models;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 
 public class SalesCreatorModel {
@@ -11,6 +10,13 @@ public class SalesCreatorModel {
     private Integer amount;
 
     public SalesCreatorModel() {
+    }
+
+    public SalesCreatorModel(Integer productId, String name, BigDecimal price, Integer discount) {
+        this.productId = productId;
+        this.name = name;
+        this.price = price;
+        this.discount = discount;
     }
 
     public SalesCreatorModel(Integer productId, String name, BigDecimal price, Integer discount, Integer amount) {
