@@ -1,10 +1,11 @@
 package models;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-public class RaportModel {
+public class RaportModel implements Serializable {
     private Integer shopId;
     private String street;
     private String zipCode;

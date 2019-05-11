@@ -1,8 +1,9 @@
 package models;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class RaportUserModel {
+public class RaportUserModel implements Serializable {
     private Integer userId;
     private BigDecimal total;
 

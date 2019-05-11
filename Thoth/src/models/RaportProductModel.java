@@ -1,8 +1,9 @@
 package models;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class RaportProductModel {
+public class RaportProductModel implements Serializable {
     private Integer shopId;
     private String name;
     private Long sold;

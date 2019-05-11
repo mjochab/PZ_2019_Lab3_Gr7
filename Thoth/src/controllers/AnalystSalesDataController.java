@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import models.*;
 import org.hibernate.Session;
 
+import java.io.*;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
@@ -84,6 +85,25 @@ public class AnalystSalesDataController implements Initializable {
 
             shop.setUsers(users);
         }
+
+            OutputStream ops = null;
+            ObjectOutputStream objOps = null;
+            try {
+                ops = new FileOutputStream("ahops.object");
+                objOps = new ObjectOutputStream(ops);
+                objOps.writeObject(shops);
+                objOps.flush();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally{
+                try{
+                    if(objOps != null) objOps.close();
+                } catch (Exception ex){
+
+                }
+            }
 
 //        List<RaportProductModel> products = session.createQuery("select new models.RaportProductModel(" +
 //                " s.shopId, p.name, SUM(pr.amount) as ilosc_sprzedanych, SUM(pr.price) as cena_produktow)  " +
