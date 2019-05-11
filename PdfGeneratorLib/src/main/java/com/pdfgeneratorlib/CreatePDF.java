@@ -1,7 +1,10 @@
 package com.pdfgeneratorlib;
 
+import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.annot.PdfAnnotation;
+import com.itextpdf.kernel.pdf.annot.PdfLineAnnotation;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Cell;
@@ -43,10 +46,13 @@ public class CreatePDF {
 
                 if (!shop.getProducts().isEmpty()) {
                     Table productsTable = new Table(3);
+                    productsTable.addCell("Nazwa produktu");
+                    productsTable.addCell("Ilość sprzedanych");
+                    productsTable.addCell("Wartość sprzedanych produktów");
                     for (RaportProductModel product : shop.getProducts()) {
-                        productsTable.addCell(" " + product.getName());
-                        productsTable.addCell(" " + product.getSold().toString());
-                        productsTable.addCell(" " + product.getTotal_price().toString());
+                        productsTable.addCell(product.getName());
+                        productsTable.addCell(product.getSold().toString());
+                        productsTable.addCell(product.getTotal_price().toString());
                     }
                     productsRaport.add(productsTable);
                     table.addCell(productsRaport);
@@ -55,6 +61,8 @@ public class CreatePDF {
 
                 if (!shop.getUsers().isEmpty()) {
                     Table userTable = new Table(2);
+                    userTable.addCell("Id pracownika");
+                    userTable.addCell("Wartość sprzedanych produktów");
                     for (RaportUserModel user : shop.getUsers()) {
                         userTable.addCell(user.getUserId());
                         userTable.addCell(user.getTotal());
@@ -63,8 +71,8 @@ public class CreatePDF {
                 }
 
                 document.add(table);
-                AreaBreak aB = new AreaBreak();
-                document.add(aB);
+                Paragraph para = new Paragraph ("THOTH raport");
+                document.add(para);
             }
         }
 
