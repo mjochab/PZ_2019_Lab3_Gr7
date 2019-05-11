@@ -3,6 +3,7 @@ package com.pdfgeneratorlib;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
@@ -55,12 +56,16 @@ public class CreatePDF {
                 if (!shop.getUsers().isEmpty()) {
                     Table userTable = new Table(2);
                     for (RaportUserModel user : shop.getUsers()) {
-                        userTable.addCell("UserId" + user.getUserId());
-                        userTable.addCell("Total");
+                        userTable.addCell(user.getUserId());
+                        if(user.getTotal() == null){
+                            System.out.println("xd");
+                        }
                     }
                     table.addCell(userTable);
                 }
                 document.add(table);
+                AreaBreak aB = new AreaBreak();
+                document.add(aB);
             }
         }
 
