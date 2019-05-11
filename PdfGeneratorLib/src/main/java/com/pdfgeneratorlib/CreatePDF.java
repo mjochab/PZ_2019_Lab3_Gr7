@@ -13,6 +13,7 @@ import com.itextpdf.layout.element.Table;
 import org.apache.log4j.helpers.DateTimeDateFormat;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +22,13 @@ public class CreatePDF {
     public static void createPdf(List<RaportModel> data, String destination) throws IOException {
 
         //tworzenie pliku w którym będzie zapisany dokument
-        FileOutputStream fos = new FileOutputStream(destination+"\\raport"+new Date().toString() +".pdf");
+        Date time = new Date();
+
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
+        String dateString = dateFormat.format(currentDate);
+
+        FileOutputStream fos = new FileOutputStream(destination+"\\raport"+dateString+".pdf");
 
         //tworzenie obiektu zapisującego
         PdfWriter writer = new PdfWriter(fos);
