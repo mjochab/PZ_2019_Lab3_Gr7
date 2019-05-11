@@ -53,14 +53,14 @@ public class CreatePDF {
 
                 table.addCell("raporcik");
 
-                if(!shop.getUsers().isEmpty()) {
-                    Table userTable = new Table(2);
-                    for (RaportUserModel user : shop.getUsers()) {
-                        userTable.addCell(" "+user.getUserId().toString());
-                        userTable.addCell(" "+user.getTotal().toString());
-                    }
-                    table.addCell(userTable);
-                }
+//                if(!shop.getUsers().isEmpty()) {
+//                    Table userTable = new Table(2);
+//                    for (RaportUserModel user : shop.getUsers()) {
+//                        userTable.addCell(" "+user.getUserId().toString());
+//                        userTable.addCell(" "+user.getTotal().toString());
+//                    }
+//                    table.addCell(userTable);
+//                }
             }
             document.add(table);
         }
