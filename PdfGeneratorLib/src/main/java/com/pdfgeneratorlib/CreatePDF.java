@@ -48,19 +48,19 @@ public class CreatePDF {
                         productsTable.addCell(" "+product.getSold().toString());
                         productsTable.addCell(" "+product.getTotal_price().toString());
                     }
-                    table.addCell(productsTable);
+                    productsRaport.add(productsTable);
+                    table.addCell(productsRaport);
                 }
 
-                table.addCell("raporcik");
 
-//                if(!shop.getUsers().isEmpty()) {
-//                    Table userTable = new Table(2);
-//                    for (RaportUserModel user : shop.getUsers()) {
-//                        userTable.addCell(" "+user.getUserId().toString());
-//                        userTable.addCell(" "+user.getTotal().toString());
-//                    }
-//                    table.addCell(userTable);
-//                }
+                if(!shop.getUsers().isEmpty()) {
+                    Table userTable = new Table(2);
+                    for (RaportUserModel user : shop.getUsers()) {
+                        userTable.addCell("UserId");
+                        userTable.addCell("Total");
+                    }
+                    table.addCell(userTable);
+                }
             }
             document.add(table);
         }
