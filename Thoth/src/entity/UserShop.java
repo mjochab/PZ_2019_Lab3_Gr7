@@ -37,7 +37,7 @@ public class UserShop {
     }
 
     public void setShopId(Shop shopId) {
-        shopId = shopId;
+        this.shopId = shopId;
     }
 
     public User getUserId() {
