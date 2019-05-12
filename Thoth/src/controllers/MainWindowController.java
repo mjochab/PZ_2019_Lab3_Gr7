@@ -73,10 +73,6 @@ public class MainWindowController implements Initializable {
         }
 
         Parent temporaryLoginParent = null;
-        if (event.getSource().toString().contains("login_btn") == true) //logowanie
-        {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/TemporaryLogIn.fxml"));
-        }
         if (event.getSource().toString().contains("back") == true) //tu bedzie id = "back", przycisk powrotu
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
