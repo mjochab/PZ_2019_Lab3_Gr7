@@ -32,31 +32,65 @@ insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('
 insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Artur', 'Krasicki', 'logistyk', 'logistyk', '5', '1');
 
 
+--sprzedawcy
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Adam', 'Kowalski', 'sk1', 'sk1', '4', '1');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Bartosz', 'Nowacki', 'sk2', 'sk2', '4', '1');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Tadeusz', 'Malinowski', 'sk3', 'sk3', '4', '1');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Patryk', 'Nowakowski', 'sk4', 'sk4', '4', '1');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Artur', 'Krasicki', 'sk5', 'sk5', '4', '1');
+
+
 insert into user_shop (ShopId, UserId)  values ('1','1');
 insert into user_shop (ShopId, UserId)  values ('2','1');
 insert into user_shop (ShopId, UserId)  values ('1','2');
 insert into user_shop (ShopId, UserId)  values ('4','3');
 insert into user_shop (ShopId, UserId)  values ('4','4');
-insert into user_shop (ShopId, UserId)  values ('1','5');
+insert into user_shop (ShopId, UserId)  values ('4','5');
 
-INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('1', '1', '3');
-INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('2', '1', '4');
-INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('3', '2', '1');
-INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('1', '2', '2');
-INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('5', '2', '5');
+--sprzedawcy
+insert into user_shop (ShopId, UserId)  values ('1','6');
+insert into user_shop (ShopId, UserId)  values ('1','7');
+insert into user_shop (ShopId, UserId)  values ('1','8');
+insert into user_shop (ShopId, UserId)  values ('2','9');
+insert into user_shop (ShopId, UserId)  values ('2','10');
+
+
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('1', '1', '999');
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('2', '1', '999');
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('3', '1', '999');
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('4', '1', '999');
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('5', '1', '999');
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('6', '1', '999');
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('1', '2', '999');
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('2', '2', '999');
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('3', '2', '999');
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('4', '2', '999');
 
 
 INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '4', '2019-04-06');
 INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '4', '2019-04-06');
 
 
-INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('1', '1', '1', (SELECT Price FROM product WHERE ProductId = 1));
+INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('1', '1', '2', (SELECT Price FROM product WHERE ProductId = 1));
 INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('2', '1', '1', (SELECT Price FROM product WHERE ProductId = 2));
-INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('1', '2', '1', (SELECT Price FROM product WHERE ProductId = 1));
+INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('3', '1', '1', (SELECT Price FROM product WHERE ProductId = 3));
+INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('4', '1', '1', (SELECT Price FROM product WHERE ProductId = 4));
+INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('5', '1', '1', (SELECT Price FROM product WHERE ProductId = 5));
+INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('6', '2', '1', (SELECT Price FROM product WHERE ProductId = 6));
+INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('5', '2', '1', (SELECT Price FROM product WHERE ProductId = 5));
+INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('4', '2', '1', (SELECT Price FROM product WHERE ProductId = 4));
+INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('1', '3', '1', (SELECT Price FROM product WHERE ProductId = 1));
+INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('1', '4', '1', (SELECT Price FROM product WHERE ProductId = 1));
+INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('2', '5', '1', (SELECT Price FROM product WHERE ProductId = 2));
+INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('1', '6', '1', (SELECT Price FROM product WHERE ProductId = 1));
 
 
 UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE ReceiptId = 1) WHERE ReceiptId = 1;
 UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE ReceiptId = 2) WHERE ReceiptId = 2;
+UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE ReceiptId = 3) WHERE ReceiptId = 3;
+UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE ReceiptId = 4) WHERE ReceiptId = 4;
+UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE ReceiptId = 5) WHERE ReceiptId = 5;
+UPDATE `receipt` SET `TotalValue`= (SELECT SUM(Price) FROM product_receipt WHERE ReceiptId = 6) WHERE ReceiptId = 6;
 
 INSERT INTO Indent (IndentId, ShopId_need, CustomerId, ShopId_delivery, DateOfOrder, ParentId) VALUES (null, '1', null, '3', '2019-04-07', null);
 INSERT INTO Indent (IndentId, ShopId_need, CustomerId, ShopId_delivery, DateOfOrder, ParentId) VALUES (null, '2', null, '3', '2019-04-07', null);
