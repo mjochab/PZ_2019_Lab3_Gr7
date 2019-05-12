@@ -36,7 +36,7 @@ insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('
 insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Bartosz', 'Nowacki', 'sk2', 'sk2', '4', '1');
 insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Tadeusz', 'Malinowski', 'sk3', 'sk3', '4', '1');
 insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Patryk', 'Nowakowski', 'sk4', 'sk4', '4', '1');
-insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Artur', 'Krasicki', 'sk5', 'sk5', '4', '1');
+insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Artur', 'Krasicki', 'sk5', 'sk5', '4', '0');
 
 
 insert into user_shop (ShopId, UserId)  values ('1','1');

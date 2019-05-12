@@ -166,13 +166,18 @@ public class MainWindowController implements Initializable {
                 mainController.setComboList();
             }
 
-            Scene temporaryLoginScene = new Scene(temporaryLoginParent);
+            if (temporaryLoginParent != null) {
+                Scene temporaryLoginScene = new Scene(temporaryLoginParent);
+                // To pobiera informacje o scenie
+                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-            // To pobiera informacje o scenie
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                window.setScene(temporaryLoginScene);
 
-            window.setScene(temporaryLoginScene);
-            window.show();
+                window.show();
+            }
+            loginErrorLabel.setText("Prawdopodobnie konto użytkownika nie jest aktywne");
+
+
 
         } catch (IndexOutOfBoundsException e) {
             loginErrorLabel.setText("Nie ma konta o takim Loginie i Haśle");
