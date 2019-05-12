@@ -65,12 +65,12 @@ INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('3', '2', '100');
 INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('4', '2', '100');
 
 
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '5', '2019-04-06');
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '5', '2019-04-06');
+INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '6', '2019-04-06');
 INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '6', '2019-04-06');
 INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '7', '2019-04-06');
-INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '2', '0', '8', '2019-04-06');
+INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '8', '2019-04-06');
 INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '2', '0', '9', '2019-04-06');
+INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '2', '0', '10', '2019-04-06');
 
 
 INSERT INTO `product_receipt`(ProductId, `ReceiptId`, `Amount`, `Price`) VALUES ('1', '1', '2', (SELECT Price FROM product WHERE ProductId = 1));
