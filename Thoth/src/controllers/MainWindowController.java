@@ -142,23 +142,23 @@ public class MainWindowController implements Initializable {
 
             Parent temporaryLoginParent = null;
 
-            if (STOREKEEPER.equals(user.get(0).getRoleId().getPosition())) //okno magazynu
+            if (STOREKEEPER.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) //okno magazynu
             {
                 temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_warehouse.fxml"));
             }
-            if (SHOP_ASSISTANT.equals(user.get(0).getRoleId().getPosition())) //okno sklepu
+            if (SHOP_ASSISTANT.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) //okno sklepu
             {
                 temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_shop.fxml"));
             }
-            if (ANALYST.equals(user.get(0).getRoleId().getPosition())) //okno analityka
+            if (ANALYST.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) //okno analityka
             {
                 temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_analyst.fxml"));
             }
-            if (LOGISTICIAN.equals(user.get(0).getRoleId().getPosition())) // okno widoku pracownika działy logistycznego
+            if (LOGISTICIAN.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) // okno widoku pracownika działy logistycznego
             {
                 temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_view_logistic.fxml"));
             }
-            if (ADMIN.equals(user.get(0).getRoleId().getPosition())) // okno widoku admina
+            if (ADMIN.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) // okno widoku admina
             {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
                 temporaryLoginParent = loader.load();

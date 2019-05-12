@@ -31,7 +31,6 @@ insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('
 insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Patryk', 'Nowakowski', 'sklep', 'sklep', '4', '1');
 insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Artur', 'Krasicki', 'logistyk', 'logistyk', '5', '1');
 
-
 --sprzedawcy
 insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Adam', 'Kowalski', 'sk1', 'sk1', '4', '1');
 insert into user (FirstName, LastName, Login, Password, RoleId, State) values ('Bartosz', 'Nowacki', 'sk2', 'sk2', '4', '1');
