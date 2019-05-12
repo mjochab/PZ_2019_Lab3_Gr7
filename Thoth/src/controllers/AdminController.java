@@ -1,5 +1,9 @@
 package controllers;
 
+import entity.Role;
+import entity.Shop;
+import entity.User;
+import entity.UserShop;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,31 +14,38 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.*;
-
-import entity.Product;
 import org.hibernate.Session;
 
 import static controllers.MainWindowController.sessionContext;
 
 public class AdminController implements Initializable {
+
     @FXML
     MenuItem logout;
     @FXML
     MenuItem back;
     @FXML
     Parent root;
+    @FXML
+    AddEmployeeController addEmployeeController;
+    @FXML
+    EmployeeViewController employeeViewController;
+
 
     Stage stage;
+
+    @FXML
+    public void reloadEmployeeView() {
+        employeeViewController.reloadTableView();
+    }
 
     public void switchscene(ActionEvent event) throws IOException { //zmiana sceny BUTTON
         System.out.println(event.getSource().toString());
@@ -46,7 +57,6 @@ public class AdminController implements Initializable {
         window.show();
     }
 
-
     public void menuitemaction(ActionEvent actionEvent) throws IOException { //cofanie i wylogowanie na MENU ITEM
         stage = (Stage) root.getScene().getWindow();
         if (actionEvent.getSource() == logout) {
@@ -57,8 +67,11 @@ public class AdminController implements Initializable {
         stage.show();
     }
 
+
+
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println(sessionContext == null);
     }
 }

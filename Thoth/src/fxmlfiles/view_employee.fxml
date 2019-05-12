@@ -21,11 +21,11 @@
          <children>
             <HBox prefHeight="31.0" prefWidth="1280.0">
                <children>
-                  <TextField prefHeight="25.0" prefWidth="300.0" styleClass="textarea" stylesheets="@../thoth/style.css">
+                  <TextField fx:id="tfSearch" prefHeight="25.0" prefWidth="300.0" styleClass="textarea" stylesheets="@../thoth/style.css">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin></TextField>
-                  <Button id="search" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
+                  <Button id="search" fx:id="btnSearch" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
                      <font>
                         <Font size="18.0" />
                      </font>
