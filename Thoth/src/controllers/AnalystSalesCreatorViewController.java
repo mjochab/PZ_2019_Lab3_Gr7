@@ -8,13 +8,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import models.SalesCreatorModel;
+import models.ObservablePriceModel;
 import org.hibernate.Session;
-import org.hibernate.criterion.ProjectionList;
 
-import java.math.BigDecimal;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -45,12 +42,12 @@ public class AnalystSalesCreatorViewController implements Initializable {
         System.out.println(getProducts().toString());
     }
 
-    public ObservableList<SalesCreatorModel> getProducts() {
-        ObservableList<SalesCreatorModel> productList = FXCollections.observableArrayList();
+    public ObservableList<ObservablePriceModel> getProducts() {
+        ObservableList<ObservablePriceModel> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<SalesCreatorModel> eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, SUM(s.amount)) FROM Product p INNER JOIN State_on_shop s on p.productId = s.productId GROUP by p.productId ORDER by SUM(s.amount) DESC").list();
+        List<ObservablePriceModel> eList = session.createQuery("SELECT new models.ObservablePriceModel(p.productId, p.name, p.price, p.discount, SUM(s.amount)) FROM Product p INNER JOIN State_on_shop s on p.productId = s.productId GROUP by p.productId ORDER by SUM(s.amount) DESC").list();
         System.out.println(eList);
-        for (SalesCreatorModel ent : eList) {
+        for (ObservablePriceModel ent : eList) {
             productList.add(ent);
         }
         session.close();

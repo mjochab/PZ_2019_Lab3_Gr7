@@ -10,7 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
-import models.SalesCreatorModel;
+import models.ObservablePriceModel;
 import org.hibernate.Session;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class WarehouseNewProductController implements Initializable {
     @FXML
     public Button addInsert;
 
-    String[] tab = {"SELECT new models.SalesCreatorModel(p.productId ) FROM Product p WHERE p.name like "};
+    String[] tab = {"SELECT new models.ObservablePriceModel(p.productId ) FROM Product p WHERE p.name like "};
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -53,13 +53,13 @@ public class WarehouseNewProductController implements Initializable {
         }
     }
 
-    public ObservableList<SalesCreatorModel> getNameProduct(String qry){
-        ObservableList<SalesCreatorModel> productList = FXCollections.observableArrayList();
+    public ObservableList<ObservablePriceModel> getNameProduct(String qry){
+        ObservableList<ObservablePriceModel> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<SalesCreatorModel> eList = session.createQuery(qry+":nameDevice "
+        List<ObservablePriceModel> eList = session.createQuery(qry+":nameDevice "
         ).setParameter("nameDevice",NAME.getText()).list();
         System.out.println("getNameProduct "+eList);
-        for (SalesCreatorModel ent : eList) {
+        for (ObservablePriceModel ent : eList) {
             productList.add(ent);
         }
         session.close();

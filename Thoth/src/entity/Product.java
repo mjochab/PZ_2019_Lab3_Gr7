@@ -31,6 +31,7 @@ public class Product {
         this.discount = discount;
     }
 
+
     public int getProductId() {
         return productId;
     }
