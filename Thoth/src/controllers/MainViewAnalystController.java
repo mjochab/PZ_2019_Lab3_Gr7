@@ -1,7 +1,5 @@
 package controllers;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,19 +7,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
-import static controllers.MainWindowController.*;
-import entity.Product;
-import org.hibernate.Session;
+import static controllers.MainWindowController.sessionContext;
 
 public class MainViewAnalystController implements Initializable {
     @FXML
@@ -37,17 +30,18 @@ public class MainViewAnalystController implements Initializable {
         Parent temporaryLoginParent = null;
         Scene temporaryLoginScene = null;
         temporaryLoginScene = new Scene(temporaryLoginParent);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(temporaryLoginScene);
         window.show();
     }
 
 
-    public void menuitemaction(ActionEvent actionEvent) throws IOException { //cofanie i wylogowanie na MENU ITEM
+    public void menuItemAction(ActionEvent actionEvent) throws IOException { //cofanie i wylogowanie na MENU ITEM
         stage = (Stage) root.getScene().getWindow();
-        if(actionEvent.getSource() == logout)
-        {
+        if (actionEvent.getSource() == logout) {
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
+        } else {
+            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
         }
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -57,6 +51,13 @@ public class MainViewAnalystController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        if (sessionContext.getCurrentLoggedUser().getUserId() == 1) {
+            if (back != null) {
+                back.setVisible(true);
+            } else {
+                System.out.println("BACK is null");
+            }
+        }
     }
 
 
