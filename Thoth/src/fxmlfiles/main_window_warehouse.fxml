@@ -15,12 +15,8 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="Menu">
                             <items>
-                                <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#menuitemaction" text="Wyloguj" />
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Pomoc">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="About" />
+                                <MenuItem fx:id="back" mnemonicParsing="false" visible="false" onAction="#menuItemAction" text="Powrót" />
+                                <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#menuItemAction" text="Wyloguj" />
                             </items>
                         </Menu>
                     </menus>

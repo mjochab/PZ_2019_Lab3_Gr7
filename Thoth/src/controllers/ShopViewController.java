@@ -13,28 +13,38 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static controllers.MainWindowController.sessionContext;
+
 public class ShopViewController implements Initializable {
     @FXML
-    MenuItem logout;
+    MenuItem logout, back;
     @FXML
     Parent root;
 
     Stage stage;
 
-    public void logout(ActionEvent actionEvent) throws IOException {
+    public void menuItemAction(ActionEvent actionEvent) throws IOException {
+        stage = (Stage) root.getScene().getWindow();
         if (actionEvent.getSource() == logout) {
-            stage = (Stage) root.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
-
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+        } else {
+            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
         }
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        if (sessionContext.getCurrentLoggedUser().getUserId() == 1) {
+            if (back != null) {
+                back.setVisible(true);
+            } else {
+                System.out.println("BACK is null");
+            }
+        }
     }
 
 }

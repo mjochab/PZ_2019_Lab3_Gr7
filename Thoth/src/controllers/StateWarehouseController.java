@@ -25,7 +25,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static controllers.MainWindowController.*;
+import static controllers.MainWindowController.sessionContext;
+import static controllers.MainWindowController.sessionFactory;
 
 
 public class StateWarehouseController implements Initializable {
@@ -62,6 +63,8 @@ public class StateWarehouseController implements Initializable {
     @FXML
     MenuItem logout;
     @FXML
+    MenuItem back;
+    @FXML
     Parent root;
 
     Stage stage;
@@ -70,10 +73,12 @@ public class StateWarehouseController implements Initializable {
 
     String nazwaProduktu = null;
 
-    public void menuitemaction(ActionEvent actionEvent) throws IOException { //wylogowanie na MENU ITEM
+    public void menuItemAction(ActionEvent actionEvent) throws IOException { //powrót , wylogowanie na MENU ITEM
         stage = (Stage) root.getScene().getWindow();
         if (actionEvent.getSource() == logout) {
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
+        } else {
+            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
         }
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -83,6 +88,13 @@ public class StateWarehouseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        if(sessionContext.getCurrentLoggedUser().getUserId() == 1){
+            if(back != null){
+                back.setVisible(true);
+            } else {
+                System.out.println("BACK is null");
+            }
+        }
         if (location.toString().contains("state_warehouse")) {
             PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
             NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
