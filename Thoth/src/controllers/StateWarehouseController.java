@@ -16,7 +16,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import models.SalesCreatorModel;
+import models.ObservablePriceModel;
 import models.StateOrderModel;
 import org.hibernate.Session;
 
@@ -38,15 +38,15 @@ public class StateWarehouseController implements Initializable {
     @FXML
     public TableView newOrderShop;
     @FXML
-    public TableColumn<SalesCreatorModel,String> PRODUCTID,PRODUCTID_ADD;
+    public TableColumn<ObservablePriceModel,String> PRODUCTID,PRODUCTID_ADD;
     @FXML
-    public TableColumn<SalesCreatorModel,String> NAME,NAME_ADD;
+    public TableColumn<ObservablePriceModel,String> NAME,NAME_ADD;
     @FXML
-    public TableColumn<SalesCreatorModel,String> PRICE,PRICE_ADD;
+    public TableColumn<ObservablePriceModel,String> PRICE,PRICE_ADD;
     @FXML
-    public TableColumn<SalesCreatorModel,String> AMOUNT,AMOUNT_ADD;
+    public TableColumn<ObservablePriceModel,String> AMOUNT,AMOUNT_ADD;
     @FXML
-    public TableColumn<SalesCreatorModel,String> DISCOUNT;
+    public TableColumn<ObservablePriceModel,String> DISCOUNT;
     @FXML
     public TableColumn<StateOrderModel,String> CITY;
     @FXML
@@ -66,7 +66,7 @@ public class StateWarehouseController implements Initializable {
 
     Stage stage;
 
-    private ObservableList<SalesCreatorModel> lista = FXCollections.observableArrayList();
+    private ObservableList<ObservablePriceModel> lista = FXCollections.observableArrayList();
 
     String nazwaProduktu = null;
 
@@ -108,13 +108,13 @@ public class StateWarehouseController implements Initializable {
                             if(new_order.getSelectionModel().getSelectedItem() != null){
                                 System.out.println("Wysłany "+new_order.getSelectionModel().getSelectedItem().toString());
                                 if(lista.isEmpty()){
-                                    lista.add((SalesCreatorModel) new_order.getSelectionModel().getSelectedItem());
+                                    lista.add((ObservablePriceModel) new_order.getSelectionModel().getSelectedItem());
                                     addToTable(lista);
                                 } else {
-                                    if(lista.contains((SalesCreatorModel) new_order.getSelectionModel().getSelectedItem())){
+                                    if(lista.contains((ObservablePriceModel) new_order.getSelectionModel().getSelectedItem())){
                                         System.out.println("Ten object już tam sie znajduje");
                                     } else {
-                                        lista.add((SalesCreatorModel) new_order.getSelectionModel().getSelectedItem());
+                                        lista.add((ObservablePriceModel) new_order.getSelectionModel().getSelectedItem());
                                         addToTable(lista);
                                     }
                                 }
@@ -157,23 +157,23 @@ public class StateWarehouseController implements Initializable {
         }
     }
 
-    public ObservableList<SalesCreatorModel> getProducts(String nazwaProduktu) {
-        ObservableList<SalesCreatorModel> productList = FXCollections.observableArrayList();
+    public ObservableList<ObservablePriceModel> getProducts(String nazwaProduktu) {
+        ObservableList<ObservablePriceModel> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<SalesCreatorModel> eList;
+        List<ObservablePriceModel> eList;
         if(nazwaProduktu == null || nazwaProduktu.equals("")){
-            eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
+            eList = session.createQuery("SELECT new models.ObservablePriceModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
                     "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE k.shopId = :idshop AND s.amount > 0  "
             ).setParameter("idshop",sessionContext.getCurrentLoggedShop().getShopId()).list();
         } else {
-            eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
+            eList = session.createQuery("SELECT new models.ObservablePriceModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
                     "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE k.shopId = :idshop AND s.amount > 0 AND p.name like :produkt "
             ).setParameter("produkt","%"+nazwaProduktu+"%").setParameter("idshop",sessionContext.getCurrentLoggedShop().getShopId()).list();
             searchSWCity.setText("");
             nazwaProduktu = null;
         }
         System.out.println("getProducts "+eList);
-        for (SalesCreatorModel ent : eList) {
+        for (ObservablePriceModel ent : eList) {
             productList.add(ent);
         }
         session.close();
@@ -197,10 +197,10 @@ public class StateWarehouseController implements Initializable {
         return orderList;
     }
 
-    public ObservableList<SalesCreatorModel> getOrderProducts(String nazwaProduktu) {
-        ObservableList<SalesCreatorModel> productList = FXCollections.observableArrayList();
+    public ObservableList<ObservablePriceModel> getOrderProducts(String nazwaProduktu) {
+        ObservableList<ObservablePriceModel> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<SalesCreatorModel> eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, ip.amount) " +
+        List<ObservablePriceModel> eList = session.createQuery("SELECT new models.ObservablePriceModel(p.productId, p.name, p.price, p.discount, ip.amount) " +
                 "FROM Shop sp " +
                 "INNER JOIN State_on_shop sos ON sp.shopId = sos.shopId " +
                 "INNER JOIN Product p ON sos.productId = p.productId " +
@@ -211,22 +211,22 @@ public class StateWarehouseController implements Initializable {
                 "WHERE sp.shopId = :idshop AND s.name like 'W realizacji' "
         ).setParameter("idshop",sessionContext.getCurrentLoggedShop().getShopId()).list();
         System.out.println("getOrderProducts "+eList);
-        for (SalesCreatorModel ent : eList) {
+        for (ObservablePriceModel ent : eList) {
             productList.add(ent);
         }
         session.close();
         return productList;
     }
 
-    public ObservableList<SalesCreatorModel> getProductsForOtherShop(int id) {
-        ObservableList<SalesCreatorModel> productList = FXCollections.observableArrayList();
+    public ObservableList<ObservablePriceModel> getProductsForOtherShop(int id) {
+        ObservableList<ObservablePriceModel> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<SalesCreatorModel> eList = session.createQuery("SELECT new models.SalesCreatorModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
+        List<ObservablePriceModel> eList = session.createQuery("SELECT new models.ObservablePriceModel(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
                     "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE k.shopId = :idshop AND s.amount > 0  "
             ).setParameter("idshop",id).list();
             nazwaProduktu = null;
         System.out.println("getProductsForOtherShop "+eList);
-        for (SalesCreatorModel ent : eList) {
+        for (ObservablePriceModel ent : eList) {
             productList.add(ent);
         }
         session.close();
@@ -266,7 +266,7 @@ public class StateWarehouseController implements Initializable {
         new_order.setItems(getProductsForOtherShop(id));
     }
 
-    public void addToTable(ObservableList<SalesCreatorModel> item) {
+    public void addToTable(ObservableList<ObservablePriceModel> item) {
         PRODUCTID_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
         NAME_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
         PRICE_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));

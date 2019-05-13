@@ -2,24 +2,24 @@ package models;
 
 import java.math.BigDecimal;
 
-public class SalesCreatorModel {
+public class ObservablePriceModel {
     private Integer productId;
     private String name;
     private BigDecimal price;
     private Integer discount;
     private Integer amount;
 
-    public SalesCreatorModel() {
+    public ObservablePriceModel() {
     }
 
-    public SalesCreatorModel(Integer productId, String name, BigDecimal price, Integer discount) {
+    public ObservablePriceModel(Integer productId, String name, BigDecimal price, Integer discount) {
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.discount = discount;
     }
 
-    public SalesCreatorModel(Integer productId, String name, BigDecimal price, Integer discount, Integer amount) {
+    public ObservablePriceModel(Integer productId, String name, BigDecimal price, Integer discount, Integer amount) {
         this.productId = productId;
         this.name = name;
         this.price = price;
@@ -27,7 +27,7 @@ public class SalesCreatorModel {
         this.amount = amount;
     }
 
-    public SalesCreatorModel(Integer productId, String name, BigDecimal price, Integer discount, Long amount) {
+    public ObservablePriceModel(Integer productId, String name, BigDecimal price, Integer discount, Long amount) {
         this.productId = productId;
         this.name = name;
         this.price = price;
@@ -35,7 +35,7 @@ public class SalesCreatorModel {
         this.amount = Integer.valueOf(amount.intValue());
     }
 
-    public SalesCreatorModel(Integer productId) {
+    public ObservablePriceModel(Integer productId) {
         this.productId = productId;
     }
 
