@@ -31,6 +31,8 @@ import java.util.List;
 public class CreatePDF {
 
     /**
+     * Metoda sluzy do tworzenia raportu
+     *
      * @param data zawiera dane do raportu
      * @param destination miejsce zapisu pliku na dysku
      * @throws IOException IOException nieudana próba zapisu do pliku
