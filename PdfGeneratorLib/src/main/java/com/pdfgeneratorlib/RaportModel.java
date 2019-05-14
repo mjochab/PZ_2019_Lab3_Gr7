@@ -13,7 +13,30 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Klasa tworzaca model raportu
+ *
+ * @author Wojciech Gałka
+ * @author Kamil Bania
+ * @author Adrian Gajewski
+ * @author Paweł Durda
+ * @author Mateusz Gawlak
+ * @since 15 maj 2019
+ * @see Serializable Serializacja to wbudowany mechanizm zapisywania obiektów, który pozwala na binarny zapis całego drzewa obiektów
+ */
+
 public class RaportModel implements Serializable {
+
+    /**
+     * @param shopId identyfikator sklepu
+     * @param street ulica
+     * @param zipCode kod pocztowy
+     * @param city miasto
+     * @param profit zysk
+     * @param products model tworzacy raport z produktami
+     * @param users model tworzacy raport z pracownikami
+     */
+
     private Integer shopId;
     private String street;
     private String zipCode;
@@ -21,6 +44,7 @@ public class RaportModel implements Serializable {
     private BigDecimal profit;
     private List<RaportProductModel> products;
     private List<RaportUserModel> users;
+
 
     public RaportModel(Integer shopId, String street, String zipCode, String city, BigDecimal profit, RaportProductModel products, RaportUserModel users) {
         this.shopId = shopId;
@@ -107,6 +131,11 @@ public class RaportModel implements Serializable {
     public void setUsers(List<RaportUserModel> users) {
         this.users = users;
     }
+
+    /**
+     *
+     * @return  metoda zwraca model raportu jako strning
+     */
 
     @Override
     public String toString() {

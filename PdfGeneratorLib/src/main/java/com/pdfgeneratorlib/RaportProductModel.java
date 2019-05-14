@@ -3,12 +3,31 @@ package com.pdfgeneratorlib;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+/**
+ * Klasa tworzaca model raportu z produktami
+ *
+ * @author Wojciech Gałka
+ * @author Kamil Bania
+ * @author Adrian Gajewski
+ * @author Paweł Durda
+ * @author Mateusz Gawlak
+ * @since 15 maj 2019
+ * @see Serializable Serializacja to wbudowany mechanizm zapisywania obiektów, który pozwala na binarny zapis całego drzewa obiektów
+ */
+
 public class RaportProductModel implements Serializable {
+
+    /**
+     * @param shopId identyfikator sklepu
+     * @param name nazwa
+     * @param sold sprzedane
+     * @param total_price zsumowane ceny
+     */
+
     private Integer shopId;
     private String name;
     private Long sold;
     private BigDecimal total_price;
-
 
     public RaportProductModel(Integer shopId, String name, Long sold, BigDecimal total_price) {
         this.shopId = shopId;
@@ -49,6 +68,10 @@ public class RaportProductModel implements Serializable {
         this.total_price = total_price;
     }
 
+    /**
+     *
+     * @return metoda zwraca raport dotyczacy produktu w postaci stringa
+     */
     @Override
     public String toString() {
         return "RaportProductModel{" +

@@ -17,7 +17,26 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ *  Klasa tworzaca plik PDF z raportem
+ *
+ * @author Wojciech Gałka
+ * @author Kamil Bania
+ * @author Adrian Gajewski
+ * @author Paweł Durda
+ * @author Mateusz Gawlak
+ * @since 15 maj 2019
+ */
+
 public class CreatePDF {
+
+    /**
+     * @param data zawiera dane do raportu
+     * @param destination miejsce zapisu pliku na dysku
+     * @throws IOException IOException nieudana próba zapisu do pliku
+     * @see List lista pdf
+     * @return PDF z danymi
+     */
 
     public static void createPdf(List<RaportModel> data, String destination) throws IOException {
 
