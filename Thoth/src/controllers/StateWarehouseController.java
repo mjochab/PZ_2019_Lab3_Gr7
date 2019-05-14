@@ -27,6 +27,7 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
+import static controllers.WarehouseNewProductController.isNumeric;
 
 
 public class StateWarehouseController implements Initializable {
@@ -142,9 +143,9 @@ public class StateWarehouseController implements Initializable {
                     if(event.getButton().equals(MouseButton.PRIMARY)){
                         if(event.getClickCount() == 3){
                             if(add_new_order.getSelectionModel().getSelectedItem() != null){
+                                System.out.println("Usuwany object "+add_new_order.getSelectionModel().getSelectedItem().toString());
                                 lista.remove(add_new_order.getSelectionModel().getSelectedItem());
                                 addToTable(lista);
-                                System.out.println("Usuwany object "+add_new_order.getSelectionModel().getSelectedItem().toString());
                             }
                         }
                     }
@@ -305,17 +306,29 @@ public class StateWarehouseController implements Initializable {
     private void setEditableAmount(){
         AMOUNT_ADD.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        AMOUNT_ADD.setOnEditCommit(e -> { // dodać walidacje try catch
-            System.out.println("PRZED"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
-            int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue();
-            e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
-            System.out.println("PO"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
-            if(e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() > 0 && e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() <= check){
-                System.out.println("większe od 0 i mniejsze od ");
-            } else {
-                e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
+        AMOUNT_ADD.setOnEditCommit(e -> {
+            try{
+                System.out.println("PRZED"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+                int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue();
+                if(!isNumeric(e.getNewValue())) {
+                    throw new NumberFormatException();
+                }
+                e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
+                System.out.println("PO"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+                if(e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() > 0 && e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() <= check){
+                    System.out.println("większe od 0 i mniejsze od ");
+                } else {
+                    e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
+                    System.out.println("Powrót do poprzedniej liczby");
+                    add_new_order.refresh();
+                }
+            } catch (NumberFormatException exc){
                 System.out.println("Powrót do poprzedniej liczby");
                 add_new_order.refresh();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Niepowodzenie");
+                alert.setContentText("Wprowadzona wartość nie jest liczbą!");
+                alert.showAndWait();
             }
         });
     }
