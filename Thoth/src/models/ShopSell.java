@@ -7,9 +7,14 @@ public class ShopSell {
     private String name;
     private BigDecimal price;
     private Integer amount;
+    private Integer discount;
 
-    public ShopSell(){
-
+    public ShopSell(Integer productId, String name, BigDecimal price, Integer discount, Integer amount) {
+        this.productId = productId;
+        this.name = name;
+        this.price = price;
+        this.discount = discount;
+        this.amount = amount;
     }
 
     public ShopSell(Integer productId, String name, BigDecimal price, Integer amount) {
@@ -49,5 +54,13 @@ public class ShopSell {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public Integer getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
     }
 }

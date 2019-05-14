@@ -1,74 +1,167 @@
 package controllers;
 
-import entity.Product;
-import entity.State_on_shop;
-import models.ShopSell;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import models.ShopSell;
 import org.hibernate.Session;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
 
 public class ShopSellProductsController implements Initializable {
     @FXML
     MenuItem logout;
     @FXML
-    private TableView productsTable;
+    private TableView productsTable,productsTableAdd;
     @FXML
-    public TableColumn id_col;
+    public TableColumn<ShopSell,String> PRODUCTID,PRODUCTID_ADD;
     @FXML
-    public TableColumn name_col;
+    public TableColumn<ShopSell,String> NAME,NAME_ADD;
     @FXML
-    public TableColumn price_col;
+    public TableColumn<ShopSell,String> PRICE,PRICE_ADD;
     @FXML
-    public TableColumn amount_col;
+    public TableColumn<ShopSell,String> AMOUNT,AMOUNT_ADD;
+    @FXML
+    public TextField serachShop;
     @FXML
     Parent root;
     Stage stage;
 
+    private ObservableList<ShopSell> lista = FXCollections.observableArrayList();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        id_col.setCellValueFactory(new PropertyValueFactory<>("productId"));
-        name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
-        price_col.setCellValueFactory(new PropertyValueFactory<>("price"));
-        amount_col.setCellValueFactory(new PropertyValueFactory<>("amount"));
-
-        productsTable.setItems(getProducts());
-
+        PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
+        NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
+        PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
+        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+        productsTable.setItems(getProducts(null));
+        productsTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getButton().equals(MouseButton.PRIMARY)){
+                    if(event.getClickCount() == 2){
+                        if(productsTable.getSelectionModel().getSelectedItem() != null){
+                            System.out.println("Wysłany "+productsTable.getSelectionModel().getSelectedItem().toString());
+                            if(lista.isEmpty()){
+                                lista.add((ShopSell) productsTable.getSelectionModel().getSelectedItem());
+                                addToTable(lista);
+                            } else {
+                                if(lista.contains((ShopSell) productsTable.getSelectionModel().getSelectedItem())){
+                                    System.out.println("Ten object już tam sie znajduje");
+                                } else {
+                                    lista.add((ShopSell) productsTable.getSelectionModel().getSelectedItem());
+                                    addToTable(lista);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        //----------------------------------------------------------------------------------------
+        productsTableAdd.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getButton().equals(MouseButton.PRIMARY)){
+                    if(event.getClickCount() == 3){
+                        if(productsTableAdd.getSelectionModel().getSelectedItem() != null){
+                            lista.remove(productsTableAdd.getSelectionModel().getSelectedItem());
+                            addToTable(lista);
+                            System.out.println("Usuwany object "+productsTableAdd.getSelectionModel().getSelectedItem().toString());
+                        }
+                    }
+                }
+            }
+        });
+        setEditableAmount();
     }
 
 
-    public ObservableList<ShopSell> getProducts() {
+    public ObservableList<ShopSell> getProducts(String productName) {
         ObservableList<ShopSell> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<ShopSell> eList = session.createQuery("select new models.ShopSell(pr.productId, pr.name, pr.price, sop.amount) from State_on_shop sop inner join sop.productId pr where sop.shopId=1").list();
+        List<ShopSell> eList;
+        if(productName == null || productName.equals("")){
+            eList = session.createQuery("SELECT new models.ShopSell(p.productId, p.name, p.price, s.amount) FROM Product p " +
+                    "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE k.shopId = :idshop AND s.amount > 0  "
+            ).setParameter("idshop",sessionContext.getCurrentLoggedShop().getShopId()).list();
+        } else {
+            eList = session.createQuery("SELECT new models.ShopSell(p.productId, p.name, p.price, s.amount) FROM Product p " +
+                    "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE k.shopId = :idshop AND s.amount > 0 AND p.name like :produkt "
+            ).setParameter("produkt","%"+productName+"%").setParameter("idshop",sessionContext.getCurrentLoggedShop().getShopId()).list();
+            //= :id ").setParameter("id",sessionContext.getCurrentLoggedShop().getShopId()) pobieraj id od zalogwanego userqa
+            serachShop.setText("");
+        }
         for (ShopSell ent : eList) {
             productList.add(ent);
-            System.out.println(ent.getProductId() + " " + ent.getName());
         }
         session.close();
         return productList;
     }
 
+    public void addToTable(ObservableList<ShopSell> item) {
+        PRODUCTID_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
+        NAME_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
+        PRICE_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
+        AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+        System.out.println("Odebrane " + item.toString() + " rozmiar " + item.size());
+        try {
+            if (!item.isEmpty()) {
+                productsTableAdd.setItems(item);
+            } else {
+                //naprawić
+            }
+        } catch (NullPointerException e) {
+            System.out.println("NullPointerException po odjęciu ostatniego elementu " + e);
+        }
+    }
+
+    public void searchStateShop(){
+        productsTable.setItems(getProducts(serachShop.getText()));
+    }
+
+    private void setEditableAmount(){
+        productsTableAdd.setEditable(true);
+        AMOUNT_ADD.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        AMOUNT_ADD.setOnEditCommit(e -> { // dodać walidacje try catch
+            System.out.println("PRZED"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+            int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue();
+            e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
+            System.out.println("PO"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+            if(e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() > 0 && e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() <= check){
+                System.out.println("większe od 0 i mniejsze od ");
+            } else {
+                e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
+                System.out.println("Powrót do poprzedniej liczby");
+                productsTableAdd.refresh();
+            }
+        });
+    }
+
+    public void confirm(){
+        if(!lista.isEmpty()) {
+            System.out.println("Przygotowana lista do zapytania "+lista.get(0).getPrice().toString());
+        }
+    }
 
 }
 
