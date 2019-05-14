@@ -7,10 +7,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -24,6 +21,7 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
+import static controllers.WarehouseNewProductController.isNumeric;
 
 public class ShopSellProductsController implements Initializable {
     @FXML
@@ -83,9 +81,9 @@ public class ShopSellProductsController implements Initializable {
                 if(event.getButton().equals(MouseButton.PRIMARY)){
                     if(event.getClickCount() == 3){
                         if(productsTableAdd.getSelectionModel().getSelectedItem() != null){
+                            System.out.println("Usuwany object "+productsTableAdd.getSelectionModel().getSelectedItem().toString());
                             lista.remove(productsTableAdd.getSelectionModel().getSelectedItem());
                             addToTable(lista);
-                            System.out.println("Usuwany object "+productsTableAdd.getSelectionModel().getSelectedItem().toString());
                         }
                     }
                 }
@@ -143,17 +141,30 @@ public class ShopSellProductsController implements Initializable {
         AMOUNT_ADD.setCellFactory(TextFieldTableCell.forTableColumn());
 
         AMOUNT_ADD.setOnEditCommit(e -> { // dodać walidacje try catch
-            System.out.println("PRZED"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
-            int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue();
-            e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
-            System.out.println("PO"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
-            if(e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() > 0 && e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() <= check){
-                System.out.println("większe od 0 i mniejsze od ");
-            } else {
-                e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
+            try{
+                System.out.println("PRZED"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+                int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue();
+                if(!isNumeric(e.getNewValue())) {
+                    throw new NumberFormatException();
+                }
+                e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
+                System.out.println("PO"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+                if(e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() > 0 && e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() <= check){
+                    System.out.println("większe od 0 i mniejsze od ");
+                } else {
+                    e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
+                    System.out.println("Powrót do poprzedniej liczby");
+                    productsTableAdd.refresh();
+                }
+            } catch (NumberFormatException exc){
                 System.out.println("Powrót do poprzedniej liczby");
                 productsTableAdd.refresh();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Niepowodzenie");
+                alert.setContentText("Wprowadzona wartość nie jest liczbą!");
+                alert.showAndWait();
             }
+
         });
     }
 
