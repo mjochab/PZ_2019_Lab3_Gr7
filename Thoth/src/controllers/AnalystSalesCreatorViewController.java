@@ -1,12 +1,14 @@
 package controllers;
 
 import entity.Product;
+import entity.State_on_shop;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import models.ObservablePriceModel;
 import org.hibernate.Session;
@@ -30,6 +32,10 @@ public class AnalystSalesCreatorViewController implements Initializable {
     public TableColumn DISCOUNT;
     @FXML
     public TableColumn AMOUNT;
+    @FXML
+    public TextField searchTF;
+
+    String nazwaProduktu = null;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -42,15 +48,32 @@ public class AnalystSalesCreatorViewController implements Initializable {
         System.out.println(getProducts().toString());
     }
 
-    public ObservableList<ObservablePriceModel> getProducts() {
-        ObservableList<ObservablePriceModel> productList = FXCollections.observableArrayList();
+
+    public ObservableList<Product> getProducts() {
+        ObservableList<Product> productsList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<ObservablePriceModel> eList = session.createQuery("SELECT new models.ObservablePriceModel(p.productId, p.name, p.price, p.discount, SUM(s.amount)) FROM Product p INNER JOIN State_on_shop s on p.productId = s.productId GROUP by p.productId ORDER by SUM(s.amount) DESC").list();
-        System.out.println(eList);
-        for (ObservablePriceModel ent : eList) {
-            productList.add(ent);
+        List<State_on_shop> eList;
+
+        if (nazwaProduktu == null || nazwaProduktu.equals("")) {
+            eList = session.createQuery("SELECT new entity.State_on_shop(sos.id, sos.productId, sos.shopId, SUM(sos.amount)) FROM State_on_shop sos GROUP by sos.productId ORDER BY SUM(sos.amount) DESC").list();
+        } else {
+            eList = session.createQuery("SELECT new entity.State_on_shop(sos.id, sos.productId, sos.shopId, SUM(sos.amount)) FROM State_on_shop sos WHERE name like :produkt GROUP by sos.productId ORDER BY SUM(sos.amount) DESC ").setParameter("produkt", "%" + nazwaProduktu + "%").list();
+            searchTF.setText("");
+            nazwaProduktu = null;
+        }
+
+        System.out.println("getProducts " + eList);
+        for (State_on_shop ent : eList) {
+            Product opm;
+            opm = ent.getProductId();
+            productsList.add(opm);
         }
         session.close();
-        return productList;
+        return productsList;
+    }
+
+    public void searchAnalystPrices() {
+        nazwaProduktu = searchTF.getText();
+        productsTable.setItems(getProducts());
     }
 }

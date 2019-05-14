@@ -24,7 +24,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </TextField>
-                        <Button mnemonicParsing="false" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
+                        <Button mnemonicParsing="false" onAction="#searchAnalystPrices" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
