@@ -36,7 +36,7 @@ public class AnalystSalesCreatorViewController implements Initializable {
     @FXML
     public TableColumn<Product,String> DISCOUNT, DISCOUNT_CHANGE;
     @FXML
-    public TextField searchTF;
+    public TextField searchTF,DISCOUNT_TF;
 
     String nazwaProduktu = null;
     private ObservableList<Product> lista = FXCollections.observableArrayList();
@@ -133,5 +133,24 @@ public class AnalystSalesCreatorViewController implements Initializable {
         } catch (NullPointerException e) {
             System.out.println("NullPointerException po odjęciu ostatniego elementu " + e);
         }
+    }
+
+    public void changeDiscount(){
+        if(!lista.isEmpty()) {
+            System.out.println("Przygotowana lista do zapytania "+lista.get(0).getPrice().toString());
+            Session session = sessionFactory.openSession();
+            for(Product product : lista){
+                product.setDiscount(Integer.parseInt(DISCOUNT_TF.getText()));
+                session.getTransaction().begin();
+                session.update(product);
+                session.getTransaction().commit();
+            }
+            session.close();
+        }
+        lista.removeAll();
+        discountTable.getItems().clear();
+        System.out.println("remove all products from lista:"+lista);
+        discountTable.refresh();
+        productsTable.refresh();
     }
 }

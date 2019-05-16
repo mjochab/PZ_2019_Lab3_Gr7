@@ -56,12 +56,12 @@
                <children>
                   <HBox prefHeight="46.0" prefWidth="640.0">
                      <children>
-                        <TextField promptText="10%" styleClass="textarea" stylesheets="@../thoth/style.css" HBox.hgrow="NEVER">
+                        <TextField fx:id="DISCOUNT_TF" promptText="10%" styleClass="textarea" stylesheets="@../thoth/style.css" HBox.hgrow="NEVER">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                         </TextField>
-                        <Button mnemonicParsing="false" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Ustaw">
+                        <Button fx:id="CHANGE_DISCOUNT" mnemonicParsing="false" onAction="#changeDiscount" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Ustaw">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
