@@ -48,7 +48,6 @@
                       <TableColumn fx:id="NAME" prefWidth="390.0" text="nazwa" />
                         <TableColumn fx:id="PRICE" prefWidth="90.0" text="cena" />
                         <TableColumn fx:id="DISCOUNT" prefWidth="90.0" text="zniżka" />
-                        <TableColumn fx:id="AMOUNT" prefWidth="75.0" text="Column X" />
                     </columns>
                   </TableView>
                </children>
@@ -72,12 +71,12 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </HBox>
-                  <TableView prefHeight="800.0" prefWidth="640.0">
+                  <TableView fx:id="discountTable" prefHeight="800.0" prefWidth="640.0">
                      <columns>
-                        <TableColumn minWidth="70.0" prefWidth="70.0" text="id_produkt" />
-                        <TableColumn prefWidth="390.0" text="nazwa" />
-                        <TableColumn prefWidth="90.0" text="cena" />
-                        <TableColumn prefWidth="90.0" text="zniżka" />
+                        <TableColumn fx:id="PRODUCTID_CHANGE" minWidth="70.0" prefWidth="70.0" text="id_produkt" />
+                        <TableColumn fx:id="NAME_CHANGE" prefWidth="390.0" text="nazwa" />
+                        <TableColumn fx:id="PRICE_CHANGE" prefWidth="90.0" text="cena" />
+                        <TableColumn fx:id="DISCOUNT_CHANGE" prefWidth="90.0" text="zniżka" />
                      </columns>
                   </TableView>
                </children>

@@ -2,15 +2,20 @@ package controllers;
 
 import entity.Product;
 import entity.State_on_shop;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import models.ObservablePriceModel;
+import models.ShopSell;
 import org.hibernate.Session;
 
 import java.net.URL;
@@ -21,21 +26,20 @@ import static controllers.MainWindowController.sessionFactory;
 
 public class AnalystSalesCreatorViewController implements Initializable {
     @FXML
-    public TableView productsTable;
+    public TableView productsTable,discountTable;
     @FXML
-    public TableColumn PRODUCTID;
+    public TableColumn<Product,String> PRODUCTID, PRODUCTID_CHANGE;
     @FXML
-    public TableColumn NAME;
+    public TableColumn<Product,String> NAME, NAME_CHANGE;
     @FXML
-    public TableColumn PRICE;
+    public TableColumn<Product,String> PRICE, PRICE_CHANGE;
     @FXML
-    public TableColumn DISCOUNT;
-    @FXML
-    public TableColumn AMOUNT;
+    public TableColumn<Product,String> DISCOUNT, DISCOUNT_CHANGE;
     @FXML
     public TextField searchTF;
 
     String nazwaProduktu = null;
+    private ObservableList<Product> lista = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -43,9 +47,46 @@ public class AnalystSalesCreatorViewController implements Initializable {
         NAME.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
         PRICE.setCellValueFactory(new PropertyValueFactory("price"));
         DISCOUNT.setCellValueFactory(new PropertyValueFactory("discount"));
-        AMOUNT.setCellValueFactory(new PropertyValueFactory("amount"));
         productsTable.setItems(getProducts());
         System.out.println(getProducts().toString());
+        productsTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getButton().equals(MouseButton.PRIMARY)){
+                    if(event.getClickCount() == 2){
+                        if(productsTable.getSelectionModel().getSelectedItem() != null){
+                            System.out.println("Wysłany "+productsTable.getSelectionModel().getSelectedItem().toString());
+                            if(lista.isEmpty()){
+                                lista.add((Product) productsTable.getSelectionModel().getSelectedItem());
+                                addToTable(lista);
+                            } else {
+                                if(lista.contains(productsTable.getSelectionModel().getSelectedItem())){
+                                    System.out.println("Ten object już tam sie znajduje");
+                                } else {
+                                    lista.add((Product) productsTable.getSelectionModel().getSelectedItem());
+                                    addToTable(lista);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        discountTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getButton().equals(MouseButton.PRIMARY)){
+                    if(event.getClickCount() == 2){
+                        if(discountTable.getSelectionModel().getSelectedItem() != null){
+                            lista.remove(discountTable.getSelectionModel().getSelectedItem());
+                            addToTable(lista);
+                            System.out.println("Usuwany object "+discountTable.getSelectionModel().getSelectedItem().toString());
+                        }
+                    }
+                }
+            }
+        });
     }
 
 
@@ -75,5 +116,22 @@ public class AnalystSalesCreatorViewController implements Initializable {
     public void searchAnalystPrices() {
         nazwaProduktu = searchTF.getText();
         productsTable.setItems(getProducts());
+    }
+
+    public void addToTable(ObservableList<Product> item) {
+        PRODUCTID_CHANGE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId())));
+        NAME_CHANGE.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
+        PRICE_CHANGE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
+        DISCOUNT_CHANGE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getDiscount())));
+        System.out.println("Odebrane " + item.toString() + " rozmiar " + item.size());
+        try {
+            if (!item.isEmpty()) {
+                discountTable.setItems(item);
+            } else {
+                //naprawić
+            }
+        } catch (NullPointerException e) {
+            System.out.println("NullPointerException po odjęciu ostatniego elementu " + e);
+        }
     }
 }
