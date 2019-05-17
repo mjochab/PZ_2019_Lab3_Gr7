@@ -17,6 +17,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import models.ObservablePriceModel;
+import models.StateOnShop;
 import models.StateOrderModel;
 import org.hibernate.Session;
 
@@ -104,6 +105,7 @@ public class StateWarehouseController implements Initializable {
             DISCOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getDiscount())));
             stateWarehouse.setItems(getProducts(nazwaProduktu));
             //System.out.println(getProducts(nazwaProduktu).toString());
+            setEditableAmountInWarehouse();
         }
         if (location.toString().contains("new_order_warehouse")) {
             PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
@@ -325,6 +327,61 @@ public class StateWarehouseController implements Initializable {
             } catch (NumberFormatException exc){
                 System.out.println("Powrót do poprzedniej liczby");
                 add_new_order.refresh();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Niepowodzenie");
+                alert.setContentText("Wprowadzona wartość nie jest liczbą!");
+                alert.showAndWait();
+            }
+        });
+    }
+
+    private void setEditableAmountInWarehouse(){
+        AMOUNT.setCellFactory(TextFieldTableCell.forTableColumn());
+
+
+        AMOUNT.setOnEditCommit(e -> {
+            try{
+                System.out.println("PRZED"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+                int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue();
+                if(!isNumeric(e.getNewValue())) {
+                    throw new NumberFormatException();
+                }
+                e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
+                System.out.println("PO"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+                if(e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() > 0){
+                    System.out.println("większe od 0 i mniejsze od ");
+                } else {
+                    e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
+                    System.out.println("Powrót do poprzedniej liczby");
+                    stateWarehouse.refresh();
+                }
+                Session session = sessionFactory.openSession();
+                //session.beginTransaction();
+
+//                Product product = (Product) session.get(Product.class,e.getTableView().getSelectionModel().getSelectedItem().getProductId());
+//                System.out.println("Produkt ID 1 "+product);
+//                Shop shop = (Shop) session.get(Shop.class,sessionContext.getCurrentLoggedShop().getShopId());
+//                System.out.println("ID sklepu "+shop);
+
+                //State_on_shop state_on_shop = (State_on_shop) session.get(State_on_shop.class,8);
+
+                List<StateOnShop> eList =  session.createQuery("from State_on_shop s where s.shopId = 1 and s.productId = 1 ").list();
+                        //.setParameter("shopid",2)
+                        //.setParameter("productid",2).list();
+
+
+                //System.out.println("state_on_shop = "+state_on_shop);
+                int id = eList.get(0).getId();
+                System.out.println(id);
+                //state_on_shop.setAmount(e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue());
+                //session.update(state_on_shop);
+
+                //session.getTransaction().commit();
+                session.close();
+
+            } catch (NumberFormatException exc){
+                System.out.println("Powrót do poprzedniej liczby");
+                stateWarehouse.refresh();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Niepowodzenie");
                 alert.setContentText("Wprowadzona wartość nie jest liczbą!");
