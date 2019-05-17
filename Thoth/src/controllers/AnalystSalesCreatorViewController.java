@@ -5,7 +5,6 @@ import entity.State_on_shop;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -13,9 +12,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import models.ObservablePriceModel;
-import models.ShopSell;
 import org.hibernate.Session;
 
 import java.net.URL;
@@ -24,77 +20,76 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionFactory;
 
+/**
+ * Kontroler okna Analityka dotyczącego ustalania zniżek dla wielu produktów.
+ */
 public class AnalystSalesCreatorViewController implements Initializable {
     @FXML
-    public TableView productsTable,discountTable;
+    public TableView productsTable, discountTable;
     @FXML
-    public TableColumn<Product,String> PRODUCTID, PRODUCTID_CHANGE;
+    public TableColumn<Product, String> PRODUCTID, PRODUCTID_CHANGE;
     @FXML
-    public TableColumn<Product,String> NAME, NAME_CHANGE;
+    public TableColumn<Product, String> NAME, NAME_CHANGE;
     @FXML
-    public TableColumn<Product,String> PRICE, PRICE_CHANGE;
+    public TableColumn<Product, String> PRICE, PRICE_CHANGE;
     @FXML
-    public TableColumn<Product,String> DISCOUNT, DISCOUNT_CHANGE;
+    public TableColumn<Product, String> DISCOUNT, DISCOUNT_CHANGE;
     @FXML
-    public TextField searchTF,DISCOUNT_TF;
-
-    String nazwaProduktu = null;
+    public TextField searchTF, DISCOUNT_TF;
+    private String nazwaProduktu = null;
     private ObservableList<Product> lista = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
-        NAME.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
+        NAME.setCellValueFactory(new PropertyValueFactory<>("name"));
         PRICE.setCellValueFactory(new PropertyValueFactory("price"));
         DISCOUNT.setCellValueFactory(new PropertyValueFactory("discount"));
         productsTable.setItems(getProducts());
         System.out.println(getProducts().toString());
-        productsTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(event.getButton().equals(MouseButton.PRIMARY)){
-                    if(event.getClickCount() == 2){
-                        if(productsTable.getSelectionModel().getSelectedItem() != null){
-                            System.out.println("Wysłany "+productsTable.getSelectionModel().getSelectedItem().toString());
-                            if(lista.isEmpty()){
+        productsTable.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                if (event.getClickCount() == 2) {
+                    if (productsTable.getSelectionModel().getSelectedItem() != null) {
+                        System.out.println("Wysłany " + productsTable.getSelectionModel().getSelectedItem().toString());
+                        if (lista.isEmpty()) {
+                            lista.add((Product) productsTable.getSelectionModel().getSelectedItem());
+                            addToTable(lista);
+                        } else {
+                            if (lista.contains(productsTable.getSelectionModel().getSelectedItem())) {
+                                System.out.println("Ten object już tam sie znajduje");
+                            } else {
                                 lista.add((Product) productsTable.getSelectionModel().getSelectedItem());
                                 addToTable(lista);
-                            } else {
-                                if(lista.contains(productsTable.getSelectionModel().getSelectedItem())){
-                                    System.out.println("Ten object już tam sie znajduje");
-                                } else {
-                                    lista.add((Product) productsTable.getSelectionModel().getSelectedItem());
-                                    addToTable(lista);
-                                }
                             }
                         }
                     }
                 }
             }
         });
-
-        discountTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(event.getButton().equals(MouseButton.PRIMARY)){
-                    if(event.getClickCount() == 2){
-                        if(discountTable.getSelectionModel().getSelectedItem() != null){
-                            lista.remove(discountTable.getSelectionModel().getSelectedItem());
-                            addToTable(lista);
-                            System.out.println("Usuwany object "+discountTable.getSelectionModel().getSelectedItem().toString());
-                        }
+        discountTable.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                if (event.getClickCount() == 2) {
+                    if (discountTable.getSelectionModel().getSelectedItem() != null) {
+                        lista.remove(discountTable.getSelectionModel().getSelectedItem());
+                        addToTable(lista);
+                        System.out.println("Usuwany object " + discountTable.getSelectionModel().getSelectedItem().toString());
                     }
                 }
             }
         });
     }
 
-
-    public ObservableList<Product> getProducts() {
+    /**
+     * Metoda zwraca listę produktów. Jeżeli pole wyszukiwania nie jest puste, zwraca liste produktów których nazwa zawiera ciąg znaków zawarty w polu wyszukiwania.
+     *
+     * @return Zwraca ObservableList<Product>
+     * @see Product
+     */
+    private ObservableList<Product> getProducts() {
         ObservableList<Product> productsList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<State_on_shop> eList;
-
         if (nazwaProduktu == null || nazwaProduktu.equals("")) {
             eList = session.createQuery("SELECT new entity.State_on_shop(sos.id, sos.productId, sos.shopId, SUM(sos.amount)) FROM State_on_shop sos GROUP by sos.productId ORDER BY SUM(sos.amount) DESC").list();
         } else {
@@ -102,7 +97,6 @@ public class AnalystSalesCreatorViewController implements Initializable {
             searchTF.setText("");
             nazwaProduktu = null;
         }
-
         System.out.println("getProducts " + eList);
         for (State_on_shop ent : eList) {
             Product opm;
@@ -113,12 +107,20 @@ public class AnalystSalesCreatorViewController implements Initializable {
         return productsList;
     }
 
+    /**
+     * Metoda odświeżająca listę produktów w tabeli.
+     */
     public void searchAnalystPrices() {
         nazwaProduktu = searchTF.getText();
         productsTable.setItems(getProducts());
     }
 
-    public void addToTable(ObservableList<Product> item) {
+    /**
+     * Metoda dodaje obiekt do tabeli przechowującej produkty dla których będzie zmieniana zniżka.
+     *
+     * @param item obiekt klasy Product.
+     */
+    private void addToTable(ObservableList<Product> item) {
         PRODUCTID_CHANGE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId())));
         NAME_CHANGE.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
         PRICE_CHANGE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
@@ -127,19 +129,21 @@ public class AnalystSalesCreatorViewController implements Initializable {
         try {
             if (!item.isEmpty()) {
                 discountTable.setItems(item);
-            } else {
-                //naprawić
-            }
+            }  //naprawić
+
         } catch (NullPointerException e) {
             System.out.println("NullPointerException po odjęciu ostatniego elementu " + e);
         }
     }
 
-    public void changeDiscount(){
-        if(!lista.isEmpty()) {
-            System.out.println("Przygotowana lista do zapytania "+lista.get(0).getPrice().toString());
+    /**
+     * Metoda wysyła update do bazy danych dla produktów przechowywanych w zmiennej lista.
+     */
+    public void changeDiscount() {
+        if (!lista.isEmpty()) {
+            System.out.println("Przygotowana lista do zapytania " + lista.get(0).getPrice().toString());
             Session session = sessionFactory.openSession();
-            for(Product product : lista){
+            for (Product product : lista) {
                 product.setDiscount(Integer.parseInt(DISCOUNT_TF.getText()));
                 session.getTransaction().begin();
                 session.update(product);
@@ -149,7 +153,7 @@ public class AnalystSalesCreatorViewController implements Initializable {
         }
         lista.removeAll();
         discountTable.getItems().clear();
-        System.out.println("remove all products from lista:"+lista);
+        System.out.println("remove all products from lista:" + lista);
         discountTable.refresh();
         productsTable.refresh();
     }

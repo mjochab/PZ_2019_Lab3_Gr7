@@ -1,33 +1,23 @@
 package controllers;
 
-
-import com.itextpdf.kernel.pdf.PdfDocument;
 import entity.Product;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import models.*;
-
 import org.hibernate.Session;
 
-import java.awt.*;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -35,22 +25,25 @@ import com.pdfgeneratorlib.*;
 
 import static controllers.MainWindowController.sessionFactory;
 
+/**
+ * Konstroler zakładki Okna Analityka dotyczącej zysków danego sklepu.
+ */
 public class AnalystSalesDataController implements Initializable {
 
     @FXML
     private AnchorPane pane;
     @FXML
-    public TableView<SalesDataModel> salesDataTable;
+    private TableView<SalesDataModel> salesDataTable;
     @FXML
-    public TableColumn ZIPCODE;
+    private TableColumn ZIPCODE;
     @FXML
-    public TableColumn CITY;
+    private TableColumn CITY;
     @FXML
-    public TableColumn STREET;
+    private TableColumn STREET;
     @FXML
-    public TableColumn PROFIT;
+    private TableColumn PROFIT;
     @FXML
-    public DatePicker START_DATE, END_DATE;
+    private DatePicker START_DATE, END_DATE;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -58,15 +51,22 @@ public class AnalystSalesDataController implements Initializable {
         CITY.setCellValueFactory(new PropertyValueFactory<Product, String>("city"));
         STREET.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("street"));
         PROFIT.setCellValueFactory(new PropertyValueFactory<Product, Integer>("profit"));
-        salesDataTable.setItems(getProducts());
-        System.out.println(getProducts().toString());
+        salesDataTable.setItems(getRaport());
+        System.out.println(getRaport().toString());
     }
 
 
-    public ObservableList<SalesDataModel> getProducts() {
+    /**
+     * Metoda zwraca listę sklepów oraz ich zysk.
+     * Jeżeli START_DATE oraz END_DATE nie są puste, metoda zwraca zysk sklepów w danym okresie.
+     *
+     * @return zwraca ObservableList<SalesDataModel>.
+     * @see SalesDataModel
+     */
+    private ObservableList<SalesDataModel> getRaport() {
         ObservableList<SalesDataModel> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<SalesDataModel> eList = null;
+        List<SalesDataModel> eList;
         if (START_DATE.getValue() == null && END_DATE.getValue() == null) {
             eList = session.createQuery("SELECT new models.SalesDataModel(" +
                     "s.zipCode, s.city, s.street, SUM(r.totalValue)) FROM Shop s INNER JOIN Receipt r on s.shopId = r.shopId " +
@@ -83,15 +83,17 @@ public class AnalystSalesDataController implements Initializable {
             END_DATE.setValue(null);
         }
         System.out.println(eList);
-        for (SalesDataModel ent : eList) {
-            productList.add(ent);
-        }
+        productList.addAll(eList);
         session.close();
         return productList;
     }
 
 
-    public void generateRaport(ActionEvent actionEvent) throws IOException {
+    /**
+     * Metoda generująca raport w określonym przez nas folderze.
+     * @throws IOException Występuje gdy ścieżka do folderu jest niepoprawna.
+     */
+    public void generateRaport() throws IOException {
         DirectoryChooser chooser = new DirectoryChooser();
         Stage stage = (Stage) pane.getScene().getWindow();
         File file = chooser.showDialog(stage);
@@ -143,8 +145,11 @@ public class AnalystSalesDataController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Metoda odświeża tabelę z Raportami sprzedaży.
+     */
     public void showRaportForDate() {
         System.out.println("startdate:" + START_DATE.getValue() + "enddate:" + END_DATE.getValue());
-        salesDataTable.setItems(getProducts());
+        salesDataTable.setItems(getRaport());
     }
 }
