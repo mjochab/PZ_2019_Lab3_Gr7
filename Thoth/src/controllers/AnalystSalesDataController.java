@@ -92,13 +92,9 @@ public class AnalystSalesDataController implements Initializable {
 
 
     public void generateRaport(ActionEvent actionEvent) throws IOException {
-
         DirectoryChooser chooser = new DirectoryChooser();
-
         Stage stage = (Stage) pane.getScene().getWindow();
-
         File file = chooser.showDialog(stage);
-
         String path = null;
 
         if (file != null) {
@@ -106,7 +102,6 @@ public class AnalystSalesDataController implements Initializable {
         }
 
         Session session = sessionFactory.openSession();
-//       select s.ShopId, p.Name, SUM(pr.Amount) ilosc_sprzedanych, SUM(pr.Price) cena_produktow  from receipt r INNER JOIN product_receipt pr ON r.ReceiptId = pr.ReceiptId INNER JOIN product p ON pr.ProductId = p.ProductId INNER JOIN shop s ON r.ShopId = s.ShopId where s.ShopId = 1 GROUP BY pr.ProductId
         List<RaportModel> shops = session.createQuery("SELECT new com.pdfgeneratorlib.RaportModel(s.shopId, s.street, s.zipCode, " +
                 "s.city, SUM(r.totalValue)) from Shop s Left JOIN Receipt r ON s.shopId = r.shopId GROUP BY s.shopId").list();
 
@@ -130,14 +125,12 @@ public class AnalystSalesDataController implements Initializable {
 
             shop.setUsers(users);
         }
-
+        session.close();
 
         System.out.println(shops.size());
         System.out.println(shops.toString());
 
         CreatePDF.createPdf(shops, path);
-
-        session.close();
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Raport utworzony pomyślnie");
