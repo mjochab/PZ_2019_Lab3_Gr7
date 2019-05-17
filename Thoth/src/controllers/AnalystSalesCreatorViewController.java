@@ -12,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
+import org.apache.log4j.BasicConfigurator;
 import org.hibernate.Session;
 
 import java.net.URL;
@@ -26,7 +27,7 @@ import static controllers.MainWindowController.sessionFactory;
  */
 public class AnalystSalesCreatorViewController implements Initializable {
 
-    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+    private static final Logger logger = Logger.getLogger(AnalystSalesCreatorViewController.class);
 
     @FXML
     public TableView productsTable, discountTable;
@@ -45,6 +46,7 @@ public class AnalystSalesCreatorViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        BasicConfigurator.configure();
         PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
         NAME.setCellValueFactory(new PropertyValueFactory<>("name"));
         PRICE.setCellValueFactory(new PropertyValueFactory("price"));
@@ -101,7 +103,7 @@ public class AnalystSalesCreatorViewController implements Initializable {
             searchTF.setText("");
             nazwaProduktu = null;
         }
-        System.out.println("getProducts " + eList);
+        logger.info("getProducts " + eList);
         for (State_on_shop ent : eList) {
             Product opm;
             opm = ent.getProductId();
@@ -129,7 +131,7 @@ public class AnalystSalesCreatorViewController implements Initializable {
         NAME_CHANGE.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
         PRICE_CHANGE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
         DISCOUNT_CHANGE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getDiscount())));
-        System.out.println("Odebrane " + item.toString() + " rozmiar " + item.size());
+        logger.info("Odebrane " + item.toString() + " rozmiar " + item.size());
         try {
             if (!item.isEmpty()) {
                 discountTable.setItems(item);

@@ -22,7 +22,7 @@ import static controllers.MainWindowController.sessionFactory;
 
 public class ShopShowOrdersController implements Initializable {
 
-    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+    private static final Logger logger = Logger.getLogger(ShopShowOrdersController.class);
 
     @FXML
     MenuItem logout;

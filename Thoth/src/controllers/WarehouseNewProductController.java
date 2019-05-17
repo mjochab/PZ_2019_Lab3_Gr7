@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import models.ObservablePriceModel;
+import org.apache.log4j.BasicConfigurator;
 import org.hibernate.Session;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ import static controllers.MainWindowController.*;
 
 public class WarehouseNewProductController implements Initializable {
 
-    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+    private static final Logger logger = Logger.getLogger(WarehouseNewProductController.class);
 
     @FXML
     public TextField NAME;
@@ -40,6 +41,7 @@ public class WarehouseNewProductController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        BasicConfigurator.configure();
 
     }
 

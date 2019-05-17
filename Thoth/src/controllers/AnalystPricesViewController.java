@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
+import org.apache.log4j.BasicConfigurator;
 import org.hibernate.Session;
 
 import javax.persistence.PersistenceException;
@@ -46,6 +47,7 @@ public class AnalystPricesViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        BasicConfigurator.configure();
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId())));
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
         PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));

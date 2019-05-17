@@ -26,7 +26,7 @@ import static controllers.WarehouseNewProductController.isNumeric;
 
 public class ShopSellProductsController implements Initializable {
 
-    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+    private static final Logger logger = Logger.getLogger(ShopSellProductsController.class);
 
     @FXML
     MenuItem logout;

@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import org.apache.log4j.BasicConfigurator;
 import org.hibernate.Session;
 import org.apache.log4j.Logger;
 
@@ -180,5 +181,6 @@ public class AddEmployeeController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.setComboRoleList();
         this.setComboShopList();
+        BasicConfigurator.configure();
     }
 }

@@ -23,7 +23,7 @@ import static controllers.MainWindowController.sessionContext;
  */
 public class MainViewAnalystController implements Initializable {
 
-    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+    private static final Logger logger = Logger.getLogger(MainViewAnalystController.class);
 
     @FXML
     MenuItem logout;

@@ -26,7 +26,7 @@ import static controllers.WarehouseNewProductController.isNumeric;
 
 public class ShopSellItemsForCustomers implements Initializable {
 
-    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+    private static final Logger logger = Logger.getLogger(ShopSellItemsForCustomers.class);
 
     @FXML
     MenuItem logout;
@@ -89,7 +89,7 @@ public class ShopSellItemsForCustomers implements Initializable {
                 if(event.getButton().equals(MouseButton.PRIMARY)){
                     if(event.getClickCount() == 3){
                         if(productsTableAdd.getSelectionModel().getSelectedItem() != null){
-                            System.out.println("Usuwany object "+productsTableAdd.getSelectionModel().getSelectedItem().toString());
+                            logger.info("Usuwany object "+productsTableAdd.getSelectionModel().getSelectedItem().toString());
                             lista.remove(productsTableAdd.getSelectionModel().getSelectedItem());
                             addToTable(lista);
                         }
@@ -128,7 +128,7 @@ public class ShopSellItemsForCustomers implements Initializable {
         PRICE_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
         AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
         DISCOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
-        System.out.println("Odebrane " + item.toString() + " rozmiar " + item.size());
+        logger.info("Odebrane " + item.toString() + " rozmiar " + item.size());
         try {
             if (!item.isEmpty()) {
                 productsTableAdd.setItems(item);
@@ -136,7 +136,7 @@ public class ShopSellItemsForCustomers implements Initializable {
                 //naprawić
             }
         } catch (NullPointerException e) {
-            System.out.println("NullPointerException po odjęciu ostatniego elementu " + e);
+            logger.error("NullPointerException po odjęciu ostatniego elementu " + e);
         }
     }
 
@@ -150,26 +150,28 @@ public class ShopSellItemsForCustomers implements Initializable {
 
         AMOUNT_ADD.setOnEditCommit(e -> {
             try{
-                System.out.println("PRZED"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+                logger.info("PRZED"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
                 int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue();
                 if(!isNumeric(e.getNewValue())) {
                     throw new NumberFormatException();
                 }
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
-                System.out.println("PO"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+                logger.info("PO"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
                 if(e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() > 0 && e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() <= check){
-                    System.out.println("większe od 0 i mniejsze od ");
+                    logger.info("większe od 0 i mniejsze od ");
                 } else {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
-                    System.out.println("Powrót do poprzedniej liczby");
+                    logger.info("Powrót do poprzedniej liczby");
                     productsTableAdd.refresh();
                 }
             } catch (NumberFormatException exc){
-                System.out.println("Powrót do poprzedniej liczby");
+                logger.warn("Powrót do poprzedniej liczby");
                 productsTableAdd.refresh();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Niepowodzenie");
+                logger.info("Niepowodzenie");
                 alert.setContentText("Wprowadzona wartość nie jest liczbą!");
+                logger.info("Wprowadzona wartość nie jest liczbą!");
                 alert.showAndWait();
             }
 
@@ -179,26 +181,28 @@ public class ShopSellItemsForCustomers implements Initializable {
 
         DISCOUNT_ADD.setOnEditCommit(e -> {
             try{
-                System.out.println("PRZED"+e.getTableView().getSelectionModel().getSelectedItem().getDiscount().toString());
+                logger.info("PRZED"+e.getTableView().getSelectionModel().getSelectedItem().getDiscount().toString());
                 int check = e.getTableView().getSelectionModel().getSelectedItem().getDiscount().intValue();
                 if(!isNumeric(e.getNewValue())) {
                     throw new NumberFormatException();
                 }
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setDiscount(Integer.parseInt(e.getNewValue()));
-                System.out.println("PO"+e.getTableView().getSelectionModel().getSelectedItem().getDiscount().toString());
+                logger.info("PO"+e.getTableView().getSelectionModel().getSelectedItem().getDiscount().toString());
                 if(e.getTableView().getSelectionModel().getSelectedItem().getDiscount().intValue() > 0 && e.getTableView().getSelectionModel().getSelectedItem().getDiscount().intValue() <= 100){
-                    System.out.println("większe od 0 i mniejsze od 100 ");
+                    logger.info("większe od 0 i mniejsze od 100 ");
                 } else {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setDiscount(check);
-                    System.out.println("Powrót do poprzedniej liczby");
+                    logger.info("Powrót do poprzedniej liczby");
                     productsTableAdd.refresh();
                 }
             } catch (NumberFormatException exc){
-                System.out.println("Powrót do poprzedniej liczby");
+                logger.warn("Powrót do poprzedniej liczby");
                 productsTableAdd.refresh();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Niepowodzenie");
+                logger.info("Niepowodzenie");
                 alert.setContentText("Wprowadzona wartość nie jest liczbą!");
+                logger.info("Wprowadzona wartość nie jest liczbą!");
                 alert.showAndWait();
             }
 
@@ -207,8 +211,8 @@ public class ShopSellItemsForCustomers implements Initializable {
 
     public void confirm(){
         if(!lista.isEmpty()){
-            System.out.println("Przygotowane dane do wysłąnia "+lista+" "+nameTF.getText()+" "+lastNameTF.getText()+" "+numerPhoneTF.getText());
-            System.out.println("Dodaj walidacje textfield żeby nie były puste");
+            logger.info("Przygotowane dane do wysłąnia "+lista+" "+nameTF.getText()+" "+lastNameTF.getText()+" "+numerPhoneTF.getText());
+            logger.info("Dodaj walidacje textfield żeby nie były puste");
         }
     }
 }

@@ -9,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,6 +19,8 @@ import java.util.ResourceBundle;
 import static controllers.MainWindowController.sessionContext;
 
 public class AdminController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
 
     @FXML
     MenuItem logout;
@@ -38,7 +42,7 @@ public class AdminController implements Initializable {
     }
 
     public void switchscene(ActionEvent event) throws IOException { //zmiana sceny BUTTON
-        System.out.println(event.getSource().toString());
+        logger.info(event.getSource().toString());
         Parent temporaryLoginParent = null;
         Scene temporaryLoginScene = null;
         temporaryLoginScene = new Scene(temporaryLoginParent);
@@ -48,7 +52,7 @@ public class AdminController implements Initializable {
     }
 
     public void menuItemAction(ActionEvent actionEvent) throws IOException { //powrót , wylogowanie na MENU ITEM
-        System.out.println("ACTION EVENT"+actionEvent);
+        logger.info("ACTION EVENT"+actionEvent);
         stage = (Stage) root.getScene().getWindow();
         if (actionEvent.getSource() == logout) {
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
@@ -62,6 +66,7 @@ public class AdminController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        BasicConfigurator.configure();
         if(sessionContext.getCurrentLoggedUser().getUserId() == 1){
             back.setVisible(true);
         }

@@ -30,6 +30,9 @@ import java.util.ResourceBundle;
 import org.apache.log4j.Logger;
 
 public class MainWindowController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(MainWindowController.class);
+
     private String ADMIN = "Admin";
     private String STOREKEEPER = "Magazynier";
     private String SHOP_ASSISTANT = "Sprzedawca";
@@ -56,16 +59,18 @@ public class MainWindowController implements Initializable {
     public static SessionContext sessionContext;
 
     public void switchscene(ActionEvent event) throws IOException {
-        System.out.println("URL " + event.getSource().toString());
+        logger.info("URL " + event.getSource().toString());
 
         if (sessionContext.getCurrentLoggedUser().getRoleId().getPosition().equals(ADMIN)) {
             if (!event.getSource().toString().contains("admin_view")) {
                 if (this.comboList.getSelectionModel().getSelectedItem() == null) {
-                    System.out.println("Nie wybrano sklepu!");
+                    logger.info("Nie wybrano sklepu!");
 
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Napotkano blad");
+                    logger.info("Napotkano blad");
                     alert.setContentText("Nie wybrano zadnego sklepu/magazynu!");
+                    logger.info("Nie wybrano zadnego sklepu/magazynu!");
                     alert.showAndWait();
 
                     return;
@@ -121,7 +126,7 @@ public class MainWindowController implements Initializable {
         user = query.list();
         session.close();
         try {
-            System.out.println(user.get(0).getRoleId().getPosition().getClass());
+            logger.info(user.get(0).getRoleId().getPosition().getClass());
 
             UserShop userShopToLoadToSession;
 
@@ -134,7 +139,7 @@ public class MainWindowController implements Initializable {
                 if (userShopToLoadToSession != null) {
                     sessionContext = new SessionContext(userShopToLoadToSession);
                 } else {
-                    System.out.println("Failed to load sessionContext");
+                    logger.error("Failed to load sessionContext");
                     sessionContext = null;
                 }
             }
@@ -184,7 +189,7 @@ public class MainWindowController implements Initializable {
 
 
     public void resetdb(ActionEvent event) throws IOException {
-        System.out.println(resetDbButton.getText());
+        logger.info(resetDbButton.getText());
         if (resetDbButton.getText().contentEquals("DELETE")) {
             SessionFactory factory = new Configuration()
                     .configure("create.cfg.xml").buildSessionFactory();
@@ -202,7 +207,7 @@ public class MainWindowController implements Initializable {
         shops.addAll(shopsList);
 
         session.close();
-        System.out.println("Zwracam sklepy");
+        logger.info("Zwracam sklepy");
         return shops;
 
     }
@@ -214,8 +219,8 @@ public class MainWindowController implements Initializable {
         this.comboList.valueProperty().addListener(new ChangeListener<Shop>() {
             @Override
             public void changed(ObservableValue<? extends Shop> observable, Shop oldValue, Shop newValue) {
-                System.out.println("Poprzednia wartosc: " + oldValue);
-                System.out.println("Nowa wartosc: " + newValue);
+                logger.info("Poprzednia wartosc: " + oldValue);
+                logger.info("Nowa wartosc: " + newValue);
 
                 sessionContext.setCurrentLoggedShop(newValue);
             }
@@ -230,7 +235,9 @@ public class MainWindowController implements Initializable {
            System.out.println(e.getMessage());
            Alert alert = new Alert(Alert.AlertType.ERROR);
            alert.setTitle("Niepowodzenie");
+           logger.info("Niepowodzenie");
            alert.setContentText("NIe udało się nawiązać połączenia z bazą danych!");
+           logger.info("NIe udało się nawiązać połączenia z bazą danych!");
            alert.showAndWait();
            System.exit(0);
        }
@@ -249,10 +256,10 @@ public class MainWindowController implements Initializable {
             if (userDataList.size() == 1) {
                 userData = userDataList.get(0);
             } else {
-                System.out.println("Znaleziono 0 lub > 1 encji w UserShop");
+                logger.info("Znaleziono 0 lub > 1 encji w UserShop");
             }
         } catch (Exception e) {
-            System.out.println("Blad pobierania z bazy danych");
+            logger.error("Blad pobierania z bazy danych");
         }
 
         session.close();

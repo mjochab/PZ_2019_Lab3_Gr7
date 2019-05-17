@@ -33,7 +33,7 @@ import static controllers.WarehouseNewProductController.isNumeric;
 
 public class StateWarehouseController implements Initializable {
 
-    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+    private static final Logger logger = Logger.getLogger(StateWarehouseController.class);
 
     @FXML
     public TableView stateWarehouse;

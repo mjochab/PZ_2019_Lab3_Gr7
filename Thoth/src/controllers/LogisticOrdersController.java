@@ -36,7 +36,7 @@ import static controllers.MainWindowController.sessionFactory;
  */
 public class LogisticOrdersController implements Initializable {
 
-    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+    private static final Logger logger = Logger.getLogger(LogisticOrdersController.class);
 
     @FXML
     private TableView<IndentTableView> ordersReadyForShipment;
@@ -118,7 +118,7 @@ public class LogisticOrdersController implements Initializable {
             List<Indent> subIndents = session.createQuery("From Indent indent where ParentId = :pid")
                     .setParameter("pid", soi.getIndentId().getIndentId()).list();
 
-            System.out.println(subIndents.size());
+            logger.info(subIndents.size());
 
             if (subIndents.size() > 0) {
                 soi.getIndentId().setIsComplex(true);
@@ -194,7 +194,7 @@ public class LogisticOrdersController implements Initializable {
         // czy wybrany wiersz zawiera zamowienie zlozone
         // tak -> zaladuj widok zamowienia zlozonego (complex)
         // nie -> zaladuj widok zamowienia prostego
-        System.out.println(orderView.getOrder().isComplex());
+        logger.info(orderView.getOrder().isComplex());
         if (orderView.getOrder().isComplex()) {
             loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
         } else {

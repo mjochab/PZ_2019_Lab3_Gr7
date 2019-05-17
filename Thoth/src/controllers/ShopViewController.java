@@ -18,7 +18,7 @@ import static controllers.MainWindowController.sessionContext;
 
 public class ShopViewController implements Initializable {
 
-    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+    private static final Logger logger = Logger.getLogger(ShopViewController.class);
 
     @FXML
     MenuItem logout, back;
