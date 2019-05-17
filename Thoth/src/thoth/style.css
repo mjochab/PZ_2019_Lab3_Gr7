@@ -23,3 +23,7 @@
     -fx-font-family:  Arial;
     -fx-font-size: 14px;
 }
+
+.table-view *.editable-column { /* FX theme stylesheet */
+-fx-border-color: #FFE4B5;
+}
