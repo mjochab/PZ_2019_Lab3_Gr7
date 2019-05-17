@@ -9,9 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
-import models.ObservablePriceModel;
 import org.hibernate.Session;
-import org.hibernate.exception.DataException;
 
 import javax.persistence.PersistenceException;
 import java.math.BigDecimal;
@@ -21,6 +19,9 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionFactory;
 
+/**
+ * Kontroler okna Analityka dotyczącego cen produktów.
+ */
 public class AnalystPricesViewController implements Initializable {
     @FXML
     public TableView<Product> priceTable;
@@ -33,11 +34,11 @@ public class AnalystPricesViewController implements Initializable {
     @FXML
     public TableColumn<Product, String> DISCOUNT;
     @FXML
-    public Button change, search;
+    public Button search;
     @FXML
     public TextField searchTF;
 
-    String nazwaProduktu = null;
+    private String nazwaProduktu = null;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,13 +46,20 @@ public class AnalystPricesViewController implements Initializable {
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
         PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
         DISCOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getDiscount())));
-        priceTable.setItems(getProducts(nazwaProduktu));
+        priceTable.setItems(getProducts());
         //System.out.println(getProducts().toString());
         setEditablePrice();
         setEditableDiscount();
     }
 
-    public ObservableList<Product> getProducts(String nazwaProduktu) {
+
+    /**
+     * Metoda zwraca listę wszystkich produktów lub jeżeli pole wyszukiwania nie jest puste produktów których nazwa zawiera dany ciąg znaków.
+     *
+     * @return Zwraca ObservableList<Product>
+     * @see Product
+     */
+    private ObservableList<Product> getProducts() {
         ObservableList<Product> productsList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<Product> eList;
@@ -62,7 +70,6 @@ public class AnalystPricesViewController implements Initializable {
             eList = session.createQuery("from Product p" +
                     " where name like :produkt ").setParameter("produkt", "%" + nazwaProduktu + "%").list();
             searchTF.setText("");
-            nazwaProduktu = null;
         }
 
         System.out.println("getProducts " + eList);
@@ -80,12 +87,16 @@ public class AnalystPricesViewController implements Initializable {
         return productsList;
     }
 
+    /**
+     * Metoda odpowiedzialna za odświeżanie tabeli produktów.
+     */
     public void searchAnalystPrices() {
         nazwaProduktu = searchTF.getText();
-        priceTable.setItems(getProducts(nazwaProduktu));
+        priceTable.setItems(getProducts());
     }
 
-    public void setEditablePrice() {
+
+    private void setEditablePrice() {
         PRICE.setCellFactory(TextFieldTableCell.forTableColumn());
 
         PRICE.setOnEditCommit(e -> { // dodać walidacje try catch
@@ -128,7 +139,7 @@ public class AnalystPricesViewController implements Initializable {
                 alert.showAndWait();
             } catch (Exception exc) {
                 System.out.println("exc to string:"+exc.getMessage());
-                if (exc.getMessage() == "ValueBelowZero") {
+                if (exc.getMessage().equals("ValueBelowZero")) {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setPrice(oldValue);
                     session.getTransaction().rollback();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -150,7 +161,7 @@ public class AnalystPricesViewController implements Initializable {
         priceTable.setEditable(true);
     }
 
-    public void setEditableDiscount() {
+    private void setEditableDiscount() {
         DISCOUNT.setCellFactory(TextFieldTableCell.forTableColumn());
 
         DISCOUNT.setOnEditCommit(e -> { // dodać walidacje try catch
@@ -160,7 +171,7 @@ public class AnalystPricesViewController implements Initializable {
             try {
                 BigDecimal newValue = new BigDecimal(e.getNewValue());
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setDiscount(newValue.intValue());
-                if (newValue.compareTo(BigDecimal.ZERO) < 0 || newValue.compareTo(new BigDecimal(100)) == 1) {
+                if (newValue.compareTo(BigDecimal.ZERO) < 0 || newValue.compareTo(new BigDecimal(100)) > 0) {
                     throw new Exception("ValueBelowZero");
                 }
                 session.getTransaction().begin();
@@ -193,7 +204,7 @@ public class AnalystPricesViewController implements Initializable {
                 alert.showAndWait();
             } catch (Exception exc) {
                 System.out.println("exc to string:"+exc.getMessage());
-                if (exc.getMessage() == "ValueBelowZero") {
+                if (exc.getMessage().equals("ValueBelowZero")) {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setDiscount(oldValue.intValue());
                     session.getTransaction().rollback();
                     Alert alert = new Alert(Alert.AlertType.ERROR);

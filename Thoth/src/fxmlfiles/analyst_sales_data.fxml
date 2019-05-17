@@ -16,17 +16,17 @@
          <children>
             <HBox prefHeight="0.0" prefWidth="1269.0">
                <children>
-                  <DatePicker promptText="OD">
+                  <DatePicker fx:id="START_DATE" promptText="OD">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
                   </DatePicker>
-                  <DatePicker promptText="DO">
+                  <DatePicker fx:id="END_DATE" promptText="DO">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
                   </DatePicker>
-                  <Button id="search" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
+                  <Button id="search" mnemonicParsing="false" onAction="#showRaportForDate" prefHeight="26.0" prefWidth="200.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
                      <font>
                         <Font size="18.0" />
                      </font>

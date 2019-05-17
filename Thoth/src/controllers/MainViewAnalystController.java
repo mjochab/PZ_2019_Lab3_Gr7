@@ -12,10 +12,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionContext;
 
+/**
+ * Kontroler głównego okna analityka. Odpowiada za inicjalizację interfejsu oraz przechowuje metodę która umożliwia wylogowanie użytkownika.
+ */
 public class MainViewAnalystController implements Initializable {
     @FXML
     MenuItem logout;
@@ -23,21 +27,9 @@ public class MainViewAnalystController implements Initializable {
     MenuItem back;
     @FXML
     Parent root;
-    Stage stage;
-
-    public void switchscene(ActionEvent event) throws IOException { //zmiana sceny BUTTON
-        System.out.println(event.getSource().toString());
-        Parent temporaryLoginParent = null;
-        Scene temporaryLoginScene = null;
-        temporaryLoginScene = new Scene(temporaryLoginParent);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(temporaryLoginScene);
-        window.show();
-    }
-
 
     public void menuItemAction(ActionEvent actionEvent) throws IOException { //cofanie i wylogowanie na MENU ITEM
-        stage = (Stage) root.getScene().getWindow();
+        Stage stage = (Stage) root.getScene().getWindow();
         if (actionEvent.getSource() == logout) {
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
         } else {
@@ -47,7 +39,6 @@ public class MainViewAnalystController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -59,6 +50,4 @@ public class MainViewAnalystController implements Initializable {
             }
         }
     }
-
-
 }
