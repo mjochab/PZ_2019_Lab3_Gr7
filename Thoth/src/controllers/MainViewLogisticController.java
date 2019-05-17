@@ -12,10 +12,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import org.apache.log4j.Logger;
 
 import static controllers.MainWindowController.sessionContext;
 
 public class MainViewLogisticController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+
     @FXML
     MenuItem logout,back;
     @FXML
@@ -41,11 +45,11 @@ public class MainViewLogisticController implements Initializable {
             if (back != null) {
                 back.setVisible(true);
             } else {
-                System.out.println("BACK is null");
+                logger.info("BACK is null");
             }
         }
-        System.out.println("Aktualnie zaloogwany User: " + sessionContext.getCurrentLoggedUser());
-        System.out.println("Obiekt zalogowanego User'a: " + sessionContext.getCurrentLoggedShop());
-        System.out.println("Hello from MainController");
+        logger.info("Aktualnie zaloogwany User: " + sessionContext.getCurrentLoggedUser());
+        logger.info("Obiekt zalogowanego User'a: " + sessionContext.getCurrentLoggedShop());
+        logger.info("Hello from MainController");
     }
 }

@@ -18,12 +18,16 @@ import org.hibernate.Session;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.apache.log4j.Logger;
 
 import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
 import static controllers.WarehouseNewProductController.isNumeric;
 
 public class ShopSellItemsForCustomers implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+
     @FXML
     MenuItem logout;
     @FXML
@@ -61,13 +65,13 @@ public class ShopSellItemsForCustomers implements Initializable {
                 if(event.getButton().equals(MouseButton.PRIMARY)){
                     if(event.getClickCount() == 2){
                         if(productsTable.getSelectionModel().getSelectedItem() != null){
-                            System.out.println("Wysłany "+productsTable.getSelectionModel().getSelectedItem().toString());
+                            logger.info("Wysłany "+productsTable.getSelectionModel().getSelectedItem().toString());
                             if(lista.isEmpty()){
                                 lista.add((ShopSell) productsTable.getSelectionModel().getSelectedItem());
                                 addToTable(lista);
                             } else {
                                 if(lista.contains((ShopSell) productsTable.getSelectionModel().getSelectedItem())){
-                                    System.out.println("Ten object już tam sie znajduje");
+                                    logger.info("Ten object już tam sie znajduje");
                                 } else {
                                     lista.add((ShopSell) productsTable.getSelectionModel().getSelectedItem());
                                     addToTable(lista);

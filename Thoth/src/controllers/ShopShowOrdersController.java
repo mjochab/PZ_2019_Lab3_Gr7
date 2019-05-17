@@ -16,10 +16,14 @@ import org.hibernate.Session;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.apache.log4j.Logger;
 
 import static controllers.MainWindowController.sessionFactory;
 
 public class ShopShowOrdersController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+
     @FXML
     MenuItem logout;
     @FXML
@@ -58,10 +62,10 @@ public class ShopShowOrdersController implements Initializable {
         Session session = sessionFactory.openSession();
         List<ShopOrders> eList = session.createQuery("select new models.ShopOrders(ind.indentId, st.name, ind.dateOfOrder, cus.firstName, cus.lastName, cus.phoneNumber) from Indent ind, State_of_indent soi, State st, Customer cus " +
                 "where st.stateId = soi.stateId AND soi.indentId = ind.indentId AND cus.customerId = ind.customerId").list();
-        System.out.println(eList.toString());
+        logger.info(eList.toString());
         for (ShopOrders ent : eList) {
             enseignantList.add(ent);
-            System.out.println(ent.getCustomer_name() + ent.getId_order() + ent.getStatus());
+            logger.info(ent.getCustomer_name() + ent.getId_order() + ent.getStatus());
         }
         session.close();
         return enseignantList;

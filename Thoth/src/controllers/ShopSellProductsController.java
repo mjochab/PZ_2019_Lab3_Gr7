@@ -18,12 +18,16 @@ import org.hibernate.Session;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.apache.log4j.Logger;
 
 import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
 import static controllers.WarehouseNewProductController.isNumeric;
 
 public class ShopSellProductsController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+
     @FXML
     MenuItem logout;
     @FXML
@@ -57,13 +61,13 @@ public class ShopSellProductsController implements Initializable {
                 if(event.getButton().equals(MouseButton.PRIMARY)){
                     if(event.getClickCount() == 2){
                         if(productsTable.getSelectionModel().getSelectedItem() != null){
-                            System.out.println("Wysłany "+productsTable.getSelectionModel().getSelectedItem().toString());
+                            logger.info("Wysłany "+productsTable.getSelectionModel().getSelectedItem().toString());
                             if(lista.isEmpty()){
                                 lista.add((ShopSell) productsTable.getSelectionModel().getSelectedItem());
                                 addToTable(lista);
                             } else {
                                 if(lista.contains((ShopSell) productsTable.getSelectionModel().getSelectedItem())){
-                                    System.out.println("Ten object już tam sie znajduje");
+                                    logger.info("Ten object już tam sie znajduje");
                                 } else {
                                     lista.add((ShopSell) productsTable.getSelectionModel().getSelectedItem());
                                     addToTable(lista);
@@ -81,7 +85,7 @@ public class ShopSellProductsController implements Initializable {
                 if(event.getButton().equals(MouseButton.PRIMARY)){
                     if(event.getClickCount() == 3){
                         if(productsTableAdd.getSelectionModel().getSelectedItem() != null){
-                            System.out.println("Usuwany object "+productsTableAdd.getSelectionModel().getSelectedItem().toString());
+                            logger.info("Usuwany object "+productsTableAdd.getSelectionModel().getSelectedItem().toString());
                             lista.remove(productsTableAdd.getSelectionModel().getSelectedItem());
                             addToTable(lista);
                         }
@@ -120,7 +124,7 @@ public class ShopSellProductsController implements Initializable {
         NAME_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
         PRICE_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
         AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
-        System.out.println("Odebrane " + item.toString() + " rozmiar " + item.size());
+        logger.info("Odebrane " + item.toString() + " rozmiar " + item.size());
         try {
             if (!item.isEmpty()) {
                 productsTableAdd.setItems(item);
@@ -128,7 +132,7 @@ public class ShopSellProductsController implements Initializable {
                 //naprawić
             }
         } catch (NullPointerException e) {
-            System.out.println("NullPointerException po odjęciu ostatniego elementu " + e);
+            logger.error("NullPointerException po odjęciu ostatniego elementu " + e);
         }
     }
 
@@ -142,26 +146,28 @@ public class ShopSellProductsController implements Initializable {
 
         AMOUNT_ADD.setOnEditCommit(e -> { // dodać walidacje try catch
             try{
-                System.out.println("PRZED"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+                logger.error("PRZED"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
                 int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue();
                 if(!isNumeric(e.getNewValue())) {
                     throw new NumberFormatException();
                 }
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
-                System.out.println("PO"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+                logger.info("PO"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
                 if(e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() > 0 && e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() <= check){
-                    System.out.println("większe od 0 i mniejsze od ");
+                    logger.info("większe od 0 i mniejsze od ");
                 } else {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
-                    System.out.println("Powrót do poprzedniej liczby");
+                    logger.info("Powrót do poprzedniej liczby");
                     productsTableAdd.refresh();
                 }
             } catch (NumberFormatException exc){
-                System.out.println("Powrót do poprzedniej liczby");
+                logger.error("Powrót do poprzedniej liczby");
                 productsTableAdd.refresh();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Niepowodzenie");
+                logger.info("Niepowodzenie");
                 alert.setContentText("Wprowadzona wartość nie jest liczbą!");
+                logger.info("Wprowadzona wartość nie jest liczbą!");
                 alert.showAndWait();
             }
 
@@ -170,7 +176,7 @@ public class ShopSellProductsController implements Initializable {
 
     public void confirm(){
         if(!lista.isEmpty()) {
-            System.out.println("Przygotowana lista do zapytania "+lista.get(0).getPrice().toString());
+            logger.info("Przygotowana lista do zapytania "+lista.get(0).getPrice().toString());
         }
     }
 

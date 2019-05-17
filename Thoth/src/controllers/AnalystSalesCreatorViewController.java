@@ -17,6 +17,7 @@ import org.hibernate.Session;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.apache.log4j.Logger;
 
 import static controllers.MainWindowController.sessionFactory;
 
@@ -24,6 +25,9 @@ import static controllers.MainWindowController.sessionFactory;
  * Kontroler okna Analityka dotyczącego ustalania zniżek dla wielu produktów.
  */
 public class AnalystSalesCreatorViewController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+
     @FXML
     public TableView productsTable, discountTable;
     @FXML
@@ -51,13 +55,13 @@ public class AnalystSalesCreatorViewController implements Initializable {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 if (event.getClickCount() == 2) {
                     if (productsTable.getSelectionModel().getSelectedItem() != null) {
-                        System.out.println("Wysłany " + productsTable.getSelectionModel().getSelectedItem().toString());
+                        logger.info("Wysłany " + productsTable.getSelectionModel().getSelectedItem().toString());
                         if (lista.isEmpty()) {
                             lista.add((Product) productsTable.getSelectionModel().getSelectedItem());
                             addToTable(lista);
                         } else {
                             if (lista.contains(productsTable.getSelectionModel().getSelectedItem())) {
-                                System.out.println("Ten object już tam sie znajduje");
+                                logger.info("Ten object już tam sie znajduje");
                             } else {
                                 lista.add((Product) productsTable.getSelectionModel().getSelectedItem());
                                 addToTable(lista);
@@ -73,7 +77,7 @@ public class AnalystSalesCreatorViewController implements Initializable {
                     if (discountTable.getSelectionModel().getSelectedItem() != null) {
                         lista.remove(discountTable.getSelectionModel().getSelectedItem());
                         addToTable(lista);
-                        System.out.println("Usuwany object " + discountTable.getSelectionModel().getSelectedItem().toString());
+                        logger.info("Usuwany object " + discountTable.getSelectionModel().getSelectedItem().toString());
                     }
                 }
             }
@@ -132,7 +136,7 @@ public class AnalystSalesCreatorViewController implements Initializable {
             }  //naprawić
 
         } catch (NullPointerException e) {
-            System.out.println("NullPointerException po odjęciu ostatniego elementu " + e);
+            logger.error("NullPointerException po odjęciu ostatniego elementu " + e);
         }
     }
 
@@ -141,7 +145,7 @@ public class AnalystSalesCreatorViewController implements Initializable {
      */
     public void changeDiscount() {
         if (!lista.isEmpty()) {
-            System.out.println("Przygotowana lista do zapytania " + lista.get(0).getPrice().toString());
+            logger.info("Przygotowana lista do zapytania " + lista.get(0).getPrice().toString());
             Session session = sessionFactory.openSession();
             for (Product product : lista) {
                 product.setDiscount(Integer.parseInt(DISCOUNT_TF.getText()));
@@ -153,7 +157,7 @@ public class AnalystSalesCreatorViewController implements Initializable {
         }
         lista.removeAll();
         discountTable.getItems().clear();
-        System.out.println("remove all products from lista:" + lista);
+        logger.info("remove all products from lista:" + lista);
         discountTable.refresh();
         productsTable.refresh();
     }

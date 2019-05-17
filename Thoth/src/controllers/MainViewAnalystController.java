@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import org.apache.log4j.Logger;
 
 import static controllers.MainWindowController.sessionContext;
 
@@ -21,6 +22,9 @@ import static controllers.MainWindowController.sessionContext;
  * Kontroler głównego okna analityka. Odpowiada za inicjalizację interfejsu oraz przechowuje metodę która umożliwia wylogowanie użytkownika.
  */
 public class MainViewAnalystController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+
     @FXML
     MenuItem logout;
     @FXML
@@ -46,7 +50,7 @@ public class MainViewAnalystController implements Initializable {
             if (back != null) {
                 back.setVisible(true);
             } else {
-                System.out.println("BACK is null");
+                logger.info("BACK is null");
             }
         }
     }

@@ -27,6 +27,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.apache.log4j.Logger;
 
 import static controllers.MainWindowController.sessionFactory;
 
@@ -34,6 +35,9 @@ import static controllers.MainWindowController.sessionFactory;
  * Kontroler glownego okna modulu logistyki
  */
 public class LogisticOrdersController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+
     @FXML
     private TableView<IndentTableView> ordersReadyForShipment;
     @FXML
@@ -101,13 +105,13 @@ public class LogisticOrdersController implements Initializable {
                                                      .setParameter("state", state)
                                                      .getSingleResult();
 
-        System.out.println(stateObject == null);
+        logger.info(stateObject == null);
 
         // pobranie zamowien o stanie pobranym wyzej
         List<State_of_indent> state_of_indents = session.createQuery("from State_of_indent where StateId = :sid")
                 .setParameter("sid", stateObject.getStateId()).list();
 
-        System.out.println(state_of_indents.size());
+        logger.info(state_of_indents.size());
 
         for (State_of_indent soi : state_of_indents) {
             System.out.println("parent id = " + soi.getIndentId().getIndentId());

@@ -27,6 +27,7 @@ import java.net.ConnectException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.apache.log4j.Logger;
 
 public class MainWindowController implements Initializable {
     private String ADMIN = "Admin";

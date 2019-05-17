@@ -12,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import org.hibernate.Session;
+import org.apache.log4j.Logger;
+
 
 import static controllers.MainWindowController.sessionFactory;
 
@@ -21,6 +23,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddEmployeeController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
 
     @FXML
     private TextField tfFirstName;
@@ -50,7 +54,9 @@ public class AddEmployeeController implements Initializable {
                 || comboShopList.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Niepowodzenie");
+            logger.info("Niepowodzenie");
             alert.setContentText("Nie wybrano wszystkich danych!");
+            logger.info("Nie wybrano wszystkich danych");
             alert.showAndWait();
 
             return;
@@ -79,7 +85,7 @@ public class AddEmployeeController implements Initializable {
                 session.save(u);
             }
             catch(Exception e) {
-                System.out.println("Nie udalo sie zapisac usera do bazy");
+                logger.error("Nie udalo sie zapisac usera do bazy");
                 session.getTransaction().rollback();
                 session.close();
                 return;
@@ -90,7 +96,7 @@ public class AddEmployeeController implements Initializable {
                 session.save(us);
             }
             catch (Exception e) {
-                System.out.println("Nie udalo sie zapisac UserShop do bazy");
+                logger.info("Nie udalo sie zapisac UserShop do bazy");
                 session.getTransaction().rollback();
                 session.close();
                 return;
@@ -101,7 +107,9 @@ public class AddEmployeeController implements Initializable {
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Potwierdzenie");
+            logger.info("Potwierdzenie");
             alert.setContentText("Uzytkownik zostal dodany");
+            logger.info("Uzytkownik zostal dodany");
             alert.showAndWait();
 
             tfFirstName.clear();
@@ -112,7 +120,9 @@ public class AddEmployeeController implements Initializable {
         } else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Niepowodzenie");
+            logger.info("Niepowodzenie");
             alert.setContentText("Użytkownik o podanym loginie juz istnieje");
+            logger.info("Użytkownik o podanym loginie juz istnieje");
             alert.showAndWait();
         }
     }
@@ -124,7 +134,6 @@ public class AddEmployeeController implements Initializable {
         u.setFirstName(tfFirstName.getText());
         u.setLastName(tfLastName.getText());
         u.setPassword(tfPassword.getText());
-        //combo
     }
 
     private ObservableList<Shop> getShops() { // wybiera listę sklepów z bazy
@@ -133,7 +142,7 @@ public class AddEmployeeController implements Initializable {
         List<Shop> shopsList = session.createQuery("from Shop").list();
 
         for(Shop s: shopsList) {
-            System.out.println(s.toString());
+            logger.info(s.toString());
         }
 
         if (shopsList.size() > 0) {

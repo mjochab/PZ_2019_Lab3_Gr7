@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.apache.log4j.Logger;
 
 import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
@@ -31,6 +32,9 @@ import static controllers.WarehouseNewProductController.isNumeric;
 
 
 public class StateWarehouseController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+
     @FXML
     public TableView stateWarehouse;
     @FXML
@@ -93,7 +97,7 @@ public class StateWarehouseController implements Initializable {
             if(back != null){
                 back.setVisible(true);
             } else {
-                System.out.println("BACK is null");
+                logger.info("BACK is null");
             }
         }
         if (location.toString().contains("state_warehouse")) {
@@ -119,13 +123,13 @@ public class StateWarehouseController implements Initializable {
                     if(event.getButton().equals(MouseButton.PRIMARY)){
                         if(event.getClickCount() == 2){
                             if(new_order.getSelectionModel().getSelectedItem() != null){
-                                System.out.println("Wysłany "+new_order.getSelectionModel().getSelectedItem().toString());
+                                logger.info("Wysłany "+new_order.getSelectionModel().getSelectedItem().toString());
                                 if(lista.isEmpty()){
                                     lista.add((ObservablePriceModel) new_order.getSelectionModel().getSelectedItem());
                                     addToTable(lista);
                                 } else {
                                     if(lista.contains((ObservablePriceModel) new_order.getSelectionModel().getSelectedItem())){
-                                        System.out.println("Ten object już tam sie znajduje");
+                                        logger.info("Ten object już tam sie znajduje");
                                     } else {
                                         lista.add((ObservablePriceModel) new_order.getSelectionModel().getSelectedItem());
                                         addToTable(lista);
@@ -143,7 +147,7 @@ public class StateWarehouseController implements Initializable {
                     if(event.getButton().equals(MouseButton.PRIMARY)){
                         if(event.getClickCount() == 3){
                             if(add_new_order.getSelectionModel().getSelectedItem() != null){
-                                System.out.println("Usuwany object "+add_new_order.getSelectionModel().getSelectedItem().toString());
+                                logger.info("Usuwany object "+add_new_order.getSelectionModel().getSelectedItem().toString());
                                 lista.remove(add_new_order.getSelectionModel().getSelectedItem());
                                 addToTable(lista);
                             }

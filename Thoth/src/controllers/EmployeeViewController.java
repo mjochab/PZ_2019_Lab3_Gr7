@@ -15,16 +15,24 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import models.EmployeeView;
+import org.apache.log4j.BasicConfigurator;
 import org.hibernate.Session;
 import javafx.beans.property.SimpleStringProperty;
+import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionFactory;
+import static org.apache.log4j.BasicConfigurator.configure;
 
 public class EmployeeViewController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(EmployeeViewController.class);
+
+
     @FXML
     public TableView<EmployeeView> employeeTable;
     @FXML
@@ -57,8 +65,7 @@ public class EmployeeViewController implements Initializable {
         OBJECTID.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getShop().toString()));
         employeeTable.setItems(getEmployee());
         setEditableStatus();
-        System.out.println(getEmployee().toString());
-
+        logger.info(getEmployee().toString());
 
     }
 
@@ -72,10 +79,10 @@ public class EmployeeViewController implements Initializable {
             ev.setUser(us);
             List<UserShop> shops = session.createQuery("from UserShop WHERE userId = :uid").setInteger("uid", us.getUserId()).list();
             if (shops.size() > 0) {
-                System.out.println("Sa elementy!");
+                logger.info("Sa elementy!");
                 ev.setShop(shops.get(0).getShopId());
             } else {
-                System.out.println("Brak elementow!");
+                logger.info("Brak elementow!");
                 ev.setShop(new Shop());
             }
 
@@ -96,7 +103,7 @@ public class EmployeeViewController implements Initializable {
 
         STATE.setOnEditCommit( e -> {
             e.getTableView().getItems().get(e.getTablePosition().getRow()).getUser().setState(Integer.parseInt(e.getNewValue()));
-            System.out.println((e.getTableView().getSelectionModel().getSelectedItem().getUser().toString()));
+            logger.info((e.getTableView().getSelectionModel().getSelectedItem().getUser().toString()));
 
             Session session = sessionFactory.openSession();
 
@@ -109,16 +116,20 @@ public class EmployeeViewController implements Initializable {
 
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Powodzenie");
+                logger.info("Powodzenie");
                 alert.setContentText("Dane użytkownika zostaly zaktualizowane");
+                logger.info("Dane użytkownika zostaly zaktualizowane");
                 alert.showAndWait();
             }
             catch (Exception exc) {
-                System.out.println(exc);
+                logger.error(exc);
                 session.getTransaction().rollback();
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Niepowodzenie");
+                logger.info("Niepowodzenie");
                 alert.setContentText("Niepowodzenie aktualizacji danych");
+                logger.info("Niepowodzenie aktualizacji danych");
                 alert.showAndWait();
             }
 
