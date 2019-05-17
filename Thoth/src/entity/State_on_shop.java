@@ -71,4 +71,14 @@ public class State_on_shop {
     public void setAmount(int amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "State_on_shop{" +
+                "id=" + id +
+                ", productId=" + productId +
+                ", shopId=" + shopId +
+                ", amount=" + amount +
+                '}';
+    }
 }
