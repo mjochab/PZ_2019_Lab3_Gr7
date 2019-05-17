@@ -23,6 +23,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Kontroler dodawania pracownika
+ */
+
 public class AddEmployeeController implements Initializable {
 
     private static final Logger logger = Logger.getLogger(AddEmployeeController.class);

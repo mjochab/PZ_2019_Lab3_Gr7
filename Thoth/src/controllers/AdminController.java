@@ -18,6 +18,10 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionContext;
 
+/**
+ * Kontroler okna admina
+ */
+
 public class AdminController implements Initializable {
 
     private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
@@ -36,11 +40,20 @@ public class AdminController implements Initializable {
 
     Stage stage;
 
+    /**
+     * Metoda przeladowujaca tabele pracownikow
+     */
+
     @FXML
     public void reloadEmployeeView() {
         employeeViewController.reloadTableView();
     }
 
+    /**
+     *
+     * @param event ActionEvent
+     * @throws IOException wyjatek IOException
+     */
     public void switchscene(ActionEvent event) throws IOException { //zmiana sceny BUTTON
         logger.info(event.getSource().toString());
         Parent temporaryLoginParent = null;
