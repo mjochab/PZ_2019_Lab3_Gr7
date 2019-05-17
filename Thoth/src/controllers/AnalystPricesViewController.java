@@ -48,6 +48,7 @@ public class AnalystPricesViewController implements Initializable {
         priceTable.setItems(getProducts(nazwaProduktu));
         //System.out.println(getProducts().toString());
         setEditablePrice();
+        setEditableDiscount();
     }
 
     public ObservableList<Product> getProducts(String nazwaProduktu) {
@@ -133,6 +134,71 @@ public class AnalystPricesViewController implements Initializable {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Niepowodzenie");
                     alert.setContentText("Wpisana cena nie może być ujemna!!");
+                    alert.showAndWait();
+                } else {
+                    System.out.println("ERROR UWAGA!!!:" + exc);
+                    session.getTransaction().rollback();
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Niepowodzenie");
+                    alert.setContentText("Niepowodzenie aktualizacji danych");
+                    alert.showAndWait();
+                }
+            }
+            session.close();
+            priceTable.refresh();
+        });
+        priceTable.setEditable(true);
+    }
+
+    public void setEditableDiscount() {
+        DISCOUNT.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        DISCOUNT.setOnEditCommit(e -> { // dodać walidacje try catch
+            System.out.println("klasa wpisanej wartości:" + e.getNewValue().getClass());
+            Session session = sessionFactory.openSession();
+            BigDecimal oldValue = new BigDecimal(e.getOldValue());
+            try {
+                BigDecimal newValue = new BigDecimal(e.getNewValue());
+                e.getTableView().getItems().get(e.getTablePosition().getRow()).setDiscount(newValue.intValue());
+                if (newValue.compareTo(BigDecimal.ZERO) < 0 || newValue.compareTo(new BigDecimal(100)) == 1) {
+                    throw new Exception("ValueBelowZero");
+                }
+                session.getTransaction().begin();
+                Product priceToUpdate = e.getTableView().getSelectionModel().getSelectedItem();
+
+                System.out.println("Obiekt ze zmienioną zniżką:" + priceToUpdate.toString());
+
+                session.update(priceToUpdate);
+                session.getTransaction().commit();
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Powodzenie");
+                alert.setContentText("Zniżka została zaktualizowana");
+                alert.showAndWait();
+            } catch (NumberFormatException exc) {
+                System.out.println("stara wartosc:" + oldValue.toString());
+                e.getTableView().getItems().get(e.getTablePosition().getRow()).setDiscount(oldValue.intValue());
+                session.getTransaction().rollback();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Niepowodzenie");
+                alert.setContentText("Wprowadzona wartość nie jest liczbą!");
+                alert.showAndWait();
+            } catch (PersistenceException exc) {
+                System.out.println("stara wartosc:" + oldValue.toString());
+                e.getTableView().getItems().get(e.getTablePosition().getRow()).setDiscount(oldValue.intValue());
+                session.getTransaction().rollback();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Niepowodzenie");
+                alert.setContentText("Liczba wykracza poza dopuszczalny zakres!");
+                alert.showAndWait();
+            } catch (Exception exc) {
+                System.out.println("exc to string:"+exc.getMessage());
+                if (exc.getMessage() == "ValueBelowZero") {
+                    e.getTableView().getItems().get(e.getTablePosition().getRow()).setDiscount(oldValue.intValue());
+                    session.getTransaction().rollback();
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Niepowodzenie");
+                    alert.setContentText("Wpisana żniżka nie może być ujemna! lub przekraczać 100%");
                     alert.showAndWait();
                 } else {
                     System.out.println("ERROR UWAGA!!!:" + exc);

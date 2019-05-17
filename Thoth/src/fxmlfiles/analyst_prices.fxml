@@ -21,15 +21,7 @@
                                 <Insets right="10.0" />
                             </HBox.margin>
                         </TextField>
-                        <Button fx:id="search" onAction="#searchAnalystPrices" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                            <HBox.margin>
-                                <Insets right="10.0" />
-                            </HBox.margin>
-                        </Button>
-                        <Button fx:id="change" contentDisplay="RIGHT" layoutX="1068.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Zmień">
+                        <Button fx:id="search" mnemonicParsing="false" onAction="#searchAnalystPrices" prefHeight="26.0" prefWidth="200.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Szukaj">
                             <font>
                                 <Font size="18.0" />
                             </font>
@@ -49,8 +41,8 @@
               <columns>
                 <TableColumn fx:id="PRODUCTID" text="ID" />
                 <TableColumn fx:id="NAME" prefWidth="800.0" text="Nazwa" />
-                  <TableColumn fx:id="PRICE" minWidth="0.0" prefWidth="200.0" text="Cena" />
-                  <TableColumn fx:id="DISCOUNT" prefWidth="200.0" text="Zniżka" />
+                  <TableColumn fx:id="PRICE" minWidth="0.0" prefWidth="200.0" styleClass="editable-column" text="Cena" />
+                  <TableColumn fx:id="DISCOUNT" prefWidth="200.0" styleClass="editable-column" text="Zniżka" />
               </columns>
             </TableView>
             </children>

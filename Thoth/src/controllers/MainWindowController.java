@@ -23,6 +23,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -49,17 +50,16 @@ public class MainWindowController implements Initializable {
     @FXML
     private Label resetDbLabel;
 
-    public static final SessionFactory sessionFactory = new Configuration().configure("update.cfg.xml").buildSessionFactory();
+    public static SessionFactory sessionFactory = null;
 
     public static SessionContext sessionContext;
 
     public void switchscene(ActionEvent event) throws IOException {
-        System.out.println("URL "+event.getSource().toString());
+        System.out.println("URL " + event.getSource().toString());
 
-        if(sessionContext.getCurrentLoggedUser().getRoleId().getPosition().equals(ADMIN))
-        {
-            if(!event.getSource().toString().contains("admin_view")) {
-                if(this.comboList.getSelectionModel().getSelectedItem() == null) {
+        if (sessionContext.getCurrentLoggedUser().getRoleId().getPosition().equals(ADMIN)) {
+            if (!event.getSource().toString().contains("admin_view")) {
+                if (this.comboList.getSelectionModel().getSelectedItem() == null) {
                     System.out.println("Nie wybrano sklepu!");
 
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -125,16 +125,14 @@ public class MainWindowController implements Initializable {
             UserShop userShopToLoadToSession;
 
             // Utworzenie sessionContext
-            if(ADMIN.equals(user.get(0).getRoleId().getPosition())) {
+            if (ADMIN.equals(user.get(0).getRoleId().getPosition())) {
                 sessionContext = new SessionContext(user.get(0));
-            }
-            else {
+            } else {
                 userShopToLoadToSession = getLoggedUserData(user.get(0));
 
-                if(userShopToLoadToSession != null) {
+                if (userShopToLoadToSession != null) {
                     sessionContext = new SessionContext(userShopToLoadToSession);
-                }
-                else {
+                } else {
                     System.out.println("Failed to load sessionContext");
                     sessionContext = null;
                 }
@@ -178,7 +176,6 @@ public class MainWindowController implements Initializable {
             loginErrorLabel.setText("Prawdopodobnie konto użytkownika nie jest aktywne");
 
 
-
         } catch (IndexOutOfBoundsException e) {
             loginErrorLabel.setText("Nie ma konta o takim Loginie i Haśle");
         }
@@ -216,8 +213,8 @@ public class MainWindowController implements Initializable {
         this.comboList.valueProperty().addListener(new ChangeListener<Shop>() {
             @Override
             public void changed(ObservableValue<? extends Shop> observable, Shop oldValue, Shop newValue) {
-                System.out.println("Poprzednia wartosc: "+ oldValue);
-                System.out.println("Nowa wartosc: "+ newValue);
+                System.out.println("Poprzednia wartosc: " + oldValue);
+                System.out.println("Nowa wartosc: " + newValue);
 
                 sessionContext.setCurrentLoggedShop(newValue);
             }
@@ -226,7 +223,16 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+       try{
+           sessionFactory = new Configuration().configure("update.cfg.xml").buildSessionFactory();
+       }catch (Exception e){
+           System.out.println(e.getMessage());
+           Alert alert = new Alert(Alert.AlertType.ERROR);
+           alert.setTitle("Niepowodzenie");
+           alert.setContentText("NIe udało się nawiązać połączenia z bazą danych!");
+           alert.showAndWait();
+           System.exit(0);
+       }
     }
 
     public UserShop getLoggedUserData(User userToLogin) {
@@ -237,16 +243,14 @@ public class MainWindowController implements Initializable {
 
         try {
             userDataList = session.createQuery("from UserShop us where UserId = :uid")
-                              .setParameter("uid", userToLogin.getUserId()).getResultList();
+                    .setParameter("uid", userToLogin.getUserId()).getResultList();
 
-            if(userDataList.size() == 1) {
+            if (userDataList.size() == 1) {
                 userData = userDataList.get(0);
-            }
-            else {
+            } else {
                 System.out.println("Znaleziono 0 lub > 1 encji w UserShop");
             }
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("Blad pobierania z bazy danych");
         }
 
