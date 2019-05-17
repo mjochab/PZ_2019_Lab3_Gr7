@@ -24,7 +24,7 @@ import static controllers.MainWindowController.sessionContext;
 
 public class AdminController implements Initializable {
 
-    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
+    private static final Logger logger = Logger.getLogger(AdminController.class);
 
     @FXML
     MenuItem logout;
