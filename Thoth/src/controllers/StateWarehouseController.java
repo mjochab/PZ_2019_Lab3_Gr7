@@ -1,6 +1,8 @@
 package controllers;
 
-import entity.*;
+import entity.Shop;
+import entity.State_of_indent;
+import entity.State_on_shop;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
-import models.StateOrderModel;
 import org.hibernate.Session;
 
 import java.io.IOException;
@@ -162,8 +163,8 @@ public class StateWarehouseController implements Initializable {
         }
         if (location.toString().contains("state_order_warehouse")) {
             CITY.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getIndentId().getShopId_delivery().getCity()));
-            STATE.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getStateId().getName()));
-            ORDERNR.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getIndentId())));
+            STATE.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getStateId().getName()));
+            ORDERNR.setCellValueFactory(orderData -> new SimpleStringProperty(String.valueOf(orderData.getValue().getIndentId().getIndentId())));
             stateOrderWarehouse.setItems(getOrder());
             //System.out.println(getOrder(nazwaProduktu).toString());
         }
@@ -191,11 +192,8 @@ public class StateWarehouseController implements Initializable {
     private ObservableList<State_of_indent> getOrder() {
         ObservableList<State_of_indent> orderList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<State_of_indent> eList = session.createQuery("FROM State_of_indent v " +
-                "INNER JOIN Indent i ON i.indentId = v.indentId  " +
-                "INNER JOIN State s ON s.stateId = v.stateId  " +
-                "INNER JOIN Shop p ON p.shopId = i.shopId_need " +
-                "WHERE p.shopId = :idshop "
+        List<State_of_indent> eList = session.createQuery("FROM State_of_indent " +
+                "WHERE indentId.shopId_need.shopId = :idshop "
         ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
         System.out.println("getOrder " + eList);
         orderList.addAll(eList);
@@ -363,14 +361,20 @@ public class StateWarehouseController implements Initializable {
     public void changeOrderStatus(){
         if(stateOrderWarehouse.getSelectionModel().getSelectedItem() != null ){
             System.out.println(stateOrderWarehouse.getSelectionModel().getSelectedItem().toString());
-            StateOrderModel model = (StateOrderModel) stateOrderWarehouse.getSelectionModel().getSelectedItem();
-            //System.out.println(model.getCity());
+            State_of_indent model = (State_of_indent) stateOrderWarehouse.getSelectionModel().getSelectedItem();
+            System.out.println(model);
 
-//            Session session = sessionFactory.openSession();
-//            session.beginTransaction();
-//            State p = (State) stateOrderWarehouse.getSelectionModel().getSelectedItem();
-//            System.out.println(p.getStateId());
-//            session.close();
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            State_of_indent p = (State_of_indent) stateOrderWarehouse.getSelectionModel().getSelectedItem();
+            System.out.println(p.getStateId().getName());
+            p.getStateId().setStateId(3);
+            session.update(p);
+            session.getTransaction().commit();
+            session.close();
+            stateOrderWarehouse.getItems().clear();
+            stateOrderWarehouse.setItems(getOrderProducts());
+        } else {
 
         }
 
