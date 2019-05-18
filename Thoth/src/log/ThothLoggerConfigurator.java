@@ -18,9 +18,7 @@ public class ThothLoggerConfigurator {
 
         try {
             String pathBase = System.getProperty("user.dir");
-            System.out.println(pathBase);
             pathBase = pathBase + "\\log\\logs";
-            System.out.println(pathBase);
             fileAppender = new FileAppender(thothLoggerLayout, pathBase);
         }
         catch(IOException e) {

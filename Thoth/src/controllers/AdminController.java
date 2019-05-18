@@ -51,7 +51,7 @@ public class AdminController implements Initializable {
     }
 
     /**
-     * Metoda  dozmiany sceny
+     * Metoda  do zmiany sceny
      * @param event ActionEvent
      * @throws IOException wyjatek IOException
      */

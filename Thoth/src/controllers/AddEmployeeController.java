@@ -139,18 +139,6 @@ public class AddEmployeeController implements Initializable {
     }
 
     /**
-     * Metoda dodajaca pracownika
-     */
-
-    public void addEmployee() { //dodawanie użytkownika do bazy
-        User u = new User();
-        UserShop us = new UserShop();
-        u.setFirstName(tfFirstName.getText());
-        u.setLastName(tfLastName.getText());
-        u.setPassword(tfPassword.getText());
-    }
-
-    /**
      * Metoda wybierajaca liste sklepow z bazy
      * @return zwraca ObservableList<Shops>
      * @see Shop
@@ -207,6 +195,11 @@ public class AddEmployeeController implements Initializable {
         this.comboRoleList.getItems().addAll(getRoles());
     }
 
+    /**
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         logger.addAppender(ThothLoggerConfigurator.getFileAppender());

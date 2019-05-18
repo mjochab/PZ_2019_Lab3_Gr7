@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 
 public class ViewUsersController implements Initializable {
 
-    private static final Logger logger = Logger.getLogger(WarehouseNewProductController.class);
+    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
 
     @FXML
     MenuItem logout;
