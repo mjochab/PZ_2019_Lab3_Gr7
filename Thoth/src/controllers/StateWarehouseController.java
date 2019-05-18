@@ -184,7 +184,7 @@ public class StateWarehouseController implements Initializable {
             } catch (NumberFormatException exc) {
                 System.out.println("Powrót do poprzedniej liczby");
                 stateWarehouse.refresh();
-                newAlert("Niepowodzenie","Wprowadzona wartość nie jest liczbą!");
+                newAlert("Niepowodzenie", "Wprowadzona wartość nie jest liczbą!");
             }
         });
     }
@@ -283,15 +283,14 @@ public class StateWarehouseController implements Initializable {
             } catch (NumberFormatException exc) {
                 System.out.println("Powrót do poprzedniej liczby");
                 add_new_order.refresh();
-                newAlert("Niepowodzenie","Wprowadzona wartość nie jest liczbą!");
+                newAlert("Niepowodzenie", "Wprowadzona wartość nie jest liczbą!");
             }
         });
     }
 
     public void searchNewOrderWarehouse() {
         //System.out.println("COMOBOBOX "+comboList.getItems().get(0).toString());
-        int id = comboList.getSelectionModel().getSelectedItem().getShopId();
-        new_order.setItems(getProductsForOtherShop(id));
+        new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedItem().getShopId()));
     }
 
     private void addToTable(ObservableList<State_on_shop> item) {
@@ -311,16 +310,29 @@ public class StateWarehouseController implements Initializable {
         }
     }
 
-    public void newOrderWarehouse() { //add_new_order.getItems().clear();
+    public void newOrderWarehouse() {
         System.out.println(lista.toString());
         if (!lista.isEmpty()) {
             //zapytanie do bazy
+            System.out.println(lista.get(0).toString());
+            Session session = sessionFactory.openSession();
+            session.getTransaction().begin();
+            for(State_on_shop state_on_shop : lista){
+                state_on_shop.getShopId().setShopId(sessionContext.getCurrentLoggedShop().getShopId());
+                session.update(state_on_shop);
+            }
+            session.getTransaction().commit();
+            session.close();
         }
+        lista.removeAll();
+        new_order.getItems().clear();
+        new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedItem().getShopId()));
+        add_new_order.getItems().clear();
     } //button zapisz
 
     //ZAKŁADKA(4) NOWE ZAMÓWIENIE ZE SKLEPU----------------------------------------------------------------------------------------------------
 
-    public void overlapNewOrderShop(){
+    public void overlapNewOrderShop() {
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
         PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
@@ -338,7 +350,7 @@ public class StateWarehouseController implements Initializable {
                 "INNER JOIN Indent i ON sp.shopId = i.shopId_need " +
                 "INNER JOIN State_of_indent soi ON i.indentId = soi.indentId " +
                 "INNER JOIN State s ON soi.stateId = s.stateId " +
-                "WHERE sp.shopId = :idshop AND s.stateId = 2 "
+                "WHERE sp.shopId = :idshop AND s.name = 'W realizacji' "
         ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
         System.out.println("getOrderProducts " + eList);
         productList.addAll(eList);
@@ -346,9 +358,15 @@ public class StateWarehouseController implements Initializable {
         return productList;
     }
 
+    public void confirmOrder(){ //button
+        if(!newOrderShop.getItems().isEmpty()){
+
+        }
+    }
+
     //ZAKŁADKA(5) ZMIANA STATUSU---------------------------------------------------------------------------------------------------------------
 
-    public void overlapStateOrderWarehouse(){
+    public void overlapStateOrderWarehouse() {
         CITY.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getIndentId().getShopId_delivery().getCity()));
         STATE.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getStateId().getName()));
         ORDERNR.setCellValueFactory(orderData -> new SimpleStringProperty(String.valueOf(orderData.getValue().getIndentId().getIndentId())));
@@ -359,9 +377,13 @@ public class StateWarehouseController implements Initializable {
     private ObservableList<State_of_indent> getOrder() {
         ObservableList<State_of_indent> orderList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<State_of_indent> eList = session.createQuery("FROM State_of_indent " +
-                "WHERE indentId.shopId_need.shopId = :idshop "
+        List<State_of_indent> eList = session.createQuery("FROM State_of_indent WHERE indentId.shopId_need.shopId = :idshop "
         ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
+//        "SELECT new models.StateOrderModel(p.city, s.name, i.indentId) FROM State_of_indent v " +
+//                "INNER JOIN Indent i ON i.indentId = v.indentId  " +
+//                "INNER JOIN State s ON s.stateId = v.stateId  " +
+//                "INNER JOIN Shop p ON p.shopId = i.shopId_need " +
+//                "WHERE p.shopId = :idshop "
         System.out.println("getOrder " + eList);
         orderList.addAll(eList);
         session.close();
