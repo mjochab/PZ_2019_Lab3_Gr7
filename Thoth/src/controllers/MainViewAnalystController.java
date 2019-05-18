@@ -33,7 +33,10 @@ public class MainViewAnalystController implements Initializable {
         if (actionEvent.getSource() == logout) {
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
         } else {
-            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
+            root = loader.load();
+            MainWindowController mainController = loader.getController();
+            mainController.setComboList();
         }
         Scene scene = new Scene(root);
         stage.setScene(scene);
