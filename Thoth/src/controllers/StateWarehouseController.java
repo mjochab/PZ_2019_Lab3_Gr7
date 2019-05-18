@@ -23,8 +23,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static controllers.MainWindowController.sessionContext;
-import static controllers.MainWindowController.sessionFactory;
+import static controllers.MainWindowController.*;
 import static controllers.WarehouseNewProductController.isNumeric;
 
 
@@ -103,71 +102,30 @@ public class StateWarehouseController implements Initializable {
             }
         }
         if (location.toString().contains("state_warehouse")) {
-            PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
-            NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
-            PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-            AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
-            DISCOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getDiscount())));
-            stateWarehouse.setItems(getProducts(nazwaProduktu));
-            System.out.println(getProducts(nazwaProduktu).toString());
-            setEditableAmountInWarehouse();
+            overlapStateWarehouse();
         }
         if (location.toString().contains("new_order_warehouse")) {
-            PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
-            NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
-            PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-            AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
-            new_order.setItems(getProductsForOtherShop(sessionContext.getCurrentLoggedShop().getShopId()));
-            setComboList();
-            //System.out.println(getProducts(nazwaProduktu).toString());
-            new_order.setOnMouseClicked(event -> {
-                if (event.getButton().equals(MouseButton.PRIMARY)) {
-                    if (event.getClickCount() == 2) {
-                        if (new_order.getSelectionModel().getSelectedItem() != null) {
-                            System.out.println("Wysłany " + new_order.getSelectionModel().getSelectedItem().toString());
-                            if (lista.isEmpty()) {
-                                lista.add((State_on_shop) new_order.getSelectionModel().getSelectedItem());
-                                addToTable(lista);
-                            } else {
-                                if (lista.contains(new_order.getSelectionModel().getSelectedItem())) {
-                                    System.out.println("Ten object już tam sie znajduje");
-                                } else {
-                                    lista.add((State_on_shop) new_order.getSelectionModel().getSelectedItem());
-                                    addToTable(lista);
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            //-------------------------------------------------------------------------------------------------------
-            add_new_order.setOnMouseClicked(event -> {
-                if (event.getButton().equals(MouseButton.PRIMARY)) {
-                    if (event.getClickCount() == 3) {
-                        if (add_new_order.getSelectionModel().getSelectedItem() != null) {
-                            System.out.println("Usuwany object " + add_new_order.getSelectionModel().getSelectedItem().toString());
-                            lista.remove(add_new_order.getSelectionModel().getSelectedItem());
-                            addToTable(lista);
-                        }
-                    }
-                }
-            });
-            setEditableAmount();
+            overlapNewOrderWarehouse();
         }
         if (location.toString().contains("new_order_shop")) {
-            PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
-            NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
-            PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-            AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
-            newOrderShop.setItems(getOrderProducts());
+            overlapNewOrderShop();
         }
         if (location.toString().contains("state_order_warehouse")) {
-            CITY.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getIndentId().getShopId_delivery().getCity()));
-            STATE.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getStateId().getName()));
-            ORDERNR.setCellValueFactory(orderData -> new SimpleStringProperty(String.valueOf(orderData.getValue().getIndentId().getIndentId())));
-            stateOrderWarehouse.setItems(getOrder());
-            //System.out.println(getOrder(nazwaProduktu).toString());
+            overlapStateOrderWarehouse();
         }
+    }
+
+    //ZAKŁADKA(1) STAN MAGAZYNU----------------------------------------------------------------------------------------------------------------------------
+
+    public void overlapStateWarehouse() {
+        PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
+        NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
+        PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
+        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+        DISCOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getDiscount())));
+        stateWarehouse.setItems(getProducts(nazwaProduktu));
+        System.out.println(getProducts(nazwaProduktu).toString());
+        setEditableAmountInWarehouse();
     }
 
     private ObservableList<State_on_shop> getProducts(String nazwaProduktu) {
@@ -180,7 +138,7 @@ public class StateWarehouseController implements Initializable {
         } else {
             eList = session.createQuery("FROM State_on_shop WHERE shopId.shopId = :idshop AND productId.name like :produkt GROUP by productId")
                     .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
-                    .setParameter("produkt", "%"+nazwaProduktu+"%").list();
+                    .setParameter("produkt", "%" + nazwaProduktu + "%").list();
             searchSWCity.setText("");
         }
         System.out.println("getProducts " + eList);
@@ -189,133 +147,9 @@ public class StateWarehouseController implements Initializable {
         return productList;
     }
 
-    private ObservableList<State_of_indent> getOrder() {
-        ObservableList<State_of_indent> orderList = FXCollections.observableArrayList();
-        Session session = sessionFactory.openSession();
-        List<State_of_indent> eList = session.createQuery("FROM State_of_indent " +
-                "WHERE indentId.shopId_need.shopId = :idshop "
-        ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
-        System.out.println("getOrder " + eList);
-        orderList.addAll(eList);
-        session.close();
-        return orderList;
-    }
-
-    private ObservableList<State_on_shop> getOrderProducts() {
-        ObservableList<State_on_shop> productList = FXCollections.observableArrayList();
-        Session session = sessionFactory.openSession();
-        List<State_on_shop> eList = session.createQuery("FROM Shop sp " +
-                "INNER JOIN State_on_shop sos ON sp.shopId = sos.shopId " +
-                "INNER JOIN Product p ON sos.productId = p.productId " +
-                "INNER JOIN Indent_product ip ON p.productId = ip.productId " +
-                "INNER JOIN Indent i ON sp.shopId = i.shopId_need " +
-                "INNER JOIN State_of_indent soi ON i.indentId = soi.indentId " +
-                "INNER JOIN State s ON soi.stateId = s.stateId " +
-                "WHERE sp.shopId = :idshop AND s.name like 'W realizacji' "
-        ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
-        System.out.println("getOrderProducts " + eList);
-        productList.addAll(eList);
-        session.close();
-        return productList;
-    }
-
-    private ObservableList<State_on_shop> getProductsForOtherShop(int id) {
-        ObservableList<State_on_shop> productList = FXCollections.observableArrayList();
-        Session session = sessionFactory.openSession();
-        List<State_on_shop> eList = session.createQuery("FROM State_on_shop WHERE ShopId = :idshop AND amount > 0"
-        ).setParameter("idshop", id).list();
-        nazwaProduktu = null;
-        System.out.println("getProductsForOtherShop " + eList);
-        productList.addAll(eList);
-        session.close();
-        return productList;
-    }
-
     public void searchStateWarehouse() {
         nazwaProduktu = searchSWCity.getText();
         stateWarehouse.setItems(getProducts(nazwaProduktu));
-    }
-
-    private ObservableList<Shop> getShops() {
-        ObservableList<Shop> shops = FXCollections.observableArrayList();
-        Session session = sessionFactory.openSession();
-        List<Shop> shopsList = session.createQuery("from Shop").list();
-
-        shops.addAll(shopsList);
-
-        session.close();
-        System.out.println("Zwracam sklepy");
-        return shops;
-
-    }
-
-    private void setComboList() {
-        this.comboList.getItems().addAll(getShops());
-        comboList.getSelectionModel().select(sessionContext.getCurrentLoggedShop().getShopId() - 1);
-    }
-
-    public void searchNewOrderWarehouse() {
-        //System.out.println("COMOBOBOX "+comboList.getItems().get(0).toString());
-        int id = comboList.getSelectionModel().getSelectedItem().getShopId();
-        PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
-        NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
-        PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
-        new_order.setItems(getProductsForOtherShop(id));
-    }
-
-    private void addToTable(ObservableList<State_on_shop> item) {
-        PRODUCTID_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
-        NAME_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
-        PRICE_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-        AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
-        System.out.println("Odebrane " + item.toString() + " rozmiar " + item.size());
-        try {
-            if (!item.isEmpty()) {
-                add_new_order.setItems(item);
-            } else {
-                //naprawić
-            }
-        } catch (NullPointerException e) {
-            System.out.println("NullPointerException po odjęciu ostatniego elementu " + e);
-        }
-    }
-
-    public void newOrderWarehouse() { //add_new_order.getItems().clear();
-        System.out.println(lista.toString());
-        if (!lista.isEmpty()) {
-            //zapytanie do bazy
-        }
-    } //button zapisz
-
-    private void setEditableAmount() {
-        AMOUNT_ADD.setCellFactory(TextFieldTableCell.forTableColumn());
-
-        AMOUNT_ADD.setOnEditCommit(e -> {
-            try {
-                System.out.println("PRZED" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
-                int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount();
-                if (!isNumeric(e.getNewValue())) {
-                    throw new NumberFormatException();
-                }
-                e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
-                System.out.println("PO" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
-                if (e.getTableView().getSelectionModel().getSelectedItem().getAmount() > 0 && e.getTableView().getSelectionModel().getSelectedItem().getAmount() <= check) {
-                    System.out.println("większe od 0 i mniejsze od ");
-                } else {
-                    e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
-                    System.out.println("Powrót do poprzedniej liczby");
-                    add_new_order.refresh();
-                }
-            } catch (NumberFormatException exc) {
-                System.out.println("Powrót do poprzedniej liczby");
-                add_new_order.refresh();
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Niepowodzenie");
-                alert.setContentText("Wprowadzona wartość nie jest liczbą!");
-                alert.showAndWait();
-            }
-        });
     }
 
     private void setEditableAmountInWarehouse() {
@@ -350,16 +184,192 @@ public class StateWarehouseController implements Initializable {
             } catch (NumberFormatException exc) {
                 System.out.println("Powrót do poprzedniej liczby");
                 stateWarehouse.refresh();
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Niepowodzenie");
-                alert.setContentText("Wprowadzona wartość nie jest liczbą!");
-                alert.showAndWait();
+                newAlert("Niepowodzenie","Wprowadzona wartość nie jest liczbą!");
             }
         });
     }
 
-    public void changeOrderStatus(){
-        if(stateOrderWarehouse.getSelectionModel().getSelectedItem() != null ){
+    //ZAKŁADKA(3) NOWE ZAMÓWIENIE----------------------------------------------------------------------------------------------------------------------------
+
+    public void overlapNewOrderWarehouse() {
+        PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
+        NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
+        PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
+        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+        new_order.setItems(getProductsForOtherShop(sessionContext.getCurrentLoggedShop().getShopId()));
+        setComboList();
+        //System.out.println(getProducts(nazwaProduktu).toString());
+        new_order.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                if (event.getClickCount() == 2) {
+                    if (new_order.getSelectionModel().getSelectedItem() != null) {
+                        System.out.println("Wysłany " + new_order.getSelectionModel().getSelectedItem().toString());
+                        if (lista.isEmpty()) {
+                            lista.add((State_on_shop) new_order.getSelectionModel().getSelectedItem());
+                            addToTable(lista);
+                        } else {
+                            if (lista.contains(new_order.getSelectionModel().getSelectedItem())) {
+                                System.out.println("Ten object już tam sie znajduje");
+                            } else {
+                                lista.add((State_on_shop) new_order.getSelectionModel().getSelectedItem());
+                                addToTable(lista);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        //-------------------------------------------------------------------------------------------------------
+        add_new_order.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                if (event.getClickCount() == 3) {
+                    if (add_new_order.getSelectionModel().getSelectedItem() != null) {
+                        System.out.println("Usuwany object " + add_new_order.getSelectionModel().getSelectedItem().toString());
+                        lista.remove(add_new_order.getSelectionModel().getSelectedItem());
+                        addToTable(lista);
+                    }
+                }
+            }
+        });
+        setEditableAmount();
+    }
+
+    private ObservableList<State_on_shop> getProductsForOtherShop(int id) {
+        ObservableList<State_on_shop> productList = FXCollections.observableArrayList();
+        Session session = sessionFactory.openSession();
+        List<State_on_shop> eList = session.createQuery("FROM State_on_shop WHERE ShopId = :idshop AND amount > 0"
+        ).setParameter("idshop", id).list();
+        nazwaProduktu = null;
+        System.out.println("getProductsForOtherShop " + eList);
+        productList.addAll(eList);
+        session.close();
+        return productList;
+    }
+
+    private void setComboList() {
+        this.comboList.getItems().addAll(getShops());
+        comboList.getSelectionModel().select(sessionContext.getCurrentLoggedShop().getShopId() - 1);
+    }
+
+    private ObservableList<Shop> getShops() {
+        ObservableList<Shop> shops = FXCollections.observableArrayList();
+        Session session = sessionFactory.openSession();
+        List<Shop> shopsList = session.createQuery("from Shop").list();
+        shops.addAll(shopsList);
+        session.close();
+        System.out.println("Zwracam sklepy");
+        return shops;
+    }
+
+    private void setEditableAmount() {
+        AMOUNT_ADD.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        AMOUNT_ADD.setOnEditCommit(e -> {
+            try {
+                System.out.println("PRZED" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
+                int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount();
+                if (!isNumeric(e.getNewValue())) {
+                    throw new NumberFormatException();
+                }
+                e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
+                System.out.println("PO" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
+                if (e.getTableView().getSelectionModel().getSelectedItem().getAmount() > 0 && e.getTableView().getSelectionModel().getSelectedItem().getAmount() <= check) {
+                    System.out.println("większe od 0 i mniejsze od ");
+                } else {
+                    e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
+                    System.out.println("Powrót do poprzedniej liczby");
+                    add_new_order.refresh();
+                }
+            } catch (NumberFormatException exc) {
+                System.out.println("Powrót do poprzedniej liczby");
+                add_new_order.refresh();
+                newAlert("Niepowodzenie","Wprowadzona wartość nie jest liczbą!");
+            }
+        });
+    }
+
+    public void searchNewOrderWarehouse() {
+        //System.out.println("COMOBOBOX "+comboList.getItems().get(0).toString());
+        int id = comboList.getSelectionModel().getSelectedItem().getShopId();
+        new_order.setItems(getProductsForOtherShop(id));
+    }
+
+    private void addToTable(ObservableList<State_on_shop> item) {
+        PRODUCTID_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
+        NAME_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
+        PRICE_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
+        AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+        System.out.println("Odebrane " + item.toString() + " rozmiar " + item.size());
+        try {
+            if (!item.isEmpty()) {
+                add_new_order.setItems(item);
+            } else {
+                //naprawić
+            }
+        } catch (NullPointerException e) {
+            System.out.println("NullPointerException po odjęciu ostatniego elementu " + e);
+        }
+    }
+
+    public void newOrderWarehouse() { //add_new_order.getItems().clear();
+        System.out.println(lista.toString());
+        if (!lista.isEmpty()) {
+            //zapytanie do bazy
+        }
+    } //button zapisz
+
+    //ZAKŁADKA(4) NOWE ZAMÓWIENIE ZE SKLEPU----------------------------------------------------------------------------------------------------
+
+    public void overlapNewOrderShop(){
+        PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
+        NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
+        PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
+        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+        newOrderShop.setItems(getOrderProducts());
+    }
+
+    private ObservableList<State_on_shop> getOrderProducts() { //niekompletne
+        ObservableList<State_on_shop> productList = FXCollections.observableArrayList();
+        Session session = sessionFactory.openSession();
+        List<State_on_shop> eList = session.createQuery("FROM Shop sp " +
+                "INNER JOIN State_on_shop sos ON sp.shopId = sos.shopId " +
+                "INNER JOIN Product p ON sos.productId = p.productId " +
+                "INNER JOIN Indent_product ip ON p.productId = ip.productId " +
+                "INNER JOIN Indent i ON sp.shopId = i.shopId_need " +
+                "INNER JOIN State_of_indent soi ON i.indentId = soi.indentId " +
+                "INNER JOIN State s ON soi.stateId = s.stateId " +
+                "WHERE sp.shopId = :idshop AND s.stateId = 2 "
+        ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
+        System.out.println("getOrderProducts " + eList);
+        productList.addAll(eList);
+        session.close();
+        return productList;
+    }
+
+    //ZAKŁADKA(5) ZMIANA STATUSU---------------------------------------------------------------------------------------------------------------
+
+    public void overlapStateOrderWarehouse(){
+        CITY.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getIndentId().getShopId_delivery().getCity()));
+        STATE.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getStateId().getName()));
+        ORDERNR.setCellValueFactory(orderData -> new SimpleStringProperty(String.valueOf(orderData.getValue().getIndentId().getIndentId())));
+        stateOrderWarehouse.setItems(getOrder());
+        //System.out.println(getOrder(nazwaProduktu).toString());
+    }
+
+    private ObservableList<State_of_indent> getOrder() {
+        ObservableList<State_of_indent> orderList = FXCollections.observableArrayList();
+        Session session = sessionFactory.openSession();
+        List<State_of_indent> eList = session.createQuery("FROM State_of_indent " +
+                "WHERE indentId.shopId_need.shopId = :idshop "
+        ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
+        System.out.println("getOrder " + eList);
+        orderList.addAll(eList);
+        session.close();
+        return orderList;
+    }
+
+    public void changeOrderStatus() {
+        if (stateOrderWarehouse.getSelectionModel().getSelectedItem() != null) {
             System.out.println(stateOrderWarehouse.getSelectionModel().getSelectedItem().toString());
             State_of_indent model = (State_of_indent) stateOrderWarehouse.getSelectionModel().getSelectedItem();
             System.out.println(model);
@@ -372,11 +382,10 @@ public class StateWarehouseController implements Initializable {
             session.update(p);
             session.getTransaction().commit();
             session.close();
-            stateOrderWarehouse.getItems().clear();
-            stateOrderWarehouse.setItems(getOrderProducts());
+//            stateOrderWarehouse.getItems().clear();
+//            stateOrderWarehouse.setItems(getOrderProducts());
         } else {
 
         }
-
     }
 }

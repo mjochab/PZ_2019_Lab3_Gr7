@@ -23,7 +23,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -257,5 +256,12 @@ public class MainWindowController implements Initializable {
         session.close();
 
         return userData;
+    }
+
+    public static void newAlert(String title, String content){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }
