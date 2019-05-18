@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
+import log.ThothLoggerConfigurator;
 import org.apache.log4j.BasicConfigurator;
 import org.hibernate.Session;
 
@@ -47,7 +48,8 @@ public class AnalystPricesViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        BasicConfigurator.configure();
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
+
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId())));
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
         PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
@@ -135,41 +137,40 @@ public class AnalystPricesViewController implements Initializable {
                 session.getTransaction().rollback();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Niepowodzenie");
-                logger.error("Niepowodzenie");
+                logger.warn("Niepowodzenie");
                 alert.setContentText("Wprowadzona wartość nie jest liczbą!");
-                logger.error("Wprowadzona wartość nie jest liczbą!");
+                logger.warn("Wprowadzona wartość nie jest liczbą!");
                 alert.showAndWait();
             } catch (PersistenceException exc) {
-                logger.error("stara wartosc:" + oldValue.toString());
+                logger.warn("stara wartosc:" + oldValue.toString());
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setPrice(oldValue);
                 session.getTransaction().rollback();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Niepowodzenie");
-                logger.info("Niepowodzenie");
+                logger.warn("Niepowodzenie");
                 alert.setContentText("Liczba wykracza poza dopuszczalny zakres!");
-                logger.info("Liczba wykracza poza dopuszczalny zakres!");
+                logger.warn("Liczba wykracza poza dopuszczalny zakres!");
                 alert.showAndWait();
             } catch (Exception exc) {
-                System.out.println("exc to string:"+exc.getMessage());
+                logger.error("exc to string:"+exc.getMessage());
                 logger.error("exc to string:"+exc.getMessage());
                 if (exc.getMessage().equals("ValueBelowZero")) {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setPrice(oldValue);
                     session.getTransaction().rollback();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Niepowodzenie");
-                    logger.info("Niepowodzenie");
+                    logger.warn("Niepowodzenie");
                     alert.setContentText("Wpisana cena nie może być ujemna!!");
-                    logger.info("Wpisana cena nie może być ujemna!!");
+                    logger.warn("Wpisana cena nie może być ujemna!!");
                     alert.showAndWait();
                 } else {
-                    System.out.println("ERROR UWAGA!!!:" + exc);
-                    logger.info("ERROR UWAGA!!!:" + exc);
+                    logger.error("ERROR UWAGA!!!:" + exc);
                     session.getTransaction().rollback();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Niepowodzenie");
-                    logger.info("Niepowodzenie");
+                    logger.warn("Niepowodzenie");
                     alert.setContentText("Niepowodzenie aktualizacji danych");
-                    logger.info("Niepowodzenie aktualizacji danych");
+                    logger.warn("Niepowodzenie aktualizacji danych");
                     alert.showAndWait();
                 }
             }
@@ -212,9 +213,9 @@ public class AnalystPricesViewController implements Initializable {
                 session.getTransaction().rollback();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Niepowodzenie");
-                logger.info("Niepowodzenie");
+                logger.warn("Niepowodzenie");
                 alert.setContentText("Wprowadzona wartość nie jest liczbą!");
-                logger.info("Wprowadzona wartość nie jest liczbą!");
+                logger.warn("Wprowadzona wartość nie jest liczbą!");
                 alert.showAndWait();
             } catch (PersistenceException exc) {
                 logger.error("stara wartosc:" + oldValue.toString());
@@ -222,9 +223,9 @@ public class AnalystPricesViewController implements Initializable {
                 session.getTransaction().rollback();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Niepowodzenie");
-                logger.info("Niepowodzenie");
+                logger.warn("Niepowodzenie");
                 alert.setContentText("Liczba wykracza poza dopuszczalny zakres!");
-                logger.info("Liczba wykracza poza dopuszczalny zakres!");
+                logger.warn("Liczba wykracza poza dopuszczalny zakres!");
                 alert.showAndWait();
             } catch (Exception exc) {
                 logger.error("exc to string:"+exc.getMessage());

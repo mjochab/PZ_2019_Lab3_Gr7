@@ -12,6 +12,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
 import models.ShopSell;
 import org.hibernate.Session;
 
@@ -53,6 +54,7 @@ public class ShopSellItemsForCustomers implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
         PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
@@ -71,7 +73,7 @@ public class ShopSellItemsForCustomers implements Initializable {
                                 addToTable(lista);
                             } else {
                                 if(lista.contains((ShopSell) productsTable.getSelectionModel().getSelectedItem())){
-                                    logger.info("Ten object już tam sie znajduje");
+                                    logger.warn("Ten object już tam sie znajduje");
                                 } else {
                                     lista.add((ShopSell) productsTable.getSelectionModel().getSelectedItem());
                                     addToTable(lista);
@@ -169,9 +171,9 @@ public class ShopSellItemsForCustomers implements Initializable {
                 productsTableAdd.refresh();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Niepowodzenie");
-                logger.info("Niepowodzenie");
+                logger.warn("Niepowodzenie");
                 alert.setContentText("Wprowadzona wartość nie jest liczbą!");
-                logger.info("Wprowadzona wartość nie jest liczbą!");
+                logger.warn("Wprowadzona wartość nie jest liczbą!");
                 alert.showAndWait();
             }
 
@@ -200,9 +202,9 @@ public class ShopSellItemsForCustomers implements Initializable {
                 productsTableAdd.refresh();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Niepowodzenie");
-                logger.info("Niepowodzenie");
+                logger.warn("Niepowodzenie");
                 alert.setContentText("Wprowadzona wartość nie jest liczbą!");
-                logger.info("Wprowadzona wartość nie jest liczbą!");
+                logger.warn("Wprowadzona wartość nie jest liczbą!");
                 alert.showAndWait();
             }
 

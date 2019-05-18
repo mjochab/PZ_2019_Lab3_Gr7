@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
+import log.ThothLoggerConfigurator;
 import models.ObservablePriceModel;
 import org.apache.log4j.BasicConfigurator;
 import org.hibernate.Session;
@@ -41,7 +42,7 @@ public class WarehouseNewProductController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        BasicConfigurator.configure();
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
 
     }
 

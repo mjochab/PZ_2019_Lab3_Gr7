@@ -19,6 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
 import models.IndentTableView;
 import org.hibernate.Session;
 
@@ -73,6 +74,7 @@ public class LogisticOrdersController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // value factories dla tableview z zamowieniami oczekujacymi na transport
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         fromForShipment.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getOrder().getShopId_delivery().getCity()));
         toForShipment.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getOrder().getShopId_need().getCity()));
         idForShipment.setCellValueFactory(indentData -> new SimpleIntegerProperty(indentData.getValue().getOrder().getIndentId()).asObject());

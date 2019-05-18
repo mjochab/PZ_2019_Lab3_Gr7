@@ -12,6 +12,8 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import sun.java2d.pipe.SpanShapeRenderer;
 
@@ -24,6 +26,9 @@ import java.util.ResourceBundle;
 import static controllers.MainWindowController.sessionFactory;
 
 public class ComplexOrderDetailsController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AdminController.class);
+
     @FXML
     private Button backButton;
     @FXML
@@ -33,6 +38,7 @@ public class ComplexOrderDetailsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
     }
 
 

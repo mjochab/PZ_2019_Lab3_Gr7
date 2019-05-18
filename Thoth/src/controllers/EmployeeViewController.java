@@ -14,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import log.ThothLoggerConfigurator;
 import models.EmployeeView;
 import org.apache.log4j.BasicConfigurator;
 import org.hibernate.Session;
@@ -55,6 +56,7 @@ public class EmployeeViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         USERID.setCellValueFactory(userData -> new SimpleIntegerProperty(userData.getValue().getUser().getUserId()).asObject());
         FIRSTNAME.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getFirstName()));
         LASTNAME.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getLastName()));
@@ -82,7 +84,7 @@ public class EmployeeViewController implements Initializable {
                 logger.info("Sa elementy!");
                 ev.setShop(shops.get(0).getShopId());
             } else {
-                logger.info("Brak elementow!");
+                logger.warn("Brak elementow!");
                 ev.setShop(new Shop());
             }
 
@@ -127,9 +129,9 @@ public class EmployeeViewController implements Initializable {
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Niepowodzenie");
-                logger.info("Niepowodzenie");
+                logger.warn("Niepowodzenie");
                 alert.setContentText("Niepowodzenie aktualizacji danych");
-                logger.info("Niepowodzenie aktualizacji danych");
+                logger.warn("Niepowodzenie aktualizacji danych");
                 alert.showAndWait();
             }
 

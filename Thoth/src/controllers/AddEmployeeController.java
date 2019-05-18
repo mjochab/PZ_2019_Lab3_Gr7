@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import log.ThothLoggerConfigurator;
 import org.apache.log4j.BasicConfigurator;
 import org.hibernate.Session;
 import org.apache.log4j.Logger;
@@ -46,6 +47,11 @@ public class AddEmployeeController implements Initializable {
     @FXML
     private Button btnAddEmployee;
 
+    /**
+     *
+     * @param actionEvent action event
+     * @throws IOException wyjatek IOexception przy dodawaniu uzytkownika
+     */
     @FXML
     public void saveEmployee(ActionEvent actionEvent) throws IOException { //dodawanie użytkownika do bazy
         User u = new User();
@@ -59,9 +65,9 @@ public class AddEmployeeController implements Initializable {
                 || comboShopList.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Niepowodzenie");
-            logger.info("Niepowodzenie");
+            logger.warn("Niepowodzenie");
             alert.setContentText("Nie wybrano wszystkich danych!");
-            logger.info("Nie wybrano wszystkich danych");
+            logger.warn("Nie wybrano wszystkich danych");
             alert.showAndWait();
 
             return;
@@ -101,7 +107,7 @@ public class AddEmployeeController implements Initializable {
                 session.save(us);
             }
             catch (Exception e) {
-                logger.info("Nie udalo sie zapisac UserShop do bazy");
+                logger.error("Nie udalo sie zapisac UserShop do bazy");
                 session.getTransaction().rollback();
                 session.close();
                 return;
@@ -125,13 +131,16 @@ public class AddEmployeeController implements Initializable {
         } else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Niepowodzenie");
-            logger.info("Niepowodzenie");
+            logger.warn("Niepowodzenie");
             alert.setContentText("Użytkownik o podanym loginie juz istnieje");
-            logger.info("Użytkownik o podanym loginie juz istnieje");
+            logger.warn("Użytkownik o podanym loginie juz istnieje");
             alert.showAndWait();
         }
     }
 
+    /**
+     * Metoda dodajaca pracownika
+     */
 
     public void addEmployee() { //dodawanie użytkownika do bazy
         User u = new User();
@@ -141,6 +150,11 @@ public class AddEmployeeController implements Initializable {
         u.setPassword(tfPassword.getText());
     }
 
+    /**
+     * Metoda wybierajaca liste sklepow z bazy
+     * @return zwraca ObservableList<Shops>
+     * @see Shop
+     */
     private ObservableList<Shop> getShops() { // wybiera listę sklepów z bazy
         ObservableList<Shop> shops = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
@@ -157,10 +171,18 @@ public class AddEmployeeController implements Initializable {
         return shops;
     }
 
+    /**
+     * Metoda wypelnia combobox sklepami
+     */
     public void setComboShopList() {
         this.comboShopList.getItems().addAll(getShops());
     }
 
+    /**
+     * Metoda wybierajaca liste rol z bazy
+     * @return zwraca ObservableList<Role>
+     * @see Role
+     */
     private ObservableList<Role> getRoles() {             // wybiera listę ról z bazy
         ObservableList<Role> roles = FXCollections.observableArrayList();
         Session session2 = sessionFactory.openSession();
@@ -177,14 +199,18 @@ public class AddEmployeeController implements Initializable {
         return roles;
     }
 
+    /**
+     * Metoda wypelnia role w combobox
+     */
+
     public void setComboRoleList() {
         this.comboRoleList.getItems().addAll(getRoles());
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         this.setComboRoleList();
         this.setComboShopList();
-        BasicConfigurator.configure();
     }
 }

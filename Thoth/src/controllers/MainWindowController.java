@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
 import models.SessionContext;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -229,15 +230,17 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
+        logger.info("test");
        try{
            sessionFactory = new Configuration().configure("update.cfg.xml").buildSessionFactory();
        }catch (Exception e){
            System.out.println(e.getMessage());
            Alert alert = new Alert(Alert.AlertType.ERROR);
            alert.setTitle("Niepowodzenie");
-           logger.info("Niepowodzenie");
+           logger.warn("Niepowodzenie");
            alert.setContentText("NIe udało się nawiązać połączenia z bazą danych!");
-           logger.info("NIe udało się nawiązać połączenia z bazą danych!");
+           logger.warn("NIe udało się nawiązać połączenia z bazą danych!");
            alert.showAndWait();
            System.exit(0);
        }

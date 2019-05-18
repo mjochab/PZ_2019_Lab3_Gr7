@@ -16,6 +16,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
 import models.ObservablePriceModel;
 import models.StateOrderModel;
 import org.hibernate.Session;
@@ -93,11 +94,13 @@ public class StateWarehouseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
+
         if(sessionContext.getCurrentLoggedUser().getUserId() == 1){
             if(back != null){
                 back.setVisible(true);
             } else {
-                logger.info("BACK is null");
+                logger.warn("BACK is null");
             }
         }
         if (location.toString().contains("state_warehouse")) {
@@ -129,7 +132,7 @@ public class StateWarehouseController implements Initializable {
                                     addToTable(lista);
                                 } else {
                                     if(lista.contains((ObservablePriceModel) new_order.getSelectionModel().getSelectedItem())){
-                                        logger.info("Ten object już tam sie znajduje");
+                                        logger.warn("Ten object już tam sie znajduje");
                                     } else {
                                         lista.add((ObservablePriceModel) new_order.getSelectionModel().getSelectedItem());
                                         addToTable(lista);
@@ -189,7 +192,7 @@ public class StateWarehouseController implements Initializable {
             searchSWCity.setText("");
             nazwaProduktu = null;
         }
-        System.out.println("getProducts "+eList);
+        logger.info("getProducts "+eList);
         for (ObservablePriceModel ent : eList) {
             productList.add(ent);
         }
@@ -206,7 +209,7 @@ public class StateWarehouseController implements Initializable {
                 "INNER JOIN Shop p ON p.shopId = i.shopId_need " +
                 "WHERE p.shopId = :idshop "
         ).setParameter("idshop",sessionContext.getCurrentLoggedShop().getShopId()).list();
-        System.out.println("getOrder "+eList);
+        logger.info("getOrder "+eList);
         for (StateOrderModel ent : eList) {
             orderList.add(ent);
         }
@@ -227,7 +230,7 @@ public class StateWarehouseController implements Initializable {
                 "INNER JOIN State s ON soi.stateId = s.stateId " +
                 "WHERE sp.shopId = :idshop AND s.name like 'W realizacji' "
         ).setParameter("idshop",sessionContext.getCurrentLoggedShop().getShopId()).list();
-        System.out.println("getOrderProducts "+eList);
+        logger.info("getOrderProducts "+eList);
         for (ObservablePriceModel ent : eList) {
             productList.add(ent);
         }
@@ -242,7 +245,7 @@ public class StateWarehouseController implements Initializable {
                     "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE k.shopId = :idshop AND s.amount > 0  "
             ).setParameter("idshop",id).list();
             nazwaProduktu = null;
-        System.out.println("getProductsForOtherShop "+eList);
+        logger.info("getProductsForOtherShop "+eList);
         for (ObservablePriceModel ent : eList) {
             productList.add(ent);
         }
@@ -263,7 +266,7 @@ public class StateWarehouseController implements Initializable {
         shops.addAll(shopsList);
 
         session.close();
-        System.out.println("Zwracam sklepy");
+        logger.info("Zwracam sklepy");
         return shops;
 
     }
@@ -288,7 +291,7 @@ public class StateWarehouseController implements Initializable {
         NAME_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
         PRICE_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
         AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
-        System.out.println("Odebrane " + item.toString() + " rozmiar " + item.size());
+        logger.info("Odebrane " + item.toString() + " rozmiar " + item.size());
         try {
             if (!item.isEmpty()) {
                 add_new_order.setItems(item);
@@ -296,12 +299,12 @@ public class StateWarehouseController implements Initializable {
                 //naprawić
             }
         } catch (NullPointerException e) {
-            System.out.println("NullPointerException po odjęciu ostatniego elementu " + e);
+            logger.error("NullPointerException po odjęciu ostatniego elementu " + e);
         }
     }
 
     public void newOrderWarehouse(){ //add_new_order.getItems().clear();
-        System.out.println(lista.toString());
+        logger.info(lista.toString());
         if(!lista.isEmpty()){
             //zapytanie do bazy
         }
@@ -312,26 +315,28 @@ public class StateWarehouseController implements Initializable {
 
         AMOUNT_ADD.setOnEditCommit(e -> {
             try{
-                System.out.println("PRZED"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+                logger.info("PRZED"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
                 int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue();
                 if(!isNumeric(e.getNewValue())) {
                     throw new NumberFormatException();
                 }
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
-                System.out.println("PO"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
+                logger.info("PO"+e.getTableView().getSelectionModel().getSelectedItem().getAmount().toString());
                 if(e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() > 0 && e.getTableView().getSelectionModel().getSelectedItem().getAmount().intValue() <= check){
-                    System.out.println("większe od 0 i mniejsze od ");
+                    logger.info("większe od 0 i mniejsze od ");
                 } else {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
-                    System.out.println("Powrót do poprzedniej liczby");
+                    logger.info("Powrót do poprzedniej liczby");
                     add_new_order.refresh();
                 }
             } catch (NumberFormatException exc){
-                System.out.println("Powrót do poprzedniej liczby");
+               logger.info("Powrót do poprzedniej liczby");
                 add_new_order.refresh();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Niepowodzenie");
+                logger.warn("Niepowodzenie");
                 alert.setContentText("Wprowadzona wartość nie jest liczbą!");
+                logger.warn("Wprowadzona wartość nie jest liczbą!");
                 alert.showAndWait();
             }
         });

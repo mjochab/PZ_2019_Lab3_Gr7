@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
@@ -50,7 +51,7 @@ public class AdminController implements Initializable {
     }
 
     /**
-     *
+     * Metoda  dozmiany sceny
      * @param event ActionEvent
      * @throws IOException wyjatek IOException
      */
@@ -63,6 +64,12 @@ public class AdminController implements Initializable {
         window.setScene(temporaryLoginScene);
         window.show();
     }
+
+    /**
+     * Metoda sluzaca do wylogowania z menu item
+     * @param actionEvent actionEvent
+     * @throws IOException wyjatek IOexception
+     */
 
     public void menuItemAction(ActionEvent actionEvent) throws IOException { //powrót , wylogowanie na MENU ITEM
         logger.info("ACTION EVENT"+actionEvent);
@@ -79,7 +86,7 @@ public class AdminController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        BasicConfigurator.configure();
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         if(sessionContext.getCurrentLoggedUser().getUserId() == 1){
             back.setVisible(true);
         }

@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
+import log.ThothLoggerConfigurator;
 import org.apache.log4j.Logger;
 
 import static controllers.MainWindowController.sessionContext;
@@ -46,11 +48,13 @@ public class MainViewAnalystController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
+
         if (sessionContext.getCurrentLoggedUser().getUserId() == 1) {
             if (back != null) {
                 back.setVisible(true);
             } else {
-                logger.info("BACK is null");
+                logger.warn("BACK is null");
             }
         }
     }

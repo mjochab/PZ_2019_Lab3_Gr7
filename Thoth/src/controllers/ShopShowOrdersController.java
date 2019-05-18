@@ -10,6 +10,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
 import models.ShopOrders;
 import org.hibernate.Session;
 
@@ -47,6 +48,7 @@ public class ShopShowOrdersController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         id_order.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getId_order().toString()));
         status.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getStatus()));
         date.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getDate().toString()));

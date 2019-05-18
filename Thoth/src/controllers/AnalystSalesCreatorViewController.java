@@ -12,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
+import log.ThothLoggerConfigurator;
 import org.apache.log4j.BasicConfigurator;
 import org.hibernate.Session;
 
@@ -25,6 +26,7 @@ import static controllers.MainWindowController.sessionFactory;
 /**
  * Kontroler okna Analityka dotyczącego ustalania zniżek dla wielu produktów.
  */
+
 public class AnalystSalesCreatorViewController implements Initializable {
 
     private static final Logger logger = Logger.getLogger(AnalystSalesCreatorViewController.class);
@@ -46,7 +48,7 @@ public class AnalystSalesCreatorViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        BasicConfigurator.configure();
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
         NAME.setCellValueFactory(new PropertyValueFactory<>("name"));
         PRICE.setCellValueFactory(new PropertyValueFactory("price"));
@@ -63,7 +65,7 @@ public class AnalystSalesCreatorViewController implements Initializable {
                             addToTable(lista);
                         } else {
                             if (lista.contains(productsTable.getSelectionModel().getSelectedItem())) {
-                                logger.info("Ten object już tam sie znajduje");
+                                logger.warn("Ten object już tam sie znajduje");
                             } else {
                                 lista.add((Product) productsTable.getSelectionModel().getSelectedItem());
                                 addToTable(lista);
