@@ -1,7 +1,6 @@
 package controllers;
 
-import entity.Shop;
-import entity.State_on_shop;
+import entity.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,11 +55,11 @@ public class StateWarehouseController implements Initializable {
     @FXML
     public TableColumn<State_on_shop, String> DISCOUNT;
     @FXML
-    public TableColumn<StateOrderModel, String> CITY;
+    public TableColumn<State_of_indent, String> CITY;
     @FXML
-    public TableColumn<StateOrderModel, String> STATE;
+    public TableColumn<State_of_indent, String> STATE;
     @FXML
-    public TableColumn<StateOrderModel, String> ORDERNR;
+    public TableColumn<State_of_indent, String> ORDERNR;
     @FXML
     public Button searchStateWarehouse;
     @FXML
@@ -162,9 +161,9 @@ public class StateWarehouseController implements Initializable {
             newOrderShop.setItems(getOrderProducts());
         }
         if (location.toString().contains("state_order_warehouse")) {
-            CITY.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getCity()));
-            STATE.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getState()));
-            ORDERNR.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getOrderid())));
+            CITY.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getIndentId().getShopId_delivery().getCity()));
+            STATE.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getStateId().getName()));
+            ORDERNR.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getIndentId())));
             stateOrderWarehouse.setItems(getOrder());
             //System.out.println(getOrder(nazwaProduktu).toString());
         }
@@ -189,10 +188,10 @@ public class StateWarehouseController implements Initializable {
         return productList;
     }
 
-    private ObservableList<StateOrderModel> getOrder() {
-        ObservableList<StateOrderModel> orderList = FXCollections.observableArrayList();
+    private ObservableList<State_of_indent> getOrder() {
+        ObservableList<State_of_indent> orderList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<StateOrderModel> eList = session.createQuery("SELECT new models.StateOrderModel(p.city, s.name, i.indentId) FROM State_of_indent v " +
+        List<State_of_indent> eList = session.createQuery("FROM State_of_indent v " +
                 "INNER JOIN Indent i ON i.indentId = v.indentId  " +
                 "INNER JOIN State s ON s.stateId = v.stateId  " +
                 "INNER JOIN Shop p ON p.shopId = i.shopId_need " +
@@ -359,5 +358,21 @@ public class StateWarehouseController implements Initializable {
                 alert.showAndWait();
             }
         });
+    }
+
+    public void changeOrderStatus(){
+        if(stateOrderWarehouse.getSelectionModel().getSelectedItem() != null ){
+            System.out.println(stateOrderWarehouse.getSelectionModel().getSelectedItem().toString());
+            StateOrderModel model = (StateOrderModel) stateOrderWarehouse.getSelectionModel().getSelectedItem();
+            //System.out.println(model.getCity());
+
+//            Session session = sessionFactory.openSession();
+//            session.beginTransaction();
+//            State p = (State) stateOrderWarehouse.getSelectionModel().getSelectedItem();
+//            System.out.println(p.getStateId());
+//            session.close();
+
+        }
+
     }
 }
