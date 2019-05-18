@@ -9,9 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import models.EmployeeView;
 import org.hibernate.Session;
@@ -43,6 +41,11 @@ public class EmployeeViewController implements Initializable {
     @FXML
     public TableColumn<EmployeeView, String> OBJECTID;
 
+    @FXML
+    public TextField tfSearch;
+    @FXML
+    public Button btnSearch;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -62,27 +65,46 @@ public class EmployeeViewController implements Initializable {
     }
 
 
-    public ObservableList<EmployeeView> getEmployee() {
-        ObservableList<EmployeeView> userList = FXCollections.observableArrayList();
+    public List<User> getUsers(String searchValue ) {
+        String searchParam = "%" + searchValue + "%";
         Session session = sessionFactory.openSession();
-        List<User> usList = session.createQuery("from User").list();
-        for (User us : usList) {
+
+        List<User> userList = session.createQuery("from User where FirstName LIKE :searchParam OR LastName LIKE :searchParam")
+                .setParameter("searchParam", searchParam)
+                .list();
+
+        return userList;
+    }
+
+    public ObservableList<EmployeeView> mapUsersToEmployeeView(List<User> userList) {
+        ObservableList<EmployeeView> employeeViewList = FXCollections.observableArrayList();
+        Session session = sessionFactory.openSession();
+        for (User us : userList) {
             EmployeeView ev = new EmployeeView();
             ev.setUser(us);
             List<UserShop> shops = session.createQuery("from UserShop WHERE userId = :uid").setInteger("uid", us.getUserId()).list();
             if (shops.size() > 0) {
-                System.out.println("Sa elementy!");
                 ev.setShop(shops.get(0).getShopId());
             } else {
-                System.out.println("Brak elementow!");
                 ev.setShop(new Shop());
             }
 
-            userList.add(ev);
+            employeeViewList.add(ev);
 
         }
         session.close();
-        return userList;
+        return employeeViewList;
+    }
+
+    public ObservableList<EmployeeView> getEmployee() {
+        return mapUsersToEmployeeView(getUsers(""));
+    }
+
+    public void searchButtonHandler() {
+        ObservableList<EmployeeView> userSearchList = FXCollections.observableArrayList();
+
+        employeeTable.getItems().clear();
+        employeeTable.setItems(mapUsersToEmployeeView(getUsers(tfSearch.getText())));
     }
 
     public void reloadTableView() {
