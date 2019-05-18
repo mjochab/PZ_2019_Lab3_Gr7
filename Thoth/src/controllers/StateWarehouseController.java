@@ -73,6 +73,16 @@ public class StateWarehouseController implements Initializable {
     @FXML
     Parent root;
 
+    @FXML
+    public TableColumn<Indent_product, String> PRODUCTID_ORDER;
+    @FXML
+    public TableColumn<Indent_product, String> NAME_ORDER;
+    @FXML
+    public TableColumn<Indent_product, String> PRICE_ORDER;
+    @FXML
+    public TableColumn<Indent_product, String> AMOUNT_ORDER;
+
+
     private Stage stage;
 
     private ObservableList<State_on_shop> lista = FXCollections.observableArrayList();
@@ -154,16 +164,17 @@ public class StateWarehouseController implements Initializable {
             setEditableAmount();
         }
         if (location.toString().contains("new_order_shop")) {
-            PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
-            NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
-            PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-            AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+            PRODUCTID_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
+            NAME_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
+            PRICE_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
+            AMOUNT_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
             newOrderShop.setItems(getOrderProducts());
+            System.out.println("xdddddddddddddddd"+getOrderProducts());
         }
         if (location.toString().contains("state_order_warehouse")) {
-            CITY.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getIndentId().getShopId_delivery().getCity()));
+            CITY.setCellValueFactory(produktData-> new SimpleStringProperty(produktData.getValue().getIndentId().getShopId_delivery().getCity()));
             STATE.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getStateId().getName()));
-            ORDERNR.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getIndentId())));
+            ORDERNR.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getIndentId().getIndentId())));
             stateOrderWarehouse.setItems(getOrder());
             //System.out.println(getOrder(nazwaProduktu).toString());
         }
@@ -191,11 +202,7 @@ public class StateWarehouseController implements Initializable {
     private ObservableList<State_of_indent> getOrder() {
         ObservableList<State_of_indent> orderList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<State_of_indent> eList = session.createQuery("FROM State_of_indent v " +
-                "INNER JOIN Indent i ON i.indentId = v.indentId  " +
-                "INNER JOIN State s ON s.stateId = v.stateId  " +
-                "INNER JOIN Shop p ON p.shopId = i.shopId_need " +
-                "WHERE p.shopId = :idshop "
+        List<State_of_indent> eList = session.createQuery("FROM State_of_indent WHERE indentId.shopId_need.shopId = :idshop "
         ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
         System.out.println("getOrder " + eList);
         orderList.addAll(eList);
@@ -203,17 +210,10 @@ public class StateWarehouseController implements Initializable {
         return orderList;
     }
 
-    private ObservableList<State_on_shop> getOrderProducts() {
-        ObservableList<State_on_shop> productList = FXCollections.observableArrayList();
+    private ObservableList<Indent_product> getOrderProducts() {
+        ObservableList<Indent_product> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<State_on_shop> eList = session.createQuery("FROM Shop sp " +
-                "INNER JOIN State_on_shop sos ON sp.shopId = sos.shopId " +
-                "INNER JOIN Product p ON sos.productId = p.productId " +
-                "INNER JOIN Indent_product ip ON p.productId = ip.productId " +
-                "INNER JOIN Indent i ON sp.shopId = i.shopId_need " +
-                "INNER JOIN State_of_indent soi ON i.indentId = soi.indentId " +
-                "INNER JOIN State s ON soi.stateId = s.stateId " +
-                "WHERE sp.shopId = :idshop AND s.name like 'W realizacji' "
+        List<Indent_product> eList = session.createQuery("FROM Indent_product WHERE indentId.shopId_need.shopId = :idshop AND indentId.customerId is not null"
         ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
         System.out.println("getOrderProducts " + eList);
         productList.addAll(eList);
@@ -224,7 +224,7 @@ public class StateWarehouseController implements Initializable {
     private ObservableList<State_on_shop> getProductsForOtherShop(int id) {
         ObservableList<State_on_shop> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<State_on_shop> eList = session.createQuery("FROM State_on_shop WHERE ShopId = :idshop AND amount > 0"
+        List<State_on_shop> eList = session.createQuery("FROM State_on_shop WHERE shopId.shopId = :idshop AND amount > 0"
         ).setParameter("idshop", id).list();
         nazwaProduktu = null;
         System.out.println("getProductsForOtherShop " + eList);
