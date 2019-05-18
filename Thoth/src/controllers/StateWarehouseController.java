@@ -6,7 +6,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,9 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import models.ObservablePriceModel;
 import models.StateOrderModel;
 import org.hibernate.Session;
 
@@ -207,11 +204,10 @@ public class StateWarehouseController implements Initializable {
         return orderList;
     }
 
-    private ObservableList<ObservablePriceModel> getOrderProducts() {
-        ObservableList<ObservablePriceModel> productList = FXCollections.observableArrayList();
+    private ObservableList<State_on_shop> getOrderProducts() {
+        ObservableList<State_on_shop> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<ObservablePriceModel> eList = session.createQuery("SELECT new models.ObservablePriceModel(p.productId, p.name, p.price, p.discount, ip.amount) " +
-                "FROM Shop sp " +
+        List<State_on_shop> eList = session.createQuery("FROM Shop sp " +
                 "INNER JOIN State_on_shop sos ON sp.shopId = sos.shopId " +
                 "INNER JOIN Product p ON sos.productId = p.productId " +
                 "INNER JOIN Indent_product ip ON p.productId = ip.productId " +
