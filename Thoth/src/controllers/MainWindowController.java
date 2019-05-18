@@ -58,9 +58,10 @@ public class MainWindowController implements Initializable {
         System.out.println("URL " + event.getSource().toString());
 
         if (sessionContext.getCurrentLoggedUser().getRoleId().getPosition().equals(ADMIN)) {
-            if (!event.getSource().toString().contains("admin_view")) {
-                if (this.comboList.getSelectionModel().getSelectedItem() == null) {
-                    System.out.println("Nie wybrano sklepu!");
+            if (!event.getSource().toString().contains("admin_view") &&             // jezeli nie wybrano panelu admina lub
+                !event.getSource().toString().contains("analyst")) {                // panelu analityka
+                if (this.comboList.getSelectionModel().getSelectedItem() == null) { // i nie wybrano zadnego sklepu
+                    System.out.println("Nie wybrano sklepu!");                      // wyswietl ostrzezenie
 
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Napotkano blad");
@@ -125,6 +126,15 @@ public class MainWindowController implements Initializable {
             UserShop userShopToLoadToSession;
 
             // Utworzenie sessionContext
+            /*
+                Jezeli zalogowany uzytkownik to ADMINISTRATOR
+                    utworz obiekt SessionContext tylko z obiektem User
+                w przeciwnym wypadku
+                    pobierz dane sklepu
+                    jezeli dane sa rozne od null
+                        utworz obiekt SessionContext z obiektu User_shop
+                    w przeciwnym wypadku SessionContext = null
+             */
             if (ADMIN.equals(user.get(0).getRoleId().getPosition())) {
                 sessionContext = new SessionContext(user.get(0));
             } else {
