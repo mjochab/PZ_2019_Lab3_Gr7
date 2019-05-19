@@ -1,9 +1,6 @@
 package controllers;
 
-import entity.Indent;
-import entity.Shop;
-import entity.State_of_indent;
-import entity.State_on_shop;
+import entity.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -200,12 +197,12 @@ public class StateWarehouseController implements Initializable {
     //ZAKŁADKA(3) NOWE ZAMÓWIENIE----------------------------------------------------------------------------------------------------------------------------
 
     public void overlapNewOrderWarehouse() {
+        setComboList();
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
         PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
         AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
-        new_order.setItems(getProductsForOtherShop(sessionContext.getCurrentLoggedShop().getShopId()));
-        setComboList();
+        new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedIndex()+1));
         //System.out.println(getProducts(nazwaProduktu).toString());
         new_order.setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
@@ -256,7 +253,7 @@ public class StateWarehouseController implements Initializable {
 
     private void setComboList() {
         this.comboList.getItems().addAll(getShops());
-        comboList.getSelectionModel().select(sessionContext.getCurrentLoggedShop().getShopId() - 1);
+        comboList.getSelectionModel().select(0);
     }
 
     private ObservableList<Shop> getShops() {
@@ -264,6 +261,7 @@ public class StateWarehouseController implements Initializable {
         Session session = sessionFactory.openSession();
         List<Shop> shopsList = session.createQuery("from Shop").list();
         shops.addAll(shopsList);
+        shops.remove(sessionContext.getCurrentLoggedShop().getShopId()-1);
         session.close();
         System.out.println("Zwracam sklepy");
         return shops;
@@ -330,32 +328,52 @@ public class StateWarehouseController implements Initializable {
         ArrayList<Integer> listOfStores = new ArrayList<Integer>();
         if (!lista.isEmpty()) {
             System.out.println(lista.get(0).toString());
-            Session session = sessionFactory.openSession();
-            session.getTransaction().begin();
             for (State_on_shop state_on_shop : lista) {
                 listOfStores.add(state_on_shop.getShopId().getShopId());
             }
-            for (int i = 1; i < listOfStores.size(); i++) {
-                if (listOfStores.get(i) == listOfStores.get(0)) { //SIMPLE
-                    Shop shopIdNeed = (Shop) session.get(Shop.class,sessionContext.getCurrentLoggedShop().getShopId());
-                    Shop shopIdDelivery = (Shop) session.get(Shop.class,listOfStores.get(0));
-
-                    System.out.println("need "+shopIdNeed.getShopId()+ " delivery "+shopIdDelivery.getShopId());
-                    Indent simpleOrder = new Indent(shopIdNeed,shopIdDelivery,null,date,null,null);
-                    session.save(simpleOrder);
-                } else { //COMPLEX
-                    System.out.println("przeglądanie listy");
-                    System.out.println(listOfStores.get(0));
-                    System.out.println(listOfStores.get(i));
-                }
+            if(simpleOrComplex(listOfStores)){ //SIMPLE
+                simpleOrder(date,listOfStores.get(0));
+            } else { //COMPLEX
+                System.out.println("COMPLEX");
             }
-            session.getTransaction().commit();
-            session.close();
         }
         lista.removeAll();
         new_order.getItems().clear();
         new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedItem().getShopId()));
         add_new_order.getItems().clear();
+    }
+
+    public boolean simpleOrComplex(ArrayList list){
+        boolean result = true;
+        for (int i = 1; i < list.size(); i++) {
+            if (list.get(i) != list.get(0)) {
+                result = false;
+            } else {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public void simpleOrder(Date date,int id){
+        Session session = sessionFactory.openSession();
+        session.getTransaction().begin();
+        Shop shopIdNeed = (Shop) session.get(Shop.class,sessionContext.getCurrentLoggedShop().getShopId());
+        Shop shopIdDelivery = (Shop) session.get(Shop.class,id);
+        State state = (State) session.get(State.class,1);
+
+        System.out.println("need "+shopIdNeed.getShopId()+ " delivery "+shopIdDelivery.getShopId());
+        Indent simpleOrder = new Indent(shopIdNeed,shopIdDelivery,null,date,null,null);
+        session.save(simpleOrder);
+        for (State_on_shop state_on_shop : lista){
+            Indent_product indent_product = new Indent_product(simpleOrder,state_on_shop.getProductId(),state_on_shop.getAmount());
+            session.save(indent_product);
+        }
+        State_of_indent state_of_indent = new State_of_indent(sessionContext.getCurrentLoggedUser(),simpleOrder,state);
+        session.save(state_of_indent);
+
+        session.getTransaction().commit();
+        session.close();
     }
 
     //ZAKŁADKA(4) NOWE ZAMÓWIENIE ZE SKLEPU----------------------------------------------------------------------------------------------------

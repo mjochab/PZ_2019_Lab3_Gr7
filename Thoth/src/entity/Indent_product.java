@@ -25,6 +25,12 @@ public class Indent_product {
 
     }
 
+    public Indent_product(Indent indentId, Product productId, int amount) {
+        this.indentId = indentId;
+        this.productId = productId;
+        this.amount = amount;
+    }
+
     public int getId() {
         return id;
     }
