@@ -19,7 +19,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
 import static controllers.WarehouseNewProductController.isNumeric;
 
@@ -103,12 +102,12 @@ public class ShopSellItemsForCustomers implements Initializable {
         List<ShopSell> eList;
         if(productName == null || productName.equals("")){
             eList = session.createQuery("SELECT new models.ShopSell(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
-                    "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE k.shopId = :idshop AND s.amount > 0  "
-            ).setParameter("idshop",sessionContext.getCurrentLoggedShop().getShopId()).list();
+                    "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE s.amount > 0  "
+            ).list(); //za wyjątkiem własnego sklepu!! poprawić
         } else {
             eList = session.createQuery("SELECT new models.ShopSell(p.productId, p.name, p.price, p.discount, s.amount) FROM Product p " +
-                    "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE k.shopId = :idshop AND s.amount > 0 AND p.name like :produkt "
-            ).setParameter("produkt","%"+productName+"%").setParameter("idshop",sessionContext.getCurrentLoggedShop().getShopId()).list();
+                    "INNER JOIN State_on_shop s ON p.productId = s.productId INNER JOIN Shop k ON s.shopId = k.shopId WHERE s.amount > 0 AND p.name like :produkt "
+            ).setParameter("produkt","%"+productName+"%").list(); //za wyjątkiem własnego sklepu!! poprawić
             serachShop.setText("");
         }
         for (ShopSell ent : eList) {

@@ -27,6 +27,12 @@ public class State_of_indent {
 
     }
 
+    public State_of_indent(User userId, Indent indentId, State stateId) {
+        this.userId = userId;
+        this.indentId = indentId;
+        this.stateId = stateId;
+    }
+
     public int getId() {
         return id;
     }
