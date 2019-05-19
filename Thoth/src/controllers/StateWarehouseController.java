@@ -60,6 +60,14 @@ public class StateWarehouseController implements Initializable {
     @FXML
     public TableColumn<State_on_shop, String> DISCOUNT;
     @FXML
+    public TableColumn<Indent_product, String> PRODUCTID_ORDER;
+    @FXML
+    public TableColumn<Indent_product, String> NAME_ORDER;
+    @FXML
+    public TableColumn<Indent_product, String> PRICE_ORDER;
+    @FXML
+    public TableColumn<Indent_product, String> AMOUNT_ORDER;
+    @FXML
     public TableColumn<State_of_indent, String> CITY;
     @FXML
     public TableColumn<State_of_indent, String> STATE;
@@ -205,7 +213,7 @@ public class StateWarehouseController implements Initializable {
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
         PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
         AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
-        new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedIndex()+1));
+        new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedIndex() + 1));
         //System.out.println(getProducts(nazwaProduktu).toString());
         new_order.setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
@@ -245,7 +253,7 @@ public class StateWarehouseController implements Initializable {
     private ObservableList<State_on_shop> getProductsForOtherShop(int id) {
         ObservableList<State_on_shop> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<State_on_shop> eList = session.createQuery("FROM State_on_shop WHERE ShopId = :idshop AND amount > 0"
+        List<State_on_shop> eList = session.createQuery("FROM State_on_shop WHERE shopId.shopId = :idshop AND amount > 0"
         ).setParameter("idshop", id).list();
         nazwaProduktu = null;
         //System.out.println("getProductsForOtherShop " + eList);
@@ -264,7 +272,7 @@ public class StateWarehouseController implements Initializable {
         Session session = sessionFactory.openSession();
         List<Shop> shopsList = session.createQuery("from Shop").list();
         shops.addAll(shopsList);
-        shops.remove(sessionContext.getCurrentLoggedShop().getShopId()-1);
+        shops.remove(sessionContext.getCurrentLoggedShop().getShopId() - 1);
         session.close();
         System.out.println("Zwracam sklepy");
         return shops;
@@ -334,12 +342,12 @@ public class StateWarehouseController implements Initializable {
             for (State_on_shop state_on_shop : lista) {
                 listOfStores.add(state_on_shop.getShopId().getShopId());
             }
-            if(simpleOrComplex(listOfStores)){ //SIMPLE
-                simpleOrder(date,listOfStores.get(0));
-                newAlert("Sukces","Zamówiono towar (Simple)");
+            if (simpleOrComplex(listOfStores)) { //SIMPLE
+                simpleOrder(date, listOfStores.get(0));
+                newAlert("Sukces", "Zamówiono towar (Simple)");
             } else { //COMPLEX
-                complexOrder(date,listOfStores);
-                newAlert("Sukces","Zamówiono towar (Complex)");
+                complexOrder(date, listOfStores);
+                newAlert("Sukces", "Zamówiono towar (Complex)");
             }
         }
         lista.removeAll();
@@ -348,7 +356,7 @@ public class StateWarehouseController implements Initializable {
         add_new_order.getItems().clear();
     }
 
-    public boolean simpleOrComplex(ArrayList list){
+    public boolean simpleOrComplex(ArrayList list) {
         boolean result = true;
         for (int i = 1; i < list.size(); i++) {
             if (list.get(i) != list.get(0)) {
@@ -360,61 +368,61 @@ public class StateWarehouseController implements Initializable {
         return result;
     }
 
-    public void simpleOrder(Date date,int id){
+    public void simpleOrder(Date date, int id) {
         Session session = sessionFactory.openSession();
         session.getTransaction().begin();
-        Shop shopIdNeed = (Shop) session.get(Shop.class,sessionContext.getCurrentLoggedShop().getShopId());
-        Shop shopIdDelivery = (Shop) session.get(Shop.class,id);
-        State state = (State) session.get(State.class,1);
+        Shop shopIdNeed = (Shop) session.get(Shop.class, sessionContext.getCurrentLoggedShop().getShopId());
+        Shop shopIdDelivery = (Shop) session.get(Shop.class, id);
+        State state = (State) session.get(State.class, 1);
 
-        System.out.println("need "+shopIdNeed.getShopId()+ " delivery "+shopIdDelivery.getShopId());
-        Indent simpleOrder = new Indent(shopIdNeed,shopIdDelivery,null,date,null,false);
+        System.out.println("need " + shopIdNeed.getShopId() + " delivery " + shopIdDelivery.getShopId());
+        Indent simpleOrder = new Indent(shopIdNeed, shopIdDelivery, null, date, null, false);
         session.save(simpleOrder);
-        for (State_on_shop state_on_shop : lista){
-            Indent_product indent_product = new Indent_product(simpleOrder,state_on_shop.getProductId(),state_on_shop.getAmount());
+        for (State_on_shop state_on_shop : lista) {
+            Indent_product indent_product = new Indent_product(simpleOrder, state_on_shop.getProductId(), state_on_shop.getAmount());
             session.save(indent_product);
         }
-        State_of_indent state_of_indent = new State_of_indent(sessionContext.getCurrentLoggedUser(),simpleOrder,state);
+        State_of_indent state_of_indent = new State_of_indent(sessionContext.getCurrentLoggedUser(), simpleOrder, state);
         session.save(state_of_indent);
 
         session.getTransaction().commit();
         session.close();
     }
 
-    public void complexOrder(Date date,ArrayList idShops){
-        while(!idShops.isEmpty()){
+    public void complexOrder(Date date, ArrayList idShops) {
+        while (!idShops.isEmpty()) {
             int id = (int) idShops.get(0);
             idShops.remove(0);
-            if(idShops.contains(id)){
+            if (idShops.contains(id)) {
                 continue;
             } else { //SIMPLE
                 Session session = sessionFactory.openSession();
                 session.getTransaction().begin();
-                Shop shopIdNeed = (Shop) session.get(Shop.class,sessionContext.getCurrentLoggedShop().getShopId());
-                Shop shopIdDelivery = (Shop) session.get(Shop.class,id);
-                State state = (State) session.get(State.class,1);
+                Shop shopIdNeed = (Shop) session.get(Shop.class, sessionContext.getCurrentLoggedShop().getShopId());
+                Shop shopIdDelivery = (Shop) session.get(Shop.class, id);
+                State state = (State) session.get(State.class, 1);
                 ObservableList<State_on_shop> products = FXCollections.observableArrayList();
 
-                System.out.println("need "+shopIdNeed.getShopId()+ " delivery "+shopIdDelivery.getShopId());
-                Indent simpleOrder = new Indent(shopIdNeed,shopIdDelivery,null,date,null,false);
+                System.out.println("need " + shopIdNeed.getShopId() + " delivery " + shopIdDelivery.getShopId());
+                Indent simpleOrder = new Indent(shopIdNeed, shopIdDelivery, null, date, null, false);
                 session.save(simpleOrder);
 
                 //Odseparowanie produktów dla danego sklepu
-                for(int i=0;i<lista.size();i++){
-                    if(lista.get(i).getShopId().getShopId() == id){
+                for (int i = 0; i < lista.size(); i++) {
+                    if (lista.get(i).getShopId().getShopId() == id) {
                         products.add(lista.get(i));
                     }
                 }
 
-                for (State_on_shop state_on_shop : products){
-                    Indent_product indent_product = new Indent_product(simpleOrder,state_on_shop.getProductId(),state_on_shop.getAmount());
+                for (State_on_shop state_on_shop : products) {
+                    Indent_product indent_product = new Indent_product(simpleOrder, state_on_shop.getProductId(), state_on_shop.getAmount());
                     session.save(indent_product);
                 }
-                State_of_indent state_of_indent = new State_of_indent(sessionContext.getCurrentLoggedUser(),simpleOrder,state);
+                State_of_indent state_of_indent = new State_of_indent(sessionContext.getCurrentLoggedUser(), simpleOrder, state);
                 session.save(state_of_indent);
 
                 //COMPLEX
-                Indent complexOrder = new Indent(shopIdNeed,shopIdDelivery,null,date,simpleOrder,true);
+                Indent complexOrder = new Indent(shopIdNeed, shopIdDelivery, null, date, simpleOrder, true);
                 session.save(complexOrder);
                 session.getTransaction().commit();
                 session.close();
@@ -426,24 +434,26 @@ public class StateWarehouseController implements Initializable {
     //ZAKŁADKA(4) NOWE ZAMÓWIENIE ZE SKLEPU----------------------------------------------------------------------------------------------------
 
     public void overlapNewOrderShop() {
-        PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().toString()));
-        NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
-        PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+        PRODUCTID_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId())));
+        NAME_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
+        PRICE_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
+        AMOUNT_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
         newOrderShop.setItems(getOrderProducts());
     }
 
-    private ObservableList<State_on_shop> getOrderProducts() { //niekompletne
-        ObservableList<State_on_shop> productList = FXCollections.observableArrayList();
+    private ObservableList<Indent_product> getOrderProducts() { //niekompletne było na <State_on_shop>
+        ObservableList<Indent_product> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<State_on_shop> eList = session.createQuery("FROM Shop sp " +
-                "INNER JOIN State_on_shop sos ON sp.shopId = sos.shopId " +
-                "INNER JOIN Product p ON sos.productId = p.productId " +
-                "INNER JOIN Indent_product ip ON p.productId = ip.productId " +
-                "INNER JOIN Indent i ON sp.shopId = i.shopId_need " +
-                "INNER JOIN State_of_indent soi ON i.indentId = soi.indentId " +
-                "INNER JOIN State s ON soi.stateId = s.stateId " +
-                "WHERE sp.shopId = :idshop AND s.name = 'W realizacji' "
+//        List<Indent_product> eList = session.createQuery("FROM Shop sp " +
+//                "INNER JOIN State_on_shop sos ON sp.shopId = sos.shopId " +
+//                "INNER JOIN Product p ON sos.productId = p.productId " +
+//                "INNER JOIN Indent_product ip ON p.productId = ip.productId " +
+//                "INNER JOIN Indent i ON sp.shopId = i.shopId_need " +
+//                "INNER JOIN State_of_indent soi ON i.indentId = soi.indentId " +
+//                "INNER JOIN State s ON soi.stateId = s.stateId " +
+//                "WHERE sp.shopId = :idshop AND s.name = 'W realizacji' "
+//        ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
+        List<Indent_product> eList = session.createQuery("FROM Indent_product WHERE indentId.shopId_need.shopId = :idshop AND indentId.customerId is not null"
         ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
         System.out.println("getOrderProducts " + eList);
         productList.addAll(eList);

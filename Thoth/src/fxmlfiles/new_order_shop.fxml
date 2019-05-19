@@ -32,10 +32,10 @@
                <children>
                   <TableView fx:id="newOrderShop" editable="true" prefHeight="754.0" prefWidth="1325.0">
                      <columns>
-                        <TableColumn fx:id="PRODUCTID" prefWidth="100.0" text="id_produkt" />
-                        <TableColumn fx:id="NAME" minWidth="0.0" prefWidth="982.0" text="nazwa" />
-                        <TableColumn fx:id="PRICE" minWidth="0.0" prefWidth="90.0" text="cena" />
-                        <TableColumn fx:id="AMOUNT" minWidth="0.0" prefWidth="107.0" text="ilosc" />
+                        <TableColumn fx:id="PRODUCTID_ORDER" prefWidth="100.0" text="id_produkt" />
+                        <TableColumn fx:id="NAME_ORDER" minWidth="0.0" prefWidth="982.0" text="nazwa" />
+                        <TableColumn fx:id="PRICE_ORDER" minWidth="0.0" prefWidth="90.0" text="cena" />
+                        <TableColumn fx:id="AMOUNT_ORDER" minWidth="0.0" prefWidth="107.0" text="ilosc" />
                      </columns>
                   </TableView>
                </children>
