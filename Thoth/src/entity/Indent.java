@@ -37,6 +37,15 @@ public class Indent {
 
     }
 
+    public Indent(Shop shopId_need, Shop shopId_delivery, Customer customerId, Date dateOfOrder, Indent parentId, Boolean isComplex) {
+        this.shopId_need = shopId_need;
+        this.shopId_delivery = shopId_delivery;
+        this.customerId = customerId;
+        this.dateOfOrder = dateOfOrder;
+        this.parentId = parentId;
+        this.isComplex = isComplex;
+    }
+
     public int getIndentId() {
         return indentId;
     }

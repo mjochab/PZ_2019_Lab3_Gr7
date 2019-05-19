@@ -1,5 +1,6 @@
 package controllers;
 
+import entity.Indent;
 import entity.Shop;
 import entity.State_of_indent;
 import entity.State_on_shop;
@@ -20,6 +21,13 @@ import org.hibernate.Session;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -240,7 +248,7 @@ public class StateWarehouseController implements Initializable {
         List<State_on_shop> eList = session.createQuery("FROM State_on_shop WHERE ShopId = :idshop AND amount > 0"
         ).setParameter("idshop", id).list();
         nazwaProduktu = null;
-        System.out.println("getProductsForOtherShop " + eList);
+        //System.out.println("getProductsForOtherShop " + eList);
         productList.addAll(eList);
         session.close();
         return productList;
@@ -310,16 +318,36 @@ public class StateWarehouseController implements Initializable {
         }
     }
 
-    public void newOrderWarehouse() {
-        System.out.println(lista.toString());
+    public void newOrderWarehouse() throws ParseException {  //button zapisz
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(dtf.format(now));
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = format.parse(dtf.format(now));
+        System.out.println(date);
+
+        ArrayList<Integer> listOfStores = new ArrayList<Integer>();
         if (!lista.isEmpty()) {
-            //zapytanie do bazy
             System.out.println(lista.get(0).toString());
             Session session = sessionFactory.openSession();
             session.getTransaction().begin();
-            for(State_on_shop state_on_shop : lista){
-                state_on_shop.getShopId().setShopId(sessionContext.getCurrentLoggedShop().getShopId());
-                session.update(state_on_shop);
+            for (State_on_shop state_on_shop : lista) {
+                listOfStores.add(state_on_shop.getShopId().getShopId());
+            }
+            for (int i = 1; i < listOfStores.size(); i++) {
+                if (listOfStores.get(i) == listOfStores.get(0)) { //SIMPLE
+                    Shop shopIdNeed = (Shop) session.get(Shop.class,sessionContext.getCurrentLoggedShop().getShopId());
+                    Shop shopIdDelivery = (Shop) session.get(Shop.class,listOfStores.get(0));
+
+                    System.out.println("need "+shopIdNeed.getShopId()+ " delivery "+shopIdDelivery.getShopId());
+                    Indent simpleOrder = new Indent(shopIdNeed,shopIdDelivery,null,date,null,null);
+                    session.save(simpleOrder);
+                } else { //COMPLEX
+                    System.out.println("przeglądanie listy");
+                    System.out.println(listOfStores.get(0));
+                    System.out.println(listOfStores.get(i));
+                }
             }
             session.getTransaction().commit();
             session.close();
@@ -328,7 +356,7 @@ public class StateWarehouseController implements Initializable {
         new_order.getItems().clear();
         new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedItem().getShopId()));
         add_new_order.getItems().clear();
-    } //button zapisz
+    }
 
     //ZAKŁADKA(4) NOWE ZAMÓWIENIE ZE SKLEPU----------------------------------------------------------------------------------------------------
 
@@ -358,8 +386,8 @@ public class StateWarehouseController implements Initializable {
         return productList;
     }
 
-    public void confirmOrder(){ //button
-        if(!newOrderShop.getItems().isEmpty()){
+    public void confirmOrder() { //button
+        if (!newOrderShop.getItems().isEmpty()) {
 
         }
     }
