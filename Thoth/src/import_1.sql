@@ -63,6 +63,12 @@ INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('1', '2', '100');
 INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('2', '2', '100');
 INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('3', '2', '100');
 INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('4', '2', '100');
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('4', '3', '100');
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('5', '3', '100');
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('6', '3', '100');
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('6', '4', '100');
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('1', '4', '100');
+INSERT INTO state_on_shop (ProductId, ShopId, Amount) VALUES ('2', '4', '100');
 
 
 INSERT INTO receipt (ReceiptId, ShopId, TotalValue, UserId, Date) VALUES (null, '1', '0', '6', '2019-04-06');
