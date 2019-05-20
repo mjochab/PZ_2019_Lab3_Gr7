@@ -177,13 +177,19 @@ public class LogisticOrdersController implements Initializable {
     public ObservableList<IndentTableView> getIndentsInRealization() {
         ObservableList<IndentTableView> listOfIndents = FXCollections.observableArrayList();
 
-        for(State_of_indent soi : getIndentsByState("Oczekuje na potwierdzenie odbioru")) {
+        for(State_of_indent soi : getIndentsByState("W transporcie")) {
             IndentTableView indentTableView = new IndentTableView();
             indentTableView.setOrder(soi.getIndentId());
             indentTableView.setState(soi);
 
+            /*
             // jesli zamowienie jest podzamowieniem, nie wyswietlaj go w glownej liscie
             if (soi.getIndentId().getParentId() != null) {
+                continue;
+            }
+            */
+
+            if(soi.getIndentId().isComplex()) {
                 continue;
             }
 
@@ -301,5 +307,40 @@ public class LogisticOrdersController implements Initializable {
             session.getTransaction().rollback();
         }
 
+    }
+
+    @FXML
+    public void deliverOrderHandler(ActionEvent event) {
+        if(ordersInRealization.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
+        IndentTableView indentToTake = ordersInRealization.getSelectionModel().getSelectedItem();
+
+        Indent indentToStateChange = indentToTake.getOrder();
+
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        try {
+            State completedState = (State) session.createQuery("from State where name = :name")
+                    .setParameter("name", "Zrealizowane")
+                    .getSingleResult();
+
+            State_of_indent newIndentState = (State_of_indent) session.createQuery("from State_of_indent where IndentId = :iid")
+                    .setParameter("iid", indentToStateChange.getIndentId())
+                    .getSingleResult();
+
+            newIndentState.setStateId(completedState);
+
+            session.update(newIndentState);
+
+            session.getTransaction().commit();
+        }
+        catch(Exception e) {
+            System.out.println("Nie udalo sie zmienic stanu!");
+            session.getTransaction().rollback();
+        }
     }
 }
