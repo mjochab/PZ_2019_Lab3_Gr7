@@ -390,45 +390,45 @@ public class StateWarehouseController implements Initializable {
     }
 
     public void complexOrder(Date date, ArrayList idShops) {
+        Session session = sessionFactory.openSession();
+        session.getTransaction().begin();
+        Shop shopIdNeed = (Shop) session.get(Shop.class, sessionContext.getCurrentLoggedShop().getShopId());
+        State state = (State) session.get(State.class, 1);
+        //COMPLEX
+        Indent complexOrder = new Indent(null, null, null, date, null, true);
+        session.save(complexOrder);
+        session.getTransaction().commit();
+        session.close();
         while (!idShops.isEmpty()) {
             int id = (int) idShops.get(0);
             idShops.remove(0);
+            Session sessionNext = sessionFactory.openSession();
+            sessionNext.getTransaction().begin();
+            Shop shopIdDelivery = (Shop) sessionNext.get(Shop.class, id);
+            System.out.println("need " + shopIdNeed.getShopId() + " delivery " + shopIdDelivery.getShopId());
+            ObservableList<State_on_shop> products = FXCollections.observableArrayList();
             if (idShops.contains(id)) {
                 continue;
             } else { //SIMPLE
-                Session session = sessionFactory.openSession();
-                session.getTransaction().begin();
-                Shop shopIdNeed = (Shop) session.get(Shop.class, sessionContext.getCurrentLoggedShop().getShopId());
-                Shop shopIdDelivery = (Shop) session.get(Shop.class, id);
-                State state = (State) session.get(State.class, 1);
-                ObservableList<State_on_shop> products = FXCollections.observableArrayList();
-
-                System.out.println("need " + shopIdNeed.getShopId() + " delivery " + shopIdDelivery.getShopId());
-                Indent simpleOrder = new Indent(shopIdNeed, shopIdDelivery, null, date, null, false);
-                session.save(simpleOrder);
-
                 //Odseparowanie produktów dla danego sklepu
                 for (int i = 0; i < lista.size(); i++) {
                     if (lista.get(i).getShopId().getShopId() == id) {
                         products.add(lista.get(i));
                     }
                 }
-
+                //SIMPLE
+                Indent simpleOrder = new Indent(shopIdNeed, shopIdDelivery, null, date, complexOrder, false);
+                sessionNext.save(simpleOrder);
                 for (State_on_shop state_on_shop : products) {
                     Indent_product indent_product = new Indent_product(simpleOrder, state_on_shop.getProductId(), state_on_shop.getAmount());
-                    session.save(indent_product);
+                    sessionNext.save(indent_product);
                 }
                 State_of_indent state_of_indent = new State_of_indent(sessionContext.getCurrentLoggedUser(), simpleOrder, state);
-                session.save(state_of_indent);
-
-                //COMPLEX
-                Indent complexOrder = new Indent(shopIdNeed, shopIdDelivery, null, date, simpleOrder, true);
-                session.save(complexOrder);
-                session.getTransaction().commit();
-                session.close();
+                sessionNext.save(state_of_indent);
+                sessionNext.getTransaction().commit();
+                sessionNext.close();
             }
         }
-
     }
 
     //ZAKŁADKA(4) NOWE ZAMÓWIENIE ZE SKLEPU----------------------------------------------------------------------------------------------------
