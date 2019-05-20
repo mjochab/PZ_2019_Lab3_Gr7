@@ -17,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import models.IndentTableView;
 import org.hibernate.Session;
@@ -43,6 +42,10 @@ public class LogisticOrdersController implements Initializable {
     private Button toShipmentDetails;
     @FXML
     private Button inRealizationDetails;
+    @FXML
+    private Button takeOrder;
+    @FXML
+    private Button deliverOrder;
 
     // for shipment table view
     @FXML
@@ -262,5 +265,41 @@ public class LogisticOrdersController implements Initializable {
         }
 
         stg.setScene(new Scene(pane));
+    }
+
+    @FXML
+    public void takeOrderHandler(ActionEvent event) {
+        if(ordersReadyForShipment.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
+        IndentTableView indentToTake = ordersReadyForShipment.getSelectionModel().getSelectedItem();
+
+        Indent indentToStateChange = indentToTake.getOrder();
+
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        try {
+            State inRealizationState = (State) session.createQuery("from State where name = :name")
+                                                      .setParameter("name", "W transporcie")
+                                                      .getSingleResult();
+
+            State_of_indent newIndentState = (State_of_indent) session.createQuery("from State_of_indent where IndentId = :iid")
+                                                    .setParameter("iid", indentToStateChange.getIndentId())
+                                                    .getSingleResult();
+
+            newIndentState.setStateId(inRealizationState);
+
+            session.update(newIndentState);
+
+            session.getTransaction().commit();
+        }
+        catch(Exception e) {
+            System.out.println("Nie udalo sie zmienic stanu!");
+            session.getTransaction().rollback();
+        }
+
     }
 }
