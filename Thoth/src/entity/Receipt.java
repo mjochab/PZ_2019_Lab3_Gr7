@@ -31,6 +31,13 @@ public class Receipt {
 
     }
 
+    public Receipt(Shop shopId, BigDecimal totalValue, User userId, Date date) {
+        this.shopId = shopId;
+        this.totalValue = totalValue;
+        this.userId = userId;
+        this.date = date;
+    }
+
     public int getReceiptId() {
         return receiptId;
     }
