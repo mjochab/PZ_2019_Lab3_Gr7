@@ -314,7 +314,7 @@ public class StateWarehouseController implements Initializable {
         PRODUCTID_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
         NAME_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
         PRICE_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-        AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+        AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount()-produktData.getValue().getLocked())));
         System.out.println("Odebrane " + item.toString() + " rozmiar " + item.size());
         try {
             if (!item.isEmpty()) {
@@ -378,6 +378,14 @@ public class StateWarehouseController implements Initializable {
         System.out.println("need " + shopIdNeed.getShopId() + " delivery " + shopIdDelivery.getShopId());
         Indent simpleOrder = new Indent(shopIdNeed, shopIdDelivery, null, date, null, false);
         session.save(simpleOrder);
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getShopId().getShopId() == id) {
+                System.out.println(lista.get(i).getLocked() + " LOCKED oraz AMOUNT "+ lista.get(i).getAmount());
+                State_on_shop newLocked = (State_on_shop) session.get(State_on_shop.class, lista.get(i).getId());
+                newLocked.setLocked( lista.get(i).getAmount());
+                session.update(newLocked);
+            }
+        }
         for (State_on_shop state_on_shop : lista) {
             Indent_product indent_product = new Indent_product(simpleOrder, state_on_shop.getProductId(), state_on_shop.getAmount());
             session.save(indent_product);
@@ -398,6 +406,7 @@ public class StateWarehouseController implements Initializable {
         Indent complexOrder = new Indent(shopIdNeed, null, null, date, null, true);
         session.save(complexOrder);
         session.getTransaction().commit();
+        session.beginTransaction();
         while (!idShops.isEmpty()) {
             int id = (int) idShops.get(0);
             idShops.remove(0);
@@ -411,12 +420,17 @@ public class StateWarehouseController implements Initializable {
                 for (int i = 0; i < lista.size(); i++) {
                     if (lista.get(i).getShopId().getShopId() == id) {
                         products.add(lista.get(i));
+                        System.out.println(lista.get(i).getLocked() + " LOCKED oraz AMOUNT "+ lista.get(i).getAmount());
+                        State_on_shop newLocked = (State_on_shop) session.get(State_on_shop.class, lista.get(i).getId());
+                        newLocked.setLocked( lista.get(i).getAmount());
+                        session.update(newLocked);
                     }
                 }
                 //SIMPLE
                 Indent simpleOrder = new Indent(shopIdNeed, shopIdDelivery, null, date, complexOrder, false);
                 session.save(simpleOrder);
                 for (State_on_shop state_on_shop : products) {
+                    System.out.println("Chce zamowic " + state_on_shop.getProductId().getName() + " " + state_on_shop.getAmount());
                     Indent_product indent_product = new Indent_product(simpleOrder, state_on_shop.getProductId(), state_on_shop.getAmount());
                     session.save(indent_product);
                 }
@@ -424,7 +438,10 @@ public class StateWarehouseController implements Initializable {
                 session.save(state_of_indent);
             }
         }
+        session.getTransaction().commit();
         session.close();
+        new_order.getItems().clear();
+        new_order.setItems(getProductsForOtherShop(sessionContext.getCurrentLoggedShop().getShopId()));
     }
 
     //ZAKŁADKA(4) NOWE ZAMÓWIENIE ZE SKLEPU----------------------------------------------------------------------------------------------------
@@ -438,18 +455,9 @@ public class StateWarehouseController implements Initializable {
         System.out.println(" zamowienia: " + getOrderProducts());
     }
 
-    private ObservableList<Indent_product> getOrderProducts() { //niekompletne było na <State_on_shop>
+    private ObservableList<Indent_product> getOrderProducts() {
         ObservableList<Indent_product> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-//        List<Indent_product> eList = session.createQuery("FROM Shop sp " +
-//                "INNER JOIN State_on_shop sos ON sp.shopId = sos.shopId " +
-//                "INNER JOIN Product p ON sos.productId = p.productId " +
-//                "INNER JOIN Indent_product ip ON p.productId = ip.productId " +
-//                "INNER JOIN Indent i ON sp.shopId = i.shopId_need " +
-//                "INNER JOIN State_of_indent soi ON i.indentId = soi.indentId " +
-//                "INNER JOIN State s ON soi.stateId = s.stateId " +
-//                "WHERE sp.shopId = :idshop AND s.name = 'W realizacji' "
-//        ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
         List<Indent_product> eList = session.createQuery("Select ip FROM Indent_product ip, State_of_indent soi " +
                 "WHERE ip.indentId = soi.indentId AND ip.indentId.shopId_need.shopId = :idshop AND soi.stateId.stateId = :status")
                 .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
@@ -462,7 +470,16 @@ public class StateWarehouseController implements Initializable {
 
     public void confirmOrder() { //button
         if (!newOrderShop.getItems().isEmpty()) {
-
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            Indent_product p = (Indent_product) newOrderShop.getSelectionModel().getSelectedItem();
+            System.out.println(p.getProductId().getName());
+            p.getIndentId().setIndentId(2);
+            session.save(p);
+            session.getTransaction().commit();
+            session.close();
+            newOrderShop.getItems().clear();
+            newOrderShop.setItems(getOrderProducts());
         }
     }
 
@@ -479,17 +496,10 @@ public class StateWarehouseController implements Initializable {
     private ObservableList<State_of_indent> getOrder() {
         ObservableList<State_of_indent> orderList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-//        List<State_of_indent> eList = session.createQuery("FROM State_of_indent WHERE indentId.shopId_need.shopId = :idshop "
-//        ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
         List<State_of_indent> eList = session.createQuery("Select soi FROM Indent_product ip, State_of_indent soi " +
                 "WHERE ip.indentId = soi.indentId AND ip.indentId.shopId_need.shopId = :idshop AND soi.stateId.stateId = :status")
                 .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
                 .setParameter("status", 4).list(); // zmiana statusu z 4 na 5
-//        "SELECT new models.StateOrderModel(p.city, s.name, i.indentId) FROM State_of_indent v " +
-//                "INNER JOIN Indent i ON i.indentId = v.indentId  " +
-//                "INNER JOIN State s ON s.stateId = v.stateId  " +
-//                "INNER JOIN Shop p ON p.shopId = i.shopId_need " +
-//                "WHERE p.shopId = :idshop "
         System.out.println("getOrder " + eList);
         orderList.addAll(eList);
         session.close();
@@ -506,14 +516,12 @@ public class StateWarehouseController implements Initializable {
             session.beginTransaction();
             State_of_indent p = (State_of_indent) stateOrderWarehouse.getSelectionModel().getSelectedItem();
             System.out.println(p.getStateId().getName());
-            p.getStateId().setStateId(3);
+            p.getStateId().setStateId(5);
             session.update(p);
             session.getTransaction().commit();
             session.close();
-//            stateOrderWarehouse.getItems().clear();
-//            stateOrderWarehouse.setItems(getOrderProducts());
-        } else {
-
+            stateOrderWarehouse.getItems().clear();
+            stateOrderWarehouse.setItems(getOrder());
         }
     }
 
