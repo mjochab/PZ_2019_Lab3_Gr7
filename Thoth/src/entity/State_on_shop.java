@@ -23,7 +23,7 @@ public class State_on_shop {
     @Column(name = "Amount",nullable = false)
     private int amount;
 
-    @Column(name = "Locked")
+    @Column(name = "Locked", columnDefinition = "int default 0")
     private int locked;
 
     public State_on_shop(){
@@ -34,7 +34,6 @@ public class State_on_shop {
         this.productId = productId;
         this.shopId = shopId;
         this.amount = amount;
-        this.locked = 0;
     }
 
     public State_on_shop(int id,Product productId, Shop shopId, long amount) {
@@ -42,7 +41,6 @@ public class State_on_shop {
         this.productId = productId;
         this.shopId = shopId;
         this.amount = (int)amount;
-        this.locked = 0;
     }
 
 
