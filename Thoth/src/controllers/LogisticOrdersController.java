@@ -1,8 +1,6 @@
 package controllers;
 
-import entity.Indent;
-import entity.State;
-import entity.State_of_indent;
+import entity.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -290,7 +288,6 @@ public class LogisticOrdersController implements Initializable {
             newIndentState.setStateId(stateToSet);
 
             session.update(newIndentState);
-
             session.getTransaction().commit();
         }
         catch(Exception e) {
@@ -310,6 +307,12 @@ public class LogisticOrdersController implements Initializable {
         Indent indentToStateChange = indentToTake.getOrder();
 
         changeOrderState(indentToStateChange, "W transporcie");
+
+        ordersReadyForShipment.getItems().clear();
+        ordersReadyForShipment.setItems(getIndentsReadyForShipment());
+
+        ordersInRealization.getItems().clear();
+        ordersInRealization.setItems(getIndentsInRealization());
     }
 
     @FXML
@@ -322,6 +325,66 @@ public class LogisticOrdersController implements Initializable {
 
         Indent indentToStateChange = indentToTake.getOrder();
 
-        changeOrderState(indentToStateChange, "Zrealizowane");
+        /*
+            for produkt in zamowienie
+                pobirz ilosc produktu na magazynie dostarczajacym
+                pobirz ilosc produktu na magazynie docelowym
+                zmniejsz ilosc produktu na magazyne dostarczajacym
+                zmniejsz ilosc zablokowanych produktow na magazynie dostarczajacym
+                zwieksz ilosc produktu na magazynie docelowym
+
+         */
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<Indent_product> productsToDeliver = session.createQuery("from Indent_product where IndentId = :iid")
+                                                       .setParameter("iid", indentToStateChange.getIndentId())
+                                                       .getResultList();
+        Shop shopSource = indentToStateChange.getShopId_delivery();
+        Shop shopDestination = indentToStateChange.getShopId_need();
+
+        boolean success = true;
+
+        for(Indent_product indentProduct : productsToDeliver) {
+            Product product = indentProduct.getProductId();
+            int amountOfProduct = indentProduct.getAmount();
+
+            State_on_shop stateOnShopSource = (State_on_shop) session.createQuery("from State_on_shop where ShopId = :sid and ProductId = :pid")
+                                                     .setParameter("sid", shopSource.getShopId())
+                                                     .setParameter("pid", product.getProductId())
+                                                     .getSingleResult();
+            State_on_shop stateOnShopDestination = (State_on_shop) session.createQuery("from State_on_shop where ShopId = :sid and ProductId = :pid")
+                                                                            .setParameter("sid", shopDestination.getShopId())
+                                                                            .setParameter("pid", product.getProductId())
+                                                                            .getSingleResult();
+
+            try {
+                // odejmuje z magazynu ktory dostarczyl produkt
+                stateOnShopSource.setAmount(stateOnShopSource.getAmount() - amountOfProduct);
+                stateOnShopSource.setLocked(stateOnShopSource.getLocked() - amountOfProduct);
+
+                // dodaje do magazynu ktory zamowil produkt
+                stateOnShopDestination.setAmount(stateOnShopDestination.getAmount() + amountOfProduct);
+
+                session.getTransaction().commit();
+                System.out.println("Pomyslnie zakonczono zmiane ilosc produktu");
+            }
+            catch(Exception e) {
+                System.out.println("Nastapil blad, wycofuje zmiany");
+                session.getTransaction().rollback();
+                success = false;
+                break;
+            }
+        }
+
+        session.close();
+
+        if(success) {
+            changeOrderState(indentToStateChange, "Zrealizowane");
+            ordersInRealization.getItems().clear();
+            ordersInRealization.setItems(getIndentsInRealization());
+        }
+        else {
+            System.out.println("Nie udalo sie dostarczyc zamowienia");
+        }
     }
 }
