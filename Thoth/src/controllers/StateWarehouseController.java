@@ -434,11 +434,12 @@ public class StateWarehouseController implements Initializable {
     //ZAKŁADKA(4) NOWE ZAMÓWIENIE ZE SKLEPU----------------------------------------------------------------------------------------------------
 
     public void overlapNewOrderShop() {
-        PRODUCTID_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId())));
+        PRODUCTID_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
         NAME_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
         PRICE_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
         AMOUNT_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
         newOrderShop.setItems(getOrderProducts());
+        System.out.println(" zamowienia: " + getOrderProducts());
     }
 
     private ObservableList<Indent_product> getOrderProducts() { //niekompletne było na <State_on_shop>
@@ -453,8 +454,10 @@ public class StateWarehouseController implements Initializable {
 //                "INNER JOIN State s ON soi.stateId = s.stateId " +
 //                "WHERE sp.shopId = :idshop AND s.name = 'W realizacji' "
 //        ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
-        List<Indent_product> eList = session.createQuery("FROM Indent_product WHERE indentId.shopId_need.shopId = :idshop AND indentId.customerId is not null"
-        ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
+        List<Indent_product> eList = session.createQuery("Select ip FROM Indent_product ip, State_of_indent soi " +
+                "WHERE ip.indentId = soi.indentId AND ip.indentId.shopId_need.shopId = :idshop AND soi.stateId.stateId = :status")
+                .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
+                .setParameter("status", 1).list();
         System.out.println("getOrderProducts " + eList);
         productList.addAll(eList);
         session.close();
@@ -480,8 +483,12 @@ public class StateWarehouseController implements Initializable {
     private ObservableList<State_of_indent> getOrder() {
         ObservableList<State_of_indent> orderList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<State_of_indent> eList = session.createQuery("FROM State_of_indent WHERE indentId.shopId_need.shopId = :idshop "
-        ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
+//        List<State_of_indent> eList = session.createQuery("FROM State_of_indent WHERE indentId.shopId_need.shopId = :idshop "
+//        ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
+        List<State_of_indent> eList = session.createQuery("Select soi FROM Indent_product ip, State_of_indent soi " +
+                "WHERE ip.indentId = soi.indentId AND ip.indentId.shopId_need.shopId = :idshop AND soi.stateId.stateId = :status")
+                .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
+                .setParameter("status", 4).list(); // zmiana statusu z 4 na 5
 //        "SELECT new models.StateOrderModel(p.city, s.name, i.indentId) FROM State_of_indent v " +
 //                "INNER JOIN Indent i ON i.indentId = v.indentId  " +
 //                "INNER JOIN State s ON s.stateId = v.stateId  " +
