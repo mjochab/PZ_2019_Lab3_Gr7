@@ -253,7 +253,7 @@ public class StateWarehouseController implements Initializable {
     private ObservableList<State_on_shop> getProductsForOtherShop(int id) {
         ObservableList<State_on_shop> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<State_on_shop> eList = session.createQuery("FROM State_on_shop WHERE shopId.shopId = :idshop AND amount > 0"
+        List<State_on_shop> eList = session.createQuery("FROM State_on_shop WHERE shopId.shopId = :idshop AND amount - locked > 0"
         ).setParameter("idshop", id).list();
         nazwaProduktu = null;
         //System.out.println("getProductsForOtherShop " + eList);
@@ -285,17 +285,20 @@ public class StateWarehouseController implements Initializable {
             try {
                 System.out.println("PRZED" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
                 int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount();
+                System.out.println("LICZBA WYPISNA "+check);
                 if (!isNumeric(e.getNewValue())) {
                     throw new NumberFormatException();
                 }
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
                 System.out.println("PO" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
                 if (e.getTableView().getSelectionModel().getSelectedItem().getAmount() > 0 && e.getTableView().getSelectionModel().getSelectedItem().getAmount() <= check) {
-                    System.out.println("większe od 0 i mniejsze od ");
+                    System.out.println("większe od 0 i mniejsze od "+check);
+//                    add_new_order.refresh();
+//                    new_order.getItems().clear();
+//                    new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedItem().getShopId()));
                 } else {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
                     System.out.println("Powrót do poprzedniej liczby");
-                    add_new_order.refresh();
                 }
             } catch (NumberFormatException exc) {
                 System.out.println("Powrót do poprzedniej liczby");
@@ -382,7 +385,7 @@ public class StateWarehouseController implements Initializable {
             if (lista.get(i).getShopId().getShopId() == id) {
                 System.out.println(lista.get(i).getLocked() + " LOCKED oraz AMOUNT "+ lista.get(i).getAmount());
                 State_on_shop newLocked = (State_on_shop) session.get(State_on_shop.class, lista.get(i).getId());
-                newLocked.setLocked( lista.get(i).getAmount());
+                newLocked.setLocked( newLocked.getLocked() + lista.get(i).getAmount());
                 session.update(newLocked);
             }
         }
@@ -422,7 +425,7 @@ public class StateWarehouseController implements Initializable {
                         products.add(lista.get(i));
                         System.out.println(lista.get(i).getLocked() + " LOCKED oraz AMOUNT "+ lista.get(i).getAmount());
                         State_on_shop newLocked = (State_on_shop) session.get(State_on_shop.class, lista.get(i).getId());
-                        newLocked.setLocked( lista.get(i).getAmount());
+                        newLocked.setLocked( newLocked.getLocked() + lista.get(i).getAmount());
                         session.update(newLocked);
                     }
                 }
