@@ -13,20 +13,20 @@ public class Product_receipt {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "ProductId",nullable = false)
+    @JoinColumn(name = "ProductId", nullable = false)
     private Product productId;
 
     @ManyToOne
-    @JoinColumn(name = "ReceiptId",nullable = false)
+    @JoinColumn(name = "ReceiptId", nullable = false)
     private Receipt receiptId;
 
-    @Column(name = "Amount",nullable = false)
+    @Column(name = "Amount", nullable = false)
     private int amount;
 
-    @Column(name = "Price",nullable = false)
+    @Column(name = "Price", nullable = false)
     private BigDecimal price;
 
-    public Product_receipt(){
+    public Product_receipt() {
 
     }
 
@@ -37,6 +37,7 @@ public class Product_receipt {
 //        mnożenie przez ilosc sztuk poniewaz przy generowaniu raportu uzywamy SUM
         this.price = price.multiply(new BigDecimal(amount));
     }
+
 
     public int getId() {
         return id;
@@ -72,6 +73,10 @@ public class Product_receipt {
 
     public BigDecimal getPrice() {
         return price;
+    }
+
+    public BigDecimal getSinglePrice() {
+        return price.divide(new BigDecimal(amount));
     }
 
     public void setPrice(BigDecimal price) {

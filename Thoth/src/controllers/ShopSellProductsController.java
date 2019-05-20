@@ -1,7 +1,6 @@
 package controllers;
 
-import entity.State;
-import entity.State_on_shop;
+import entity.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +15,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.hibernate.Session;
 
+import java.math.BigDecimal;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -109,9 +111,7 @@ public class ShopSellProductsController implements Initializable {
                     .setParameter("produkt", "%" + productName + "%").list();
             serachShop.setText("");
         }
-        for (State_on_shop ent : eList) {
-            productList.add(ent);
-        }
+        productList.addAll(eList);
         session.close();
         return productList;
     }
@@ -120,7 +120,7 @@ public class ShopSellProductsController implements Initializable {
         PRODUCTID_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
         NAME_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
         PRICE_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-        AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+        AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount() - produktData.getValue().getLocked())));
         System.out.println("Odebrane " + item.toString() + " rozmiar " + item.size());
         try {
             if (!item.isEmpty()) {
@@ -173,10 +173,46 @@ public class ShopSellProductsController implements Initializable {
         if (!list.isEmpty()) {
             System.out.println("Przygotowana list do zapytania " + list.toString());
             Session session = sessionFactory.openSession();
+            Date currentDate = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
+            String dateString = dateFormat.format(currentDate);
+            System.out.println("Current date:" + dateString);
+
+            Receipt receipt = new Receipt(sessionContext.getCurrentLoggedShop(), getTotalValue(list), sessionContext.getCurrentLoggedUser(), currentDate);
+            System.out.println("Wartość zamówienia: "+ getTotalValue(list));
+            session.save(receipt);
+
             for (State_on_shop sos : list) {
-                session.getTransaction();
+                Product_receipt product_receipt = new Product_receipt(sos.getProductId(),receipt,sos.getAmount(),getSingleValue(sos));
+                System.out.println(sos.getProductId().getName()+"Wartość produktu: "+ getSingleValue(sos));
+                session.save(product_receipt);
+                System.out.println("wartosc pobrana: " + sos.getAmount());
+                State_on_shop sosNew = session.get(State_on_shop.class, sos.getId());
+                System.out.println("stara wartosc: " + sosNew.getAmount());
+                sosNew.setAmount(sosNew.getAmount() - sos.getAmount());
+                session.update(sosNew);
             }
+            session.beginTransaction().commit();
+            list.removeAll();
+            productsTableAdd.getItems().clear();
+            session.close();
         }
+    }
+
+    public BigDecimal getTotalValue(ObservableList<State_on_shop> list) {
+        BigDecimal totalValue = BigDecimal.ZERO;
+        for (State_on_shop sos : list) {
+            totalValue = totalValue.add((sos.getProductId().getPrice().multiply(new BigDecimal((100 - sos.getProductId().getDiscount()) / 100))).multiply(new BigDecimal(sos.getAmount())));
+
+        }
+        System.out.println("wartosc zamowienia getTotalValue:"+totalValue);
+        return totalValue;
+    }
+
+    public BigDecimal getSingleValue(State_on_shop sos) {
+        BigDecimal totalValue = new BigDecimal(0);
+        totalValue = totalValue.add((sos.getProductId().getPrice().multiply(new BigDecimal((100 - sos.getProductId().getDiscount()) / 100))).multiply(new BigDecimal(sos.getAmount())));
+        return totalValue;
     }
 
 }
