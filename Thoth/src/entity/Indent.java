@@ -13,11 +13,11 @@ public class Indent {
     private int indentId;
 
     @ManyToOne
-    @JoinColumn(name = "ShopId_need", referencedColumnName = "ShopId",nullable = false)
+    @JoinColumn(name = "ShopId_need", referencedColumnName = "ShopId")
     private Shop shopId_need;
 
     @ManyToOne
-    @JoinColumn(name = "ShopId_delivery", referencedColumnName = "ShopId",nullable = false)
+    @JoinColumn(name = "ShopId_delivery", referencedColumnName = "ShopId")
     private Shop shopId_delivery;
 
     @ManyToOne
