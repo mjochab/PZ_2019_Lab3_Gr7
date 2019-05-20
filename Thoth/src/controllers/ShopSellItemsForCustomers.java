@@ -13,7 +13,6 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import models.ShopSell;
 import org.hibernate.Session;
 
 import java.net.URL;
