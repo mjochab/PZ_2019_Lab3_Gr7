@@ -273,6 +273,32 @@ public class LogisticOrdersController implements Initializable {
         stg.setScene(new Scene(pane));
     }
 
+    public void changeOrderState(Indent indentToStateChange, String state) {
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        try {
+            State stateToSet = (State) session.createQuery("from State where name = :name")
+                    .setParameter("name", state)
+                    .getSingleResult();
+
+            State_of_indent newIndentState = (State_of_indent) session.createQuery("from State_of_indent where IndentId = :iid")
+                    .setParameter("iid", indentToStateChange.getIndentId())
+                    .getSingleResult();
+
+            newIndentState.setStateId(stateToSet);
+
+            session.update(newIndentState);
+
+            session.getTransaction().commit();
+        }
+        catch(Exception e) {
+            System.out.println("Nie udalo sie zmienic stanu!");
+            session.getTransaction().rollback();
+        }
+    }
+
     @FXML
     public void takeOrderHandler(ActionEvent event) {
         if(ordersReadyForShipment.getSelectionModel().getSelectedItem() == null) {
@@ -283,30 +309,7 @@ public class LogisticOrdersController implements Initializable {
 
         Indent indentToStateChange = indentToTake.getOrder();
 
-        Session session = sessionFactory.openSession();
-
-        session.beginTransaction();
-
-        try {
-            State inRealizationState = (State) session.createQuery("from State where name = :name")
-                                                      .setParameter("name", "W transporcie")
-                                                      .getSingleResult();
-
-            State_of_indent newIndentState = (State_of_indent) session.createQuery("from State_of_indent where IndentId = :iid")
-                                                    .setParameter("iid", indentToStateChange.getIndentId())
-                                                    .getSingleResult();
-
-            newIndentState.setStateId(inRealizationState);
-
-            session.update(newIndentState);
-
-            session.getTransaction().commit();
-        }
-        catch(Exception e) {
-            System.out.println("Nie udalo sie zmienic stanu!");
-            session.getTransaction().rollback();
-        }
-
+        changeOrderState(indentToStateChange, "W transporcie");
     }
 
     @FXML
@@ -319,28 +322,6 @@ public class LogisticOrdersController implements Initializable {
 
         Indent indentToStateChange = indentToTake.getOrder();
 
-        Session session = sessionFactory.openSession();
-
-        session.beginTransaction();
-
-        try {
-            State completedState = (State) session.createQuery("from State where name = :name")
-                    .setParameter("name", "Zrealizowane")
-                    .getSingleResult();
-
-            State_of_indent newIndentState = (State_of_indent) session.createQuery("from State_of_indent where IndentId = :iid")
-                    .setParameter("iid", indentToStateChange.getIndentId())
-                    .getSingleResult();
-
-            newIndentState.setStateId(completedState);
-
-            session.update(newIndentState);
-
-            session.getTransaction().commit();
-        }
-        catch(Exception e) {
-            System.out.println("Nie udalo sie zmienic stanu!");
-            session.getTransaction().rollback();
-        }
+        changeOrderState(indentToStateChange, "Zrealizowane");
     }
 }
