@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
 
 /**
@@ -107,9 +108,18 @@ public class LogisticOrdersController implements Initializable {
         List<State_of_indent> state_of_indents = session.createQuery("from State_of_indent where StateId = :sid")
                 .setParameter("sid", stateObject.getStateId()).list();
 
+        List<State_of_indent> state_of_indents_shop_delivery = new ArrayList<>();
+
+        for(State_of_indent soi : state_of_indents) {
+            if(soi.getIndentId().getShopId_delivery().getShopId() == sessionContext.getCurrentLoggedShop().getShopId()) {
+                System.out.println("Ten sam sklep!");
+                state_of_indents_shop_delivery.add(soi);
+            }
+        }
+
         System.out.println(state_of_indents.size());
 
-        for (State_of_indent soi : state_of_indents) {
+        for (State_of_indent soi : state_of_indents_shop_delivery) {
             System.out.println("parent id = " + soi.getIndentId().getIndentId());
             List<Indent> subIndents = session.createQuery("From Indent indent where ParentId = :pid")
                     .setParameter("pid", soi.getIndentId().getIndentId()).list();
@@ -125,7 +135,7 @@ public class LogisticOrdersController implements Initializable {
 
         session.close();
 
-        return state_of_indents;
+        return state_of_indents_shop_delivery;
     }
 
     /**
@@ -140,8 +150,14 @@ public class LogisticOrdersController implements Initializable {
             indentTableView.setOrder(soi.getIndentId());
             indentTableView.setState(soi);
 
+            /*
             // jesli zamowienie jest podzamowieniem, nie wyswietlaj go w glownej liscie
             if (soi.getIndentId().getParentId() != null) {
+                continue;
+            }
+            */
+
+            if(soi.getIndentId().isComplex()) {
                 continue;
             }
 
