@@ -23,6 +23,9 @@ public class State_on_shop {
     @Column(name = "Amount",nullable = false)
     private int amount;
 
+    @Column(name = "Locked")
+    private int locked;
+
     public State_on_shop(){
 
     }
@@ -31,6 +34,7 @@ public class State_on_shop {
         this.productId = productId;
         this.shopId = shopId;
         this.amount = amount;
+        this.locked = 0;
     }
 
     public State_on_shop(int id,Product productId, Shop shopId, long amount) {
@@ -38,6 +42,7 @@ public class State_on_shop {
         this.productId = productId;
         this.shopId = shopId;
         this.amount = (int)amount;
+        this.locked = 0;
     }
 
 
@@ -73,6 +78,14 @@ public class State_on_shop {
         this.amount = amount;
     }
 
+    public int getLocked() {
+        return locked;
+    }
+
+    public void setLocked(int locked) {
+        this.locked = locked;
+    }
+
     @Override
     public String toString() {
         return "State_on_shop{" +
@@ -80,6 +93,7 @@ public class State_on_shop {
                 ", productId=" + productId +
                 ", shopId=" + shopId +
                 ", amount=" + amount +
+                ", locked=" + locked +
                 '}';
     }
 }

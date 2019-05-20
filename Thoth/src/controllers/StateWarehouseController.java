@@ -520,4 +520,15 @@ public class StateWarehouseController implements Initializable {
 
         }
     }
+
+    public List<Product> getProductsFromIndent() {
+        Session session = sessionFactory.openSession();
+        List<Product> eList = session.createQuery("Select soi FROM Indent_product ip, State_of_indent soi " +
+                "WHERE ip.indentId = soi.indentId AND ip.indentId.shopId_need.shopId = :idshop AND soi.stateId.stateId = :status")
+                .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
+                .setParameter("status", 4).list(); // zmiana statusu z 4 na 5
+        System.out.println("Produkty z zamówień: " + eList);
+        session.close();
+        return eList;
+    }
 }
