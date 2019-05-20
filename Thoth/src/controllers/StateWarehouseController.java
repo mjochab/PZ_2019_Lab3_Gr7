@@ -213,7 +213,7 @@ public class StateWarehouseController implements Initializable {
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
         PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
         AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount()-produktData.getValue().getLocked())));
-        new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedIndex() + 1));
+        new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedItem().getShopId()));
         //System.out.println(getProducts(nazwaProduktu).toString());
         new_order.setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
@@ -271,8 +271,13 @@ public class StateWarehouseController implements Initializable {
         ObservableList<Shop> shops = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<Shop> shopsList = session.createQuery("from Shop").list();
-        shops.addAll(shopsList);
-        shops.remove(sessionContext.getCurrentLoggedShop().getShopId() - 1);
+        for(Shop shop : shopsList) {
+            if(shop.getShopId() != sessionContext.getCurrentLoggedShop().getShopId()) {
+                shops.add(shop);
+            }
+        }
+        //shops.addAll(shopsList);
+        //shops.remove(sessionContext.getCurrentLoggedShop().getShopId() - 1);
         session.close();
         System.out.println("Zwracam sklepy");
         return shops;
@@ -497,9 +502,9 @@ public class StateWarehouseController implements Initializable {
         ObservableList<State_of_indent> orderList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<State_of_indent> eList = session.createQuery("Select soi FROM Indent_product ip, State_of_indent soi " +
-                "WHERE ip.indentId = soi.indentId AND ip.indentId.shopId_need.shopId = :idshop AND soi.stateId.stateId = :status")
+                "WHERE ip.indentId = soi.indentId AND ip.indentId.shopId_delivery.shopId = :idshop AND soi.stateId.stateId = :status")
                 .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
-                .setParameter("status", 4).list(); // zmiana statusu z 4 na 5
+                .setParameter("status", 1).list(); // zmiana statusu z 4 na 5
         System.out.println("getOrder " + eList);
         orderList.addAll(eList);
         session.close();
@@ -516,7 +521,7 @@ public class StateWarehouseController implements Initializable {
             session.beginTransaction();
             State_of_indent p = (State_of_indent) stateOrderWarehouse.getSelectionModel().getSelectedItem();
             System.out.println(p.getStateId().getName());
-            p.getStateId().setStateId(5);
+            p.getStateId().setStateId(2);
             session.update(p);
             session.getTransaction().commit();
             session.close();
