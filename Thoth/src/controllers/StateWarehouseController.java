@@ -212,7 +212,7 @@ public class StateWarehouseController implements Initializable {
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
         PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount()-produktData.getValue().getLocked())));
         new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedIndex() + 1));
         //System.out.println(getProducts(nazwaProduktu).toString());
         new_order.setOnMouseClicked(event -> {
@@ -515,5 +515,16 @@ public class StateWarehouseController implements Initializable {
         } else {
 
         }
+    }
+
+    public List<Product> getProductsFromIndent() {
+        Session session = sessionFactory.openSession();
+        List<Product> eList = session.createQuery("Select soi FROM Indent_product ip, State_of_indent soi " +
+                "WHERE ip.indentId = soi.indentId AND ip.indentId.shopId_need.shopId = :idshop AND soi.stateId.stateId = :status")
+                .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
+                .setParameter("status", 4).list(); // zmiana statusu z 4 na 5
+        System.out.println("Produkty z zamówień: " + eList);
+        session.close();
+        return eList;
     }
 }

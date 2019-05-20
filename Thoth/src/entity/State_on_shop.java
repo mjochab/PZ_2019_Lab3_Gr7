@@ -23,6 +23,9 @@ public class State_on_shop {
     @Column(name = "Amount",nullable = false)
     private int amount;
 
+    @Column(name = "Locked", columnDefinition = "int default 0")
+    private int locked;
+
     public State_on_shop(){
 
     }
@@ -73,6 +76,14 @@ public class State_on_shop {
         this.amount = amount;
     }
 
+    public int getLocked() {
+        return locked;
+    }
+
+    public void setLocked(int locked) {
+        this.locked = locked;
+    }
+
     @Override
     public String toString() {
         return "State_on_shop{" +
@@ -80,6 +91,7 @@ public class State_on_shop {
                 ", productId=" + productId +
                 ", shopId=" + shopId +
                 ", amount=" + amount +
+                ", locked=" + locked +
                 '}';
     }
 }
