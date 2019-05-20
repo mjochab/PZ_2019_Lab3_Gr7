@@ -17,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import models.IndentTableView;
 import org.hibernate.Session;
@@ -28,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
 
 /**
@@ -42,6 +42,10 @@ public class LogisticOrdersController implements Initializable {
     private Button toShipmentDetails;
     @FXML
     private Button inRealizationDetails;
+    @FXML
+    private Button takeOrder;
+    @FXML
+    private Button deliverOrder;
 
     // for shipment table view
     @FXML
@@ -107,9 +111,18 @@ public class LogisticOrdersController implements Initializable {
         List<State_of_indent> state_of_indents = session.createQuery("from State_of_indent where StateId = :sid")
                 .setParameter("sid", stateObject.getStateId()).list();
 
+        List<State_of_indent> state_of_indents_shop_delivery = new ArrayList<>();
+
+        for(State_of_indent soi : state_of_indents) {
+            if(soi.getIndentId().getShopId_delivery().getShopId() == sessionContext.getCurrentLoggedShop().getShopId()) {
+                System.out.println("Ten sam sklep!");
+                state_of_indents_shop_delivery.add(soi);
+            }
+        }
+
         System.out.println(state_of_indents.size());
 
-        for (State_of_indent soi : state_of_indents) {
+        for (State_of_indent soi : state_of_indents_shop_delivery) {
             System.out.println("parent id = " + soi.getIndentId().getIndentId());
             List<Indent> subIndents = session.createQuery("From Indent indent where ParentId = :pid")
                     .setParameter("pid", soi.getIndentId().getIndentId()).list();
@@ -125,7 +138,7 @@ public class LogisticOrdersController implements Initializable {
 
         session.close();
 
-        return state_of_indents;
+        return state_of_indents_shop_delivery;
     }
 
     /**
@@ -140,8 +153,14 @@ public class LogisticOrdersController implements Initializable {
             indentTableView.setOrder(soi.getIndentId());
             indentTableView.setState(soi);
 
+            /*
             // jesli zamowienie jest podzamowieniem, nie wyswietlaj go w glownej liscie
             if (soi.getIndentId().getParentId() != null) {
+                continue;
+            }
+            */
+
+            if(soi.getIndentId().isComplex()) {
                 continue;
             }
 
@@ -158,13 +177,19 @@ public class LogisticOrdersController implements Initializable {
     public ObservableList<IndentTableView> getIndentsInRealization() {
         ObservableList<IndentTableView> listOfIndents = FXCollections.observableArrayList();
 
-        for(State_of_indent soi : getIndentsByState("Oczekuje na potwierdzenie odbioru")) {
+        for(State_of_indent soi : getIndentsByState("W transporcie")) {
             IndentTableView indentTableView = new IndentTableView();
             indentTableView.setOrder(soi.getIndentId());
             indentTableView.setState(soi);
 
+            /*
             // jesli zamowienie jest podzamowieniem, nie wyswietlaj go w glownej liscie
             if (soi.getIndentId().getParentId() != null) {
+                continue;
+            }
+            */
+
+            if(soi.getIndentId().isComplex()) {
                 continue;
             }
 
@@ -246,5 +271,57 @@ public class LogisticOrdersController implements Initializable {
         }
 
         stg.setScene(new Scene(pane));
+    }
+
+    public void changeOrderState(Indent indentToStateChange, String state) {
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        try {
+            State stateToSet = (State) session.createQuery("from State where name = :name")
+                    .setParameter("name", state)
+                    .getSingleResult();
+
+            State_of_indent newIndentState = (State_of_indent) session.createQuery("from State_of_indent where IndentId = :iid")
+                    .setParameter("iid", indentToStateChange.getIndentId())
+                    .getSingleResult();
+
+            newIndentState.setStateId(stateToSet);
+
+            session.update(newIndentState);
+
+            session.getTransaction().commit();
+        }
+        catch(Exception e) {
+            System.out.println("Nie udalo sie zmienic stanu!");
+            session.getTransaction().rollback();
+        }
+    }
+
+    @FXML
+    public void takeOrderHandler(ActionEvent event) {
+        if(ordersReadyForShipment.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
+        IndentTableView indentToTake = ordersReadyForShipment.getSelectionModel().getSelectedItem();
+
+        Indent indentToStateChange = indentToTake.getOrder();
+
+        changeOrderState(indentToStateChange, "W transporcie");
+    }
+
+    @FXML
+    public void deliverOrderHandler(ActionEvent event) {
+        if(ordersInRealization.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
+        IndentTableView indentToTake = ordersInRealization.getSelectionModel().getSelectedItem();
+
+        Indent indentToStateChange = indentToTake.getOrder();
+
+        changeOrderState(indentToStateChange, "Zrealizowane");
     }
 }
