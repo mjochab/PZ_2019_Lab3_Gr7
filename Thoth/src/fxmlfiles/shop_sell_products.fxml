@@ -37,7 +37,7 @@
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                             </padding>
                         </HBox>
-                        <TableView fx:id="productsTable" prefHeight="800.0" prefWidth="640.0">
+                        <TableView fx:id="PRODUCT_TABLE" prefHeight="800.0" prefWidth="640.0">
                             <columns>
                                 <TableColumn fx:id="PRODUCTID" prefWidth="70.0" text="Kod" />
                                 <TableColumn fx:id="NAME" prefWidth="390.0" text="nazwa" />
@@ -69,12 +69,12 @@
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                             </padding>
                         </HBox>
-                        <TableView fx:id="productsTableAdd" minWidth="496.0" prefHeight="800.0" prefWidth="640.0">
+                        <TableView fx:id="RECEIPT_TABLE" minWidth="496.0" prefHeight="800.0" prefWidth="640.0">
                             <columns>
-                                <TableColumn fx:id="PRODUCTID_ADD" prefWidth="70.0" text="Kod" />
-                                <TableColumn fx:id="NAME_ADD" prefWidth="390.0" text="nazwa" />
-                                <TableColumn fx:id="PRICE_ADD" prefWidth="90.0" text="cena" />
-                                <TableColumn fx:id="AMOUNT_ADD" prefWidth="90.0" styleClass="editable-column" text="ilosc" />
+                                <TableColumn fx:id="PRODUCTID_RECEIPT" prefWidth="70.0" text="Kod" />
+                                <TableColumn fx:id="NAME_RECEIPT" prefWidth="390.0" text="nazwa" />
+                                <TableColumn fx:id="PRICE_RECEIPT" prefWidth="90.0" text="cena" />
+                                <TableColumn fx:id="AMOUNT_RECEIPT" prefWidth="90.0" styleClass="editable-column" text="ilosc" />
                             </columns>
                         </TableView>
                     </children>

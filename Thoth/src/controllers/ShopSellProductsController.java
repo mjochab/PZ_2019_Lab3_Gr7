@@ -4,15 +4,11 @@ import entity.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import models.StateOnShop;
 import org.hibernate.Session;
 
@@ -20,7 +16,6 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -31,22 +26,20 @@ import static controllers.MainWindowController.sessionFactory;
 import static controllers.WarehouseNewProductController.isNumeric;
 
 public class ShopSellProductsController implements Initializable {
-    @FXML
-    MenuItem logout;
 
     @FXML
-    private TableView<StateOnShop> productsTableAdd;
+    private TableView<StateOnShop> RECEIPT_TABLE;
     @FXML
-    private TableColumn<StateOnShop, String> PRODUCTID_ADD;
+    private TableColumn<StateOnShop, String> PRODUCTID_RECEIPT;
     @FXML
-    private TableColumn<StateOnShop, String> NAME_ADD;
+    private TableColumn<StateOnShop, String> NAME_RECEIPT;
     @FXML
-    private TableColumn<StateOnShop, String> PRICE_ADD;
+    private TableColumn<StateOnShop, String> PRICE_RECEIPT;
     @FXML
-    public TableColumn<StateOnShop, String> AMOUNT_ADD;
+    public TableColumn<StateOnShop, String> AMOUNT_RECEIPT;
 
     @FXML
-    private TableView productsTable;
+    private TableView PRODUCT_TABLE;
     @FXML
     public TableColumn<State_on_shop, String> PRODUCTID;
     @FXML
@@ -58,58 +51,45 @@ public class ShopSellProductsController implements Initializable {
 
     @FXML
     public TextField serachShop;
-    @FXML
-    Parent root;
-    Stage stage;
 
-    private ObservableList<StateOnShop> list = FXCollections.observableArrayList();
+    private final ObservableList<StateOnShop> list = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
-        NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
-        PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount() - produktData.getValue().getLocked())));
-        productsTable.setItems(getProducts(null));
-        productsTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton().equals(MouseButton.PRIMARY)) {
-                    if (event.getClickCount() == 2) {
-                        if (productsTable.getSelectionModel().getSelectedItem() != null) {
-                            StateOnShop sos = new StateOnShop();
-                            sos.setStateOnShop((State_on_shop) productsTable.getSelectionModel().getSelectedItem());
-                            sos.setAmount(1);
-                            System.out.println("Wysłany " + productsTable.getSelectionModel().getSelectedItem().toString());
-                            if (list.isEmpty()) {
-                                list.add(sos);
-                                addToTable(list);
-                            } else {
-                                for (StateOnShop ex : list) {
-                                    if (ex.getStateOnShop().getId() == ((State_on_shop) productsTable.getSelectionModel().getSelectedItem()).getId()) {
-                                        System.out.println("java FX <3");
-                                        return;
-                                    }
+        addToProductsTable(getProducts(null));
+        PRODUCT_TABLE.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                if (event.getClickCount() == 2) {
+                    if (PRODUCT_TABLE.getSelectionModel().getSelectedItem() != null) {
+                        StateOnShop sos = new StateOnShop();
+                        sos.setStateOnShop((State_on_shop) PRODUCT_TABLE.getSelectionModel().getSelectedItem());
+                        sos.setAmount(1);
+                        System.out.println("Wysłany " + PRODUCT_TABLE.getSelectionModel().getSelectedItem().toString());
+                        if (list.isEmpty()) {
+                            list.add(sos);
+                            addToReceiptTable(list);
+                        } else {
+                            for (StateOnShop ex : list) {
+                                if (ex.getStateOnShop().getId() == ((State_on_shop) PRODUCT_TABLE.getSelectionModel().getSelectedItem()).getId()) {
+                                    System.out.println("java FX <3");
+                                    return;
                                 }
-                                list.add(sos);
-                                addToTable(list);
                             }
+                            list.add(sos);
+                            addToReceiptTable(list);
                         }
                     }
                 }
             }
         });
         //----------------------------------------------------------------------------------------
-        productsTableAdd.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton().equals(MouseButton.SECONDARY)) {
-                    if (event.getClickCount() == 1) {
-                        if (productsTableAdd.getSelectionModel().getSelectedItem() != null) {
-                            System.out.println("Usuwany object " + productsTableAdd.getSelectionModel().getSelectedItem().toString());
-                            list.remove(productsTableAdd.getSelectionModel().getSelectedItem());
-                            addToTable(list);
-                        }
+        RECEIPT_TABLE.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.SECONDARY)) {
+                if (event.getClickCount() == 1) {
+                    if (RECEIPT_TABLE.getSelectionModel().getSelectedItem() != null) {
+                        System.out.println("Usuwany object " + RECEIPT_TABLE.getSelectionModel().getSelectedItem().toString());
+                        list.remove(RECEIPT_TABLE.getSelectionModel().getSelectedItem());
+                        addToReceiptTable(list);
                     }
                 }
             }
@@ -118,7 +98,7 @@ public class ShopSellProductsController implements Initializable {
     }
 
 
-    public ObservableList<State_on_shop> getProducts(String productName) {
+    private ObservableList<State_on_shop> getProducts(String productName) {
         ObservableList<State_on_shop> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<State_on_shop> eList;
@@ -136,33 +116,33 @@ public class ShopSellProductsController implements Initializable {
         session.close();
         return productList;
     }
+    private void addToProductsTable(ObservableList<State_on_shop> list) {
+        PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
+        NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
+        PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
+        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount() - produktData.getValue().getLocked())));
+        PRODUCT_TABLE.setItems(list);
+    }
 
-    public void addToTable(ObservableList<StateOnShop> list) {
-        PRODUCTID_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getProductId())));
-        NAME_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getStateOnShop().getProductId().getName()));
-        PRICE_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getPrice())));
-        AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+
+    private void addToReceiptTable(ObservableList<StateOnShop> list) {
+        PRODUCTID_RECEIPT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getProductId())));
+        NAME_RECEIPT.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getStateOnShop().getProductId().getName()));
+        PRICE_RECEIPT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getPrice())));
+        AMOUNT_RECEIPT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
         System.out.println("Odebrane " + list.toString() + " rozmiar " + list.size());
-        try {
-            if (!list.isEmpty()) {
-                productsTableAdd.setItems(list);
-            } else {
-                //naprawić
-            }
-        } catch (NullPointerException e) {
-            System.out.println("NullPointerException po odjęciu ostatniego elementu " + e);
-        }
+        RECEIPT_TABLE.setItems(list);
     }
 
     public void searchStateShop() {
-        productsTable.setItems(getProducts(serachShop.getText()));
+        PRODUCT_TABLE.setItems(getProducts(serachShop.getText()));
     }
 
     private void setEditableAmount() {
-        productsTableAdd.setEditable(true);
-        AMOUNT_ADD.setCellFactory(TextFieldTableCell.forTableColumn());
+        RECEIPT_TABLE.setEditable(true);
+        AMOUNT_RECEIPT.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        AMOUNT_ADD.setOnEditCommit(e -> { // dodać walidacje try catch
+        AMOUNT_RECEIPT.setOnEditCommit(e -> { // dodać walidacje try catch
             try {
                 System.out.println("PRZED" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
                 int check = e.getRowValue().getStateOnShop().getAmount() - e.getRowValue().getStateOnShop().getLocked();
@@ -176,12 +156,12 @@ public class ShopSellProductsController implements Initializable {
                 } else {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.valueOf(e.getOldValue()));
                     System.out.println("Ustawienie starej wartości + old value" + e.getOldValue() + "," + e.getNewValue());
-                    productsTableAdd.refresh();
+                    RECEIPT_TABLE.refresh();
                     showNumberRangeAlert(1, check);
                 }
             } catch (NumberFormatException exc) {
                 System.out.println("Powrót do poprzedniej liczby");
-                productsTableAdd.refresh();
+                RECEIPT_TABLE.refresh();
                 showNotNumberAlert();
             }
         });
@@ -212,8 +192,8 @@ public class ShopSellProductsController implements Initializable {
             }
             session.beginTransaction().commit();
             list.removeAll();
-            productsTableAdd.getItems().clear();
-            productsTable.setItems(getProducts(null));
+            RECEIPT_TABLE.getItems().clear();
+            PRODUCT_TABLE.setItems(getProducts(null));
             session.close();
             showSuccesAllert();
         } else {
@@ -221,7 +201,7 @@ public class ShopSellProductsController implements Initializable {
         }
     }
 
-    public BigDecimal getTotalValue(ObservableList<StateOnShop> list) {
+    private BigDecimal getTotalValue(ObservableList<StateOnShop> list) {
         BigDecimal totalValue = BigDecimal.ZERO;
         for (StateOnShop sos : list) {
             totalValue = totalValue.add((sos.getStateOnShop().getProductId().getPrice().multiply(new BigDecimal((100 - sos.getStateOnShop().getProductId().getDiscount()) / 100))).multiply(new BigDecimal(sos.getAmount())));
@@ -231,7 +211,7 @@ public class ShopSellProductsController implements Initializable {
         return totalValue;
     }
 
-    public BigDecimal getSingleValue(StateOnShop sos) {
+    private BigDecimal getSingleValue(StateOnShop sos) {
         BigDecimal totalValue = new BigDecimal(0);
         totalValue = totalValue.add((sos.getStateOnShop().getProductId().getPrice().multiply(new BigDecimal((100 - sos.getStateOnShop().getProductId().getDiscount()) / 100))).multiply(new BigDecimal(sos.getAmount())));
         return totalValue;
