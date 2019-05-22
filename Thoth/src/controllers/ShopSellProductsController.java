@@ -13,6 +13,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import models.StateOnShop;
 import org.hibernate.Session;
 
 import java.math.BigDecimal;
@@ -23,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static utils.Alerts.*;
+
 import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
 import static controllers.WarehouseNewProductController.isNumeric;
@@ -30,23 +33,36 @@ import static controllers.WarehouseNewProductController.isNumeric;
 public class ShopSellProductsController implements Initializable {
     @FXML
     MenuItem logout;
+
     @FXML
-    private TableView productsTable, productsTableAdd;
+    private TableView<StateOnShop> productsTableAdd;
     @FXML
-    public TableColumn<State_on_shop, String> PRODUCTID, PRODUCTID_ADD;
+    private TableColumn<StateOnShop, String> PRODUCTID_ADD;
     @FXML
-    public TableColumn<State_on_shop, String> NAME, NAME_ADD;
+    private TableColumn<StateOnShop, String> NAME_ADD;
     @FXML
-    public TableColumn<State_on_shop, String> PRICE, PRICE_ADD;
+    private TableColumn<StateOnShop, String> PRICE_ADD;
     @FXML
-    public TableColumn<State_on_shop, String> AMOUNT, AMOUNT_ADD;
+    public TableColumn<StateOnShop, String> AMOUNT_ADD;
+
+    @FXML
+    private TableView productsTable;
+    @FXML
+    public TableColumn<State_on_shop, String> PRODUCTID;
+    @FXML
+    public TableColumn<State_on_shop, String> NAME;
+    @FXML
+    public TableColumn<State_on_shop, String> PRICE;
+    @FXML
+    public TableColumn<State_on_shop, String> AMOUNT;
+
     @FXML
     public TextField serachShop;
     @FXML
     Parent root;
     Stage stage;
 
-    private ObservableList<State_on_shop> list = FXCollections.observableArrayList();
+    private ObservableList<StateOnShop> list = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -61,17 +77,22 @@ public class ShopSellProductsController implements Initializable {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
                     if (event.getClickCount() == 2) {
                         if (productsTable.getSelectionModel().getSelectedItem() != null) {
+                            StateOnShop sos = new StateOnShop();
+                            sos.setStateOnShop((State_on_shop) productsTable.getSelectionModel().getSelectedItem());
+                            sos.setAmount(1);
                             System.out.println("Wysłany " + productsTable.getSelectionModel().getSelectedItem().toString());
                             if (list.isEmpty()) {
-                                list.add((State_on_shop) productsTable.getSelectionModel().getSelectedItem());
+                                list.add(sos);
                                 addToTable(list);
                             } else {
-                                if (list.contains(productsTable.getSelectionModel().getSelectedItem())) {
-                                    System.out.println("Ten object już tam sie znajduje");
-                                } else {
-                                    list.add((State_on_shop) productsTable.getSelectionModel().getSelectedItem());
-                                    addToTable(list);
+                                for (StateOnShop ex : list) {
+                                    if (ex.getStateOnShop().getId() == ((State_on_shop) productsTable.getSelectionModel().getSelectedItem()).getId()) {
+                                        System.out.println("java FX <3");
+                                        return;
+                                    }
                                 }
+                                list.add(sos);
+                                addToTable(list);
                             }
                         }
                     }
@@ -82,8 +103,8 @@ public class ShopSellProductsController implements Initializable {
         productsTableAdd.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (event.getButton().equals(MouseButton.PRIMARY)) {
-                    if (event.getClickCount() == 3) {
+                if (event.getButton().equals(MouseButton.SECONDARY)) {
+                    if (event.getClickCount() == 1) {
                         if (productsTableAdd.getSelectionModel().getSelectedItem() != null) {
                             System.out.println("Usuwany object " + productsTableAdd.getSelectionModel().getSelectedItem().toString());
                             list.remove(productsTableAdd.getSelectionModel().getSelectedItem());
@@ -116,15 +137,15 @@ public class ShopSellProductsController implements Initializable {
         return productList;
     }
 
-    public void addToTable(ObservableList<State_on_shop> item) {
-        PRODUCTID_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
-        NAME_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
-        PRICE_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-        AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount() - produktData.getValue().getLocked())));
-        System.out.println("Odebrane " + item.toString() + " rozmiar " + item.size());
+    public void addToTable(ObservableList<StateOnShop> list) {
+        PRODUCTID_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getProductId())));
+        NAME_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getStateOnShop().getProductId().getName()));
+        PRICE_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getPrice())));
+        AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+        System.out.println("Odebrane " + list.toString() + " rozmiar " + list.size());
         try {
-            if (!item.isEmpty()) {
-                productsTableAdd.setItems(item);
+            if (!list.isEmpty()) {
+                productsTableAdd.setItems(list);
             } else {
                 //naprawić
             }
@@ -144,28 +165,25 @@ public class ShopSellProductsController implements Initializable {
         AMOUNT_ADD.setOnEditCommit(e -> { // dodać walidacje try catch
             try {
                 System.out.println("PRZED" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
-                int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount();
+                int check = e.getRowValue().getStateOnShop().getAmount()-e.getRowValue().getStateOnShop().getLocked();
                 if (!isNumeric(e.getNewValue())) {
                     throw new NumberFormatException();
                 }
-                e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
-                System.out.println("PO" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
-                if (e.getTableView().getSelectionModel().getSelectedItem().getAmount() > 0 && e.getTableView().getSelectionModel().getSelectedItem().getAmount() <= check) {
-                    System.out.println("większe od 0 i mniejsze od ");
+                if (Integer.valueOf(e.getNewValue()) > 0 && Integer.valueOf(e.getNewValue()) <= check) {
+                    System.out.println("większe od 0 i mniejsze od " + check);
+                    e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
+                    System.out.println("PO" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
                 } else {
-                    e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
-                    System.out.println("Powrót do poprzedniej liczby");
+                    e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.valueOf(e.getOldValue()));
+                    System.out.println("Ustawienie starej wartości + old value" + e.getOldValue() + "," + e.getNewValue());
                     productsTableAdd.refresh();
+                    showNumberRangeAlert(1,check);
                 }
             } catch (NumberFormatException exc) {
                 System.out.println("Powrót do poprzedniej liczby");
                 productsTableAdd.refresh();
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Niepowodzenie");
-                alert.setContentText("Wprowadzona wartość nie jest liczbą!");
-                alert.showAndWait();
+                showNotNumberAlert();
             }
-
         });
     }
 
@@ -179,15 +197,15 @@ public class ShopSellProductsController implements Initializable {
             System.out.println("Current date:" + dateString);
 
             Receipt receipt = new Receipt(sessionContext.getCurrentLoggedShop(), getTotalValue(list), sessionContext.getCurrentLoggedUser(), currentDate);
-            System.out.println("Wartość zamówienia: "+ getTotalValue(list));
+            System.out.println("Wartość zamówienia: " + getTotalValue(list));
             session.save(receipt);
 
-            for (State_on_shop sos : list) {
-                Product_receipt product_receipt = new Product_receipt(sos.getProductId(),receipt,sos.getAmount(),getSingleValue(sos));
-                System.out.println(sos.getProductId().getName()+"Wartość produktu: "+ getSingleValue(sos));
+            for (StateOnShop sos : list) {
+                Product_receipt product_receipt = new Product_receipt(sos.getStateOnShop().getProductId(), receipt, sos.getAmount(), getSingleValue(sos));
+                System.out.println(sos.getStateOnShop().getProductId().getName() + "Wartość produktu: " + getSingleValue(sos));
                 session.save(product_receipt);
                 System.out.println("wartosc pobrana: " + sos.getAmount());
-                State_on_shop sosNew = session.get(State_on_shop.class, sos.getId());
+                State_on_shop sosNew = session.get(State_on_shop.class, sos.getStateOnShop().getId());
                 System.out.println("stara wartosc: " + sosNew.getAmount());
                 sosNew.setAmount(sosNew.getAmount() - sos.getAmount());
                 session.update(sosNew);
@@ -199,19 +217,19 @@ public class ShopSellProductsController implements Initializable {
         }
     }
 
-    public BigDecimal getTotalValue(ObservableList<State_on_shop> list) {
+    public BigDecimal getTotalValue(ObservableList<StateOnShop> list) {
         BigDecimal totalValue = BigDecimal.ZERO;
-        for (State_on_shop sos : list) {
-            totalValue = totalValue.add((sos.getProductId().getPrice().multiply(new BigDecimal((100 - sos.getProductId().getDiscount()) / 100))).multiply(new BigDecimal(sos.getAmount())));
+        for (StateOnShop sos : list) {
+            totalValue = totalValue.add((sos.getStateOnShop().getProductId().getPrice().multiply(new BigDecimal((100 - sos.getStateOnShop().getProductId().getDiscount()) / 100))).multiply(new BigDecimal(sos.getAmount())));
 
         }
-        System.out.println("wartosc zamowienia getTotalValue:"+totalValue);
+        System.out.println("wartosc zamowienia getTotalValue:" + totalValue);
         return totalValue;
     }
 
-    public BigDecimal getSingleValue(State_on_shop sos) {
+    public BigDecimal getSingleValue(StateOnShop sos) {
         BigDecimal totalValue = new BigDecimal(0);
-        totalValue = totalValue.add((sos.getProductId().getPrice().multiply(new BigDecimal((100 - sos.getProductId().getDiscount()) / 100))).multiply(new BigDecimal(sos.getAmount())));
+        totalValue = totalValue.add((sos.getStateOnShop().getProductId().getPrice().multiply(new BigDecimal((100 - sos.getStateOnShop().getProductId().getDiscount()) / 100))).multiply(new BigDecimal(sos.getAmount())));
         return totalValue;
     }
 

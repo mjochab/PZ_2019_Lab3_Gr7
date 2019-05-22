@@ -2,29 +2,30 @@ package models;
 
 import entity.Product;
 import entity.Shop;
+import entity.State_on_shop;
 
 public class StateOnShop {
-    private int id;
+    private State_on_shop stateOnShop;
     private int amount;
-    private Product productid;
-    private Shop shopid;
-
     public StateOnShop() {
     }
 
-    public StateOnShop(int id, int amount, Product productid, Shop shopid) {
-        this.id = id;
+    public StateOnShop(State_on_shop stateOnShop) {
+        this.stateOnShop = stateOnShop;
+        this.amount = 1;
+    }
+
+    public StateOnShop(State_on_shop stateOnShop, int amount) {
+        this.stateOnShop = stateOnShop;
         this.amount = amount;
-        this.productid = productid;
-        this.shopid = shopid;
     }
 
-    public int getId() {
-        return id;
+    public State_on_shop getStateOnShop() {
+        return stateOnShop;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setStateOnShop(State_on_shop stateOnShop) {
+        this.stateOnShop = stateOnShop;
     }
 
     public int getAmount() {
@@ -33,21 +34,5 @@ public class StateOnShop {
 
     public void setAmount(int amount) {
         this.amount = amount;
-    }
-
-    public Product getProductid() {
-        return productid;
-    }
-
-    public void setProductid(Product productid) {
-        this.productid = productid;
-    }
-
-    public Shop getShopid() {
-        return shopid;
-    }
-
-    public void setShopid(Shop shopid) {
-        this.shopid = shopid;
     }
 }
