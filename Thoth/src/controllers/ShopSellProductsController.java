@@ -139,11 +139,12 @@ public class ShopSellProductsController implements Initializable {
                 new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getProductId())));
         NAME_RECEIPT.setCellValueFactory(produktData ->
                 new SimpleStringProperty(produktData.getValue().getStateOnShop().getProductId().getName()));
+        //noinspection BigDecimalMethodWithoutRoundingCalled
         PRICE_RECEIPT.setCellValueFactory(produktData ->
                 new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getPrice()
                         .multiply(BigDecimal.ONE
                                 .subtract(BigDecimal.valueOf(produktData.getValue().getStateOnShop().getProductId().getDiscount())
-                                        .divide(BigDecimal.valueOf(100)))))));
+                                        .divide(BigDecimal.valueOf(100)))).setScale(2))));
         AMOUNT_RECEIPT.setCellValueFactory(produktData ->
                 new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
         System.out.println("Odebrane " + list.toString() + " rozmiar " + list.size());
