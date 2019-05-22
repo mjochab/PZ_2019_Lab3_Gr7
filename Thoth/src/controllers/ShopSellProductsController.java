@@ -165,7 +165,7 @@ public class ShopSellProductsController implements Initializable {
         AMOUNT_ADD.setOnEditCommit(e -> { // dodać walidacje try catch
             try {
                 System.out.println("PRZED" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
-                int check = e.getRowValue().getStateOnShop().getAmount()-e.getRowValue().getStateOnShop().getLocked();
+                int check = e.getRowValue().getStateOnShop().getAmount() - e.getRowValue().getStateOnShop().getLocked();
                 if (!isNumeric(e.getNewValue())) {
                     throw new NumberFormatException();
                 }
@@ -177,7 +177,7 @@ public class ShopSellProductsController implements Initializable {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.valueOf(e.getOldValue()));
                     System.out.println("Ustawienie starej wartości + old value" + e.getOldValue() + "," + e.getNewValue());
                     productsTableAdd.refresh();
-                    showNumberRangeAlert(1,check);
+                    showNumberRangeAlert(1, check);
                 }
             } catch (NumberFormatException exc) {
                 System.out.println("Powrót do poprzedniej liczby");
@@ -213,7 +213,11 @@ public class ShopSellProductsController implements Initializable {
             session.beginTransaction().commit();
             list.removeAll();
             productsTableAdd.getItems().clear();
+            productsTable.setItems(getProducts(null));
             session.close();
+            showSuccesAllert();
+        } else {
+            showNoIthemsAlert();
         }
     }
 
