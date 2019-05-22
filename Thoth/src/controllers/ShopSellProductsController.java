@@ -48,6 +48,8 @@ public class ShopSellProductsController implements Initializable {
     public TableColumn<State_on_shop, String> PRICE;
     @FXML
     public TableColumn<State_on_shop, String> AMOUNT;
+    @FXML
+    public TableColumn<State_on_shop, String> DISCOUNT;
 
     @FXML
     public TextField serachShop;
@@ -116,20 +118,34 @@ public class ShopSellProductsController implements Initializable {
         session.close();
         return productList;
     }
+
     private void addToProductsTable(ObservableList<State_on_shop> list) {
-        PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
-        NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
-        PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount() - produktData.getValue().getLocked())));
+        PRODUCTID.setCellValueFactory(produktData ->
+                new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
+        NAME.setCellValueFactory(produktData ->
+                new SimpleStringProperty(produktData.getValue().getProductId().getName()));
+        PRICE.setCellValueFactory(produktData ->
+                new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
+        AMOUNT.setCellValueFactory(produktData ->
+                new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount() - produktData.getValue().getLocked())));
+        DISCOUNT.setCellValueFactory(produktData ->
+                new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getDiscount())));
         PRODUCT_TABLE.setItems(list);
     }
 
 
     private void addToReceiptTable(ObservableList<StateOnShop> list) {
-        PRODUCTID_RECEIPT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getProductId())));
-        NAME_RECEIPT.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getStateOnShop().getProductId().getName()));
-        PRICE_RECEIPT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getPrice())));
-        AMOUNT_RECEIPT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+        PRODUCTID_RECEIPT.setCellValueFactory(produktData ->
+                new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getProductId())));
+        NAME_RECEIPT.setCellValueFactory(produktData ->
+                new SimpleStringProperty(produktData.getValue().getStateOnShop().getProductId().getName()));
+        PRICE_RECEIPT.setCellValueFactory(produktData ->
+                new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getPrice()
+                        .multiply(BigDecimal.ONE
+                                .subtract(BigDecimal.valueOf(produktData.getValue().getStateOnShop().getProductId().getDiscount())
+                                        .divide(BigDecimal.valueOf(100)))))));
+        AMOUNT_RECEIPT.setCellValueFactory(produktData ->
+                new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
         System.out.println("Odebrane " + list.toString() + " rozmiar " + list.size());
         RECEIPT_TABLE.setItems(list);
     }
@@ -182,7 +198,7 @@ public class ShopSellProductsController implements Initializable {
 
             for (StateOnShop sos : list) {
                 Product_receipt product_receipt = new Product_receipt(sos.getStateOnShop().getProductId(), receipt, sos.getAmount(), getSingleValue(sos));
-                System.out.println(sos.getStateOnShop().getProductId().getName() + "Wartość produktu: " + getSingleValue(sos));
+                System.out.println(sos.getStateOnShop().getProductId().getName() + " // Wartość produktu: " + getSingleValue(sos));
                 session.save(product_receipt);
                 System.out.println("wartosc pobrana: " + sos.getAmount());
                 State_on_shop sosNew = session.get(State_on_shop.class, sos.getStateOnShop().getId());
@@ -204,16 +220,22 @@ public class ShopSellProductsController implements Initializable {
     private BigDecimal getTotalValue(ObservableList<StateOnShop> list) {
         BigDecimal totalValue = BigDecimal.ZERO;
         for (StateOnShop sos : list) {
-            totalValue = totalValue.add((sos.getStateOnShop().getProductId().getPrice().multiply(new BigDecimal((100 - sos.getStateOnShop().getProductId().getDiscount()) / 100))).multiply(new BigDecimal(sos.getAmount())));
-
+            totalValue = totalValue.add(sos.getStateOnShop().getProductId().getPrice()
+                    .multiply(BigDecimal.valueOf(sos.getAmount()))
+                    .multiply(BigDecimal.ONE
+                            .subtract(BigDecimal.valueOf(sos.getStateOnShop().getProductId().getDiscount())
+                                    .divide(BigDecimal.valueOf(100)))));
         }
-        System.out.println("wartosc zamowienia getTotalValue:" + totalValue);
         return totalValue;
     }
 
     private BigDecimal getSingleValue(StateOnShop sos) {
-        BigDecimal totalValue = new BigDecimal(0);
-        totalValue = totalValue.add((sos.getStateOnShop().getProductId().getPrice().multiply(new BigDecimal((100 - sos.getStateOnShop().getProductId().getDiscount()) / 100))).multiply(new BigDecimal(sos.getAmount())));
+        BigDecimal totalValue = BigDecimal.ZERO;
+        totalValue = totalValue.add(sos.getStateOnShop().getProductId().getPrice()
+                .multiply(BigDecimal.valueOf(sos.getAmount()))
+                .multiply(BigDecimal.ONE
+                        .subtract(BigDecimal.valueOf(sos.getStateOnShop().getProductId().getDiscount())
+                                .divide(BigDecimal.valueOf(100)))));
         return totalValue;
     }
 

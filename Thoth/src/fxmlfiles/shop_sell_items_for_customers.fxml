@@ -86,11 +86,11 @@
                         </HBox>
                         <TableView fx:id="productsTableAdd" prefHeight="763.0" prefWidth="640.0">
                             <columns>
-                                <TableColumn fx:id="PRODUCTID_ADD" prefWidth="53.0" text="id" />
-                                <TableColumn fx:id="NAME_ADD" prefWidth="434.0" text="nazwa" />
-                                <TableColumn fx:id="PRICE_ADD" prefWidth="54.0" text="cena" />
-                                <TableColumn fx:id="AMOUNT_ADD" minWidth="0.0" prefWidth="44.0" text="ilosc" />
-                                <TableColumn fx:id="DISCOUNT_ADD" minWidth="0.0" prefWidth="54.0" text="obnizka" />
+                                <TableColumn fx:id="PRODUCTID_RECEIPT" prefWidth="53.0" text="id" />
+                                <TableColumn fx:id="NAME_RECEIPT" prefWidth="434.0" text="nazwa" />
+                                <TableColumn fx:id="PRICE_RECEIPT" prefWidth="54.0" text="cena" />
+                                <TableColumn fx:id="AMOUNT_RECEIPT" minWidth="0.0" prefWidth="44.0" text="ilosc" />
+                                <TableColumn fx:id="DISCOUNT_RECEIPT" minWidth="0.0" prefWidth="54.0" text="obnizka" />
                             </columns>
                         </TableView>
                     </children>

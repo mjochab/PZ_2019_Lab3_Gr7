@@ -24,20 +24,19 @@ import static controllers.MainWindowController.sessionContext;
 import static controllers.WarehouseNewProductController.isNumeric;
 
 public class ShopSellItemsForCustomers implements Initializable {
-    @FXML
-    MenuItem logout;
+
     @FXML
     private TableView productsTable, productsTableAdd;
     @FXML
-    public TableColumn<State_on_shop, String> PRODUCTID, PRODUCTID_ADD;
+    public TableColumn<State_on_shop, String> PRODUCTID, PRODUCTID_RECEIPT;
     @FXML
-    public TableColumn<State_on_shop, String> NAME, NAME_ADD;
+    public TableColumn<State_on_shop, String> NAME, NAME_RECEIPT;
     @FXML
-    public TableColumn<State_on_shop, String> PRICE, PRICE_ADD;
+    public TableColumn<State_on_shop, String> PRICE, PRICE_RECEIPT;
     @FXML
-    public TableColumn<State_on_shop, String> AMOUNT, AMOUNT_ADD;
+    public TableColumn<State_on_shop, String> AMOUNT, AMOUNT_RECEIPT;
     @FXML
-    public TableColumn<State_on_shop, String> DISCOUNT, DISCOUNT_ADD;
+    public TableColumn<State_on_shop, String> DISCOUNT, DISCOUNT_RECEIPT;
     @FXML
     public TextField serachShop, nameTF, lastNameTF, numerPhoneTF;
     @FXML
@@ -118,11 +117,11 @@ public class ShopSellItemsForCustomers implements Initializable {
     }
 
     public void addToTable(ObservableList<State_on_shop> item) {
-        PRODUCTID_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
-        NAME_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
-        PRICE_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-        AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount()-produktData.getValue().getLocked())));
-        DISCOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getDiscount())));
+        PRODUCTID_RECEIPT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
+        NAME_RECEIPT.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
+        PRICE_RECEIPT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
+        AMOUNT_RECEIPT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount()-produktData.getValue().getLocked())));
+        DISCOUNT_RECEIPT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getDiscount())));
         System.out.println("Odebrane " + item.toString() + " rozmiar " + item.size());
         try {
             if (!item.isEmpty()) {
@@ -141,9 +140,9 @@ public class ShopSellItemsForCustomers implements Initializable {
 
     private void setEditableAmount() {
         productsTableAdd.setEditable(true);
-        AMOUNT_ADD.setCellFactory(TextFieldTableCell.forTableColumn());
+        AMOUNT_RECEIPT.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        AMOUNT_ADD.setOnEditCommit(e -> {
+        AMOUNT_RECEIPT.setOnEditCommit(e -> {
             try {
                 System.out.println("PRZED" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
                 int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount();
