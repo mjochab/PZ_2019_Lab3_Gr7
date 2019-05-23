@@ -188,24 +188,29 @@ public class ShopOrderItemsForCustomers implements Initializable {
     public void confirm() {
         if (!list.isEmpty()) {
             System.out.println("Przygotowane dane do wysłąnia " + list + " " + nameTF.getText() + " " + lastNameTF.getText() + " " + numerPhoneTF.getText());
-            if(!nameTF.getText().isEmpty() && !lastNameTF.getText().isEmpty() && !numerPhoneTF.getText().isEmpty()){
+            if (!nameTF.getText().isEmpty() && !lastNameTF.getText().isEmpty() && !numerPhoneTF.getText().isEmpty()) {
                 Session session = sessionFactory.openSession();
 
                 Date currentDate = new Date();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
                 String dateString = dateFormat.format(currentDate);
                 System.out.println("Current date:" + dateString);
+                if(numerPhoneTF.getText().length() != 9){
+                    session.close();
+                    newAlertCustom("Niepowodzenie","Numer telefonu składa się z 9 cyfr");
+                    return;
+                }
+                Customer customer = new Customer(nameTF.getText(), lastNameTF.getText(), Integer.valueOf(numerPhoneTF.getText()));
 
-                Customer customer = new Customer(nameTF.getText(),lastNameTF.getText(),Integer.valueOf(numerPhoneTF.getText()));
                 session.save(customer);
                 System.out.println(customer.toString());
 
-                Indent indent = new Indent(sessionContext.getCurrentLoggedShop(),customer,currentDate);
+                Indent indent = new Indent(sessionContext.getCurrentLoggedShop(), customer, currentDate);
                 session.save(indent);
                 System.out.println(indent.toString());
 
-                for(StateOnShop sos : list){
-                    Indent_product indent_product = new Indent_product(indent,sos.getStateOnShop().getProductId(),sos.getAmount());
+                for (StateOnShop sos : list) {
+                    Indent_product indent_product = new Indent_product(indent, sos.getStateOnShop().getProductId(), sos.getAmount());
                     session.save(indent_product);
                 }
                 session.beginTransaction().commit();
@@ -215,11 +220,11 @@ public class ShopOrderItemsForCustomers implements Initializable {
                 session.close();
                 showSuccesAllert();
 
-            }else{
-                showAllFieldsRequiredAlert("Pola "+nameTF.getPromptText()+", "+lastNameTF.getPromptText()+", "+numerPhoneTF.getPromptText()+" nie mogą być puste.");
+            } else {
+                showAllFieldsRequiredAlert("Pola " + nameTF.getPromptText() + ", " + lastNameTF.getPromptText() + ", " + numerPhoneTF.getPromptText() + " nie mogą być puste.");
             }
 
-        }else {
+        } else {
             showNoIthemsAlert();
         }
     }
