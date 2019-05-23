@@ -27,6 +27,13 @@ public class Alerts {
         alert.showAndWait();
     }
 
+    public static void newAlertCustom(String title, String content){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
     public static void showAllFieldsRequiredAlert(String content){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Niepowodzenie");
@@ -63,6 +70,13 @@ public class Alerts {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Informacja");
         alert.setHeaderText("Produkt już znajduje się na liście.");
+        alert.showAndWait();
+    }
+
+    public static void newAlertOrder(String title, String content){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(content);
         alert.showAndWait();
     }
 }
