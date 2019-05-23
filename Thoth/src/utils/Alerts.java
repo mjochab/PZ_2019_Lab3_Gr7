@@ -27,6 +27,13 @@ public class Alerts {
         alert.showAndWait();
     }
 
+    public static void newAlertCustom(String title, String content){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
 
     // powodzenie
 
@@ -34,6 +41,13 @@ public class Alerts {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Powodzenie");
         alert.setHeaderText("Operacja przebiegła pomyślnie.");
+        alert.showAndWait();
+    }
+
+    public static void newAlertOrder(String title, String content){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(content);
         alert.showAndWait();
     }
 }

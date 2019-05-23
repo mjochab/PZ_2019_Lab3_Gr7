@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.*;
+import static utils.Alerts.newAlertCustom;
 
 
 public class WarehouseNewProductController implements Initializable {
@@ -47,11 +48,11 @@ public class WarehouseNewProductController implements Initializable {
                 insertToDataBase();
             } else { //produkt jest już w bazie
                 System.out.println("Jest w bazie "+getNameProduct(tab[0]).get(0).getProductId());
-                newAlert("Niepowodzenie","Produkt jest już w bazie");
+                newAlertCustom("Niepowodzenie","Produkt jest już w bazie");
                 NAME.setText(""); PRICE.setText(""); AMOUNT.setText("");
             }
         } else {
-            newAlert("Niepowodzenie","Wprowadzono złe dane");
+            newAlertCustom("Niepowodzenie","Wprowadzono złe dane");
             System.out.println("Wprowadź poprawne dane");
             NAME.setText(""); PRICE.setText(""); AMOUNT.setText("");
         }

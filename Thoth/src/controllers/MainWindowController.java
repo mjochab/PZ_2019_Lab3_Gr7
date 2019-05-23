@@ -58,7 +58,7 @@ public class MainWindowController implements Initializable {
 
         if (sessionContext.getCurrentLoggedUser().getRoleId().getPosition().equals(ADMIN)) {
             if (!event.getSource().toString().contains("admin_view") &&             // jezeli nie wybrano panelu admina lub
-                !event.getSource().toString().contains("analyst")) {                // panelu analityka
+                    !event.getSource().toString().contains("analyst")) {                // panelu analityka
                 if (this.comboList.getSelectionModel().getSelectedItem() == null) { // i nie wybrano zadnego sklepu
                     System.out.println("Nie wybrano sklepu!");                      // wyswietl ostrzezenie
 
@@ -232,16 +232,16 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       try{
-           sessionFactory = new Configuration().configure("update.cfg.xml").buildSessionFactory();
-       }catch (Exception e){
-           System.out.println(e.getMessage());
-           Alert alert = new Alert(Alert.AlertType.ERROR);
-           alert.setTitle("Niepowodzenie");
-           alert.setContentText("NIe udało się nawiązać połączenia z bazą danych!");
-           alert.showAndWait();
-           System.exit(0);
-       }
+        try {
+            sessionFactory = new Configuration().configure("update.cfg.xml").buildSessionFactory();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Niepowodzenie");
+            alert.setContentText("NIe udało się nawiązać połączenia z bazą danych!");
+            alert.showAndWait();
+            System.exit(0);
+        }
     }
 
     public UserShop getLoggedUserData(User userToLogin) {
@@ -266,12 +266,5 @@ public class MainWindowController implements Initializable {
         session.close();
 
         return userData;
-    }
-
-    public static void newAlert(String title, String content){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setContentText(content);
-        alert.showAndWait();
     }
 }
