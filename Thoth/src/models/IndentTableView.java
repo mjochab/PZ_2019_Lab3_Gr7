@@ -9,7 +9,8 @@ public class IndentTableView {
     private Indent order;
     private State_of_indent state;
 
-    public IndentTableView() {}
+    public IndentTableView() {
+    }
 
     public Indent getOrder() {
         return order;
