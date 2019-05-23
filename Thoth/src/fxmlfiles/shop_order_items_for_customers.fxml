@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
@@ -13,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane minHeight="800.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ShopSellItemsForCustomers">
+<AnchorPane minHeight="800.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ShopOrderItemsForCustomers">
     <children>
         <HBox prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -21,12 +17,12 @@
                     <children>
                         <HBox>
                             <children>
-                                <TextField fx:id="serachShop" prefHeight="36.0" prefWidth="381.0" promptText="Szukaj produktu">
+                                <TextField fx:id="searchTF" prefHeight="25.0" prefWidth="239.0" promptText="Szukaj produktu">
                                     <HBox.margin>
                                         <Insets right="10.0" />
                                     </HBox.margin>
                                 </TextField>
-                                <Button fx:id="searchStateShop" mnemonicParsing="false" onAction="#searchStateShop" prefHeight="36.0" prefWidth="153.0" style="-fx-background-color: #ff9900;" text="Szukaj" textAlignment="CENTER">
+                                <Button fx:id="searchStateShop" mnemonicParsing="false" onAction="#searchStateShop" prefHeight="36.0" prefWidth="153.0" style="-fx-background-color: #ff9900;" text="Szukaj/Odśwież" textAlignment="CENTER">
                                     <HBox.margin>
                                         <Insets />
                                     </HBox.margin>
@@ -39,13 +35,14 @@
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                             </padding>
                         </HBox>
-                        <TableView fx:id="productsTable" prefHeight="800.0" prefWidth="640.0">
+                        <TableView fx:id="PRODUCTS_TABLE" prefHeight="800.0" prefWidth="640.0">
                             <columns>
-                                <TableColumn fx:id="PRODUCTID" prefWidth="70.0" text="id" />
-                                <TableColumn fx:id="NAME" prefWidth="387.0" text="nazwa" />
-                                <TableColumn fx:id="PRICE" prefWidth="67.0" text="cena" />
-                                <TableColumn fx:id="AMOUNT" minWidth="0.0" prefWidth="51.0" text="ilosc" />
-                                <TableColumn fx:id="DISCOUNT" minWidth="0.0" prefWidth="64.0" text="obnizka" />
+                                <TableColumn fx:id="PRODUCTID" prefWidth="70.0" text="Kod" />
+                                <TableColumn fx:id="NAME" prefWidth="267.00001525878906" text="nazwa" />
+                                <TableColumn fx:id="PRICE" prefWidth="79.0" text="cena" />
+                                <TableColumn fx:id="DISCOUNT" minWidth="0.0" prefWidth="59.0" text="zniżka" />
+                        <TableColumn fx:id="AMOUNT" prefWidth="87.0" text="ilość" />
+                        <TableColumn fx:id="CITY" prefWidth="76.0" text="Miasto" />
                             </columns>
                         </TableView>
                     </children>
@@ -72,7 +69,7 @@
                                         <Insets right="10.0" />
                                     </HBox.margin>
                                 </TextField>
-                                <Button mnemonicParsing="false" onAction="#confirm" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #ff9900;" text="ZatwierdÅº" />
+                                <Button mnemonicParsing="false" onAction="#confirm" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #ff9900;" text="Powiadom magazyniera" />
                             </children>
                             <opaqueInsets>
                                 <Insets />
@@ -84,13 +81,13 @@
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                             </padding>
                         </HBox>
-                        <TableView fx:id="productsTableAdd" prefHeight="763.0" prefWidth="640.0">
+                        <TableView fx:id="WAREHOUSE_SHORTAGES_TABLE" prefHeight="763.0" prefWidth="640.0">
                             <columns>
-                                <TableColumn fx:id="PRODUCTID_RECEIPT" prefWidth="53.0" text="id" />
+                                <TableColumn fx:id="PRODUCTID_RECEIPT" prefWidth="53.0" text="Kod" />
                                 <TableColumn fx:id="NAME_RECEIPT" prefWidth="434.0" text="nazwa" />
                                 <TableColumn fx:id="PRICE_RECEIPT" prefWidth="54.0" text="cena" />
-                                <TableColumn fx:id="AMOUNT_RECEIPT" minWidth="0.0" prefWidth="44.0" text="ilosc" />
-                                <TableColumn fx:id="DISCOUNT_RECEIPT" minWidth="0.0" prefWidth="54.0" text="obnizka" />
+                                <TableColumn fx:id="DISCOUNT_RECEIPT" minWidth="0.0" prefWidth="54.0" text="zniżka" />
+                                <TableColumn fx:id="AMOUNT_RECEIPT" minWidth="0.0" prefWidth="44.0" styleClass="editable-column" text="ilość" />
                             </columns>
                         </TableView>
                     </children>
