@@ -34,6 +34,28 @@ public class Alerts {
         alert.showAndWait();
     }
 
+    public static void showAllFieldsRequiredAlert(String content){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Niepowodzenie");
+        alert.setHeaderText("Wypełnij wszystkie pola.");
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    public static void showProductInTransport(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Niepowodzenie");
+        alert.setHeaderText("Produkt jeszcze nie dotarł.");
+        alert.showAndWait();
+    }
+
+
+    public static void showPrductPickedByCustomer(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Niepowodzenie");
+        alert.setHeaderText("Produkt odebrany przez klienta.");
+        alert.showAndWait();
+    }
 
     // powodzenie
 
@@ -41,6 +63,13 @@ public class Alerts {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Powodzenie");
         alert.setHeaderText("Operacja przebiegła pomyślnie.");
+        alert.showAndWait();
+    }
+
+    public static void showIthemAlreadyExistAlert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Informacja");
+        alert.setHeaderText("Produkt już znajduje się na liście.");
         alert.showAndWait();
     }
 
