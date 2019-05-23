@@ -274,6 +274,10 @@ public class StateWarehouseController implements Initializable {
         comboList.getSelectionModel().select(0);
     }
 
+    public void changeShop(){
+        new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedItem().getShopId()));
+    }
+
     private ObservableList<Shop> getShops() {
         ObservableList<Shop> shops = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();

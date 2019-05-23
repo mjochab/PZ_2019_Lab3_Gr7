@@ -129,11 +129,11 @@ public class ShopSellItemsForCustomers implements Initializable {
         Session session = sessionFactory.openSession();
         List<State_on_shop> eList;
         if (productName == null || productName.equals("")) {
-            eList = session.createQuery("FROM State_on_shop s WHERE s.amount > 0 AND s.shopId.shopId <> :idsklepu")
+            eList = session.createQuery("FROM State_on_shop s WHERE s.amount > 0 AND s.shopId.shopId <> :idsklepu AND s.amount > 0")
                     .setParameter("idsklepu", sessionContext.getCurrentLoggedShop().getShopId())
                     .list();
         } else {
-            eList = session.createQuery("FROM State_on_shop s WHERE s.amount > 0 AND s.shopId.shopId <> :idsklepu AND s.productId.name like :produkt")
+            eList = session.createQuery("FROM State_on_shop s WHERE s.amount > 0 AND s.shopId.shopId <> :idsklepu AND s.productId.name like :produkt AND s.amount > 0")
                     .setParameter("idsklepu", sessionContext.getCurrentLoggedShop().getShopId())
                     .setParameter("produkt", "%" + productName + "%").list(); //za wyjątkiem własnego sklepu!! poprawić
             serachShop.setText("");
@@ -205,9 +205,11 @@ public class ShopSellItemsForCustomers implements Initializable {
                 if (simpleOrComplex(listOfStores)) { //SIMPLE
                     simpleOrder(date, listOfStores.get(0));
                     newAlertOrder("Sukces", "Zamówiono towar (Simple)");
+                    nameTF.setText(""); lastNameTF.setText(""); numerPhoneTF.setText("");
                 } else { //COMPLEX
                     complexOrder(date, listOfStores);
                     newAlertOrder("Sukces", "Zamówiono towar (Complex)");
+                    nameTF.setText(""); lastNameTF.setText(""); numerPhoneTF.setText("");
                 }
             }
             list.removeAll();

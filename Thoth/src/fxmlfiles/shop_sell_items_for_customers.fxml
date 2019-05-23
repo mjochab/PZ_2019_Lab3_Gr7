@@ -72,7 +72,7 @@
                                         <Insets right="10.0" />
                                     </HBox.margin>
                                 </TextField>
-                                <Button mnemonicParsing="false" onAction="#confirm" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #ff9900;" text="ZatwierdÅº" />
+                                <Button mnemonicParsing="false" onAction="#confirm" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #ff9900;" text="Zamów" />
                             </children>
                             <opaqueInsets>
                                 <Insets />

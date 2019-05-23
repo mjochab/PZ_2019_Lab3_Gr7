@@ -68,6 +68,7 @@ public class ShopShowOrdersController implements Initializable {
     }
 
     public void confirm(){
-        //button
+        ordersTable.getItems().clear();
+        ordersTable.setItems(getOrders());
     }
 }

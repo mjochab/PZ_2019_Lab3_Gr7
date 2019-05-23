@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.*;
 import static utils.Alerts.newAlertCustom;
+import static utils.Alerts.showSuccesAllert;
 
 
 public class WarehouseNewProductController implements Initializable {
@@ -46,15 +47,15 @@ public class WarehouseNewProductController implements Initializable {
             if(getNameProduct(tab[0]).size() == 0){ //brak takiego produktu, dodać do bazy
                 System.out.println("można dodać do bazy");
                 insertToDataBase();
+                NAME.setText(""); PRICE.setText(""); AMOUNT.setText("");
+                showSuccesAllert();
             } else { //produkt jest już w bazie
                 System.out.println("Jest w bazie "+getNameProduct(tab[0]).get(0).getProductId());
                 newAlertCustom("Niepowodzenie","Produkt jest już w bazie");
-                NAME.setText(""); PRICE.setText(""); AMOUNT.setText("");
             }
         } else {
             newAlertCustom("Niepowodzenie","Wprowadzono złe dane");
             System.out.println("Wprowadź poprawne dane");
-            NAME.setText(""); PRICE.setText(""); AMOUNT.setText("");
         }
     }
 
