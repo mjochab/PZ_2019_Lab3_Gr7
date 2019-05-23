@@ -74,7 +74,7 @@ public class ShopSellItemsForCustomers implements Initializable {
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
         PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount()- produktData.getValue().getLocked())));
+        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount() - produktData.getValue().getLocked())));
         DISCOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getDiscount())));
         productsTable.setItems(getProducts(null));
         System.out.println(getProducts(null));
@@ -196,7 +196,8 @@ public class ShopSellItemsForCustomers implements Initializable {
             System.out.println(date);
 
             ArrayList<Integer> listOfStores = new ArrayList<Integer>();
-            if (!list.isEmpty()) {
+            if (!list.isEmpty() && correctTextField() == true) {
+                System.out.println("POPRAWNE DANE");
                 System.out.println(list.get(0).toString());
                 for (StateOnShop state_on_shop : list) {
                     listOfStores.add(state_on_shop.getStateOnShop().getShopId().getShopId());
@@ -214,6 +215,13 @@ public class ShopSellItemsForCustomers implements Initializable {
             productsTable.setItems(getProducts(null));
             productsTableAdd.getItems().clear();
         }
+    }
+
+    public boolean correctTextField() {
+        if (isNumeric(numerPhoneTF.getText()) == true && (!nameTF.getText().isEmpty() && !lastNameTF.getText().isEmpty()) == true) {
+            return true;
+        }
+        return false;
     }
 
     public boolean simpleOrComplex(ArrayList list) {
@@ -234,15 +242,17 @@ public class ShopSellItemsForCustomers implements Initializable {
         Shop shopIdNeed = (Shop) session.get(Shop.class, sessionContext.getCurrentLoggedShop().getShopId());
         Shop shopIdDelivery = (Shop) session.get(Shop.class, id);
         State state = (State) session.get(State.class, 1);
+        Customer customer = new Customer(nameTF.getText(),lastNameTF.getText(),Integer.parseInt(numerPhoneTF.getText()));
+        session.save(customer);
 
         System.out.println("need " + shopIdNeed.getShopId() + " delivery " + shopIdDelivery.getShopId());
-        Indent simpleOrder = new Indent(shopIdNeed, shopIdDelivery, null, date, null, false);
+        Indent simpleOrder = new Indent(shopIdNeed, shopIdDelivery, customer, date, null, false);
         session.save(simpleOrder);
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getStateOnShop().getShopId().getShopId() == id) {
-                System.out.println(list.get(i).getStateOnShop().getLocked() + " LOCKED oraz AMOUNT "+ list.get(i).getAmount());
+                System.out.println(list.get(i).getStateOnShop().getLocked() + " LOCKED oraz AMOUNT " + list.get(i).getAmount());
                 State_on_shop newLocked = (State_on_shop) session.get(State_on_shop.class, list.get(i).getStateOnShop().getId());
-                newLocked.setLocked( newLocked.getLocked() + list.get(i).getAmount());
+                newLocked.setLocked(newLocked.getLocked() + list.get(i).getAmount());
                 session.update(newLocked);
             }
         }
@@ -253,7 +263,7 @@ public class ShopSellItemsForCustomers implements Initializable {
         State_of_indent state_of_indent = new State_of_indent(sessionContext.getCurrentLoggedUser(), simpleOrder, state);
         session.save(state_of_indent);
 
-        session.getTransaction().commit();
+        //session.getTransaction().commit();
         session.close();
     }
 
@@ -262,11 +272,14 @@ public class ShopSellItemsForCustomers implements Initializable {
         session.getTransaction().begin();
         Shop shopIdNeed = (Shop) session.get(Shop.class, sessionContext.getCurrentLoggedShop().getShopId());
         State state = (State) session.get(State.class, 1);
+        Customer customer = new Customer(nameTF.getText(),lastNameTF.getText(),Integer.parseInt(numerPhoneTF.getText()));
+        session.save(customer);
+
         //COMPLEX
-        Indent complexOrder = new Indent(shopIdNeed, null, null, date, null, true);
+        Indent complexOrder = new Indent(shopIdNeed, null, customer, date, null, true);
         session.save(complexOrder);
-        session.getTransaction().commit();
-        session.beginTransaction();
+        //session.getTransaction().commit();
+        //session.beginTransaction();
         while (!idShops.isEmpty()) {
             int id = (int) idShops.get(0);
             idShops.remove(0);
@@ -280,9 +293,9 @@ public class ShopSellItemsForCustomers implements Initializable {
                 for (int i = 0; i < list.size(); i++) {
                     if (list.get(i).getStateOnShop().getShopId().getShopId() == id) {
                         products.add(list.get(i).getStateOnShop());
-                        System.out.println(list.get(i).getStateOnShop().getLocked() + " LOCKED oraz AMOUNT "+ list.get(i).getAmount());
+                        System.out.println(list.get(i).getStateOnShop().getLocked() + " LOCKED oraz AMOUNT " + list.get(i).getAmount());
                         State_on_shop newLocked = (State_on_shop) session.get(State_on_shop.class, list.get(i).getStateOnShop().getId());
-                        newLocked.setLocked( newLocked.getLocked() + list.get(i).getAmount());
+                        newLocked.setLocked(newLocked.getLocked() + list.get(i).getAmount());
                         session.update(newLocked);
                     }
                 }
@@ -298,7 +311,7 @@ public class ShopSellItemsForCustomers implements Initializable {
                 session.save(state_of_indent);
             }
         }
-        session.getTransaction().commit();
+        //session.getTransaction().commit();
         session.close();
         productsTable.getItems().clear();
         productsTable.setItems(getProducts(null));
