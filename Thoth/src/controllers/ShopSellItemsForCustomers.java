@@ -263,7 +263,7 @@ public class ShopSellItemsForCustomers implements Initializable {
         State_of_indent state_of_indent = new State_of_indent(sessionContext.getCurrentLoggedUser(), simpleOrder, state);
         session.save(state_of_indent);
 
-        //session.getTransaction().commit();
+        session.getTransaction().commit();
         session.close();
     }
 
@@ -278,8 +278,8 @@ public class ShopSellItemsForCustomers implements Initializable {
         //COMPLEX
         Indent complexOrder = new Indent(shopIdNeed, null, customer, date, null, true);
         session.save(complexOrder);
-        //session.getTransaction().commit();
-        //session.beginTransaction();
+        session.getTransaction().commit();
+        session.beginTransaction();
         while (!idShops.isEmpty()) {
             int id = (int) idShops.get(0);
             idShops.remove(0);
@@ -311,7 +311,7 @@ public class ShopSellItemsForCustomers implements Initializable {
                 session.save(state_of_indent);
             }
         }
-        //session.getTransaction().commit();
+        session.getTransaction().commit();
         session.close();
         productsTable.getItems().clear();
         productsTable.setItems(getProducts(null));
