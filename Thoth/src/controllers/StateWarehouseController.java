@@ -31,8 +31,7 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.*;
 import static controllers.WarehouseNewProductController.isNumeric;
-import static utils.Alerts.showNotNumberAlert;
-import static utils.Alerts.showNumberRangeAlert;
+import static utils.Alerts.*;
 
 
 public class StateWarehouseController implements Initializable {
@@ -203,7 +202,7 @@ public class StateWarehouseController implements Initializable {
             } catch (NumberFormatException exc) {
                 System.out.println("Powrót do poprzedniej liczby");
                 stateWarehouse.refresh();
-                newAlert("Niepowodzenie", "Wprowadzona wartość nie jest liczbą!");
+                showNotNumberAlert();
             }
         });
     }
@@ -347,10 +346,10 @@ public class StateWarehouseController implements Initializable {
             }
             if (simpleOrComplex(listOfStores)) { //SIMPLE
                 simpleOrder(date, listOfStores.get(0));
-                newAlert("Sukces", "Zamówiono towar (Simple)");
+                newAlertOrder("Sukces", "Zamówiono towar (Simple)");
             } else { //COMPLEX
                 complexOrder(date, listOfStores);
-                newAlert("Sukces", "Zamówiono towar (Complex)");
+                newAlertOrder("Sukces", "Zamówiono towar (Complex)");
             }
         }
         list.removeAll();
