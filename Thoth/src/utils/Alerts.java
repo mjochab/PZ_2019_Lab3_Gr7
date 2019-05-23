@@ -35,6 +35,20 @@ public class Alerts {
         alert.showAndWait();
     }
 
+    public static void showProductInTransport(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Niepowodzenie");
+        alert.setHeaderText("Produkt jeszcze nie dotarł.");
+        alert.showAndWait();
+    }
+
+
+    public static void showPrductPickedByCustomer(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Niepowodzenie");
+        alert.setHeaderText("Produkt odebrany przez klienta.");
+        alert.showAndWait();
+    }
 
     // powodzenie
 
