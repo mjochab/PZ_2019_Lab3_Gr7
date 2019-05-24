@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
@@ -25,6 +26,8 @@ public class MainViewAnalystController implements Initializable {
     MenuItem back;
     @FXML
     Parent root;
+    @FXML
+    private Label sessionInfo;
 
     public void menuItemAction(ActionEvent actionEvent) throws IOException { //cofanie i wylogowanie na MENU ITEM
         Stage stage = (Stage) root.getScene().getWindow();
@@ -50,5 +53,6 @@ public class MainViewAnalystController implements Initializable {
                 System.out.println("BACK is null");
             }
         }
+        sessionInfo.setText(" Zalogowano jako: "+sessionContext.getCurrentLoggedUser().getFirstName()+" "+sessionContext.getCurrentLoggedUser().getLastName()+" / Lokalizacja: GLOBAL");
     }
 }

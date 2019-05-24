@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
@@ -28,6 +29,8 @@ public class AdminController implements Initializable {
     AddEmployeeController addEmployeeController;
     @FXML
     EmployeeViewController employeeViewController;
+    @FXML
+    private Label sessionInfo;
 
 
     Stage stage;
@@ -68,5 +71,6 @@ public class AdminController implements Initializable {
         if(sessionContext.getCurrentLoggedUser().getUserId() == 1){
             back.setVisible(true);
         }
+        sessionInfo.setText(" Zalogowano jako: "+sessionContext.getCurrentLoggedUser().getFirstName()+" "+sessionContext.getCurrentLoggedUser().getLastName()+" / Lokalizacja: GLOBAL");
     }
 }

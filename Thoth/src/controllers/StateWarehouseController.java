@@ -87,6 +87,8 @@ public class StateWarehouseController implements Initializable {
     MenuItem back;
     @FXML
     Parent root;
+    @FXML
+    private Label sessionInfo;
 
     private Stage stage;
 
@@ -131,6 +133,7 @@ public class StateWarehouseController implements Initializable {
         if (location.toString().contains("state_order_warehouse")) {
             overlapStateOrderWarehouse();
         }
+        sessionInfo.setText(" Zalogowano jako: "+sessionContext.getCurrentLoggedUser().getFirstName()+" "+sessionContext.getCurrentLoggedUser().getLastName()+" / Lokalizacja: "+sessionContext.getCurrentLoggedShop().getCity());
     }
 
     //ZAKŁADKA(1) STAN MAGAZYNU----------------------------------------------------------------------------------------------------------------------------

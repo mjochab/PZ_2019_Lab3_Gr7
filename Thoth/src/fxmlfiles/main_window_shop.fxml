@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ShopViewController">
+<AnchorPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ShopViewController">
     <children>
         <VBox layoutX="93.0" layoutY="14.0" prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <MenuBar>
-                    <menus>
-                        <Menu mnemonicParsing="false" text="Menu">
-                            <items>
-                                <MenuItem fx:id="back" mnemonicParsing="false" visible="false" onAction="#menuItemAction" text="Powrót" />
-                                <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#menuItemAction" text="Wyloguj" />
-                            </items>
-                        </Menu>
-                    </menus>
-                </MenuBar>
+            <HBox prefHeight="0.0" prefWidth="1280.0">
+               <children>
+                      <MenuBar prefHeight="25.0" prefWidth="900.0">
+                          <menus>
+                              <Menu mnemonicParsing="false" text="Menu">
+                                  <items>
+                                      <MenuItem fx:id="back" mnemonicParsing="false" onAction="#menuItemAction" text="Powrót" visible="false" />
+                                      <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#menuItemAction" text="Wyloguj" />
+                                  </items>
+                              </Menu>
+                          </menus>
+                      </MenuBar>
+                  <Label fx:id="sessionInfo" prefHeight="42.0" prefWidth="498.0" text="gfds" textAlignment="JUSTIFY" textFill="WHITE" />
+               </children>
+            </HBox>
                 <TabPane prefHeight="777.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                         <Tab text="Sprzedaż produktów">
