@@ -252,8 +252,8 @@ public class StateWarehouseController implements Initializable {
         });
         //-------------------------------------------------------------------------------------------------------
         add_new_order.setOnMouseClicked(event -> {
-            if (event.getButton().equals(MouseButton.PRIMARY)) {
-                if (event.getClickCount() == 3) {
+            if (event.getButton().equals(MouseButton.SECONDARY)) {
+                if (event.getClickCount() == 1) {
                     if (add_new_order.getSelectionModel().getSelectedItem() != null) {
                         System.out.println("Usuwany object " + add_new_order.getSelectionModel().getSelectedItem().toString());
                         list.remove(add_new_order.getSelectionModel().getSelectedItem());
