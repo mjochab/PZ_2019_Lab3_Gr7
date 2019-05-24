@@ -6,7 +6,6 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
