@@ -9,10 +9,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
+import javafx.stage.Stage;
 import models.StateOnShop;
 import org.hibernate.Session;
 
-import java.math.BigDecimal;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,25 +21,14 @@ import java.util.ResourceBundle;
 
 import static utils.Alerts.*;
 
-import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
+import static controllers.MainWindowController.sessionContext;
 import static controllers.WarehouseNewProductController.isNumeric;
 
-public class ShopSellProductsController implements Initializable {
+public class ShopOrderItemsForCustomers implements Initializable {
 
     @FXML
-    private TableView<StateOnShop> RECEIPT_TABLE;
-    @FXML
-    private TableColumn<StateOnShop, String> PRODUCTID_RECEIPT;
-    @FXML
-    private TableColumn<StateOnShop, String> NAME_RECEIPT;
-    @FXML
-    private TableColumn<StateOnShop, String> PRICE_RECEIPT;
-    @FXML
-    public TableColumn<StateOnShop, String> AMOUNT_RECEIPT;
-
-    @FXML
-    private TableView PRODUCT_TABLE;
+    private TableView<State_on_shop> PRODUCTS_TABLE;
     @FXML
     public TableColumn<State_on_shop, String> PRODUCTID;
     @FXML
@@ -50,31 +39,42 @@ public class ShopSellProductsController implements Initializable {
     public TableColumn<State_on_shop, String> AMOUNT;
     @FXML
     public TableColumn<State_on_shop, String> DISCOUNT;
+    @FXML
+    public TableColumn<State_on_shop, String> CITY;
 
     @FXML
-    public TextField serachShop;
+    private TableView<StateOnShop> WAREHOUSE_SHORTAGES_TABLE;
+    public TableColumn<StateOnShop, String> PRODUCTID_RECEIPT;
+    public TableColumn<StateOnShop, String> NAME_RECEIPT;
+    public TableColumn<StateOnShop, String> PRICE_RECEIPT;
+    public TableColumn<StateOnShop, String> AMOUNT_RECEIPT;
+    public TableColumn<StateOnShop, String> DISCOUNT_RECEIPT;
+    @FXML
+    public TextField searchTF, nameTF, lastNameTF, numerPhoneTF;
 
-    private final ObservableList<StateOnShop> list = FXCollections.observableArrayList();
+    Stage stage;
+
+    private ObservableList<StateOnShop> list = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addToProductsTable(getProducts(null));
-        PRODUCT_TABLE.setOnMouseClicked(event -> {
+        PRODUCTS_TABLE.setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 if (event.getClickCount() == 2) {
-                    if (PRODUCT_TABLE.getSelectionModel().getSelectedItem() != null) {
+                    if (PRODUCTS_TABLE.getSelectionModel().getSelectedItem() != null) {
                         StateOnShop sos = new StateOnShop();
-                        sos.setStateOnShop((State_on_shop) PRODUCT_TABLE.getSelectionModel().getSelectedItem());
+                        sos.setStateOnShop((State_on_shop) PRODUCTS_TABLE.getSelectionModel().getSelectedItem());
                         sos.setAmount(1);
-                        System.out.println("Wysłany " + PRODUCT_TABLE.getSelectionModel().getSelectedItem().toString());
+                        System.out.println("Wysłany " + PRODUCTS_TABLE.getSelectionModel().getSelectedItem().toString());
                         if (list.isEmpty()) {
                             list.add(sos);
                             addToReceiptTable(list);
                         } else {
                             for (StateOnShop ex : list) {
-                                if (ex.getStateOnShop().getId() == ((State_on_shop) PRODUCT_TABLE.getSelectionModel().getSelectedItem()).getId()) {
-                                    showIthemAlreadyExistAlert();
+                                if (ex.getStateOnShop().getProductId().getProductId() == PRODUCTS_TABLE.getSelectionModel().getSelectedItem().getProductId().getProductId()) {
                                     System.out.println("java FX <3");
+                                    showIthemAlreadyExistAlert();
                                     return;
                                 }
                             }
@@ -86,34 +86,34 @@ public class ShopSellProductsController implements Initializable {
             }
         });
         //----------------------------------------------------------------------------------------
-        RECEIPT_TABLE.setOnMouseClicked(event -> {
+        WAREHOUSE_SHORTAGES_TABLE.setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.SECONDARY)) {
                 if (event.getClickCount() == 1) {
-                    if (RECEIPT_TABLE.getSelectionModel().getSelectedItem() != null) {
-                        System.out.println("Usuwany object " + RECEIPT_TABLE.getSelectionModel().getSelectedItem().toString());
-                        list.remove(RECEIPT_TABLE.getSelectionModel().getSelectedItem());
+                    if (WAREHOUSE_SHORTAGES_TABLE.getSelectionModel().getSelectedItem() != null) {
+                        System.out.println("Usuwany object " + WAREHOUSE_SHORTAGES_TABLE.getSelectionModel().getSelectedItem().toString());
+                        list.remove(WAREHOUSE_SHORTAGES_TABLE.getSelectionModel().getSelectedItem());
                         addToReceiptTable(list);
                     }
                 }
             }
         });
         setEditableAmount();
+
     }
 
-
-    private ObservableList<State_on_shop> getProducts(String productName) {
+    public ObservableList<State_on_shop> getProducts(String productName) {
         ObservableList<State_on_shop> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<State_on_shop> eList;
         if (productName == null || productName.equals("")) {
-            eList = session.createQuery("FROM State_on_shop s WHERE s.amount > 0 AND s.shopId.shopId = :idsklepu")
+            eList = session.createQuery("FROM State_on_shop s WHERE s.amount > 0 AND s.shopId.shopId <> :idsklepu ORDER BY amount ")
                     .setParameter("idsklepu", sessionContext.getCurrentLoggedShop().getShopId())
                     .list();
         } else {
-            eList = session.createQuery("FROM State_on_shop s WHERE s.amount > 0 AND s.shopId.shopId = :idsklepu AND s.productId.name like :produkt")
+            eList = session.createQuery("FROM State_on_shop s WHERE s.amount > 0 AND s.shopId.shopId <> :idsklepu AND s.productId.name like :produkt ORDER BY AMOUNT")
                     .setParameter("idsklepu", sessionContext.getCurrentLoggedShop().getShopId())
-                    .setParameter("produkt", "%" + productName + "%").list();
-            serachShop.setText("");
+                    .setParameter("produkt", "%" + productName + "%").list(); //za wyjątkiem własnego sklepu!! poprawić
+            searchTF.setText("");
         }
         productList.addAll(eList);
         session.close();
@@ -131,9 +131,10 @@ public class ShopSellProductsController implements Initializable {
                 new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount() - produktData.getValue().getLocked())));
         DISCOUNT.setCellValueFactory(produktData ->
                 new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getDiscount())));
-        PRODUCT_TABLE.setItems(list);
+        CITY.setCellValueFactory(productData ->
+                new SimpleStringProperty(productData.getValue().getShopId().getCity()));
+        PRODUCTS_TABLE.setItems(list);
     }
-
 
     private void addToReceiptTable(ObservableList<StateOnShop> list) {
         PRODUCTID_RECEIPT.setCellValueFactory(produktData ->
@@ -142,22 +143,21 @@ public class ShopSellProductsController implements Initializable {
                 new SimpleStringProperty(produktData.getValue().getStateOnShop().getProductId().getName()));
         //noinspection BigDecimalMethodWithoutRoundingCalled
         PRICE_RECEIPT.setCellValueFactory(produktData ->
-                new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getPrice()
-                        .multiply(BigDecimal.ONE
-                                .subtract(BigDecimal.valueOf(produktData.getValue().getStateOnShop().getProductId().getDiscount())
-                                        .divide(BigDecimal.valueOf(100)))).setScale(2))));
+                new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getPrice())));
+        DISCOUNT_RECEIPT.setCellValueFactory(productData ->
+                new SimpleStringProperty(String.valueOf(productData.getValue().getStateOnShop().getProductId().getDiscount())));
         AMOUNT_RECEIPT.setCellValueFactory(produktData ->
                 new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
         System.out.println("Odebrane " + list.toString() + " rozmiar " + list.size());
-        RECEIPT_TABLE.setItems(list);
+        WAREHOUSE_SHORTAGES_TABLE.setItems(list);
     }
 
     public void searchStateShop() {
-        PRODUCT_TABLE.setItems(getProducts(serachShop.getText()));
+        PRODUCTS_TABLE.setItems(getProducts(searchTF.getText()));
     }
 
     private void setEditableAmount() {
-        RECEIPT_TABLE.setEditable(true);
+        WAREHOUSE_SHORTAGES_TABLE.setEditable(true);
         AMOUNT_RECEIPT.setCellFactory(TextFieldTableCell.forTableColumn());
 
         AMOUNT_RECEIPT.setOnEditCommit(e -> { // dodać walidacje try catch
@@ -174,12 +174,12 @@ public class ShopSellProductsController implements Initializable {
                 } else {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.valueOf(e.getOldValue()));
                     System.out.println("Ustawienie starej wartości + old value" + e.getOldValue() + "," + e.getNewValue());
-                    RECEIPT_TABLE.refresh();
+                    WAREHOUSE_SHORTAGES_TABLE.refresh();
                     showNumberRangeAlert(1, check);
                 }
             } catch (NumberFormatException exc) {
                 System.out.println("Powrót do poprzedniej liczby");
-                RECEIPT_TABLE.refresh();
+                WAREHOUSE_SHORTAGES_TABLE.refresh();
                 showNotNumberAlert();
             }
         });
@@ -187,60 +187,46 @@ public class ShopSellProductsController implements Initializable {
 
     public void confirm() {
         if (!list.isEmpty()) {
-            System.out.println("Przygotowana list do zapytania " + list.toString());
-            Session session = sessionFactory.openSession();
-            Date currentDate = new Date();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
-            String dateString = dateFormat.format(currentDate);
-            System.out.println("Current date:" + dateString);
+            System.out.println("Przygotowane dane do wysłąnia " + list + " " + nameTF.getText() + " " + lastNameTF.getText() + " " + numerPhoneTF.getText());
+            if (!nameTF.getText().isEmpty() && !lastNameTF.getText().isEmpty() && !numerPhoneTF.getText().isEmpty()) {
+                Session session = sessionFactory.openSession();
 
-            Receipt receipt = new Receipt(sessionContext.getCurrentLoggedShop(), getTotalValue(list), sessionContext.getCurrentLoggedUser(), currentDate);
-            System.out.println("Wartość zamówienia: " + getTotalValue(list));
-            session.save(receipt);
+                Date currentDate = new Date();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
+                String dateString = dateFormat.format(currentDate);
+                System.out.println("Current date:" + dateString);
+                if(numerPhoneTF.getText().length() != 9){
+                    session.close();
+                    newAlertCustom("Niepowodzenie","Numer telefonu składa się z 9 cyfr");
+                    return;
+                }
+                Customer customer = new Customer(nameTF.getText(), lastNameTF.getText(), Integer.valueOf(numerPhoneTF.getText()));
 
-            for (StateOnShop sos : list) {
-                Product_receipt product_receipt = new Product_receipt(sos.getStateOnShop().getProductId(), receipt, sos.getAmount(), getSingleValue(sos));
-                System.out.println(sos.getStateOnShop().getProductId().getName() + " // Wartość produktu: " + getSingleValue(sos));
-                session.save(product_receipt);
-                System.out.println(product_receipt.toString());
-                System.out.println("wartosc pobrana: " + sos.getAmount());
-                State_on_shop sosNew = session.get(State_on_shop.class, sos.getStateOnShop().getId());
-                System.out.println("stara wartosc: " + sosNew.getAmount());
-                sosNew.setAmount(sosNew.getAmount() - sos.getAmount());
-                session.update(sosNew);
+                session.save(customer);
+                System.out.println(customer.toString());
+
+                Indent indent = new Indent(sessionContext.getCurrentLoggedShop(), customer, currentDate);
+                session.save(indent);
+                System.out.println(indent.toString());
+
+                for (StateOnShop sos : list) {
+                    Indent_product indent_product = new Indent_product(indent, sos.getStateOnShop().getProductId(), sos.getAmount());
+                    session.save(indent_product);
+                }
+                session.beginTransaction().commit();
+                list.removeAll();
+                WAREHOUSE_SHORTAGES_TABLE.getItems().clear();
+                PRODUCTS_TABLE.setItems(getProducts(null));
+                session.close();
+                showSuccesAllert();
+
+            } else {
+                showAllFieldsRequiredAlert("Pola " + nameTF.getPromptText() + ", " + lastNameTF.getPromptText() + ", " + numerPhoneTF.getPromptText() + " nie mogą być puste.");
             }
-            session.beginTransaction().commit();
-            list.removeAll();
-            RECEIPT_TABLE.getItems().clear();
-            PRODUCT_TABLE.setItems(getProducts(null));
-            session.close();
-            showSuccesAllert();
+
         } else {
             showNoIthemsAlert();
         }
     }
-
-    private BigDecimal getTotalValue(ObservableList<StateOnShop> list) {
-        BigDecimal totalValue = BigDecimal.ZERO;
-        for (StateOnShop sos : list) {
-            totalValue = totalValue.add(sos.getStateOnShop().getProductId().getPrice()
-                    .multiply(BigDecimal.valueOf(sos.getAmount()))
-                    .multiply(BigDecimal.ONE
-                            .subtract(BigDecimal.valueOf(sos.getStateOnShop().getProductId().getDiscount())
-                                    .divide(BigDecimal.valueOf(100)))));
-        }
-        return totalValue;
-    }
-
-    private BigDecimal getSingleValue(StateOnShop sos) {
-        BigDecimal totalValue = BigDecimal.ZERO;
-        totalValue = totalValue.add(sos.getStateOnShop().getProductId().getPrice()
-                .multiply(BigDecimal.valueOf(sos.getAmount()))
-                .multiply(BigDecimal.ONE
-                        .subtract(BigDecimal.valueOf(sos.getStateOnShop().getProductId().getDiscount())
-                                .divide(BigDecimal.valueOf(100)))));
-        return totalValue;
-    }
-
 }
 

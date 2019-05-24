@@ -1,73 +1,175 @@
 package controllers;
 
+import entity.Indent;
+import entity.State;
+import entity.State_of_indent;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
-import models.ShopOrders;
+import models.IndentTableView;
 import org.hibernate.Session;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static utils.Alerts.*;
+import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
 
 public class ShopShowOrdersController implements Initializable {
     @FXML
-    MenuItem logout;
+    private TableView<IndentTableView> ordersTable;
     @FXML
-    private TableView ordersTable;
+    public TableColumn<IndentTableView, String> ID;
     @FXML
-    public TableColumn<ShopOrders,String> id_order;
+    public TableColumn<IndentTableView, String> STATUS;
     @FXML
-    public TableColumn<ShopOrders,String> status;
+    public TableColumn<IndentTableView, String> DATE;
     @FXML
-    public TableColumn<ShopOrders,String> date;
+    public TableColumn<IndentTableView, String> FIRST_NAME;
     @FXML
-    public TableColumn<ShopOrders,String> customer_name;
+    public TableColumn<IndentTableView, String> LAST_NAME;
     @FXML
-    public TableColumn<ShopOrders,String> customer_surname;
-    @FXML
-    public TableColumn<ShopOrders,String> phone_number;
-    @FXML
-    Parent root;
-
+    public TableColumn<IndentTableView, String> PHONE_NUMBER;
     Stage stage;
+
+    public TextField searchTF;
+    public Button SEARCH, SHOWORDER, DELETE;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        id_order.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getId_order().toString()));
-        status.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getStatus()));
-        date.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getDate().toString()));
-        customer_name.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getCustomer_name()));
-        customer_surname.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getCustomer_name()));
-        phone_number.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getPhone_number().toString()));
+        ID.setCellValueFactory(orderData ->
+                new SimpleStringProperty(String.valueOf(orderData.getValue().getOrder().getIndentId())));
+        STATUS.setCellValueFactory(orderData ->
+                new SimpleStringProperty(setStatus(orderData.getValue())));
+        DATE.setCellValueFactory(orderData ->
+                new SimpleStringProperty(String.valueOf(orderData.getValue().getOrder().getDateOfOrder())));
+        FIRST_NAME.setCellValueFactory(orderData ->
+                new SimpleStringProperty(orderData.getValue().getOrder().getCustomerId().getFirstName()));
+        LAST_NAME.setCellValueFactory(orderData ->
+                new SimpleStringProperty(orderData.getValue().getOrder().getCustomerId().getLastName()));
+        PHONE_NUMBER.setCellValueFactory(orderData ->
+                new SimpleStringProperty(String.valueOf(orderData.getValue().getOrder().getCustomerId().getPhoneNumber())));
         ordersTable.setItems(getOrders());
+        System.out.println(getOrders());
     }
 
 
-    public ObservableList<ShopOrders> getOrders() {
-        ObservableList<ShopOrders> enseignantList = FXCollections.observableArrayList();
+    public ObservableList<IndentTableView> getOrders() {
+        ObservableList<IndentTableView> enseignantList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<ShopOrders> eList = session.createQuery("select new models.ShopOrders(ind.indentId, st.name, ind.dateOfOrder, cus.firstName, cus.lastName, cus.phoneNumber) from Indent ind, State_of_indent soi, State st, Customer cus " +
-                "where st.stateId = soi.stateId AND soi.indentId = ind.indentId AND cus.customerId = ind.customerId").list();
-        System.out.println(eList.toString());
-        for (ShopOrders ent : eList) {
-            enseignantList.add(ent);
-            System.out.println(ent.getCustomer_name() + ent.getId_order() + ent.getStatus());
+        List<Indent> indents;
+        if (searchTF.getText().isEmpty()) {
+            indents = session.createQuery("from Indent i where i.customerId is not null and i.shopId_need = :curentShop")
+                    .setParameter("curentShop", sessionContext.getCurrentLoggedShop()).list();
+        } else {
+            indents = session.createQuery("from Indent i where i.customerId is not null AND i.customerId.phoneNumber like :searchPhoneNumber AND i.shopId_need = :curentShop")
+                    .setParameter("curentShop", sessionContext.getCurrentLoggedShop())
+                    .setParameter("searchPhoneNumber", Integer.valueOf(searchTF.getText())).list();
+        }
+
+        List<State_of_indent> stateofindents = session.createQuery("from State_of_indent soi where soi.indentId.shopId_need = :shopId")
+                .setParameter("shopId", sessionContext.getCurrentLoggedShop()).list();
+        for (Indent ent : indents) {
+            IndentTableView indentTableView = new IndentTableView();
+            indentTableView.setOrder(ent);
+            for (State_of_indent soi : stateofindents) {
+                if (ent.getIndentId() == soi.getIndentId().getIndentId()) {
+                    indentTableView.setState(soi);
+                }
+            }
+            enseignantList.add(indentTableView);
         }
         session.close();
         return enseignantList;
     }
 
-    public void confirm(){
+    public String setStatus(IndentTableView is) {
+        if (is.getState() == null) {
+            return "Oczenuje na potwierdzenie";
+        } else {
+            return is.getState().getStateId().getName();
+        }
+    }
+
+    public void search() {
+        ordersTable.setItems(getOrders());
+        searchTF.setText("");
+    }
+
+    public void confirm() {
         //button
     }
+
+
+    @FXML
+    public void inRealizationDetailsAction(ActionEvent event) throws IOException {
+
+        Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        IndentTableView orderView = ordersTable.getSelectionModel().getSelectedItem();
+
+        if (orderView == null) {
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/shop_order_details.fxml"));
+
+
+        Parent pane = loader.load();
+
+        // wstrzykniecie wybranego obiektu do widoku szczegolowego
+        ShopOrderDetailsController controller = loader.getController();
+        controller.setOrder(orderView.getOrder());
+        controller.initController();
+
+        stg.setScene(new Scene(pane));
+    }
+
+    @FXML
+    public void setAsPickedUp(ActionEvent event) throws IOException {
+
+        IndentTableView orderView = ordersTable.getSelectionModel().getSelectedItem();
+
+        Session session = sessionFactory.openSession();
+        List<State_of_indent> soi = session.createQuery("from State_of_indent soi where soi.indentId = :indent")
+                .setParameter("indent", orderView.getOrder()).list();
+        System.out.println("Lista powinna mieś rozmiar 1 aktualny rozmiar :"+soi.size());
+        State state = (State)session.createQuery("from State where stateId = 66").getSingleResult();
+        if (orderView == null) {
+            session.close();
+            return;
+        } else {
+            System.out.println("program dziala");
+            if (soi.isEmpty()) {
+                session.close();
+                showProductInTransport();
+            } else {
+                if (orderView.getState().getStateId().getStateId() == 5) {
+                    soi.get(0).setStateId(state);
+                    System.out.println(soi.get(0).getStateId().getStateId());
+                    session.update(soi.get(0));
+                    session.beginTransaction().commit();
+                    showSuccesAllert();
+                }
+                if(orderView.getState().getStateId().getStateId() > 5){
+                    showPrductPickedByCustomer();
+                }
+            }
+
+        }
+    }
+
+
 }
