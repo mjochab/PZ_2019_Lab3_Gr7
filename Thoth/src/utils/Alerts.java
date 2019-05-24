@@ -79,4 +79,13 @@ public class Alerts {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+
+    public static void notNameAlert(String fieldName){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Niepowodzenie");
+        alert.setHeaderText("Wprowadź poprawne dane.");
+        alert.setContentText(fieldName+" powinno zaczynać się z wielkiej litery oraz składać się ze znaków od a do z.");
+        alert.showAndWait();
+    }
 }
