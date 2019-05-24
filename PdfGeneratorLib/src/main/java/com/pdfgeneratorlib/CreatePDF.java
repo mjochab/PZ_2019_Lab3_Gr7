@@ -35,7 +35,6 @@ public class CreatePDF {
      *
      * @param data        zawiera dane do raportu
      * @param destination miejsce zapisu pliku na dysku
-     * @return PDF z danymi
      * @throws IOException IOException nieudana próba zapisu do pliku
      * @see List lista pdf
      */
