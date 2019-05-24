@@ -87,6 +87,8 @@ public class StateWarehouseController implements Initializable {
     MenuItem back;
     @FXML
     Parent root;
+    @FXML
+    private Label sessionInfo;
 
     private Stage stage;
 
@@ -112,6 +114,10 @@ public class StateWarehouseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        if (location.toString().contains("main_window_warehouse.fxml")) {
+            sessionInfo.setText(" Zalogowano jako: " + sessionContext.getCurrentLoggedUser().getFirstName() + " " + sessionContext.getCurrentLoggedUser().getLastName() + " / Lokalizacja: " + sessionContext.getCurrentLoggedShop().getCity());
+        }
+        System.out.println(location.toString() + "\n tutaj sie znajduje");
         if (sessionContext.getCurrentLoggedUser().getUserId() == 1) {
             if (back != null) {
                 back.setVisible(true);
@@ -131,6 +137,8 @@ public class StateWarehouseController implements Initializable {
         if (location.toString().contains("state_order_warehouse")) {
             overlapStateOrderWarehouse();
         }
+        System.out.println("SESSION LOGGED USER:" + sessionContext.getCurrentLoggedShop().toString());
+        System.out.println("SESSION LOGGED USER:" + sessionContext.getCurrentLoggedUser().toString());
     }
 
     //ZAKŁADKA(1) STAN MAGAZYNU----------------------------------------------------------------------------------------------------------------------------
@@ -214,7 +222,7 @@ public class StateWarehouseController implements Initializable {
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
         PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount()-produktData.getValue().getLocked())));
+        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount() - produktData.getValue().getLocked())));
         new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedItem().getShopId()));
         //System.out.println(getProducts(nazwaProduktu).toString());
         new_order.setOnMouseClicked(event -> {
@@ -274,7 +282,7 @@ public class StateWarehouseController implements Initializable {
         comboList.getSelectionModel().select(0);
     }
 
-    public void changeShop(){
+    public void changeShop() {
         new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedItem().getShopId()));
     }
 
@@ -282,8 +290,8 @@ public class StateWarehouseController implements Initializable {
         ObservableList<Shop> shops = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<Shop> shopsList = session.createQuery("from Shop").list();
-        for(Shop shop : shopsList) {
-            if(shop.getShopId() != sessionContext.getCurrentLoggedShop().getShopId()) {
+        for (Shop shop : shopsList) {
+            if (shop.getShopId() != sessionContext.getCurrentLoggedShop().getShopId()) {
                 shops.add(shop);
             }
         }
@@ -296,27 +304,27 @@ public class StateWarehouseController implements Initializable {
         AMOUNT_ADD.setCellFactory(TextFieldTableCell.forTableColumn());
 
         AMOUNT_ADD.setOnEditCommit(e -> {
-                try {
-                    System.out.println("PRZED" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
-                    int check = e.getRowValue().getStateOnShop().getAmount() - e.getRowValue().getStateOnShop().getLocked();
-                    if (!isNumeric(e.getNewValue())) {
-                        throw new NumberFormatException();
-                    }
-                    if (Integer.valueOf(e.getNewValue()) > 0 && Integer.valueOf(e.getNewValue()) <= check) {
-                        System.out.println("większe od 0 i mniejsze od " + check);
-                        e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
-                        System.out.println("PO" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
-                    } else {
-                        e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.valueOf(e.getOldValue()));
-                        System.out.println("Ustawienie starej wartości + old value" + e.getOldValue() + "," + e.getNewValue());
-                        add_new_order.refresh();
-                        showNumberRangeAlert(1, check);
-                    }
-                } catch (NumberFormatException exc) {
-                    System.out.println("Powrót do poprzedniej liczby");
-                    add_new_order.refresh();
-                    showNotNumberAlert();
+            try {
+                System.out.println("PRZED" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
+                int check = e.getRowValue().getStateOnShop().getAmount() - e.getRowValue().getStateOnShop().getLocked();
+                if (!isNumeric(e.getNewValue())) {
+                    throw new NumberFormatException();
                 }
+                if (Integer.valueOf(e.getNewValue()) > 0 && Integer.valueOf(e.getNewValue()) <= check) {
+                    System.out.println("większe od 0 i mniejsze od " + check);
+                    e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
+                    System.out.println("PO" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
+                } else {
+                    e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.valueOf(e.getOldValue()));
+                    System.out.println("Ustawienie starej wartości + old value" + e.getOldValue() + "," + e.getNewValue());
+                    add_new_order.refresh();
+                    showNumberRangeAlert(1, check);
+                }
+            } catch (NumberFormatException exc) {
+                System.out.println("Powrót do poprzedniej liczby");
+                add_new_order.refresh();
+                showNotNumberAlert();
+            }
         });
     }
 
@@ -386,9 +394,9 @@ public class StateWarehouseController implements Initializable {
         session.save(simpleOrder);
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getStateOnShop().getShopId().getShopId() == id) {
-                System.out.println(list.get(i).getStateOnShop().getLocked() + " LOCKED oraz AMOUNT "+ list.get(i).getAmount());
+                System.out.println(list.get(i).getStateOnShop().getLocked() + " LOCKED oraz AMOUNT " + list.get(i).getAmount());
                 State_on_shop newLocked = (State_on_shop) session.get(State_on_shop.class, list.get(i).getStateOnShop().getId());
-                newLocked.setLocked( newLocked.getLocked() + list.get(i).getAmount());
+                newLocked.setLocked(newLocked.getLocked() + list.get(i).getAmount());
                 session.update(newLocked);
             }
         }
@@ -426,9 +434,9 @@ public class StateWarehouseController implements Initializable {
                 for (int i = 0; i < list.size(); i++) {
                     if (list.get(i).getStateOnShop().getShopId().getShopId() == id) {
                         products.add(list.get(i).getStateOnShop());
-                        System.out.println(list.get(i).getStateOnShop().getLocked() + " LOCKED oraz AMOUNT "+ list.get(i).getAmount());
+                        System.out.println(list.get(i).getStateOnShop().getLocked() + " LOCKED oraz AMOUNT " + list.get(i).getAmount());
                         State_on_shop newLocked = (State_on_shop) session.get(State_on_shop.class, list.get(i).getStateOnShop().getId());
-                        newLocked.setLocked( newLocked.getLocked() + list.get(i).getAmount());
+                        newLocked.setLocked(newLocked.getLocked() + list.get(i).getAmount());
                         session.update(newLocked);
                     }
                 }
