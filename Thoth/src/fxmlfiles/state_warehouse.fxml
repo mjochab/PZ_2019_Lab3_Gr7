@@ -38,7 +38,7 @@
                   <TableColumn fx:id="PRODUCTID" prefWidth="100.0" text="id_produkt" />
                   <TableColumn fx:id="NAME" minWidth="0.0" prefWidth="837.0" text="nazwa" />
                   <TableColumn fx:id="PRICE" minWidth="0.0" prefWidth="93.0" text="cena" />
-                  <TableColumn fx:id="AMOUNT" prefWidth="137.0" text="ilosc" />
+                  <TableColumn fx:id="AMOUNT" styleClass="editable-column" prefWidth="137.0" text="ilosc" />
                   <TableColumn fx:id="DISCOUNT" prefWidth="112.0" text="znizka" />
                </columns>
                <VBox.margin>

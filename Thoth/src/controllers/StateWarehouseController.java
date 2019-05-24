@@ -31,6 +31,7 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.*;
 import static controllers.WarehouseNewProductController.isNumeric;
+import static utils.Alerts.*;
 
 
 public class StateWarehouseController implements Initializable {
@@ -150,7 +151,7 @@ public class StateWarehouseController implements Initializable {
         Session session = sessionFactory.openSession();
         List<State_on_shop> eList;
         if (nazwaProduktu == null || nazwaProduktu.equals("")) {
-            eList = session.createQuery("FROM State_on_shop WHERE ShopId = :idshop GROUP by productId"
+            eList = session.createQuery("FROM State_on_shop WHERE shopId.shopId = :idshop GROUP by productId"
             ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
         } else {
             eList = session.createQuery("FROM State_on_shop WHERE shopId.shopId = :idshop AND productId.name like :produkt GROUP by productId")
@@ -201,7 +202,7 @@ public class StateWarehouseController implements Initializable {
             } catch (NumberFormatException exc) {
                 System.out.println("Powrót do poprzedniej liczby");
                 stateWarehouse.refresh();
-                newAlert("Niepowodzenie", "Wprowadzona wartość nie jest liczbą!");
+                showNotNumberAlert();
             }
         });
     }
@@ -273,6 +274,10 @@ public class StateWarehouseController implements Initializable {
         comboList.getSelectionModel().select(0);
     }
 
+    public void changeShop(){
+        new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedItem().getShopId()));
+    }
+
     private ObservableList<Shop> getShops() {
         ObservableList<Shop> shops = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
@@ -282,8 +287,6 @@ public class StateWarehouseController implements Initializable {
                 shops.add(shop);
             }
         }
-        //shops.addAll(shopsList);
-        //shops.remove(sessionContext.getCurrentLoggedShop().getShopId() - 1);
         session.close();
         System.out.println("Zwracam sklepy");
         return shops;
@@ -293,29 +296,27 @@ public class StateWarehouseController implements Initializable {
         AMOUNT_ADD.setCellFactory(TextFieldTableCell.forTableColumn());
 
         AMOUNT_ADD.setOnEditCommit(e -> {
-            try {
-                System.out.println("PRZED" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
-                int check = e.getTableView().getSelectionModel().getSelectedItem().getAmount();
-                System.out.println("LICZBA WYPISNA "+check);
-                if (!isNumeric(e.getNewValue())) {
-                    throw new NumberFormatException();
-                }
-                e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
-                System.out.println("PO" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
-                if (e.getTableView().getSelectionModel().getSelectedItem().getAmount() > 0 && e.getTableView().getSelectionModel().getSelectedItem().getAmount() <= check) {
-                    System.out.println("większe od 0 i mniejsze od "+check);
-//                    add_new_order.refresh();
-//                    new_order.getItems().clear();
-//                    new_order.setItems(getProductsForOtherShop(comboList.getSelectionModel().getSelectedItem().getShopId()));
-                } else {
-                    e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(check);
+                try {
+                    System.out.println("PRZED" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
+                    int check = e.getRowValue().getStateOnShop().getAmount() - e.getRowValue().getStateOnShop().getLocked();
+                    if (!isNumeric(e.getNewValue())) {
+                        throw new NumberFormatException();
+                    }
+                    if (Integer.valueOf(e.getNewValue()) > 0 && Integer.valueOf(e.getNewValue()) <= check) {
+                        System.out.println("większe od 0 i mniejsze od " + check);
+                        e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
+                        System.out.println("PO" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
+                    } else {
+                        e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.valueOf(e.getOldValue()));
+                        System.out.println("Ustawienie starej wartości + old value" + e.getOldValue() + "," + e.getNewValue());
+                        add_new_order.refresh();
+                        showNumberRangeAlert(1, check);
+                    }
+                } catch (NumberFormatException exc) {
                     System.out.println("Powrót do poprzedniej liczby");
+                    add_new_order.refresh();
+                    showNotNumberAlert();
                 }
-            } catch (NumberFormatException exc) {
-                System.out.println("Powrót do poprzedniej liczby");
-                add_new_order.refresh();
-                newAlert("Niepowodzenie", "Wprowadzona wartość nie jest liczbą!");
-            }
         });
     }
 
@@ -328,17 +329,8 @@ public class StateWarehouseController implements Initializable {
         PRODUCTID_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getProductId())));
         NAME_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getStateOnShop().getProductId().getName()));
         PRICE_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getPrice())));
-        AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount()-produktData.getValue().getStateOnShop().getLocked())));
-        System.out.println("Odebrane " + item.toString() + " rozmiar " + item.size());
-        try {
-            if (!item.isEmpty()) {
-                add_new_order.setItems(item);
-            } else {
-                //naprawić
-            }
-        } catch (NullPointerException e) {
-            System.out.println("NullPointerException po odjęciu ostatniego elementu " + e);
-        }
+        AMOUNT_ADD.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+        add_new_order.setItems(item);
     }
 
     public void newOrderWarehouse() throws ParseException {  //button zapisz
@@ -358,10 +350,10 @@ public class StateWarehouseController implements Initializable {
             }
             if (simpleOrComplex(listOfStores)) { //SIMPLE
                 simpleOrder(date, listOfStores.get(0));
-                newAlert("Sukces", "Zamówiono towar (Simple)");
+                newAlertOrder("Sukces", "Zamówiono towar (Simple)");
             } else { //COMPLEX
                 complexOrder(date, listOfStores);
-                newAlert("Sukces", "Zamówiono towar (Complex)");
+                newAlertOrder("Sukces", "Zamówiono towar (Complex)");
             }
         }
         list.removeAll();

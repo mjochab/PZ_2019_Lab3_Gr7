@@ -43,6 +43,12 @@ public class State_on_shop {
         this.amount = (int)amount;
     }
 
+    public State_on_shop(Product productId, Shop shopId, long amount, long locked) {
+        this.productId = productId;
+        this.shopId = shopId;
+        this.amount = (int)amount;
+        this.locked = (int)locked;
+    }
 
     public int getId() {
         return id;

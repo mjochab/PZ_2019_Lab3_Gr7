@@ -31,7 +31,7 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="NAME" prefHeight="0.0" prefWidth="300.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
+                  <TextField fx:id="NAME" prefHeight="0.0" prefWidth="300.0" promptText="Samsung Galaxy S8" styleClass="textarea" stylesheets="@../thoth/style.css" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -47,7 +47,7 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="AMOUNT" prefHeight="25.0" prefWidth="300.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
+                  <TextField fx:id="AMOUNT" prefHeight="25.0" prefWidth="300.0" promptText="300" styleClass="textarea" stylesheets="@../thoth/style.css" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -63,7 +63,7 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="PRICE" prefHeight="25.0" prefWidth="300.0" styleClass="textarea" stylesheets="@../thoth/style.css" />
+                  <TextField fx:id="PRICE" prefHeight="25.0" prefWidth="300.0" promptText="1899.99" styleClass="textarea" stylesheets="@../thoth/style.css" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />

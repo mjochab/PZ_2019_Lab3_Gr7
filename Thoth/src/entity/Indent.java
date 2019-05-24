@@ -46,6 +46,12 @@ public class Indent {
         this.isComplex = isComplex;
     }
 
+    public Indent(Shop shopId_need, Customer customerId, Date dateOfOrder) {
+        this.shopId_need = shopId_need;
+        this.customerId = customerId;
+        this.dateOfOrder = dateOfOrder;
+    }
+
     public int getIndentId() {
         return indentId;
     }
@@ -102,5 +108,18 @@ public class Indent {
     public void setIsComplex(Boolean isComplex)
     {
         this.isComplex = isComplex;
+    }
+
+    @Override
+    public String toString() {
+        return "Indent{" +
+                "indentId=" + indentId +
+                ", shopId_need=" + shopId_need +
+                ", shopId_delivery=" + shopId_delivery +
+                ", customerId=" + customerId +
+                ", dateOfOrder=" + dateOfOrder +
+                ", parentId=" + parentId +
+                ", isComplex=" + isComplex +
+                '}';
     }
 }

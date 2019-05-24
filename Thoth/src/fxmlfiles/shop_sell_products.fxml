@@ -40,9 +40,10 @@
                         <TableView fx:id="PRODUCT_TABLE" prefHeight="800.0" prefWidth="640.0">
                             <columns>
                                 <TableColumn fx:id="PRODUCTID" prefWidth="70.0" text="Kod" />
-                                <TableColumn fx:id="NAME" prefWidth="390.0" text="nazwa" />
-                                <TableColumn fx:id="PRICE" prefWidth="90.0" text="cena" />
-                                <TableColumn fx:id="AMOUNT" prefWidth="90.0" text="ilosc" />
+                                <TableColumn fx:id="NAME" prefWidth="300.00001525878906" text="nazwa" />
+                                <TableColumn fx:id="PRICE" prefWidth="117.0" text="cena" />
+                        <TableColumn fx:id="DISCOUNT" prefWidth="71.0" text="zniżka" />
+                                <TableColumn fx:id="AMOUNT" prefWidth="81.0" text="ilosc" />
                             </columns>
                         </TableView>
                     </children>
