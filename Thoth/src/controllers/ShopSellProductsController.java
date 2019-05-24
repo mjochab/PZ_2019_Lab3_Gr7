@@ -210,6 +210,17 @@ public class ShopSellProductsController implements Initializable {
                 session.update(sosNew);
             }
             session.beginTransaction().commit();
+
+            String produkty ="";
+            for (StateOnShop product : list){
+               produkty += product.getStateOnShop().getProductId().getName();
+               produkty += " | cena: "+getSingleValue(product);
+               produkty += " | ilosc: "+product.getAmount()+"\n";
+            }
+            newAlertOrder("Sprzedano następujące produkty:" , produkty);
+
+
+
             list.removeAll();
             RECEIPT_TABLE.getItems().clear();
             PRODUCT_TABLE.setItems(getProducts(null));
@@ -238,7 +249,7 @@ public class ShopSellProductsController implements Initializable {
                 .multiply(BigDecimal.valueOf(sos.getAmount()))
                 .multiply(BigDecimal.ONE
                         .subtract(BigDecimal.valueOf(sos.getStateOnShop().getProductId().getDiscount())
-                                .divide(BigDecimal.valueOf(100)))));
+                                .divide(BigDecimal.valueOf(100))))).setScale(2);
         return totalValue;
     }
 
