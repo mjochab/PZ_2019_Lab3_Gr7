@@ -97,7 +97,7 @@ public class ShopShowOrdersController implements Initializable {
 
     public String setStatus(IndentTableView is) {
         if (is.getState() == null) {
-            return "Oczenuje na potwierdzenie";
+            return "Oczekuje na potwierdzenie";
         } else {
             return is.getState().getStateId().getName();
         }
