@@ -51,7 +51,9 @@ public class RaportModel implements Serializable {
         this.zipCode = zipCode;
         this.city = city;
         this.profit = profit;
+        assert this.products != null;
         this.products.add(products);
+        assert this.users != null;
         this.users.add(users);
     }
 
