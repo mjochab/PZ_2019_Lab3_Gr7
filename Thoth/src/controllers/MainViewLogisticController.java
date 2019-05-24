@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
@@ -17,9 +18,11 @@ import static controllers.MainWindowController.sessionContext;
 
 public class MainViewLogisticController implements Initializable {
     @FXML
-    MenuItem logout,back;
+    MenuItem logout, back;
     @FXML
     Parent root;
+    @FXML
+    private Label sessionInfo;
     Stage stage;
 
 
@@ -50,5 +53,6 @@ public class MainViewLogisticController implements Initializable {
         System.out.println("Aktualnie zaloogwany User: " + sessionContext.getCurrentLoggedUser());
         System.out.println("Obiekt zalogowanego User'a: " + sessionContext.getCurrentLoggedShop());
         System.out.println("Hello from MainController");
+        sessionInfo.setText(" Zalogowano jako: "+sessionContext.getCurrentLoggedUser().getFirstName()+" "+sessionContext.getCurrentLoggedUser().getLastName()+" / Lokalizacja: "+sessionContext.getCurrentLoggedShop().getCity());
     }
 }
