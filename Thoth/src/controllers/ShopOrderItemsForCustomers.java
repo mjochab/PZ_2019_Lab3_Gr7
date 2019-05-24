@@ -219,7 +219,7 @@ public class ShopOrderItemsForCustomers implements Initializable {
                 PRODUCTS_TABLE.setItems(getProducts(null));
                 session.close();
                 showSuccesAllert();
-
+                nameTF.setText(""); lastNameTF.setText(""); numerPhoneTF.setText("");
             } else {
                 showAllFieldsRequiredAlert("Pola " + nameTF.getPromptText() + ", " + lastNameTF.getPromptText() + ", " + numerPhoneTF.getPromptText() + " nie mogą być puste.");
             }

@@ -484,9 +484,13 @@ public class StateWarehouseController implements Initializable {
             session.save(p);
             session.getTransaction().commit();
             session.close();
-            newOrderShop.getItems().clear();
-            newOrderShop.setItems(getOrderProducts());
+            refreshTableOrderShop();
         }
+    }
+
+    public void refreshTableOrderShop(){
+        newOrderShop.getItems().clear();
+        newOrderShop.setItems(getOrderProducts());
     }
 
     //ZAKŁADKA(5) ZMIANA STATUSU---------------------------------------------------------------------------------------------------------------
@@ -526,19 +530,14 @@ public class StateWarehouseController implements Initializable {
             session.update(p);
             session.getTransaction().commit();
             session.close();
-            stateOrderWarehouse.getItems().clear();
-            stateOrderWarehouse.setItems(getOrder());
+            refreshStateOrderWarehouse();
         }
     }
 
-    public List<Product> getProductsFromIndent() {
-        Session session = sessionFactory.openSession();
-        List<Product> eList = session.createQuery("Select soi FROM Indent_product ip, State_of_indent soi " +
-                "WHERE ip.indentId = soi.indentId AND ip.indentId.shopId_need.shopId = :idshop AND soi.stateId.stateId = :status")
-                .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
-                .setParameter("status", 4).list(); // zmiana statusu z 4 na 5
-        System.out.println("Produkty z zamówień: " + eList);
-        session.close();
-        return eList;
+    public void refreshStateOrderWarehouse(){
+        stateOrderWarehouse.getItems().clear();
+        stateOrderWarehouse.setItems(getOrder());
     }
+
+
 }
