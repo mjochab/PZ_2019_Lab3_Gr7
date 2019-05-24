@@ -45,11 +45,11 @@ public class AddEmployeeController implements Initializable {
         UserShop us = new UserShop();
 
         if(!nameValidation(tfFirstName.getText())){
-            notNameAlert(tfFirstName.getPromptText());
+            shownotNameAlert(tfFirstName.getPromptText());
             return;
         }
         if(!nameValidation(tfLastName.getText())){
-            notNameAlert(tfLastName.getPromptText());
+            shownotNameAlert(tfLastName.getPromptText());
             return;
         }
 

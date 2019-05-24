@@ -19,6 +19,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static utils.Validation.*;
+import static utils.Alerts.*;
+
 import static controllers.MainWindowController.sessionFactory;
 
 public class EmployeeViewController implements Initializable {
@@ -65,7 +68,7 @@ public class EmployeeViewController implements Initializable {
     }
 
 
-    public List<User> getUsers(String searchValue ) {
+    public List<User> getUsers(String searchValue) {
         String searchParam = "%" + searchValue + "%";
         Session session = sessionFactory.openSession();
 
@@ -115,7 +118,13 @@ public class EmployeeViewController implements Initializable {
     private void setEditableStatus() {
         STATE.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        STATE.setOnEditCommit( e -> {
+        STATE.setOnEditCommit(e -> {
+            if (!isBolean(e.getNewValue())) {
+                System.out.println("Nowa wartość: "+e.getNewValue());
+                showNotBoolean("Wpriwadź 1 jeżeli użytkownik aktywny lub 0 by dezaktyowować konto użytkownika.");
+                employeeTable.refresh();
+                return;
+            }
             e.getTableView().getItems().get(e.getTablePosition().getRow()).getUser().setState(Integer.parseInt(e.getNewValue()));
             System.out.println((e.getTableView().getSelectionModel().getSelectedItem().getUser().toString()));
 
@@ -132,8 +141,7 @@ public class EmployeeViewController implements Initializable {
                 alert.setTitle("Powodzenie");
                 alert.setContentText("Dane użytkownika zostaly zaktualizowane");
                 alert.showAndWait();
-            }
-            catch (Exception exc) {
+            } catch (Exception exc) {
                 System.out.println(exc);
                 session.getTransaction().rollback();
 
