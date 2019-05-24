@@ -33,7 +33,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Button>
-                        <Button fx:id="DELETE" mnemonicParsing="false" onAction="#setAsPickedUp" prefHeight="25.0" prefWidth="200.0" styleClass="bluebutton" text="Usuń">
+                        <Button fx:id="DELETE" mnemonicParsing="false" onAction="#setAsPickedUp" prefHeight="25.0" prefWidth="200.0" styleClass="bluebutton" text="Zaznacz jako doręczony">
                             <HBox.margin>
                                 <Insets right="10.0" />
                             </HBox.margin>
