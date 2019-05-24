@@ -19,7 +19,7 @@ public class RaportUserModel implements Serializable {
 
     /**
      * @param userId identyfikator pracownika
-     * @param total
+     * @param total wartość towarów sprzedanych przez pracownika
      */
 
     private Integer userId;
@@ -56,8 +56,8 @@ public class RaportUserModel implements Serializable {
     }
 
     /**
-     *
-     * @return metoda zwraca model raportu z pracownikami w postaci stringa
+     * metoda zwraca model raportu z pracownikami w postaci stringa
+     * @return zwraca ciąg znaków zawierający Id użytkownika oraz wartość sprzedanych towarów przechowywaną w polu total
      */
 
     @Override

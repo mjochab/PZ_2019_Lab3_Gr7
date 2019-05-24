@@ -17,17 +17,17 @@ import java.math.BigDecimal;
 
 public class RaportProductModel implements Serializable {
 
+    private Integer shopId;
+    private String name;
+    private Long sold;
+    private BigDecimal total_price;
+
     /**
      * @param shopId identyfikator sklepu
      * @param name nazwa
      * @param sold sprzedane
      * @param total_price zsumowane ceny
      */
-
-    private Integer shopId;
-    private String name;
-    private Long sold;
-    private BigDecimal total_price;
 
     public RaportProductModel(Integer shopId, String name, Long sold, BigDecimal total_price) {
         this.shopId = shopId;

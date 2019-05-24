@@ -21,21 +21,11 @@ import java.util.List;
  * @author Adrian Gajewski
  * @author Paweł Durda
  * @author Mateusz Gawlak
- * @since 15 maj 2019
  * @see Serializable Serializacja to wbudowany mechanizm zapisywania obiektów, który pozwala na binarny zapis całego drzewa obiektów
+ * @since 15 maj 2019
  */
 
 public class RaportModel implements Serializable {
-
-    /**
-     * @param shopId identyfikator sklepu
-     * @param street ulica
-     * @param zipCode kod pocztowy
-     * @param city miasto
-     * @param profit zysk
-     * @param products model tworzacy raport z produktami
-     * @param users model tworzacy raport z pracownikami
-     */
 
     private Integer shopId;
     private String street;
@@ -45,6 +35,15 @@ public class RaportModel implements Serializable {
     private List<RaportProductModel> products;
     private List<RaportUserModel> users;
 
+    /**
+     * @param shopId   identyfikator sklepu
+     * @param street   ulica
+     * @param zipCode  kod pocztowy
+     * @param city     miasto
+     * @param profit   zysk
+     * @param products model tworzacy raport z produktami
+     * @param users    model tworzacy raport z pracownikami
+     */
 
     public RaportModel(Integer shopId, String street, String zipCode, String city, BigDecimal profit, RaportProductModel products, RaportUserModel users) {
         this.shopId = shopId;
@@ -61,10 +60,9 @@ public class RaportModel implements Serializable {
         this.street = street;
         this.zipCode = zipCode;
         this.city = city;
-        if(profit == null){
+        if (profit == null) {
             this.profit = new BigDecimal(0);
-        }
-        else {
+        } else {
             this.profit = profit;
         }
     }
@@ -133,8 +131,7 @@ public class RaportModel implements Serializable {
     }
 
     /**
-     *
-     * @return  metoda zwraca model raportu jako strning
+     * @return metoda zwraca model raportu jako strning
      */
 
     @Override
