@@ -71,9 +71,9 @@ public class AnalystSalesCreatorViewController implements Initializable {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 if (event.getClickCount() == 2) {
                     if (discountTable.getSelectionModel().getSelectedItem() != null) {
+                        System.out.println("Usuwany object " + discountTable.getSelectionModel().getSelectedItem().toString());
                         lista.remove(discountTable.getSelectionModel().getSelectedItem());
                         addToTable(lista);
-                        System.out.println("Usuwany object " + discountTable.getSelectionModel().getSelectedItem().toString());
                     }
                 }
             }
