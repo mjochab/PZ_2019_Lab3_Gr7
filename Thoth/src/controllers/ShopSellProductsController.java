@@ -50,7 +50,8 @@ public class ShopSellProductsController implements Initializable {
     public TableColumn<State_on_shop, String> AMOUNT;
     @FXML
     public TableColumn<State_on_shop, String> DISCOUNT;
-
+    @FXML
+    private Label TOTALVALUE;
     @FXML
     public TextField serachShop;
 
@@ -150,6 +151,7 @@ public class ShopSellProductsController implements Initializable {
                 new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
         System.out.println("Odebrane " + list.toString() + " rozmiar " + list.size());
         RECEIPT_TABLE.setItems(list);
+        TOTALVALUE.setText(getTotalValue(this.list).toString());
     }
 
     public void searchStateShop() {
@@ -171,6 +173,7 @@ public class ShopSellProductsController implements Initializable {
                     System.out.println("większe od 0 i mniejsze od " + check);
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.parseInt(e.getNewValue()));
                     System.out.println("PO" + e.getTableView().getSelectionModel().getSelectedItem().getAmount());
+                    TOTALVALUE.setText(getTotalValue(list).toString());
                 } else {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setAmount(Integer.valueOf(e.getOldValue()));
                     System.out.println("Ustawienie starej wartości + old value" + e.getOldValue() + "," + e.getNewValue());
@@ -211,14 +214,14 @@ public class ShopSellProductsController implements Initializable {
             }
             session.beginTransaction().commit();
 
-            String produkty ="";
-            for (StateOnShop product : list){
-               produkty += product.getStateOnShop().getProductId().getName();
-               produkty += " | cena: "+getSingleValue(product);
-               produkty += " | ilosc: "+product.getAmount()+"\n";
+            String produkty = "";
+            for (StateOnShop product : list) {
+                produkty += product.getStateOnShop().getProductId().getName();
+                produkty += " | cena: " + getSingleValue(product);
+                produkty += " | ilosc: " + product.getAmount() + "\n";
             }
-            newAlertOrder("Sprzedano następujące produkty:" , produkty);
-
+            produkty += "całkowita wartość zamówienia: " + getTotalValue(list);
+            newAlertOrder("Sprzedano następujące produkty:", produkty);
 
 
             list.removeAll();
@@ -238,7 +241,7 @@ public class ShopSellProductsController implements Initializable {
                     .multiply(BigDecimal.valueOf(sos.getAmount()))
                     .multiply(BigDecimal.ONE
                             .subtract(BigDecimal.valueOf(sos.getStateOnShop().getProductId().getDiscount())
-                                    .divide(BigDecimal.valueOf(100)))));
+                                    .divide(BigDecimal.valueOf(100))))).setScale(2);
         }
         return totalValue;
     }
