@@ -644,8 +644,8 @@ public class StateWarehouseController implements Initializable {
     }
 
     public void refreshStateOrderToPrepareWarehouse() {
-        stateOrderWarehouse.getItems().clear();
-        stateOrderWarehouse.setItems(getOrder());
+        stateOrderToPrepareWarehouse.getItems().clear();
+        stateOrderToPrepareWarehouse.setItems(getOrderToPrepare());
     }
 
     @FXML

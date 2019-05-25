@@ -23,7 +23,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#refreshStateOrderWarehouse" prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Odśwież">
+                  <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#refreshStateOrderToPrepareWarehouse" prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Odśwież">
                      <font>
                         <Font size="18.0" />
                      </font>
