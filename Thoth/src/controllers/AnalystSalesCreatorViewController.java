@@ -157,4 +157,9 @@ public class AnalystSalesCreatorViewController implements Initializable {
         discountTable.refresh();
         productsTable.refresh();
     }
+
+    public void refreshProductTable(){
+        productsTable.getItems().clear();
+        productsTable.setItems(getProducts());
+    }
 }

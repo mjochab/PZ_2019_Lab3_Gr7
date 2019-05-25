@@ -225,5 +225,8 @@ public class AnalystPricesViewController implements Initializable {
         });
         priceTable.setEditable(true);
     }
-
+    public void refreshPricesTable(){
+        priceTable.getItems().clear();
+        priceTable.setItems(getProducts());
+    }
 }

@@ -29,6 +29,11 @@
                                 <Insets right="10.0" />
                             </HBox.margin>
                         </Button>
+                  <Button fx:id="search1" layoutX="330.0" layoutY="20.0" mnemonicParsing="false" onAction="#refreshPricesTable" prefHeight="26.0" prefWidth="200.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Odśwież">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
                     </children>
                     <VBox.margin>
                         <Insets />
