@@ -52,7 +52,7 @@ public class ShopShowOrdersController implements Initializable {
         ID.setCellValueFactory(orderData ->
                 new SimpleStringProperty(String.valueOf(orderData.getValue().getOrder().getIndentId())));
         STATUS.setCellValueFactory(orderData ->
-                new SimpleStringProperty(setStatus(orderData.getValue())));
+                new SimpleStringProperty(orderData.getValue().getState().getStateId().getName()));
         DATE.setCellValueFactory(orderData ->
                 new SimpleStringProperty(String.valueOf(orderData.getValue().getOrder().getDateOfOrder())));
         FIRST_NAME.setCellValueFactory(orderData ->
@@ -142,32 +142,15 @@ public class ShopShowOrdersController implements Initializable {
 
         IndentTableView orderView = ordersTable.getSelectionModel().getSelectedItem();
 
-        Session session = sessionFactory.openSession();
-        List<State_of_indent> soi = session.createQuery("from State_of_indent soi where soi.indentId = :indent")
-                .setParameter("indent", orderView.getOrder()).list();
-        System.out.println("Lista powinna mieś rozmiar 1 aktualny rozmiar :"+soi.size());
-        State state = (State)session.createQuery("from State where stateId = 66").getSingleResult();
-        if (orderView == null) {
-            session.close();
-            return;
+        if (orderView.getState().getStateId().getStateId() == 65) {
+            Session session = sessionFactory.openSession();
+            State state = (State)session.createQuery("from State where stateId = 66").getSingleResult();
+            orderView.getState().setStateId(state);
+            session.save(orderView.getState());
+            session.beginTransaction().commit();
+            showPrductPickedByCustomer();
         } else {
-            System.out.println("program dziala");
-            if (soi.isEmpty()) {
-                session.close();
-                showProductInTransport();
-            } else {
-                if (orderView.getState().getStateId().getStateId() == 5) {
-                    soi.get(0).setStateId(state);
-                    System.out.println(soi.get(0).getStateId().getStateId());
-                    session.update(soi.get(0));
-                    session.beginTransaction().commit();
-                    showSuccesAllert();
-                }
-                if(orderView.getState().getStateId().getStateId() > 5){
-                    showPrductPickedByCustomer();
-                }
-            }
-
+            showProductInTransport();
         }
     }
 

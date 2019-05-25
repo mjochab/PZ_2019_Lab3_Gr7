@@ -8,12 +8,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
+import models.IndentTableView;
 import models.StateOnShop;
 import org.hibernate.Session;
 
@@ -40,7 +42,9 @@ public class StateWarehouseController implements Initializable {
     @FXML
     public TableView new_order, add_new_order;
     @FXML
-    public TableView stateOrderWarehouse;
+    public TableView<State_of_indent> stateOrderWarehouse;
+    @FXML
+    public TableView<State_of_indent> stateOrderToPrepareWarehouse;
     @FXML
     public TableView newOrderShop;
     @FXML
@@ -77,6 +81,8 @@ public class StateWarehouseController implements Initializable {
     public TableColumn<State_of_indent, String> ORDERNR;
     @FXML
     public Button searchStateWarehouse;
+    @FXML
+    public Button SHOW_DETAILS;
     @FXML
     public TextField searchSWCity;
     @FXML
@@ -136,6 +142,9 @@ public class StateWarehouseController implements Initializable {
         }
         if (location.toString().contains("state_order_warehouse")) {
             overlapStateOrderWarehouse();
+        }
+        if (location.toString().contains("state_prepare_order_warehouse")) {
+            overlapOrdersToPrepareWarehouse();
         }
         System.out.println("SESSION LOGGED USER:" + sessionContext.getCurrentLoggedShop().toString());
         System.out.println("SESSION LOGGED USER:" + sessionContext.getCurrentLoggedUser().toString());
@@ -388,7 +397,7 @@ public class StateWarehouseController implements Initializable {
         Shop shopIdNeed = (Shop) session.get(Shop.class, sessionContext.getCurrentLoggedShop().getShopId());
         Shop shopIdDelivery = (Shop) session.get(Shop.class, id);
         State state = (State) session.get(State.class, 1);
-        System.out.println("to jest status mojego zamowienia"+state.toString());
+        System.out.println("to jest status mojego zamowienia" + state.toString());
 
         System.out.println("need " + shopIdNeed.getShopId() + " delivery " + shopIdDelivery.getShopId());
         Indent simpleOrder = new Indent(shopIdNeed, shopIdDelivery, null, date, null, false);
@@ -473,10 +482,10 @@ public class StateWarehouseController implements Initializable {
     private ObservableList<Indent_product> getOrderProducts() {
         ObservableList<Indent_product> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<Indent_product> eList = session.createQuery("Select ip FROM Indent_product ip, State_of_indent soi " +
-                "WHERE ip.indentId = soi.indentId AND ip.indentId.shopId_need.shopId = :idshop AND soi.stateId.stateId = :status")
+        List<Indent_product> eList = session.createQuery("Select new Indent_product(ip.id, ip.indentId, ip.productId, SUM(ip.amount)) FROM Indent_product ip left join State_of_indent soi " +
+                "on ip.indentId = soi.indentId Where ip.indentId.shopId_need.shopId = :idshop and soi.stateId = 64 group by ip.productId ")
                 .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
-                .setParameter("status", 1).list();
+                .list();
         System.out.println("getOrderProducts " + eList);
         productList.addAll(eList);
         session.close();
@@ -497,7 +506,7 @@ public class StateWarehouseController implements Initializable {
         }
     }
 
-    public void refreshTableOrderShop(){
+    public void refreshTableOrderShop() {
         newOrderShop.getItems().clear();
         newOrderShop.setItems(getOrderProducts());
     }
@@ -515,10 +524,10 @@ public class StateWarehouseController implements Initializable {
     private ObservableList<State_of_indent> getOrder() {
         ObservableList<State_of_indent> orderList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<State_of_indent> eList = session.createQuery("Select soi FROM Indent_product ip, State_of_indent soi " +
-                "WHERE ip.indentId = soi.indentId AND ip.indentId.shopId_need.shopId = :idshop AND soi.stateId.stateId = :status")
+        List<State_of_indent> eList = session.createQuery("FROM State_of_indent soi " +
+                "WHERE soi.indentId.shopId_need.shopId = :idshop AND soi.stateId.stateId <= :status")
                 .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
-                .setParameter("status", 1).list(); // zmiana statusu z 4 na 5
+                .setParameter("status", 10).list(); // zmiana statusu z 4 na 5
         System.out.println("getOrder " + eList);
         orderList.addAll(eList);
         session.close();
@@ -529,24 +538,152 @@ public class StateWarehouseController implements Initializable {
         if (stateOrderWarehouse.getSelectionModel().getSelectedItem() != null) {
             System.out.println(stateOrderWarehouse.getSelectionModel().getSelectedItem().toString());
             State_of_indent model = (State_of_indent) stateOrderWarehouse.getSelectionModel().getSelectedItem();
-            System.out.println(model);
+            if (model.getStateId().getStateId() == 4) {
+                System.out.println(model);
+                Session session = sessionFactory.openSession();
+                session.beginTransaction();
+                State_of_indent p = (State_of_indent) stateOrderWarehouse.getSelectionModel().getSelectedItem();
+                System.out.println(p.getStateId().getName());
+                p.getStateId().setStateId(5);
+                session.update(p);
+                session.getTransaction().commit();
+                session.close();
+                refreshStateOrderWarehouse();
+            } else {
+                showProductInTransport();
+            }
 
-            Session session = sessionFactory.openSession();
-            session.beginTransaction();
-            State_of_indent p = (State_of_indent) stateOrderWarehouse.getSelectionModel().getSelectedItem();
-            System.out.println(p.getStateId().getName());
-            p.getStateId().setStateId(2);
-            session.update(p);
-            session.getTransaction().commit();
-            session.close();
-            refreshStateOrderWarehouse();
         }
     }
 
-    public void refreshStateOrderWarehouse(){
+    public void refreshStateOrderWarehouse() {
         stateOrderWarehouse.getItems().clear();
         stateOrderWarehouse.setItems(getOrder());
     }
+
+    @FXML
+    public void inRealizationDetailsAction(ActionEvent event) throws IOException {
+
+        Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        State_of_indent orderView = stateOrderWarehouse.getSelectionModel().getSelectedItem();
+
+        if (orderView == null)
+            return;
+
+        FXMLLoader loader = null;
+
+        if (orderView.getIndentId().isComplex()) {
+            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
+        } else {
+            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/simple_order_details.fxml"));
+        }
+
+        Parent pane = loader.load();
+
+        // wstrzykniecie wybranego obiektu do widoku szczegolowego
+        if (orderView.getIndentId().isComplex()) {
+            ComplexOrderDetailsController controller = loader.getController();
+            controller.setLoader("../fxmlfiles/main_window_warehouse.fxml");
+            controller.setOrder(orderView.getIndentId());
+            controller.initController();
+        } else {
+            SimpleOrderDetailsController controller = loader.getController();
+            controller.setLoader("../fxmlfiles/main_window_warehouse.fxml");
+            controller.setOrder(orderView.getIndentId());
+            controller.initController();
+        }
+
+        stg.setScene(new Scene(pane));
+    }
+
+
+    //ZAKŁADKA(6) ZAMOWIENIA DO PRZYGOtOWANIA---------------------------------------------------------------------------------------------------------------
+
+    public void overlapOrdersToPrepareWarehouse() {
+        CITY.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getIndentId().getShopId_need().getCity()));
+        STATE.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getStateId().getName()));
+        ORDERNR.setCellValueFactory(orderData -> new SimpleStringProperty(String.valueOf(orderData.getValue().getIndentId().getIndentId())));
+        stateOrderToPrepareWarehouse.setItems(getOrderToPrepare());
+        //System.out.println(getOrder(nazwaProduktu).toString());
+    }
+
+    private ObservableList<State_of_indent> getOrderToPrepare() {
+        ObservableList<State_of_indent> orderList = FXCollections.observableArrayList();
+        Session session = sessionFactory.openSession();
+        List<State_of_indent> eList = session.createQuery("FROM State_of_indent soi " +
+                "WHERE soi.indentId.shopId_delivery.shopId = :idshop AND soi.stateId.stateId <= :status")
+                .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
+                .setParameter("status", 10).list(); // zmiana statusu z 4 na 5
+        System.out.println("getOrder " + eList);
+        orderList.addAll(eList);
+        session.close();
+        return orderList;
+    }
+
+    public void changeOrderToPrepareStatus() {
+        if (stateOrderToPrepareWarehouse.getSelectionModel().getSelectedItem() != null) {
+            System.out.println(stateOrderToPrepareWarehouse.getSelectionModel().getSelectedItem().toString());
+            State_of_indent model = (State_of_indent) stateOrderToPrepareWarehouse.getSelectionModel().getSelectedItem();
+            if (model.getStateId().getStateId() == 1) {
+                System.out.println(model);
+                Session session = sessionFactory.openSession();
+                session.beginTransaction();
+                State_of_indent p = (State_of_indent) stateOrderToPrepareWarehouse.getSelectionModel().getSelectedItem();
+                System.out.println(p.getStateId().getName());
+                p.getStateId().setStateId(2);
+                session.update(p);
+                session.getTransaction().commit();
+                session.close();
+                refreshStateOrderToPrepareWarehouse();
+            } else {
+                showProductInTransport();
+            }
+
+        }
+    }
+
+    public void refreshStateOrderToPrepareWarehouse() {
+        stateOrderToPrepareWarehouse.getItems().clear();
+        stateOrderToPrepareWarehouse.setItems(getOrderToPrepare());
+    }
+
+    @FXML
+    public void inToPrepareDetailsAction(ActionEvent event) throws IOException {
+
+        Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        State_of_indent orderView = stateOrderToPrepareWarehouse.getSelectionModel().getSelectedItem();
+
+        if (orderView == null)
+            return;
+
+        FXMLLoader loader = null;
+
+        if (orderView.getIndentId().isComplex()) {
+            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
+        } else {
+            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/simple_order_details.fxml"));
+        }
+
+        Parent pane = loader.load();
+
+        // wstrzykniecie wybranego obiektu do widoku szczegolowego
+        if (orderView.getIndentId().isComplex()) {
+            ComplexOrderDetailsController controller = loader.getController();
+            controller.setLoader("../fxmlfiles/main_window_warehouse.fxml");
+            controller.setOrder(orderView.getIndentId());
+            controller.initController();
+        } else {
+            SimpleOrderDetailsController controller = loader.getController();
+            controller.setLoader("../fxmlfiles/main_window_warehouse.fxml");
+            controller.setOrder(orderView.getIndentId());
+            controller.initController();
+        }
+
+        stg.setScene(new Scene(pane));
+    }
+
 
 
 }

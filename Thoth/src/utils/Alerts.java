@@ -49,14 +49,6 @@ public class Alerts {
         alert.showAndWait();
     }
 
-
-    public static void showPrductPickedByCustomer(){
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Niepowodzenie");
-        alert.setHeaderText("Produkt odebrany przez klienta.");
-        alert.showAndWait();
-    }
-
     public static void shownotNameAlert(String fieldName){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Niepowodzenie");
@@ -95,5 +87,10 @@ public class Alerts {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
+    public static void showPrductPickedByCustomer(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Informacja");
+        alert.setHeaderText("Produkt odebrany przez klienta.");
+        alert.showAndWait();
+    }
 }
