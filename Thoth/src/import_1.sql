@@ -9,6 +9,8 @@ INSERT INTO state (StateId, Name) VALUES (null, 'Oczekuje na transport');
 INSERT INTO state (StateId, Name) VALUES (null, 'W transporcie');
 INSERT INTO state (StateId, Name) VALUES (null, 'Oczekuje na potwierdzenie odbioru');
 INSERT INTO state (StateId, Name) VALUES (null, 'Zrealizowane');
+INSERT INTO state (StateId, Name) VALUES (64, 'Niedostepny');
+INSERT INTO state (StateId, Name) VALUES (65, 'Mozliwy do wydania');
 INSERT INTO state (StateId, Name) VALUES (66, 'Odebrane przez klienta');
 
 insert into shop (ZipCode, City, Street, IsShop) values ('35-311', 'Rzeszow', 'Powstancow Warszawy', 1);

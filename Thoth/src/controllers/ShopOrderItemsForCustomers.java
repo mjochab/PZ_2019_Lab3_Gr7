@@ -207,6 +207,9 @@ public class ShopOrderItemsForCustomers implements Initializable {
 
                 Indent indent = new Indent(sessionContext.getCurrentLoggedShop(), customer, currentDate);
                 session.save(indent);
+                State state64 = (State)session.createQuery("from State s Where s.stateId = 64").getSingleResult();
+                State_of_indent state_of_indent = new State_of_indent(sessionContext.getCurrentLoggedUser(),indent,state64);
+                session.save(state_of_indent);
                 System.out.println(indent.toString());
 
                 for (StateOnShop sos : list) {

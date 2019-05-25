@@ -473,10 +473,10 @@ public class StateWarehouseController implements Initializable {
     private ObservableList<Indent_product> getOrderProducts() {
         ObservableList<Indent_product> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<Indent_product> eList = session.createQuery("Select ip FROM Indent_product ip, State_of_indent soi " +
-                "WHERE ip.indentId = soi.indentId AND ip.indentId.shopId_need.shopId = :idshop AND soi.stateId.stateId = :status")
+        List<Indent_product> eList = session.createQuery("Select new Indent_product(ip.id, ip.indentId, ip.productId, SUM(ip.amount)) FROM Indent_product ip left join State_of_indent soi " +
+                "on ip.indentId = soi.indentId Where ip.indentId.shopId_need.shopId = :idshop and soi.stateId = 64 group by ip.productId ")
                 .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
-                .setParameter("status", 1).list();
+                .list();
         System.out.println("getOrderProducts " + eList);
         productList.addAll(eList);
         session.close();

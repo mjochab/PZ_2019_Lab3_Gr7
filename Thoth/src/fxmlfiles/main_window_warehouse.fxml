@@ -56,7 +56,7 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
-                        <Tab text="Zamówienia ze sklepu">
+                        <Tab text="Zapotrzebowanie na produkty">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>
@@ -65,7 +65,7 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
-                        <Tab text="Zamówienia z innego magazynu">
+                        <Tab text="Moje zamówienia">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>
