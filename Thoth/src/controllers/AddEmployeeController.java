@@ -11,7 +11,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import log.ThothLoggerConfigurator;
+import org.apache.log4j.BasicConfigurator;
 import org.hibernate.Session;
+import org.apache.log4j.Logger;
+
 
 import static controllers.MainWindowController.sessionFactory;
 
@@ -22,7 +26,13 @@ import java.util.ResourceBundle;
 import static utils.Validation.*;
 import static utils.Alerts.*;
 
+/**
+ * Kontroler dodawania pracownika
+ */
+
 public class AddEmployeeController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
 
     @FXML
     private TextField tfFirstName;
@@ -39,6 +49,11 @@ public class AddEmployeeController implements Initializable {
     @FXML
     private Button btnAddEmployee;
 
+    /**
+     *
+     * @param actionEvent action event
+     * @throws IOException wyjatek IOexception przy dodawaniu uzytkownika
+     */
     @FXML
     public void saveEmployee(ActionEvent actionEvent) throws IOException { //dodawanie użytkownika do bazy
         User u = new User();
@@ -62,7 +77,9 @@ public class AddEmployeeController implements Initializable {
                 || comboShopList.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Niepowodzenie");
+            logger.warn("Niepowodzenie");
             alert.setContentText("Nie wybrano wszystkich danych!");
+            logger.warn("Nie wybrano wszystkich danych");
             alert.showAndWait();
 
             return;
@@ -153,10 +170,18 @@ public class AddEmployeeController implements Initializable {
         return shops;
     }
 
+    /**
+     * Metoda wypelnia combobox sklepami
+     */
     public void setComboShopList() {
         this.comboShopList.getItems().addAll(getShops());
     }
 
+    /**
+     * Metoda wybierajaca liste rol z bazy
+     * @return zwraca ObservableList<Role>
+     * @see Role
+     */
     private ObservableList<Role> getRoles() {             // wybiera listę ról z bazy
         ObservableList<Role> roles = FXCollections.observableArrayList();
         Session session2 = sessionFactory.openSession();
@@ -173,12 +198,22 @@ public class AddEmployeeController implements Initializable {
         return roles;
     }
 
+    /**
+     * Metoda wypelnia role w combobox
+     */
+
     public void setComboRoleList() {
         this.comboRoleList.getItems().addAll(getRoles());
     }
 
+    /**
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         this.setComboRoleList();
         this.setComboShopList();
     }

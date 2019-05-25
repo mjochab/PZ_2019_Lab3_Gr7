@@ -14,9 +14,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import log.ThothLoggerConfigurator;
+import org.apache.log4j.Logger;
+
 import static controllers.MainWindowController.sessionContext;
 
 public class MainViewLogisticController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(MainViewLogisticController.class);
+
     @FXML
     MenuItem logout, back;
     @FXML
@@ -43,16 +49,18 @@ public class MainViewLogisticController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
+
         if (sessionContext.getCurrentLoggedUser().getUserId() == 1) {
             if (back != null) {
                 back.setVisible(true);
             } else {
-                System.out.println("BACK is null");
+                logger.warn("BACK is null");
             }
         }
-        System.out.println("Aktualnie zaloogwany User: " + sessionContext.getCurrentLoggedUser());
-        System.out.println("Obiekt zalogowanego User'a: " + sessionContext.getCurrentLoggedShop());
-        System.out.println("Hello from MainController");
         sessionInfo.setText(" Zalogowano jako: "+sessionContext.getCurrentLoggedUser().getFirstName()+" "+sessionContext.getCurrentLoggedUser().getLastName()+" / Lokalizacja: "+sessionContext.getCurrentLoggedShop().getCity());
+        logger.info("Aktualnie zaloogwany User: " + sessionContext.getCurrentLoggedUser());
+        logger.info("Obiekt zalogowanego User'a: " + sessionContext.getCurrentLoggedShop());
+        logger.info("Hello from MainController");
     }
 }

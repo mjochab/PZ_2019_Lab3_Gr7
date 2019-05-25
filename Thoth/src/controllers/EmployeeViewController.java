@@ -11,9 +11,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
+import log.ThothLoggerConfigurator;
 import models.EmployeeView;
+import org.apache.log4j.BasicConfigurator;
 import org.hibernate.Session;
 import javafx.beans.property.SimpleStringProperty;
+import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.net.URL;
 import java.util.List;
@@ -23,8 +27,13 @@ import static utils.Validation.*;
 import static utils.Alerts.*;
 
 import static controllers.MainWindowController.sessionFactory;
+import static org.apache.log4j.BasicConfigurator.configure;
 
 public class EmployeeViewController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(EmployeeViewController.class);
+
+
     @FXML
     public TableView<EmployeeView> employeeTable;
     @FXML
@@ -52,6 +61,7 @@ public class EmployeeViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         USERID.setCellValueFactory(userData -> new SimpleIntegerProperty(userData.getValue().getUser().getUserId()).asObject());
         FIRSTNAME.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getFirstName()));
         LASTNAME.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getLastName()));
@@ -62,8 +72,7 @@ public class EmployeeViewController implements Initializable {
         OBJECTID.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getShop().toString()));
         employeeTable.setItems(getEmployee());
         setEditableStatus();
-        System.out.println(getEmployee().toString());
-
+        logger.info(getEmployee().toString());
 
     }
 
@@ -126,7 +135,7 @@ public class EmployeeViewController implements Initializable {
                 return;
             }
             e.getTableView().getItems().get(e.getTablePosition().getRow()).getUser().setState(Integer.parseInt(e.getNewValue()));
-            System.out.println((e.getTableView().getSelectionModel().getSelectedItem().getUser().toString()));
+            logger.info((e.getTableView().getSelectionModel().getSelectedItem().getUser().toString()));
 
             Session session = sessionFactory.openSession();
 
@@ -139,7 +148,9 @@ public class EmployeeViewController implements Initializable {
 
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Powodzenie");
+                logger.info("Powodzenie");
                 alert.setContentText("Dane użytkownika zostaly zaktualizowane");
+                logger.info("Dane użytkownika zostaly zaktualizowane");
                 alert.showAndWait();
             } catch (Exception exc) {
                 System.out.println(exc);
@@ -147,7 +158,9 @@ public class EmployeeViewController implements Initializable {
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Niepowodzenie");
+                logger.warn("Niepowodzenie");
                 alert.setContentText("Niepowodzenie aktualizacji danych");
+                logger.warn("Niepowodzenie aktualizacji danych");
                 alert.showAndWait();
             }
 

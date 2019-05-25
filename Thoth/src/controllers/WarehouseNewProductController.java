@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
+import log.ThothLoggerConfigurator;
 import models.ObservablePriceModel;
 import org.hibernate.Session;
 
@@ -18,6 +19,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.apache.log4j.Logger;
 
 import static controllers.MainWindowController.*;
 import static utils.Alerts.newAlertCustom;
@@ -25,6 +27,8 @@ import static utils.Alerts.showSuccesAllert;
 
 
 public class WarehouseNewProductController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(WarehouseNewProductController.class);
 
     @FXML
     public TextField NAME;
@@ -39,6 +43,7 @@ public class WarehouseNewProductController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
 
     }
 
@@ -91,13 +96,13 @@ public class WarehouseNewProductController implements Initializable {
         BigDecimal big = new BigDecimal(PRICE.getText());
         Product productOB = new Product(NAME.getText(), big, 0);
         session.save(productOB);
-        System.out.println("Dodano produkt");
+        logger.info("Dodano produkt");
         session.close();
         session = sessionFactory.openSession();
         State_on_shop product = new State_on_shop(productOB, getObjectShop().get(0), Integer.parseInt(AMOUNT.getText()));
         session.save(product);
         session.close();
-        System.out.println("Dodano ID sklepu do produktu");
+        logger.info("Dodano ID sklepu do produktu");
         NAME.setText("");
         PRICE.setText("");
         AMOUNT.setText("");

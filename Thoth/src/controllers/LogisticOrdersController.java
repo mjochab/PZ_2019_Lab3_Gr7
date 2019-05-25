@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
 import models.IndentTableView;
 import org.hibernate.Session;
 
@@ -24,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.apache.log4j.Logger;
 
 import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
@@ -32,6 +34,9 @@ import static controllers.MainWindowController.sessionFactory;
  * Kontroler glownego okna modulu logistyki
  */
 public class LogisticOrdersController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(LogisticOrdersController.class);
+
     @FXML
     private TableView<IndentTableView> ordersReadyForShipment;
     @FXML
@@ -71,6 +76,7 @@ public class LogisticOrdersController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // value factories dla tableview z zamowieniami oczekujacymi na transport
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         fromForShipment.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getOrder().getShopId_delivery().getCity()));
         toForShipment.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getOrder().getShopId_need().getCity()));
         idForShipment.setCellValueFactory(indentData -> new SimpleIntegerProperty(indentData.getValue().getOrder().getIndentId()).asObject());
@@ -103,7 +109,7 @@ public class LogisticOrdersController implements Initializable {
                                                      .setParameter("state", state)
                                                      .getSingleResult();
 
-        System.out.println(stateObject == null);
+        logger.info(stateObject == null);
 
         // pobranie zamowien o stanie pobranym wyzej
         List<State_of_indent> state_of_indents = session.createQuery("from State_of_indent where StateId = :sid")
@@ -125,7 +131,7 @@ public class LogisticOrdersController implements Initializable {
             List<Indent> subIndents = session.createQuery("From Indent indent where ParentId = :pid")
                     .setParameter("pid", soi.getIndentId().getIndentId()).list();
 
-            System.out.println(subIndents.size());
+            logger.info(subIndents.size());
 
             if (subIndents.size() > 0) {
                 soi.getIndentId().setIsComplex(true);
@@ -213,7 +219,7 @@ public class LogisticOrdersController implements Initializable {
         // czy wybrany wiersz zawiera zamowienie zlozone
         // tak -> zaladuj widok zamowienia zlozonego (complex)
         // nie -> zaladuj widok zamowienia prostego
-        System.out.println(orderView.getOrder().isComplex());
+        logger.info(orderView.getOrder().isComplex());
         if (orderView.getOrder().isComplex()) {
             loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
         } else {

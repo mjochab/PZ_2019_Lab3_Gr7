@@ -14,9 +14,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import log.ThothLoggerConfigurator;
+import org.apache.log4j.Logger;
+
 import static controllers.MainWindowController.sessionContext;
 
 public class ShopViewController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(ShopViewController.class);
+
     @FXML
     MenuItem logout, back;
     @FXML
@@ -44,11 +50,13 @@ public class ShopViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
+
         if (sessionContext.getCurrentLoggedUser().getUserId() == 1) {
             if (back != null) {
                 back.setVisible(true);
             } else {
-                System.out.println("BACK is null");
+                logger.warn("BACK is null");
             }
         }
         sessionInfo.setText(" Zalogowano jako: "+sessionContext.getCurrentLoggedUser().getFirstName()+" "+sessionContext.getCurrentLoggedUser().getLastName()+" / Lokalizacja: "+sessionContext.getCurrentLoggedShop().getCity());

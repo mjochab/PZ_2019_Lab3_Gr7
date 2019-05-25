@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
+import log.ThothLoggerConfigurator;
+import org.apache.log4j.BasicConfigurator;
 import org.hibernate.Session;
 
 import javax.persistence.PersistenceException;
@@ -16,6 +18,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.apache.log4j.Logger;
 
 import static controllers.MainWindowController.sessionFactory;
 
@@ -23,6 +26,9 @@ import static controllers.MainWindowController.sessionFactory;
  * Kontroler okna Analityka dotyczącego cen produktów.
  */
 public class AnalystPricesViewController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AnalystPricesViewController.class);
+
     @FXML
     public TableView<Product> priceTable;
     @FXML
@@ -42,6 +48,8 @@ public class AnalystPricesViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
+
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId())));
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
         PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
@@ -72,7 +80,7 @@ public class AnalystPricesViewController implements Initializable {
             searchTF.setText("");
         }
 
-        System.out.println("getProducts " + eList);
+        logger.info("getProducts " + eList);
         for (Product ent : eList) {
             Product opm = new Product();
 
@@ -100,7 +108,7 @@ public class AnalystPricesViewController implements Initializable {
         PRICE.setCellFactory(TextFieldTableCell.forTableColumn());
 
         PRICE.setOnEditCommit(e -> { // dodać walidacje try catch
-            System.out.println("klasa wpisanej wartości:" + e.getNewValue().getClass());
+            logger.info("klasa wpisanej wartości:" + e.getNewValue().getClass());
             Session session = sessionFactory.openSession();
             BigDecimal oldValue = new BigDecimal(e.getOldValue());
             try {
@@ -112,46 +120,57 @@ public class AnalystPricesViewController implements Initializable {
                 session.getTransaction().begin();
                 Product priceToUpdate = e.getTableView().getSelectionModel().getSelectedItem();
 
-                System.out.println("Obiekt ze zmienioną ceną:" + priceToUpdate.toString());
+                logger.info("Obiekt ze zmienioną ceną:" + priceToUpdate.toString());
 
                 session.update(priceToUpdate);
                 session.getTransaction().commit();
 
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Powodzenie");
+                logger.info("Powodzenie");
                 alert.setContentText("Cena została zaktualizowana");
+                logger.info("Cena została zaktualizowana");
                 alert.showAndWait();
             } catch (NumberFormatException exc) {
-                System.out.println("stara wartosc:" + oldValue.toString());
+                logger.error("stara wartosc:" + oldValue.toString());
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setPrice(oldValue);
                 session.getTransaction().rollback();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Niepowodzenie");
+                logger.warn("Niepowodzenie");
                 alert.setContentText("Wprowadzona wartość nie jest liczbą!");
+                logger.warn("Wprowadzona wartość nie jest liczbą!");
                 alert.showAndWait();
             } catch (PersistenceException exc) {
-                System.out.println("stara wartosc:" + oldValue.toString());
+                logger.warn("stara wartosc:" + oldValue.toString());
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setPrice(oldValue);
                 session.getTransaction().rollback();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Niepowodzenie");
+                logger.warn("Niepowodzenie");
                 alert.setContentText("Liczba wykracza poza dopuszczalny zakres!");
+                logger.warn("Liczba wykracza poza dopuszczalny zakres!");
                 alert.showAndWait();
             } catch (Exception exc) {
-                System.out.println("exc to string:"+exc.getMessage());
+                logger.error("exc to string:"+exc.getMessage());
+                logger.error("exc to string:"+exc.getMessage());
                 if (exc.getMessage().equals("ValueBelowZero")) {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setPrice(oldValue);
                     session.getTransaction().rollback();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Niepowodzenie");
+                    logger.warn("Niepowodzenie");
                     alert.setContentText("Wpisana cena nie może być ujemna!!");
+                    logger.warn("Wpisana cena nie może być ujemna!!");
                     alert.showAndWait();
                 } else {
-                    System.out.println("ERROR UWAGA!!!:" + exc);
+                    logger.error("ERROR UWAGA!!!:" + exc);
                     session.getTransaction().rollback();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Niepowodzenie");
+                    logger.warn("Niepowodzenie");
                     alert.setContentText("Niepowodzenie aktualizacji danych");
+                    logger.warn("Niepowodzenie aktualizacji danych");
                     alert.showAndWait();
                 }
             }
@@ -165,7 +184,7 @@ public class AnalystPricesViewController implements Initializable {
         DISCOUNT.setCellFactory(TextFieldTableCell.forTableColumn());
 
         DISCOUNT.setOnEditCommit(e -> { // dodać walidacje try catch
-            System.out.println("klasa wpisanej wartości:" + e.getNewValue().getClass());
+            logger.info("klasa wpisanej wartości:" + e.getNewValue().getClass());
             Session session = sessionFactory.openSession();
             BigDecimal oldValue = new BigDecimal(e.getOldValue());
             try {
@@ -176,47 +195,57 @@ public class AnalystPricesViewController implements Initializable {
                 }
                 session.getTransaction().begin();
                 Product priceToUpdate = e.getTableView().getSelectionModel().getSelectedItem();
-
-                System.out.println("Obiekt ze zmienioną zniżką:" + priceToUpdate.toString());
+                ;
+                logger.info("Obiekt ze zmienioną zniżką:" + priceToUpdate.toString());
 
                 session.update(priceToUpdate);
                 session.getTransaction().commit();
 
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Powodzenie");
+                logger.info("Powodzenie");
                 alert.setContentText("Zniżka została zaktualizowana");
+                logger.info("Zniżka została zaktualizowana");
                 alert.showAndWait();
             } catch (NumberFormatException exc) {
-                System.out.println("stara wartosc:" + oldValue.toString());
+                logger.error("stara wartosc:" + oldValue.toString());
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setDiscount(oldValue.intValue());
                 session.getTransaction().rollback();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Niepowodzenie");
+                logger.warn("Niepowodzenie");
                 alert.setContentText("Wprowadzona wartość nie jest liczbą!");
+                logger.warn("Wprowadzona wartość nie jest liczbą!");
                 alert.showAndWait();
             } catch (PersistenceException exc) {
-                System.out.println("stara wartosc:" + oldValue.toString());
+                logger.error("stara wartosc:" + oldValue.toString());
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setDiscount(oldValue.intValue());
                 session.getTransaction().rollback();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Niepowodzenie");
+                logger.warn("Niepowodzenie");
                 alert.setContentText("Liczba wykracza poza dopuszczalny zakres!");
+                logger.warn("Liczba wykracza poza dopuszczalny zakres!");
                 alert.showAndWait();
             } catch (Exception exc) {
-                System.out.println("exc to string:"+exc.getMessage());
+                logger.error("exc to string:"+exc.getMessage());
                 if (exc.getMessage().equals("ValueBelowZero")) {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setDiscount(oldValue.intValue());
                     session.getTransaction().rollback();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Niepowodzenie");
+                    logger.info("Niepowodzenie");
                     alert.setContentText("Wpisana żniżka nie może być ujemna! lub przekraczać 100%");
+                    logger.info("Wpisana żniżka nie może być ujemna! lub przekraczać 100%");
                     alert.showAndWait();
                 } else {
-                    System.out.println("ERROR UWAGA!!!:" + exc);
+                    logger.error("ERROR UWAGA!!!:" + exc);
                     session.getTransaction().rollback();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Niepowodzenie");
+                    logger.info("Niepowodzenie");
                     alert.setContentText("Niepowodzenie aktualizacji danych");
+                    logger.info("Niepowodzenie aktualizacji danych");
                     alert.showAndWait();
                 }
             }
