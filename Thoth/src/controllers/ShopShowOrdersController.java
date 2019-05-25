@@ -1,8 +1,6 @@
 package controllers;
 
-import entity.Indent;
-import entity.State;
-import entity.State_of_indent;
+import entity.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +16,7 @@ import javafx.stage.Stage;
 import models.IndentTableView;
 import org.hibernate.Session;
 
+import javax.swing.text.StyledEditorKit;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -69,6 +68,7 @@ public class ShopShowOrdersController implements Initializable {
     public ObservableList<IndentTableView> getOrders() {
         ObservableList<IndentTableView> enseignantList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
+        List<State_on_shop> sos = session.createQuery("from State_on_shop where shopId = :shopId").setParameter("shopId", sessionContext.getCurrentLoggedShop()).list();
         List<Indent> indents;
         if (searchTF.getText().isEmpty()) {
             indents = session.createQuery("from Indent i where i.customerId is not null and i.shopId_need = :curentShop")
@@ -77,6 +77,35 @@ public class ShopShowOrdersController implements Initializable {
             indents = session.createQuery("from Indent i where i.customerId is not null AND i.customerId.phoneNumber like :searchPhoneNumber AND i.shopId_need = :curentShop")
                     .setParameter("curentShop", sessionContext.getCurrentLoggedShop())
                     .setParameter("searchPhoneNumber", Integer.valueOf(searchTF.getText())).list();
+        }
+        for (Indent ind : indents) {
+            List<Indent_product> ip = session.createQuery("from Indent_product where indentId = :ip").setParameter("ip", ind).list();
+            Boolean isIndentComplete = false;
+            for (Indent_product indent_product : ip) {
+                Boolean isProductAvilable = false;
+                for (State_on_shop state_on_shop : sos) {
+                    if (indent_product.getProductId() == state_on_shop.getProductId() && indent_product.getAmount() <= (state_on_shop.getAmount() - state_on_shop.getLocked())) {
+                        isProductAvilable = true;
+                        isIndentComplete = true;
+                    }
+                }
+                if (!isProductAvilable) {
+                    break;
+                }
+            }
+            if (!isIndentComplete) {
+                break;
+            }
+            try {
+                State_of_indent soi = (State_of_indent) session.createQuery("from State_of_indent where indentId = :soi AND stateId.stateId = :stateid").setParameter("soi", ind).setParameter("stateid", 64).getSingleResult();
+                State state = (State) session.createQuery("from State where stateId = :stateid").setParameter("stateid", 65).getSingleResult();
+                soi.setStateId(state);
+                session.update(soi);
+                session.beginTransaction().commit();
+            }catch(Exception e){
+                System.out.println("brak zamowien do zmiany statusu");
+                System.out.println(e.getMessage());
+            }
         }
 
         List<State_of_indent> stateofindents = session.createQuery("from State_of_indent soi where soi.indentId.shopId_need = :shopId")
@@ -144,14 +173,19 @@ public class ShopShowOrdersController implements Initializable {
 
         if (orderView.getState().getStateId().getStateId() == 65) {
             Session session = sessionFactory.openSession();
-            State state = (State)session.createQuery("from State where stateId = 66").getSingleResult();
+            State state = (State) session.createQuery("from State where stateId = 66").getSingleResult();
             orderView.getState().setStateId(state);
-            session.save(orderView.getState());
+            session.saveOrUpdate(orderView.getState());
             session.beginTransaction().commit();
             showPrductPickedByCustomer();
         } else {
             showProductInTransport();
         }
+    }
+
+    public void refreshAndChangeStatus() {
+        ordersTable.getItems().clear();
+        ordersTable.setItems(getOrders());
     }
 
 
