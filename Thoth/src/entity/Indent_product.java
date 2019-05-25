@@ -31,6 +31,13 @@ public class Indent_product {
         this.amount = amount;
     }
 
+    public Indent_product(int id, Indent indentId, Product productId, long amount) {
+        this.id = id;
+        this.indentId = indentId;
+        this.productId = productId;
+        this.amount = (int)amount;
+    }
+
     public int getId() {
         return id;
     }

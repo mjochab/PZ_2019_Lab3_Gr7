@@ -15,7 +15,7 @@
          <children>
             <HBox>
                <children>
-                  <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#changeOrderStatus" prefHeight="26.0" prefWidth="242.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Potwierdź odebranie zamówienia">
+                  <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#changeOrderToPrepareStatus" prefHeight="26.0" prefWidth="242.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Gotowe do odbioru">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -23,7 +23,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#refreshStateOrderWarehouse" prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Odśwież">
+                  <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#refreshStateOrderToPrepareWarehouse" prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Odśwież">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -31,7 +31,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="SHOW_DETAILS" contentDisplay="RIGHT" layoutX="272.0" layoutY="20.0" mnemonicParsing="false" onAction="#inRealizationDetailsAction" prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Podgląd">
+                  <Button fx:id="SHOW_DETAILS" contentDisplay="RIGHT" layoutX="272.0" layoutY="20.0" mnemonicParsing="false" onAction="#inToPrepareDetailsAction" prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Podgląd">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -54,9 +54,9 @@
             </HBox>
             <HBox prefHeight="781.0" prefWidth="1280.0">
                <children>
-                  <TableView fx:id="stateOrderWarehouse" editable="true" prefHeight="754.0" prefWidth="1325.0">
+                  <TableView fx:id="stateOrderToPrepareWarehouse" editable="true" prefHeight="754.0" prefWidth="1325.0">
                      <columns>
-                        <TableColumn fx:id="CITY" prefWidth="408.0" text="Skąd" />
+                        <TableColumn fx:id="CITY" prefWidth="408.0" text="Dokąd" />
                         <TableColumn fx:id="STATE" minWidth="0.0" prefWidth="503.0" text="Status" />
                         <TableColumn fx:id="ORDERNR" minWidth="0.0" prefWidth="368.0" text="Numer zamówienia" />
                      </columns>

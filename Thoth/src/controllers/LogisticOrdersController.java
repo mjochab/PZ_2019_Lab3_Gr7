@@ -225,10 +225,14 @@ public class LogisticOrdersController implements Initializable {
         // wstrzykniecie wybranego obiektu do widoku szczegolowego
         if (orderView.getOrder().isComplex()) {
             ComplexOrderDetailsController controller = loader.getController();
+            //ustawienie ścieżki powrotu
+            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         } else {
             SimpleOrderDetailsController controller = loader.getController();
+            //ustawienie ścieżki powrotu
+            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         }
@@ -260,10 +264,12 @@ public class LogisticOrdersController implements Initializable {
         // wstrzykniecie wybranego obiektu do widoku szczegolowego
         if (orderView.getOrder().isComplex()) {
             ComplexOrderDetailsController controller = loader.getController();
+            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         } else {
             SimpleOrderDetailsController controller = loader.getController();
+            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         }
@@ -335,7 +341,6 @@ public class LogisticOrdersController implements Initializable {
 
          */
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
         List<Indent_product> productsToDeliver = session.createQuery("from Indent_product where IndentId = :iid")
                                                        .setParameter("iid", indentToStateChange.getIndentId())
                                                        .getResultList();
@@ -361,15 +366,17 @@ public class LogisticOrdersController implements Initializable {
                 // odejmuje z magazynu ktory dostarczyl produkt
                 stateOnShopSource.setAmount(stateOnShopSource.getAmount() - amountOfProduct);
                 stateOnShopSource.setLocked(stateOnShopSource.getLocked() - amountOfProduct);
-
+                session.update(stateOnShopSource);
                 // dodaje do magazynu ktory zamowil produkt
                 stateOnShopDestination.setAmount(stateOnShopDestination.getAmount() + amountOfProduct);
-
-                session.getTransaction().commit();
+                session.update(stateOnShopDestination);
+                session.beginTransaction().commit();
+                session.close();
                 System.out.println("Pomyslnie zakonczono zmiane ilosc produktu");
             }
             catch(Exception e) {
                 System.out.println("Nastapil blad, wycofuje zmiany");
+                System.out.println(e.getMessage());
                 session.getTransaction().rollback();
                 success = false;
                 break;
@@ -379,7 +386,7 @@ public class LogisticOrdersController implements Initializable {
         session.close();
 
         if(success) {
-            changeOrderState(indentToStateChange, "Zrealizowane");
+            changeOrderState(indentToStateChange, "Oczekuje na potwierdzenie odbioru");
             ordersInRealization.getItems().clear();
             ordersInRealization.setItems(getIndentsInRealization());
         }

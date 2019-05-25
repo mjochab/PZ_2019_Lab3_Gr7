@@ -15,7 +15,7 @@
          <children>
             <HBox prefHeight="37.0" prefWidth="933.0">
                <children>
-                  <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#confirmOrder" prefHeight="26.0" prefWidth="264.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Sprowadź zamówienie dla klienta">
+                  <Button contentDisplay="RIGHT" disable="true" mnemonicParsing="false" onAction="#confirmOrder" prefHeight="26.0" prefWidth="264.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Sprowadź zamówienie dla klienta">
                      <font>
                         <Font size="18.0" />
                      </font>
