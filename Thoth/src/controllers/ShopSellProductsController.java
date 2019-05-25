@@ -146,7 +146,7 @@ public class ShopSellProductsController implements Initializable {
                 new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getPrice()
                         .multiply(BigDecimal.ONE
                                 .subtract(BigDecimal.valueOf(produktData.getValue().getStateOnShop().getProductId().getDiscount())
-                                        .divide(BigDecimal.valueOf(100)))).setScale(2))));
+                                        .divide(BigDecimal.valueOf(100)))).setScale(2,BigDecimal.ROUND_UP))));
         AMOUNT_RECEIPT.setCellValueFactory(produktData ->
                 new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
         System.out.println("Odebrane " + list.toString() + " rozmiar " + list.size());
@@ -241,7 +241,7 @@ public class ShopSellProductsController implements Initializable {
                     .multiply(BigDecimal.valueOf(sos.getAmount()))
                     .multiply(BigDecimal.ONE
                             .subtract(BigDecimal.valueOf(sos.getStateOnShop().getProductId().getDiscount())
-                                    .divide(BigDecimal.valueOf(100))))).setScale(2);
+                                    .divide(BigDecimal.valueOf(100))))).setScale(2,BigDecimal.ROUND_UP);
         }
         return totalValue;
     }
@@ -252,7 +252,7 @@ public class ShopSellProductsController implements Initializable {
                 .multiply(BigDecimal.valueOf(sos.getAmount()))
                 .multiply(BigDecimal.ONE
                         .subtract(BigDecimal.valueOf(sos.getStateOnShop().getProductId().getDiscount())
-                                .divide(BigDecimal.valueOf(100))))).setScale(2);
+                                .divide(BigDecimal.valueOf(100))))).setScale(2,BigDecimal.ROUND_UP);
         return totalValue;
     }
 
