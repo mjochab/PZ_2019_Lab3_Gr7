@@ -386,7 +386,7 @@ public class LogisticOrdersController implements Initializable {
         session.close();
 
         if(success) {
-            changeOrderState(indentToStateChange, "Zrealizowane");
+            changeOrderState(indentToStateChange, "Oczekuje na potwierdzenie odbioru");
             ordersInRealization.getItems().clear();
             ordersInRealization.setItems(getIndentsInRealization());
         }
