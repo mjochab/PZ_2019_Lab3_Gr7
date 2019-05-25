@@ -525,7 +525,7 @@ public class StateWarehouseController implements Initializable {
         ObservableList<State_of_indent> orderList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<State_of_indent> eList = session.createQuery("FROM State_of_indent soi " +
-                "WHERE soi.indentId.shopId_delivery.shopId = :idshop AND soi.stateId.stateId <= :status")
+                "WHERE soi.indentId.shopId_need.shopId = :idshop AND soi.stateId.stateId <= :status")
                 .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
                 .setParameter("status", 10).list(); // zmiana statusu z 4 na 5
         System.out.println("getOrder " + eList);
@@ -612,7 +612,7 @@ public class StateWarehouseController implements Initializable {
         ObservableList<State_of_indent> orderList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<State_of_indent> eList = session.createQuery("FROM State_of_indent soi " +
-                "WHERE soi.indentId.shopId_need.shopId = :idshop AND soi.stateId.stateId <= :status")
+                "WHERE soi.indentId.shopId_delivery.shopId = :idshop AND soi.stateId.stateId <= :status")
                 .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
                 .setParameter("status", 10).list(); // zmiana statusu z 4 na 5
         System.out.println("getOrder " + eList);
