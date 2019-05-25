@@ -601,7 +601,7 @@ public class StateWarehouseController implements Initializable {
     //ZAKŁADKA(6) ZAMOWIENIA DO PRZYGOtOWANIA---------------------------------------------------------------------------------------------------------------
 
     public void overlapOrdersToPrepareWarehouse() {
-        CITY.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getIndentId().getShopId_delivery().getCity()));
+        CITY.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getIndentId().getShopId_need().getCity()));
         STATE.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getStateId().getName()));
         ORDERNR.setCellValueFactory(orderData -> new SimpleStringProperty(String.valueOf(orderData.getValue().getIndentId().getIndentId())));
         stateOrderToPrepareWarehouse.setItems(getOrderToPrepare());
