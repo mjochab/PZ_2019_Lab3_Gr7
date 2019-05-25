@@ -92,6 +92,7 @@ public class LogisticOrdersController implements Initializable {
 
     /**
      * Metooda pobiera z bazy wszystkie zamowienia o okreslonym stanie
+     *
      * @param state stan zamowien
      * @return Lista obiektow {@link State_of_indent} State_of_indent
      */
@@ -100,8 +101,8 @@ public class LogisticOrdersController implements Initializable {
 
         // pobranie odpowiedniego stanu
         State stateObject = (State) session.createQuery("from State where name = :state")
-                                                     .setParameter("state", state)
-                                                     .getSingleResult();
+                .setParameter("state", state)
+                .getSingleResult();
 
         System.out.println(stateObject == null);
 
@@ -111,8 +112,8 @@ public class LogisticOrdersController implements Initializable {
 
         List<State_of_indent> state_of_indents_shop_delivery = new ArrayList<>();
 
-        for(State_of_indent soi : state_of_indents) {
-            if(soi.getIndentId().getShopId_delivery().getShopId() == sessionContext.getCurrentLoggedShop().getShopId()) {
+        for (State_of_indent soi : state_of_indents) {
+            if (soi.getIndentId().getShopId_delivery().getShopId() == sessionContext.getCurrentLoggedShop().getShopId()) {
                 System.out.println("Ten sam sklep!");
                 state_of_indents_shop_delivery.add(soi);
             }
@@ -141,12 +142,13 @@ public class LogisticOrdersController implements Initializable {
 
     /**
      * Metoda zwraca {@link ObservableList} reprezentujaca zamowienia o stanie "Oczekuje na transport"
+     *
      * @return Lista obserwowalna obiektow {@link IndentTableView}
      */
     public ObservableList<IndentTableView> getIndentsReadyForShipment() {
         ObservableList<IndentTableView> listOfIndents = FXCollections.observableArrayList();
 
-        for(State_of_indent soi : getIndentsByState("Oczekuje na transport")) {
+        for (State_of_indent soi : getIndentsByState("Oczekuje na transport")) {
             IndentTableView indentTableView = new IndentTableView();
             indentTableView.setOrder(soi.getIndentId());
             indentTableView.setState(soi);
@@ -158,7 +160,7 @@ public class LogisticOrdersController implements Initializable {
             }
             */
 
-            if(soi.getIndentId().isComplex()) {
+            if (soi.getIndentId().isComplex()) {
                 continue;
             }
 
@@ -170,12 +172,13 @@ public class LogisticOrdersController implements Initializable {
 
     /**
      * Metoda zwraca {@link ObservableList} reprezentujaca zamowienia o stanie "Oczekuje potwierdzenie odbioru"
+     *
      * @return Lista obserwowalna obiektow {@link IndentTableView}
      */
     public ObservableList<IndentTableView> getIndentsInRealization() {
         ObservableList<IndentTableView> listOfIndents = FXCollections.observableArrayList();
 
-        for(State_of_indent soi : getIndentsByState("W transporcie")) {
+        for (State_of_indent soi : getIndentsByState("W transporcie")) {
             IndentTableView indentTableView = new IndentTableView();
             indentTableView.setOrder(soi.getIndentId());
             indentTableView.setState(soi);
@@ -187,7 +190,7 @@ public class LogisticOrdersController implements Initializable {
             }
             */
 
-            if(soi.getIndentId().isComplex()) {
+            if (soi.getIndentId().isComplex()) {
                 continue;
             }
 
@@ -295,8 +298,7 @@ public class LogisticOrdersController implements Initializable {
 
             session.update(newIndentState);
             session.getTransaction().commit();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("Nie udalo sie zmienic stanu!");
             session.getTransaction().rollback();
         }
@@ -304,7 +306,7 @@ public class LogisticOrdersController implements Initializable {
 
     @FXML
     public void takeOrderHandler(ActionEvent event) {
-        if(ordersReadyForShipment.getSelectionModel().getSelectedItem() == null) {
+        if (ordersReadyForShipment.getSelectionModel().getSelectedItem() == null) {
             return;
         }
 
@@ -323,7 +325,7 @@ public class LogisticOrdersController implements Initializable {
 
     @FXML
     public void deliverOrderHandler(ActionEvent event) {
-        if(ordersInRealization.getSelectionModel().getSelectedItem() == null) {
+        if (ordersInRealization.getSelectionModel().getSelectedItem() == null) {
             return;
         }
 
@@ -342,25 +344,34 @@ public class LogisticOrdersController implements Initializable {
          */
         Session session = sessionFactory.openSession();
         List<Indent_product> productsToDeliver = session.createQuery("from Indent_product where IndentId = :iid")
-                                                       .setParameter("iid", indentToStateChange.getIndentId())
-                                                       .getResultList();
+                .setParameter("iid", indentToStateChange.getIndentId())
+                .getResultList();
         Shop shopSource = indentToStateChange.getShopId_delivery();
         Shop shopDestination = indentToStateChange.getShopId_need();
 
         boolean success = true;
 
-        for(Indent_product indentProduct : productsToDeliver) {
+        for (Indent_product indentProduct : productsToDeliver) {
             Product product = indentProduct.getProductId();
             int amountOfProduct = indentProduct.getAmount();
 
             State_on_shop stateOnShopSource = (State_on_shop) session.createQuery("from State_on_shop where ShopId = :sid and ProductId = :pid")
-                                                     .setParameter("sid", shopSource.getShopId())
-                                                     .setParameter("pid", product.getProductId())
-                                                     .getSingleResult();
-            State_on_shop stateOnShopDestination = (State_on_shop) session.createQuery("from State_on_shop where ShopId = :sid and ProductId = :pid")
-                                                                            .setParameter("sid", shopDestination.getShopId())
-                                                                            .setParameter("pid", product.getProductId())
-                                                                            .getSingleResult();
+                    .setParameter("sid", shopSource.getShopId())
+                    .setParameter("pid", product.getProductId())
+                    .getSingleResult();
+
+            State_on_shop stateOnShopDestination;
+            //jeżeli produkt jeszcze nie istnieje w danym sklepie to utworz stan produktu
+            try {
+                stateOnShopDestination = (State_on_shop) session.createQuery("from State_on_shop where ShopId = :sid and ProductId = :pid")
+                        .setParameter("sid", shopDestination.getShopId())
+                        .setParameter("pid", product.getProductId())
+                        .getSingleResult();
+            } catch (Exception e) {
+                stateOnShopDestination = new State_on_shop(product,shopDestination,0);
+                session.save(stateOnShopDestination);
+            }
+
 
             try {
                 // odejmuje z magazynu ktory dostarczyl produkt
@@ -371,10 +382,8 @@ public class LogisticOrdersController implements Initializable {
                 stateOnShopDestination.setAmount(stateOnShopDestination.getAmount() + amountOfProduct);
                 session.update(stateOnShopDestination);
                 session.beginTransaction().commit();
-                session.close();
                 System.out.println("Pomyslnie zakonczono zmiane ilosc produktu");
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 System.out.println("Nastapil blad, wycofuje zmiany");
                 System.out.println(e.getMessage());
                 session.getTransaction().rollback();
@@ -385,12 +394,11 @@ public class LogisticOrdersController implements Initializable {
 
         session.close();
 
-        if(success) {
+        if (success) {
             changeOrderState(indentToStateChange, "Oczekuje na potwierdzenie odbioru");
             ordersInRealization.getItems().clear();
             ordersInRealization.setItems(getIndentsInRealization());
-        }
-        else {
+        } else {
             System.out.println("Nie udalo sie dostarczyc zamowienia");
         }
     }
