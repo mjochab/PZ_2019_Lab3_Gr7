@@ -41,6 +41,8 @@ public class SimpleOrderDetailsController implements Initializable {
     @FXML
     private Label operatingShop;
     private Indent order;
+    //ścieżka powrotu
+    private String loader;
     private ObservableList products;
 
     @Override
@@ -50,6 +52,10 @@ public class SimpleOrderDetailsController implements Initializable {
 
     public void setOrder(Indent order) {
         this.order = order;
+    }
+
+    public void setLoader(String loader) {
+        this.loader = loader;
     }
 
     // wyswietlanie zamowienia prostego
@@ -96,7 +102,7 @@ public class SimpleOrderDetailsController implements Initializable {
         Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent par = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/main_view_logistic.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(this.loader));
             par = loader.load();
 
         } catch (IOException e) {

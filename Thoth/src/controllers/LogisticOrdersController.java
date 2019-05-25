@@ -225,10 +225,14 @@ public class LogisticOrdersController implements Initializable {
         // wstrzykniecie wybranego obiektu do widoku szczegolowego
         if (orderView.getOrder().isComplex()) {
             ComplexOrderDetailsController controller = loader.getController();
+            //ustawienie ścieżki powrotu
+            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         } else {
             SimpleOrderDetailsController controller = loader.getController();
+            //ustawienie ścieżki powrotu
+            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         }
@@ -260,10 +264,12 @@ public class LogisticOrdersController implements Initializable {
         // wstrzykniecie wybranego obiektu do widoku szczegolowego
         if (orderView.getOrder().isComplex()) {
             ComplexOrderDetailsController controller = loader.getController();
+            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         } else {
             SimpleOrderDetailsController controller = loader.getController();
+            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         }
