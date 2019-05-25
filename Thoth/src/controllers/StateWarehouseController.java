@@ -436,14 +436,14 @@ public class StateWarehouseController implements Initializable {
             idShops.remove(0);
             Shop shopIdDelivery = (Shop) session.get(Shop.class, id);
             System.out.println("need " + shopIdNeed.getShopId() + " delivery " + shopIdDelivery.getShopId());
-            ObservableList<State_on_shop> products = FXCollections.observableArrayList();
+            ObservableList<StateOnShop> products = FXCollections.observableArrayList();
             if (idShops.contains(id)) {
                 continue;
             } else { //SIMPLE
                 //Odseparowanie produktów dla danego sklepu
                 for (int i = 0; i < list.size(); i++) {
                     if (list.get(i).getStateOnShop().getShopId().getShopId() == id) {
-                        products.add(list.get(i).getStateOnShop());
+                        products.add(list.get(i));
                         System.out.println(list.get(i).getStateOnShop().getLocked() + " LOCKED oraz AMOUNT " + list.get(i).getAmount());
                         State_on_shop newLocked = (State_on_shop) session.get(State_on_shop.class, list.get(i).getStateOnShop().getId());
                         newLocked.setLocked(newLocked.getLocked() + list.get(i).getAmount());
@@ -453,9 +453,9 @@ public class StateWarehouseController implements Initializable {
                 //SIMPLE
                 Indent simpleOrder = new Indent(shopIdNeed, shopIdDelivery, null, date, complexOrder, false);
                 session.save(simpleOrder);
-                for (State_on_shop state_on_shop : products) {
-                    System.out.println("Chce zamowic " + state_on_shop.getProductId().getName() + " " + state_on_shop.getAmount());
-                    Indent_product indent_product = new Indent_product(simpleOrder, state_on_shop.getProductId(), state_on_shop.getAmount());
+                for (StateOnShop state_on_shop : products) {
+                    System.out.println("Chce zamowic " + state_on_shop.getStateOnShop().getProductId().getName() + " " + state_on_shop.getAmount());
+                    Indent_product indent_product = new Indent_product(simpleOrder, state_on_shop.getStateOnShop().getProductId(), state_on_shop.getAmount());
                     session.save(indent_product);
                 }
                 State_of_indent state_of_indent = new State_of_indent(sessionContext.getCurrentLoggedUser(), simpleOrder, state);
