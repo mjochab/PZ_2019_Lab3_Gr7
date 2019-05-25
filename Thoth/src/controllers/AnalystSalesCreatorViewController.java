@@ -68,8 +68,8 @@ public class AnalystSalesCreatorViewController implements Initializable {
             }
         });
         discountTable.setOnMouseClicked(event -> {
-            if (event.getButton().equals(MouseButton.PRIMARY)) {
-                if (event.getClickCount() == 2) {
+            if (event.getButton().equals(MouseButton.SECONDARY)) {
+                if (event.getClickCount() == 1) {
                     if (discountTable.getSelectionModel().getSelectedItem() != null) {
                         System.out.println("Usuwany object " + discountTable.getSelectionModel().getSelectedItem().toString());
                         lista.remove(discountTable.getSelectionModel().getSelectedItem());

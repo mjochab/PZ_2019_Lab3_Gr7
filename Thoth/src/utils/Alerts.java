@@ -57,6 +57,22 @@ public class Alerts {
         alert.showAndWait();
     }
 
+    public static void shownotNameAlert(String fieldName){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Niepowodzenie");
+        alert.setHeaderText("Wprowadź poprawne dane.");
+        alert.setContentText(fieldName+" powinno zaczynać się z wielkiej litery oraz składać się ze znaków od a do z.");
+        alert.showAndWait();
+    }
+
+    public static void showNotBoolean(String message){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Niepowodzenie");
+        alert.setHeaderText("Wartość nie jest typu boolean.");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     // powodzenie
 
     public static void showSuccesAllert(){
@@ -79,4 +95,5 @@ public class Alerts {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
 }

@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import static utils.Validation.*;
+import static utils.Alerts.*;
 
 public class AddEmployeeController implements Initializable {
 
@@ -42,7 +44,17 @@ public class AddEmployeeController implements Initializable {
         User u = new User();
         UserShop us = new UserShop();
 
-        if(tfFirstName.getText() == ""
+        if(!nameValidation(tfFirstName.getText())){
+            shownotNameAlert(tfFirstName.getPromptText());
+            return;
+        }
+        if(!nameValidation(tfLastName.getText())){
+            shownotNameAlert(tfLastName.getPromptText());
+            return;
+        }
+
+
+        if (tfFirstName.getText() == ""
                 || tfLastName.getText() == ""
                 || tfLogin.getText() == ""
                 || tfPassword.getText() == ""
@@ -77,8 +89,7 @@ public class AddEmployeeController implements Initializable {
             //zapisuje usera do bazy
             try {
                 session.save(u);
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 System.out.println("Nie udalo sie zapisac usera do bazy");
                 session.getTransaction().rollback();
                 session.close();
@@ -88,8 +99,7 @@ public class AddEmployeeController implements Initializable {
             us.setUserId(u);
             try {
                 session.save(us);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Nie udalo sie zapisac UserShop do bazy");
                 session.getTransaction().rollback();
                 session.close();
@@ -132,7 +142,7 @@ public class AddEmployeeController implements Initializable {
         Session session = sessionFactory.openSession();
         List<Shop> shopsList = session.createQuery("from Shop").list();
 
-        for(Shop s: shopsList) {
+        for (Shop s : shopsList) {
             System.out.println(s.toString());
         }
 

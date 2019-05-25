@@ -252,8 +252,8 @@ public class StateWarehouseController implements Initializable {
         });
         //-------------------------------------------------------------------------------------------------------
         add_new_order.setOnMouseClicked(event -> {
-            if (event.getButton().equals(MouseButton.PRIMARY)) {
-                if (event.getClickCount() == 3) {
+            if (event.getButton().equals(MouseButton.SECONDARY)) {
+                if (event.getClickCount() == 1) {
                     if (add_new_order.getSelectionModel().getSelectedItem() != null) {
                         System.out.println("Usuwany object " + add_new_order.getSelectionModel().getSelectedItem().toString());
                         list.remove(add_new_order.getSelectionModel().getSelectedItem());
@@ -388,6 +388,7 @@ public class StateWarehouseController implements Initializable {
         Shop shopIdNeed = (Shop) session.get(Shop.class, sessionContext.getCurrentLoggedShop().getShopId());
         Shop shopIdDelivery = (Shop) session.get(Shop.class, id);
         State state = (State) session.get(State.class, 1);
+        System.out.println("to jest status mojego zamowienia"+state.toString());
 
         System.out.println("need " + shopIdNeed.getShopId() + " delivery " + shopIdDelivery.getShopId());
         Indent simpleOrder = new Indent(shopIdNeed, shopIdDelivery, null, date, null, false);
@@ -515,7 +516,7 @@ public class StateWarehouseController implements Initializable {
         ObservableList<State_of_indent> orderList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<State_of_indent> eList = session.createQuery("Select soi FROM Indent_product ip, State_of_indent soi " +
-                "WHERE ip.indentId = soi.indentId AND ip.indentId.shopId_delivery.shopId = :idshop AND soi.stateId.stateId = :status")
+                "WHERE ip.indentId = soi.indentId AND ip.indentId.shopId_need.shopId = :idshop AND soi.stateId.stateId = :status")
                 .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
                 .setParameter("status", 1).list(); // zmiana statusu z 4 na 5
         System.out.println("getOrder " + eList);
