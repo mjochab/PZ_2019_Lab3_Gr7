@@ -341,7 +341,6 @@ public class LogisticOrdersController implements Initializable {
 
          */
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
         List<Indent_product> productsToDeliver = session.createQuery("from Indent_product where IndentId = :iid")
                                                        .setParameter("iid", indentToStateChange.getIndentId())
                                                        .getResultList();
@@ -367,15 +366,17 @@ public class LogisticOrdersController implements Initializable {
                 // odejmuje z magazynu ktory dostarczyl produkt
                 stateOnShopSource.setAmount(stateOnShopSource.getAmount() - amountOfProduct);
                 stateOnShopSource.setLocked(stateOnShopSource.getLocked() - amountOfProduct);
-
+                session.update(stateOnShopSource);
                 // dodaje do magazynu ktory zamowil produkt
                 stateOnShopDestination.setAmount(stateOnShopDestination.getAmount() + amountOfProduct);
-
-                session.getTransaction().commit();
+                session.update(stateOnShopDestination);
+                session.beginTransaction().commit();
+                session.close();
                 System.out.println("Pomyslnie zakonczono zmiane ilosc produktu");
             }
             catch(Exception e) {
                 System.out.println("Nastapil blad, wycofuje zmiany");
+                System.out.println(e.getMessage());
                 session.getTransaction().rollback();
                 success = false;
                 break;
