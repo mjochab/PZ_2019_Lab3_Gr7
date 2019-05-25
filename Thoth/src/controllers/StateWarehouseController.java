@@ -648,6 +648,42 @@ public class StateWarehouseController implements Initializable {
         stateOrderWarehouse.setItems(getOrder());
     }
 
+    @FXML
+    public void inToPrepareDetailsAction(ActionEvent event) throws IOException {
+
+        Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        State_of_indent orderView = stateOrderToPrepareWarehouse.getSelectionModel().getSelectedItem();
+
+        if (orderView == null)
+            return;
+
+        FXMLLoader loader = null;
+
+        if (orderView.getIndentId().isComplex()) {
+            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
+        } else {
+            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/simple_order_details.fxml"));
+        }
+
+        Parent pane = loader.load();
+
+        // wstrzykniecie wybranego obiektu do widoku szczegolowego
+        if (orderView.getIndentId().isComplex()) {
+            ComplexOrderDetailsController controller = loader.getController();
+            controller.setLoader("../fxmlfiles/main_window_warehouse.fxml");
+            controller.setOrder(orderView.getIndentId());
+            controller.initController();
+        } else {
+            SimpleOrderDetailsController controller = loader.getController();
+            controller.setLoader("../fxmlfiles/main_window_warehouse.fxml");
+            controller.setOrder(orderView.getIndentId());
+            controller.initController();
+        }
+
+        stg.setScene(new Scene(pane));
+    }
+
 
 
 }

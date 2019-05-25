@@ -31,7 +31,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="SHOW_DETAILS" contentDisplay="RIGHT" layoutX="272.0" layoutY="20.0" mnemonicParsing="false" onAction="#inRealizationDetailsAction" prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Podgląd">
+                  <Button fx:id="SHOW_DETAILS" contentDisplay="RIGHT" layoutX="272.0" layoutY="20.0" mnemonicParsing="false" onAction="#inToPrepareDetailsAction" prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Podgląd">
                      <font>
                         <Font size="18.0" />
                      </font>
