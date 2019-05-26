@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
 
 /**
  * Główna klasa aplikacji.
@@ -15,6 +16,7 @@ public class Thoth extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        ThothLoggerConfigurator.configure();
         Parent root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Thoth.class.getResource("style.css").toExternalForm());

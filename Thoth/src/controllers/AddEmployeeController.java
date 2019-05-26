@@ -10,6 +10,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import log.ThothLoggerConfigurator;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import java.net.URL;
@@ -24,6 +26,8 @@ import static utils.Validation.nameValidation;
  * Kontroller okna dodawania użytkowników w panelu administratora
  */
 public class AddEmployeeController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
 
     @FXML
     private TextField tfFirstName;
@@ -67,7 +71,9 @@ public class AddEmployeeController implements Initializable {
                 || comboShopList.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Niepowodzenie");
+            logger.warn("Niepowodzenie");
             alert.setContentText("Nie wybrano wszystkich danych!");
+            logger.warn("Nie wybrano wszystkich danych");
             alert.showAndWait();
 
             return;
@@ -95,7 +101,7 @@ public class AddEmployeeController implements Initializable {
             try {
                 session.save(u);
             } catch (Exception e) {
-                System.out.println("Nie udalo sie zapisac usera do bazy");
+                logger.warn("Nie udalo sie zapisac usera do bazy");
                 session.getTransaction().rollback();
                 session.close();
                 return;
@@ -105,7 +111,7 @@ public class AddEmployeeController implements Initializable {
             try {
                 session.save(us);
             } catch (Exception e) {
-                System.out.println("Nie udalo sie zapisac UserShop do bazy");
+                logger.warn("Nie udalo sie zapisac UserShop do bazy");
                 session.getTransaction().rollback();
                 session.close();
                 return;
@@ -148,7 +154,7 @@ public class AddEmployeeController implements Initializable {
         List<Shop> shopsList = session.createQuery("from Shop").list();
 
         for (Shop s : shopsList) {
-            System.out.println(s.toString());
+            logger.warn(s.toString());
         }
 
         if (shopsList.size() > 0) {
@@ -184,6 +190,7 @@ public class AddEmployeeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         this.setComboRoleList();
         this.setComboShopList();
     }

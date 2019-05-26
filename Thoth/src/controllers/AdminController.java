@@ -10,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,7 +24,7 @@ import static controllers.MainWindowController.sessionContext;
  * Kontroller głównego okna administratora(okno wyboru użytkowników).
  */
 public class AdminController implements Initializable {
-
+    private static final Logger logger = Logger.getLogger(AdminController.class);
     @FXML
     MenuItem logout;
     @FXML
@@ -46,7 +48,7 @@ public class AdminController implements Initializable {
     }
 
     public void switchscene(ActionEvent event) { //zmiana sceny BUTTON
-        System.out.println(event.getSource().toString());
+        logger.warn(event.getSource().toString());
         Parent temporaryLoginParent = null;
         Scene temporaryLoginScene = null;
         temporaryLoginScene = new Scene(Objects.requireNonNull(temporaryLoginParent));
@@ -62,7 +64,7 @@ public class AdminController implements Initializable {
      * @throws IOException występuje podczas nieudanej próby zapisu/odczytu danych
      */
     public void menuItemAction(ActionEvent actionEvent) throws IOException { //powrót , wylogowanie na MENU ITEM
-        System.out.println("ACTION EVENT"+actionEvent);
+        logger.warn("ACTION EVENT" + actionEvent);
         Stage stage = (Stage) root.getScene().getWindow();
         if (actionEvent.getSource() == logout) {
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
@@ -86,9 +88,10 @@ public class AdminController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if(sessionContext.getCurrentLoggedUser().getUserId() == 1){
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
+        if (sessionContext.getCurrentLoggedUser().getUserId() == 1) {
             back.setVisible(true);
         }
-        sessionInfo.setText(" Zalogowano jako: "+sessionContext.getCurrentLoggedUser().getFirstName()+" "+sessionContext.getCurrentLoggedUser().getLastName()+" / Lokalizacja: GLOBAL");
+        sessionInfo.setText(" Zalogowano jako: " + sessionContext.getCurrentLoggedUser().getFirstName() + " " + sessionContext.getCurrentLoggedUser().getLastName() + " / Lokalizacja: GLOBAL");
     }
 }

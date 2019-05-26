@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
+import log.ThothLoggerConfigurator;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import javax.persistence.PersistenceException;
@@ -23,6 +25,8 @@ import static controllers.MainWindowController.sessionFactory;
  * Kontroler okna Analityka wyświetlającego ceny produktów.
  */
 public class AnalystPricesViewController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AnalystPricesViewController.class);
     @FXML
     public TableView<Product> priceTable;
     @FXML
@@ -48,12 +52,14 @@ public class AnalystPricesViewController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId())));
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
         PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
         DISCOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getDiscount())));
         priceTable.setItems(getProducts());
-        //System.out.println(getProducts().toString());
+        //logger.warn
+        //(getProducts().toString());
         setEditablePrice();
         setEditableDiscount();
     }
@@ -78,7 +84,7 @@ public class AnalystPricesViewController implements Initializable {
             searchTF.setText("");
         }
 
-        System.out.println("getProducts " + eList);
+        logger.warn("getProducts " + eList);
         for (Product ent : eList) {
             Product opm = new Product();
 
@@ -106,7 +112,7 @@ public class AnalystPricesViewController implements Initializable {
         PRICE.setCellFactory(TextFieldTableCell.forTableColumn());
 
         PRICE.setOnEditCommit(e -> { // dodać walidacje try catch
-            System.out.println("klasa wpisanej wartości:" + e.getNewValue().getClass());
+            logger.warn("klasa wpisanej wartości:" + e.getNewValue().getClass());
             Session session = sessionFactory.openSession();
             BigDecimal oldValue = new BigDecimal(e.getOldValue());
             try {
@@ -118,7 +124,7 @@ public class AnalystPricesViewController implements Initializable {
                 session.getTransaction().begin();
                 Product priceToUpdate = e.getTableView().getSelectionModel().getSelectedItem();
 
-                System.out.println("Obiekt ze zmienioną ceną:" + priceToUpdate.toString());
+                logger.warn("Obiekt ze zmienioną ceną:" + priceToUpdate.toString());
 
                 session.update(priceToUpdate);
                 session.getTransaction().commit();
@@ -128,7 +134,7 @@ public class AnalystPricesViewController implements Initializable {
                 alert.setContentText("Cena została zaktualizowana");
                 alert.showAndWait();
             } catch (NumberFormatException exc) {
-                System.out.println("stara wartosc:" + oldValue.toString());
+                logger.warn("stara wartosc:" + oldValue.toString());
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setPrice(oldValue);
                 session.getTransaction().rollback();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -136,7 +142,7 @@ public class AnalystPricesViewController implements Initializable {
                 alert.setContentText("Wprowadzona wartość nie jest liczbą!");
                 alert.showAndWait();
             } catch (PersistenceException exc) {
-                System.out.println("stara wartosc:" + oldValue.toString());
+                logger.warn("stara wartosc:" + oldValue.toString());
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setPrice(oldValue);
                 session.getTransaction().rollback();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -144,7 +150,7 @@ public class AnalystPricesViewController implements Initializable {
                 alert.setContentText("Liczba wykracza poza dopuszczalny zakres!");
                 alert.showAndWait();
             } catch (Exception exc) {
-                System.out.println("exc to string:"+exc.getMessage());
+                logger.warn("exc to string:" + exc.getMessage());
                 if (exc.getMessage().equals("ValueBelowZero")) {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setPrice(oldValue);
                     session.getTransaction().rollback();
@@ -153,7 +159,7 @@ public class AnalystPricesViewController implements Initializable {
                     alert.setContentText("Wpisana cena nie może być ujemna!!");
                     alert.showAndWait();
                 } else {
-                    System.out.println("ERROR UWAGA!!!:" + exc);
+                    logger.warn("ERROR UWAGA!!!:" + exc);
                     session.getTransaction().rollback();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Niepowodzenie");
@@ -171,7 +177,7 @@ public class AnalystPricesViewController implements Initializable {
         DISCOUNT.setCellFactory(TextFieldTableCell.forTableColumn());
 
         DISCOUNT.setOnEditCommit(e -> { // dodać walidacje try catch
-            System.out.println("klasa wpisanej wartości:" + e.getNewValue().getClass());
+            logger.warn("klasa wpisanej wartości:" + e.getNewValue().getClass());
             Session session = sessionFactory.openSession();
             BigDecimal oldValue = new BigDecimal(e.getOldValue());
             try {
@@ -183,7 +189,7 @@ public class AnalystPricesViewController implements Initializable {
                 session.getTransaction().begin();
                 Product priceToUpdate = e.getTableView().getSelectionModel().getSelectedItem();
 
-                System.out.println("Obiekt ze zmienioną zniżką:" + priceToUpdate.toString());
+                logger.warn("Obiekt ze zmienioną zniżką:" + priceToUpdate.toString());
 
                 session.update(priceToUpdate);
                 session.getTransaction().commit();
@@ -193,7 +199,7 @@ public class AnalystPricesViewController implements Initializable {
                 alert.setContentText("Zniżka została zaktualizowana");
                 alert.showAndWait();
             } catch (NumberFormatException exc) {
-                System.out.println("stara wartosc:" + oldValue.toString());
+                logger.warn("stara wartosc:" + oldValue.toString());
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setDiscount(oldValue.intValue());
                 session.getTransaction().rollback();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -201,7 +207,7 @@ public class AnalystPricesViewController implements Initializable {
                 alert.setContentText("Wprowadzona wartość nie jest liczbą!");
                 alert.showAndWait();
             } catch (PersistenceException exc) {
-                System.out.println("stara wartosc:" + oldValue.toString());
+                logger.warn("stara wartosc:" + oldValue.toString());
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setDiscount(oldValue.intValue());
                 session.getTransaction().rollback();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -209,7 +215,7 @@ public class AnalystPricesViewController implements Initializable {
                 alert.setContentText("Liczba wykracza poza dopuszczalny zakres!");
                 alert.showAndWait();
             } catch (Exception exc) {
-                System.out.println("exc to string:"+exc.getMessage());
+                logger.warn("exc to string:" + exc.getMessage());
                 if (exc.getMessage().equals("ValueBelowZero")) {
                     e.getTableView().getItems().get(e.getTablePosition().getRow()).setDiscount(oldValue.intValue());
                     session.getTransaction().rollback();
@@ -218,7 +224,7 @@ public class AnalystPricesViewController implements Initializable {
                     alert.setContentText("Wpisana żniżka nie może być ujemna! lub przekraczać 100%");
                     alert.showAndWait();
                 } else {
-                    System.out.println("ERROR UWAGA!!!:" + exc);
+                    logger.warn("ERROR UWAGA!!!:" + exc);
                     session.getTransaction().rollback();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Niepowodzenie");
@@ -235,7 +241,7 @@ public class AnalystPricesViewController implements Initializable {
     /**
      * Metoda odświeża tabelę zawierającą produkty
      */
-    public void refreshPricesTable(){
+    public void refreshPricesTable() {
         priceTable.getItems().clear();
         priceTable.setItems(getProducts());
     }
