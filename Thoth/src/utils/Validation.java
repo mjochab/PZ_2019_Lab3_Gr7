@@ -11,6 +11,12 @@ public class Validation {
         return (pattern.matcher(string).matches());
     }
 
+    /**
+     * Metoda sprawdza czy String jest 0 lub 1
+     *
+     * @param string ciąg znaków do przetestowania
+     * @return true jeżeli string równy 0 lub 1 false w przeciwnym przypadku
+     */
     public static Boolean isBolean(String string) {
         return string.equals("0") || string.equals("1");
     }
