@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 import static controllers.MainWindowController.sessionFactory;
 
 /**
- * Kontroler okna Analityka dotyczącego cen produktów.
+ * Kontroler okna Analityka wyświetlającego ceny produktów.
  */
 public class AnalystPricesViewController implements Initializable {
     @FXML
@@ -40,6 +40,12 @@ public class AnalystPricesViewController implements Initializable {
 
     private String nazwaProduktu = null;
 
+    /**
+     * Metoda inicjalizuje dane w tabeli wyświetlającej ceny produktów
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId())));
@@ -225,6 +231,10 @@ public class AnalystPricesViewController implements Initializable {
         });
         priceTable.setEditable(true);
     }
+
+    /**
+     * Metoda odświeża tabelę zawierającą produkty
+     */
     public void refreshPricesTable(){
         priceTable.getItems().clear();
         priceTable.setItems(getProducts());

@@ -1,5 +1,9 @@
 package controllers;
 
+import com.pdfgeneratorlib.CreatePDF;
+import com.pdfgeneratorlib.RaportModel;
+import com.pdfgeneratorlib.RaportProductModel;
+import com.pdfgeneratorlib.RaportUserModel;
 import entity.Product;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,18 +14,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import models.*;
+import models.SalesDataModel;
 import org.hibernate.Session;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Date;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import com.pdfgeneratorlib.*;
 
 import static controllers.MainWindowController.sessionFactory;
 
@@ -45,6 +48,12 @@ public class AnalystSalesDataController implements Initializable {
     @FXML
     private DatePicker START_DATE, END_DATE;
 
+    /**
+     * Metoda inicjalizuje dane w tabeli przechowującej dane sprzedażowe.
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ZIPCODE.setCellValueFactory(new PropertyValueFactory<>("zipCode"));

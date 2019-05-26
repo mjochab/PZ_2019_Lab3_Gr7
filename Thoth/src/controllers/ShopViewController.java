@@ -24,6 +24,13 @@ public class ShopViewController implements Initializable {
     @FXML
     private Label sessionInfo;
 
+    /**
+     * Metoda obsługijąca prycik powrotu i wylogowywania.
+     * Wczytuje odpowiedni widok w zależności w któryym oknie się znajdujemy.
+     *
+     * @param actionEvent pozwala zlokalizować z jakiego okna wywołano metodę
+     * @throws IOException występuje przy odczycie/zapisie pliku
+     */
     public void menuItemAction(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) root.getScene().getWindow();
         if (actionEvent.getSource() == logout) {

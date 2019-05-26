@@ -18,6 +18,9 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionContext;
 
+/**
+ * Kontroller głównego okna administratora(okno wyboru użytkowników).
+ */
 public class AdminController implements Initializable {
 
     @FXML
@@ -34,7 +37,9 @@ public class AdminController implements Initializable {
     @FXML
     private Label sessionInfo;
 
-
+    /**
+     * Metoda odświeża tabelę przecohwującą informacje o kontach użytkowników.
+     */
     @FXML
     public void reloadEmployeeView() {
         employeeViewController.reloadTableView();
@@ -50,6 +55,12 @@ public class AdminController implements Initializable {
         window.show();
     }
 
+    /**
+     * Metoda ładuje głowny widok aplikacji gdy actionEvent jest przyciskiem wyloguj(logout) lub widok wyboru pracownika gdy źródło actionEvent jest inne niż logout.
+     *
+     * @param actionEvent zdarzenie (wciśnięcie przycisku)
+     * @throws IOException występuje podczas nieudanej próby zapisu/odczytu danych
+     */
     public void menuItemAction(ActionEvent actionEvent) throws IOException { //powrót , wylogowanie na MENU ITEM
         System.out.println("ACTION EVENT"+actionEvent);
         Stage stage = (Stage) root.getScene().getWindow();
@@ -66,6 +77,13 @@ public class AdminController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Metoda inicjalizująca widok.
+     * Sprawia że przycisk powrót jest widoczny oraz wyświetla informację o aktualnie zalogowanym użytkowniku w etykiecie sessionInfo.
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if(sessionContext.getCurrentLoggedUser().getUserId() == 1){

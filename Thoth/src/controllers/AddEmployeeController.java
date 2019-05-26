@@ -20,6 +20,9 @@ import static controllers.MainWindowController.sessionFactory;
 import static utils.Alerts.shownotNameAlert;
 import static utils.Validation.nameValidation;
 
+/**
+ * Kontroller okna dodawania użytkowników w panelu administratora
+ */
 public class AddEmployeeController implements Initializable {
 
     @FXML
@@ -37,6 +40,10 @@ public class AddEmployeeController implements Initializable {
     @FXML
     private Button btnAddEmployee;
 
+    /**
+     * Metoda odczytuje pola znajdujące się w formularzu dodawania pracownika.
+     * Jeżeli wpisane wartości nie sa puste metoda zapisuje wpisane wartości do bazy danych.
+     */
     @FXML
     public void saveEmployee() { //dodawanie użytkownika do bazy
         User u = new User();

@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Kontroller głównego okna aplikacji
+ */
 public class MainWindowController implements Initializable {
     private final String ADMIN = "Admin";
 
@@ -48,6 +51,13 @@ public class MainWindowController implements Initializable {
 
     public static SessionContext sessionContext;
 
+    /**
+     * Metoda służy do przełączania pomiędzy widokami.
+     * W zależności od zdarzenia wczytuje odpowiednie widoki.
+     *
+     * @param event pozwala zlokalizować z jakiego okna wywołano metodę
+     * @throws IOException występuje przy odczycie/zapisie pliku
+     */
     public void switchscene(ActionEvent event) throws IOException {
         System.out.println("URL " + event.getSource().toString());
 
@@ -105,6 +115,12 @@ public class MainWindowController implements Initializable {
     }
 
 
+    /**
+     * Metoda pobiera z bazy rekord zawierający login i hasło wpisane w polach klasy: loginTextField, passwordTextField.
+     *
+     * @param event
+     * @throws IOException
+     */
     public void login(ActionEvent event) throws IOException {
         loginErrorLabel.setText("");
         List<User> user;
@@ -190,6 +206,9 @@ public class MainWindowController implements Initializable {
     }
 
 
+    /**
+     * Metoda resetuje bazę danych i wczytuje pliki z pliku import_1.sql
+     */
     public void resetdb() {
         System.out.println(resetDbButton.getText());
         if (resetDbButton.getText().contentEquals("DELETE")) {

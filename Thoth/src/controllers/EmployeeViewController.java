@@ -23,6 +23,9 @@ import static controllers.MainWindowController.sessionFactory;
 import static utils.Alerts.showNotBoolean;
 import static utils.Validation.isBolean;
 
+/**
+ * Kontroler okna administratora wyświetlającego dane o użytkownikach
+ */
 public class EmployeeViewController implements Initializable {
     @FXML
     public TableView<EmployeeView> employeeTable;
@@ -49,6 +52,12 @@ public class EmployeeViewController implements Initializable {
     public Button btnSearch;
 
 
+    /**
+     * Metoda inicjalizuje dane w tabeli
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         USERID.setCellValueFactory(userData -> new SimpleIntegerProperty(userData.getValue().getUser().getUserId()).asObject());
@@ -100,6 +109,9 @@ public class EmployeeViewController implements Initializable {
         return mapUsersToEmployeeView(getUsers(""));
     }
 
+    /**
+     * Metoda zastępuje dane w tabeli danymi które pasują do wzoru z pola wyszukiwania.
+     */
     public void searchButtonHandler() {
         ObservableList<EmployeeView> userSearchList = FXCollections.observableArrayList();
 
@@ -107,6 +119,9 @@ public class EmployeeViewController implements Initializable {
         employeeTable.setItems(mapUsersToEmployeeView(getUsers(tfSearch.getText())));
     }
 
+    /**
+     * Metoda odświeża widok w tabeli wyświetlającej użytkowników
+     */
     public void reloadTableView() {
         employeeTable.getItems().clear();
         employeeTable.getItems().addAll(getEmployee());

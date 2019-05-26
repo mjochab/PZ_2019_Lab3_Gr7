@@ -1,12 +1,17 @@
 package controllers;
 
-import entity.*;
+import entity.Product_receipt;
+import entity.Receipt;
+import entity.State_on_shop;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import models.StateOnShop;
@@ -19,12 +24,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static utils.Alerts.*;
-
 import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
 import static controllers.WarehouseNewProductController.isNumeric;
+import static utils.Alerts.*;
 
+/**
+ * Kontroler widoku sprzedaży produktów
+ */
 public class ShopSellProductsController implements Initializable {
 
     @FXML
@@ -154,6 +161,9 @@ public class ShopSellProductsController implements Initializable {
         TOTALVALUE.setText(getTotalValue(this.list).toString());
     }
 
+    /**
+     * Metoda wyświetla w tabeli rekordy z bazy pasujące to wzory z pola searchShop.
+     */
     public void searchStateShop() {
         PRODUCT_TABLE.setItems(getProducts(serachShop.getText()));
     }
@@ -188,6 +198,10 @@ public class ShopSellProductsController implements Initializable {
         });
     }
 
+    /**
+     * Metoda służy do potwierdzenia sprzedaży.
+     * Aktualizuje rekordy w bazie danych oraz tworzy nowy paragon.
+     */
     public void confirm() {
         if (!list.isEmpty()) {
             System.out.println("Przygotowana list do zapytania " + list.toString());

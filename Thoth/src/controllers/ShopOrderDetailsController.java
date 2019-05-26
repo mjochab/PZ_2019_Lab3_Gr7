@@ -31,6 +31,9 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionFactory;
 
+/**
+ * Kontroler szczegółowego widoku zamówiea w module sklep
+ */
 public class ShopOrderDetailsController implements Initializable {
     @FXML
     private TableView<IndentProductsView> orderProducts;
@@ -94,6 +97,11 @@ public class ShopOrderDetailsController implements Initializable {
     }
 
 
+    /**
+     * Metoda wczytuje poprzednie okno
+     *
+     * @param event służy do pobrania aktualnej sceny do której wczytuje plik fxml
+     */
     @FXML
     public void goBack(ActionEvent event) {
         Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();
