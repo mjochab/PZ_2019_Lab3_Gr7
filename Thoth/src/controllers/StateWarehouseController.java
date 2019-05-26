@@ -524,8 +524,9 @@ public class StateWarehouseController implements Initializable {
         newOrderShop.setItems(getOrderProducts());
     }
 
-    //ZAKŁADKA(5) ZMIANA STATUSU---------------------------------------------------------------------------------------------------------------
-
+    /**
+     * Metoda wczytuje zamówienia które zlecił pracownik sklepu
+     */
     private void overlapStateOrderWarehouse() {
         CITY.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getIndentId().getShopId_delivery().getCity()));
         STATE.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getStateId().getName()));
