@@ -40,7 +40,7 @@ public class CreatePDF {
         Document document = new Document(pdf);
 
         //utworzenie nagłówka dokumentu
-        document.add(new Paragraph("THOTH raport sprzedażowy."));
+        document.add(new Paragraph("THOTH raport sprzedazowy."));
 
         if (!data.isEmpty()) {
             for (RaportModel shop : data) {
@@ -60,8 +60,8 @@ public class CreatePDF {
                 if (!shop.getProducts().isEmpty()) {
                     Table productsTable = new Table(3);
                     productsTable.addCell("Nazwa produktu");
-                    productsTable.addCell("Ilość sprzedanych");
-                    productsTable.addCell("Wartość sprzedanych produktów");
+                    productsTable.addCell("Ilosc sprzedanych");
+                    productsTable.addCell("Wartosc sprzedanych produktow");
                     for (RaportProductModel product : shop.getProducts()) {
                         productsTable.addCell(product.getName());
                         productsTable.addCell(product.getSold().toString());
@@ -75,7 +75,7 @@ public class CreatePDF {
                 if (!shop.getUsers().isEmpty()) {
                     Table userTable = new Table(2);
                     userTable.addCell("Id pracownika");
-                    userTable.addCell("Wartość sprzedanych produktów");
+                    userTable.addCell("Wartosc sprzedanych produktow");
                     for (RaportUserModel user : shop.getUsers()) {
                         userTable.addCell(user.getUserId());
                         userTable.addCell(user.getTotal());
