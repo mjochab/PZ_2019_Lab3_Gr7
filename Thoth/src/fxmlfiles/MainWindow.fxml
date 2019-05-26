@@ -5,8 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="RootScene" maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background"
+            minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background"
             stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea"
             fx:controller="controllers.MainWindowController">
     <Label contentDisplay="RIGHT" ellipsisString="" layoutX="930.0" layoutY="36.0" prefHeight="103.0" prefWidth="284.0"
@@ -72,4 +71,7 @@
     </Button>
     <Label fx:id="resetDbLabel" layoutX="930.0" layoutY="317.0" onDragDetected="#resetdb" prefHeight="17.0"
            prefWidth="274.0" textFill="RED"/>
+    <TextField id="delete" fx:id="CLEAR" layoutX="930.0" layoutY="205.0" onAction="#resetdb" opacity="0.22"
+               prefHeight="25.0" prefWidth="275.0" promptText="CLEAR" styleClass="textarea"
+               stylesheets="@../thoth/style.css"/>
 </AnchorPane>

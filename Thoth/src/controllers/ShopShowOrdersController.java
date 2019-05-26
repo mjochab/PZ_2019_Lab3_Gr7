@@ -112,7 +112,7 @@ public class ShopShowOrdersController implements Initializable {
                 soi.setStateId(state);
                 session.update(soi);
                 session.beginTransaction().commit();
-            }catch(Exception e){
+            } catch (Exception e) {
                 logger.warn("brak zamowien do zmiany statusu");
                 logger.warn(e.getMessage());
             }
@@ -177,18 +177,21 @@ public class ShopShowOrdersController implements Initializable {
      */
     @FXML
     public void setAsPickedUp() {
+        try {
+            IndentTableView orderView = ordersTable.getSelectionModel().getSelectedItem();
 
-        IndentTableView orderView = ordersTable.getSelectionModel().getSelectedItem();
-
-        if (orderView.getState().getStateId().getStateId() == 65) {
-            Session session = sessionFactory.openSession();
-            State state = (State) session.createQuery("from State where stateId = 66").getSingleResult();
-            orderView.getState().setStateId(state);
-            session.saveOrUpdate(orderView.getState());
-            session.beginTransaction().commit();
-            showPrductPickedByCustomer();
-        } else {
-            showProductInTransport();
+            if (orderView.getState().getStateId().getStateId() == 65) {
+                Session session = sessionFactory.openSession();
+                State state = (State) session.createQuery("from State where stateId = 66").getSingleResult();
+                orderView.getState().setStateId(state);
+                session.saveOrUpdate(orderView.getState());
+                session.beginTransaction().commit();
+                showPrductPickedByCustomer();
+            } else {
+                showProductInTransport();
+            }
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
         }
     }
 

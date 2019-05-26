@@ -45,7 +45,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private Button loginButton;
     @FXML
-    private TextField resetDbButton;
+    private TextField resetDbButton, CLEAR;
     @FXML
     private Label resetDbLabel;
 
@@ -218,7 +218,14 @@ public class MainWindowController implements Initializable {
                     .configure("create.cfg.xml").buildSessionFactory();
             resetDbLabel.setText("");
             factory.close();
-        } else resetDbLabel.setText("Niepoprawny ciąg znaków");
+        } else if (CLEAR.getText().contentEquals("CLEAR")) {
+            SessionFactory factory = new Configuration()
+                    .configure("clear.cfg.xml").buildSessionFactory();
+            resetDbLabel.setText("");
+            factory.close();
+        } else {
+            resetDbLabel.setText("Niepoprawny ciąg znaków");
+        }
     }
 
 
