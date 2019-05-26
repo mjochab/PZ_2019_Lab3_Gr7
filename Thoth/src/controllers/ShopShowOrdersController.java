@@ -16,7 +16,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
 import models.IndentTableView;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import java.io.IOException;
@@ -33,6 +35,7 @@ import static utils.Alerts.showProductInTransport;
  * Kontroler widoku z modułu sklep wyświetlający zamówienia klientów
  */
 public class ShopShowOrdersController implements Initializable {
+    private static final Logger logger = Logger.getLogger(ShopShowOrdersController.class);
     @FXML
     private TableView<IndentTableView> ordersTable;
     @FXML
@@ -54,6 +57,7 @@ public class ShopShowOrdersController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         ID.setCellValueFactory(orderData ->
                 new SimpleStringProperty(String.valueOf(orderData.getValue().getOrder().getIndentId())));
         STATUS.setCellValueFactory(orderData ->
@@ -67,7 +71,7 @@ public class ShopShowOrdersController implements Initializable {
         PHONE_NUMBER.setCellValueFactory(orderData ->
                 new SimpleStringProperty(String.valueOf(orderData.getValue().getOrder().getCustomerId().getPhoneNumber())));
         ordersTable.setItems(getOrders());
-        System.out.println(getOrders());
+        logger.warn(getOrders());
     }
 
 
@@ -109,8 +113,8 @@ public class ShopShowOrdersController implements Initializable {
                 session.update(soi);
                 session.beginTransaction().commit();
             }catch(Exception e){
-                System.out.println("brak zamowien do zmiany statusu");
-                System.out.println(e.getMessage());
+                logger.warn("brak zamowien do zmiany statusu");
+                logger.warn(e.getMessage());
             }
         }
 

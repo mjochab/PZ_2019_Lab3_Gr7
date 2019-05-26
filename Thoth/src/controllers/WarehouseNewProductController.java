@@ -9,7 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import log.ThothLoggerConfigurator;
 import models.ObservablePriceModel;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import java.math.BigDecimal;
@@ -27,7 +29,7 @@ import static utils.Alerts.showSuccesAllert;
  * Kontroler dodawania noweho produktu z oknie magazynu
  */
 public class WarehouseNewProductController implements Initializable {
-
+    private static final Logger logger = Logger.getLogger(WarehouseNewProductController.class);
     @FXML
     public TextField NAME;
     @FXML
@@ -41,7 +43,7 @@ public class WarehouseNewProductController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
     }
 
     /**
@@ -64,7 +66,7 @@ public class WarehouseNewProductController implements Initializable {
         Session session = sessionFactory.openSession();
         List<ObservablePriceModel> eList = session.createQuery(qry + ":nameDevice "
         ).setParameter("nameDevice", NAME.getText()).list();
-        System.out.println("getNameProduct " + eList);
+        logger.warn("getNameProduct " + eList);
         productList.addAll(eList);
         session.close();
         return productList;
@@ -74,7 +76,7 @@ public class WarehouseNewProductController implements Initializable {
         ObservableList<Shop> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<Shop> eList = session.createQuery("from Shop where shopId = :pid").setParameter("pid", sessionContext.getCurrentLoggedShop().getShopId()).list();
-        System.out.println("getObjectShop " + eList);
+        logger.warn("getObjectShop " + eList);
         productList.addAll(eList);
         session.close();
         return productList;
@@ -85,20 +87,20 @@ public class WarehouseNewProductController implements Initializable {
         BigDecimal big = new BigDecimal(PRICE.getText());
         Product productOB = new Product(NAME.getText(), big, 0);
         session.save(productOB);
-        System.out.println("Dodano produkt");
+        logger.warn("Dodano produkt");
         session.close();
         session = sessionFactory.openSession();
         State_on_shop product = new State_on_shop(productOB, getObjectShop().get(0), Integer.parseInt(AMOUNT.getText()));
         session.save(product);
         session.close();
-        System.out.println("Dodano ID sklepu do produktu");
+        logger.warn("Dodano ID sklepu do produktu");
         NAME.setText("");
         PRICE.setText("");
         AMOUNT.setText("");
     }
 
     private boolean isBigDeciaml(String str) {
-        try{
+        try {
             BigDecimal big = new BigDecimal(str);
             return true;
         } catch (NumberFormatException e) {
@@ -112,19 +114,19 @@ public class WarehouseNewProductController implements Initializable {
     public void addInsert() {
         if (isNumeric(AMOUNT.getText()) && isBigDeciaml(PRICE.getText())) { //wprowadzono liczby
             if (getNameProduct(tab[0]).size() == 0) { //brak takiego produktu, dodać do bazy
-                System.out.println("można dodać do bazy");
+                logger.warn("można dodać do bazy");
                 insertToDataBase();
                 NAME.setText("");
                 PRICE.setText("");
                 AMOUNT.setText("");
                 showSuccesAllert();
             } else { //produkt jest już w bazie
-                System.out.println("Jest w bazie " + getNameProduct(tab[0]).get(0).getProductId());
+                logger.warn("Jest w bazie " + getNameProduct(tab[0]).get(0).getProductId());
                 newAlertCustom("Niepowodzenie", "Produkt jest już w bazie");
             }
         } else {
             newAlertCustom("Niepowodzenie", "Wprowadzono złe dane");
-            System.out.println("Wprowadź poprawne dane");
+            logger.warn("Wprowadź poprawne dane");
         }
     }
 }

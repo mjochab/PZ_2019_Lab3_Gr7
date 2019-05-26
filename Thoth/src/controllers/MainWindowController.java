@@ -14,7 +14,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
 import models.SessionContext;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -30,8 +32,8 @@ import java.util.ResourceBundle;
  * Kontroller głównego okna aplikacji
  */
 public class MainWindowController implements Initializable {
+    private static final Logger logger = Logger.getLogger(MainWindowController.class);
     private final String ADMIN = "Admin";
-
     @FXML
     private ComboBox<Shop> comboList;
     @FXML
@@ -59,13 +61,13 @@ public class MainWindowController implements Initializable {
      * @throws IOException występuje przy odczycie/zapisie pliku
      */
     public void switchscene(ActionEvent event) throws IOException {
-        System.out.println("URL " + event.getSource().toString());
+        logger.warn("URL " + event.getSource().toString());
 
         if (sessionContext.getCurrentLoggedUser().getRoleId().getPosition().equals(ADMIN)) {
             if (!event.getSource().toString().contains("admin_view") &&             // jezeli nie wybrano panelu admina lub
                     !event.getSource().toString().contains("analyst")) {                // panelu analityka
                 if (this.comboList.getSelectionModel().getSelectedItem() == null) { // i nie wybrano zadnego sklepu
-                    System.out.println("Nie wybrano sklepu!");                      // wyswietl ostrzezenie
+                    logger.warn("Nie wybrano sklepu!");                      // wyswietl ostrzezenie
 
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Napotkano blad");
@@ -131,7 +133,7 @@ public class MainWindowController implements Initializable {
         user = query.list();
         session.close();
         try {
-            System.out.println(user.get(0).getRoleId().getPosition().getClass());
+            logger.warn(user.get(0).getRoleId().getPosition().getClass());
 
             UserShop userShopToLoadToSession;
 
@@ -153,7 +155,7 @@ public class MainWindowController implements Initializable {
                 if (userShopToLoadToSession != null) {
                     sessionContext = new SessionContext(userShopToLoadToSession);
                 } else {
-                    System.out.println("Failed to load sessionContext");
+                    logger.warn("Failed to load sessionContext");
                     sessionContext = null;
                 }
             }
@@ -210,7 +212,7 @@ public class MainWindowController implements Initializable {
      * Metoda resetuje bazę danych i wczytuje pliki z pliku import_1.sql
      */
     public void resetdb() {
-        System.out.println(resetDbButton.getText());
+        logger.warn(resetDbButton.getText());
         if (resetDbButton.getText().contentEquals("DELETE")) {
             SessionFactory factory = new Configuration()
                     .configure("create.cfg.xml").buildSessionFactory();
@@ -228,7 +230,7 @@ public class MainWindowController implements Initializable {
         shops.addAll(shopsList);
 
         session.close();
-        System.out.println("Zwracam sklepy");
+        logger.warn("Zwracam sklepy");
         return shops;
 
     }
@@ -238,8 +240,8 @@ public class MainWindowController implements Initializable {
         this.comboList.getItems().addAll(getShops());
         // jezeli zostanie wybrany inny sklep w comboboxie, zostanie on ustawiony w sessionContext
         this.comboList.valueProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("Poprzednia wartosc: " + oldValue);
-            System.out.println("Nowa wartosc: " + newValue);
+            logger.warn("Poprzednia wartosc: " + oldValue);
+            logger.warn("Nowa wartosc: " + newValue);
 
             sessionContext.setCurrentLoggedShop(newValue);
         });
@@ -247,10 +249,11 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         try {
             sessionFactory = new Configuration().configure("update.cfg.xml").buildSessionFactory();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.warn(e.getMessage());
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Niepowodzenie");
             alert.setContentText("NIe udało się nawiązać połączenia z bazą danych!");
@@ -272,10 +275,10 @@ public class MainWindowController implements Initializable {
             if (userDataList.size() == 1) {
                 userData = userDataList.get(0);
             } else {
-                System.out.println("Znaleziono 0 lub > 1 encji w UserShop");
+                logger.warn("Znaleziono 0 lub > 1 encji w UserShop");
             }
         } catch (Exception e) {
-            System.out.println("Blad pobierania z bazy danych");
+            logger.warn("Blad pobierania z bazy danych");
         }
 
         session.close();

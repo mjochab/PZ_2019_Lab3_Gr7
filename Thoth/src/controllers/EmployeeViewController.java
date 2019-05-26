@@ -12,7 +12,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
+import log.ThothLoggerConfigurator;
 import models.EmployeeView;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import java.net.URL;
@@ -27,6 +29,7 @@ import static utils.Validation.isBolean;
  * Kontroler okna administratora wyświetlającego dane o użytkownikach
  */
 public class EmployeeViewController implements Initializable {
+    private static final Logger logger = Logger.getLogger(EmployeeViewController.class);
     @FXML
     public TableView<EmployeeView> employeeTable;
     @FXML
@@ -60,6 +63,7 @@ public class EmployeeViewController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         USERID.setCellValueFactory(userData -> new SimpleIntegerProperty(userData.getValue().getUser().getUserId()).asObject());
         FIRSTNAME.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getFirstName()));
         LASTNAME.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getLastName()));
@@ -70,7 +74,7 @@ public class EmployeeViewController implements Initializable {
         OBJECTID.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getShop().toString()));
         employeeTable.setItems(getEmployee());
         setEditableStatus();
-        System.out.println(getEmployee().toString());
+        logger.warn(getEmployee().toString());
 
 
     }
@@ -132,13 +136,13 @@ public class EmployeeViewController implements Initializable {
 
         STATE.setOnEditCommit(e -> {
             if (!isBolean(e.getNewValue())) {
-                System.out.println("Nowa wartość: "+e.getNewValue());
+                logger.warn("Nowa wartość: " + e.getNewValue());
                 showNotBoolean("Wpriwadź 1 jeżeli użytkownik aktywny lub 0 by dezaktyowować konto użytkownika.");
                 employeeTable.refresh();
                 return;
             }
             e.getTableView().getItems().get(e.getTablePosition().getRow()).getUser().setState(Integer.parseInt(e.getNewValue()));
-            System.out.println((e.getTableView().getSelectionModel().getSelectedItem().getUser().toString()));
+            logger.warn((e.getTableView().getSelectionModel().getSelectedItem().getUser().toString()));
 
             Session session = sessionFactory.openSession();
 
@@ -154,7 +158,7 @@ public class EmployeeViewController implements Initializable {
                 alert.setContentText("Dane użytkownika zostaly zaktualizowane");
                 alert.showAndWait();
             } catch (Exception exc) {
-                System.out.println(exc);
+                logger.warn(exc);
                 session.getTransaction().rollback();
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);

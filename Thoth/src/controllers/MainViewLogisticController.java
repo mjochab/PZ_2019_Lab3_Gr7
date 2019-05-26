@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,6 +22,7 @@ import static controllers.MainWindowController.sessionContext;
  * Kontroler głównego widoku logistyka
  */
 public class MainViewLogisticController implements Initializable {
+    private static final Logger logger = Logger.getLogger(MainViewLogisticController.class);
     @FXML
     MenuItem logout, back;
     @FXML
@@ -52,16 +55,17 @@ public class MainViewLogisticController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         if (sessionContext.getCurrentLoggedUser().getUserId() == 1) {
             if (back != null) {
                 back.setVisible(true);
             } else {
-                System.out.println("BACK is null");
+                logger.warn("BACK is null");
             }
         }
-        System.out.println("Aktualnie zaloogwany User: " + sessionContext.getCurrentLoggedUser());
-        System.out.println("Obiekt zalogowanego User'a: " + sessionContext.getCurrentLoggedShop());
-        System.out.println("Hello from MainController");
+        logger.warn("Aktualnie zaloogwany User: " + sessionContext.getCurrentLoggedUser());
+        logger.warn("Obiekt zalogowanego User'a: " + sessionContext.getCurrentLoggedShop());
+        logger.warn("Hello from MainController");
         sessionInfo.setText(" Zalogowano jako: "+sessionContext.getCurrentLoggedUser().getFirstName()+" "+sessionContext.getCurrentLoggedUser().getLastName()+" / Lokalizacja: "+sessionContext.getCurrentLoggedShop().getCity());
     }
 }

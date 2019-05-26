@@ -8,12 +8,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 class ViewUsersController implements Initializable {
+    private static final Logger logger = Logger.getLogger(ViewUsersController.class);
     @FXML
     private
     MenuItem logout;
@@ -37,6 +40,7 @@ class ViewUsersController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
     }
 
 }

@@ -20,7 +20,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
 import models.IndentProductsView;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import java.io.IOException;
@@ -35,6 +37,7 @@ import static controllers.MainWindowController.sessionFactory;
  * Kontroler prostego zamówienia
  */
 public class SimpleOrderDetailsController implements Initializable {
+    private static final Logger logger = Logger.getLogger(SimpleOrderDetailsController.class);
     @FXML
     private TableView<IndentProductsView> orderProducts;
     @FXML
@@ -53,6 +56,7 @@ public class SimpleOrderDetailsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
     }
 
 

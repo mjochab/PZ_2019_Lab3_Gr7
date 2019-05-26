@@ -16,7 +16,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
 import models.IndentTableView;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import java.io.IOException;
@@ -33,6 +35,7 @@ import static controllers.MainWindowController.sessionFactory;
  * Kontroler glownego okna modulu logistyki
  */
 public class LogisticOrdersController implements Initializable {
+    private static final Logger logger = Logger.getLogger(ComplexOrderDetailsController.class);
     @FXML
     private TableView<IndentTableView> ordersReadyForShipment;
     @FXML
@@ -71,6 +74,7 @@ public class LogisticOrdersController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         // value factories dla tableview z zamowieniami oczekujacymi na transport
         fromForShipment.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getOrder().getShopId_delivery().getCity()));
         toForShipment.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getOrder().getShopId_need().getCity()));
@@ -105,7 +109,7 @@ public class LogisticOrdersController implements Initializable {
                 .setParameter("state", state)
                 .getSingleResult();
 
-        System.out.println(stateObject == null);
+        logger.warn(stateObject == null);
 
         // pobranie zamowien o stanie pobranym wyzej
         List<State_of_indent> state_of_indents = session.createQuery("from State_of_indent where StateId = :sid")
@@ -115,19 +119,19 @@ public class LogisticOrdersController implements Initializable {
 
         for (State_of_indent soi : state_of_indents) {
             if (soi.getIndentId().getShopId_delivery().getShopId() == sessionContext.getCurrentLoggedShop().getShopId()) {
-                System.out.println("Ten sam sklep!");
+                logger.warn("Ten sam sklep!");
                 state_of_indents_shop_delivery.add(soi);
             }
         }
 
-        System.out.println(state_of_indents.size());
+        logger.warn(state_of_indents.size());
 
         for (State_of_indent soi : state_of_indents_shop_delivery) {
-            System.out.println("parent id = " + soi.getIndentId().getIndentId());
+            logger.warn("parent id = " + soi.getIndentId().getIndentId());
             List<Indent> subIndents = session.createQuery("From Indent indent where ParentId = :pid")
                     .setParameter("pid", soi.getIndentId().getIndentId()).list();
 
-            System.out.println(subIndents.size());
+            logger.warn(subIndents.size());
 
             if (subIndents.size() > 0) {
                 soi.getIndentId().setIsComplex(true);
@@ -217,7 +221,7 @@ public class LogisticOrdersController implements Initializable {
         // czy wybrany wiersz zawiera zamowienie zlozone
         // tak -> zaladuj widok zamowienia zlozonego (complex)
         // nie -> zaladuj widok zamowienia prostego
-        System.out.println(orderView.getOrder().isComplex());
+        logger.warn(orderView.getOrder().isComplex());
         if (orderView.getOrder().isComplex()) {
             loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
         } else {
@@ -300,7 +304,7 @@ public class LogisticOrdersController implements Initializable {
             session.update(newIndentState);
             session.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("Nie udalo sie zmienic stanu!");
+            logger.warn("Nie udalo sie zmienic stanu!");
             session.getTransaction().rollback();
         }
     }
@@ -383,10 +387,10 @@ public class LogisticOrdersController implements Initializable {
                 stateOnShopDestination.setAmount(stateOnShopDestination.getAmount() + amountOfProduct);
                 session.update(stateOnShopDestination);
                 session.beginTransaction().commit();
-                System.out.println("Pomyslnie zakonczono zmiane ilosc produktu");
+                logger.warn("Pomyslnie zakonczono zmiane ilosc produktu");
             } catch (Exception e) {
-                System.out.println("Nastapil blad, wycofuje zmiany");
-                System.out.println(e.getMessage());
+                logger.warn("Nastapil blad, wycofuje zmiany");
+                logger.warn(e.getMessage());
                 session.getTransaction().rollback();
                 success = false;
                 break;
@@ -400,7 +404,7 @@ public class LogisticOrdersController implements Initializable {
             ordersInRealization.getItems().clear();
             ordersInRealization.setItems(getIndentsInRealization());
         } else {
-            System.out.println("Nie udalo sie dostarczyc zamowienia");
+            logger.warn("Nie udalo sie dostarczyc zamowienia");
         }
     }
 }

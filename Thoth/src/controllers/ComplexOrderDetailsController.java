@@ -12,6 +12,8 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import java.io.IOException;
@@ -27,6 +29,7 @@ import static controllers.MainWindowController.sessionFactory;
  * Kontroler widoku zamówienia składającego się z kilku zamówień
  */
 public class ComplexOrderDetailsController implements Initializable {
+    private static final Logger logger = Logger.getLogger(ComplexOrderDetailsController.class);
     @FXML
     private Button backButton;
     @FXML
@@ -37,6 +40,7 @@ public class ComplexOrderDetailsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
     }
 
 
