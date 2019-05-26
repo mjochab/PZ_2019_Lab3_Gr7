@@ -23,6 +23,9 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionFactory;
 
+/**
+ * Kontroler widoku zamówienia składającego się z kilku zamówień
+ */
 public class ComplexOrderDetailsController implements Initializable {
     @FXML
     private Button backButton;
@@ -36,7 +39,6 @@ public class ComplexOrderDetailsController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-
     public void setOrder(Indent order) {
         this.order = order;
     }
@@ -45,6 +47,11 @@ public class ComplexOrderDetailsController implements Initializable {
         this.loader = loader;
     }
 
+    /**
+     * Metoda inicjalizująca dane potrzebne do wyświetlenia okna zamówienia które składa się z kilu zamówień
+     *
+     * @throws IOException występuje przy próbie odczytu/zapisu pliku.
+     */
     public void initController() throws IOException {
         indentsAccordion.getPanes().clear();
 
@@ -53,7 +60,8 @@ public class ComplexOrderDetailsController implements Initializable {
         Session session = sessionFactory.openSession();
 
         // pobranie podzamowien
-        List<Indent> subOrders = session.createQuery("from Indent where ParentId = :pid").setParameter("pid", order.getIndentId()).list();
+        List<Indent> subOrders = session.createQuery("from Indent where ParentId = :pid")
+                .setParameter("pid", order.getIndentId()).list();
         List<TitledPane> subOrdersPanes = new ArrayList<>();
 
         for (Indent subOrder : subOrders) {
@@ -78,6 +86,11 @@ public class ComplexOrderDetailsController implements Initializable {
     }
 
 
+    /**
+     * Metoda pozwalająca na powrót do poprzedniego okna.
+     *
+     * @param event pozwala sprawdzić z jakiego widoku została wywołana metoda
+     */
     @FXML
     public void goBack(ActionEvent event) {
         Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();

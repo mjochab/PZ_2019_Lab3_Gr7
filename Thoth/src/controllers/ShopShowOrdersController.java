@@ -29,6 +29,9 @@ import static controllers.MainWindowController.sessionFactory;
 import static utils.Alerts.showPrductPickedByCustomer;
 import static utils.Alerts.showProductInTransport;
 
+/**
+ * Kontroler widoku z modułu sklep wyświetlający zamówienia klientów
+ */
 public class ShopShowOrdersController implements Initializable {
     @FXML
     private TableView<IndentTableView> ordersTable;
@@ -165,6 +168,9 @@ public class ShopShowOrdersController implements Initializable {
         stg.setScene(new Scene(pane));
     }
 
+    /**
+     * Metoda aktualizująca status zamowienia klienta w bazie danych.
+     */
     @FXML
     public void setAsPickedUp() {
 
@@ -182,6 +188,9 @@ public class ShopShowOrdersController implements Initializable {
         }
     }
 
+    /**
+     * Metoda odświeża tabelę z zamówieniami oraz aktualizuje statusy
+     */
     public void refreshAndChangeStatus() {
         ordersTable.getItems().clear();
         ordersTable.setItems(getOrders());

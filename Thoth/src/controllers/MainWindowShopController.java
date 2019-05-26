@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionContext;
 
-public class ShopViewController implements Initializable {
+public class MainWindowShopController implements Initializable {
     @FXML
     MenuItem logout, back;
     @FXML
@@ -24,6 +24,13 @@ public class ShopViewController implements Initializable {
     @FXML
     private Label sessionInfo;
 
+    /**
+     * Metoda obsługijąca prycik powrotu i wylogowywania.
+     * Wczytuje odpowiedni widok w zależności w któryym oknie się znajdujemy.
+     *
+     * @param actionEvent pozwala zlokalizować z jakiego okna wywołano metodę
+     * @throws IOException występuje przy odczycie/zapisie pliku
+     */
     public void menuItemAction(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) root.getScene().getWindow();
         if (actionEvent.getSource() == logout) {
@@ -49,7 +56,7 @@ public class ShopViewController implements Initializable {
                 System.out.println("BACK is null");
             }
         }
-        sessionInfo.setText(" Zalogowano jako: "+sessionContext.getCurrentLoggedUser().getFirstName()+" "+sessionContext.getCurrentLoggedUser().getLastName()+" / Lokalizacja: "+sessionContext.getCurrentLoggedShop().getCity());
+        sessionInfo.setText(" Zalogowano jako: " + sessionContext.getCurrentLoggedUser().getFirstName() + " " + sessionContext.getCurrentLoggedUser().getLastName() + " / Lokalizacja: " + sessionContext.getCurrentLoggedShop().getCity());
     }
 
 }

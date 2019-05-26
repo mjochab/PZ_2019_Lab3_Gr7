@@ -14,13 +14,17 @@ import org.hibernate.Session;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionFactory;
 import static utils.Alerts.shownotNameAlert;
 import static utils.Validation.nameValidation;
 
-public class AddEmployeeController implements Initializable {
+/**
+ * Kontroller okna dodawania użytkowników w panelu administratora
+ */
+public class AdminAddEmployeeController implements Initializable {
 
     @FXML
     private TextField tfFirstName;
@@ -37,25 +41,29 @@ public class AddEmployeeController implements Initializable {
     @FXML
     private Button btnAddEmployee;
 
+    /**
+     * Metoda odczytuje pola znajdujące się w formularzu dodawania pracownika.
+     * Jeżeli wpisane wartości nie sa puste metoda zapisuje wpisane wartości do bazy danych.
+     */
     @FXML
     public void saveEmployee() { //dodawanie użytkownika do bazy
         User u = new User();
         UserShop us = new UserShop();
 
-        if(!nameValidation(tfFirstName.getText())){
+        if (!nameValidation(tfFirstName.getText())) {
             shownotNameAlert(tfFirstName.getPromptText());
             return;
         }
-        if(!nameValidation(tfLastName.getText())){
+        if (!nameValidation(tfLastName.getText())) {
             shownotNameAlert(tfLastName.getPromptText());
             return;
         }
 
 
-        if (tfFirstName.getText() == ""
-                || tfLastName.getText() == ""
-                || tfLogin.getText() == ""
-                || tfPassword.getText() == ""
+        if (Objects.equals(tfFirstName.getText(), "")
+                || Objects.equals(tfLastName.getText(), "")
+                || Objects.equals(tfLogin.getText(), "")
+                || Objects.equals(tfPassword.getText(), "")
                 || comboRoleList.getSelectionModel().getSelectedItem() == null
                 || comboShopList.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);

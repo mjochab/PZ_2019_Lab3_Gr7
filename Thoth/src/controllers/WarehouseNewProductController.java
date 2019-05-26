@@ -23,6 +23,9 @@ import static utils.Alerts.newAlertCustom;
 import static utils.Alerts.showSuccesAllert;
 
 
+/**
+ * Kontroler dodawania noweho produktu z oknie magazynu
+ */
 public class WarehouseNewProductController implements Initializable {
 
     @FXML
@@ -41,22 +44,19 @@ public class WarehouseNewProductController implements Initializable {
 
     }
 
-    public void addInsert() {
-        if (isNumeric(AMOUNT.getText()) && isBigDeciaml(PRICE.getText())) { //wprowadzono liczby
-            if (getNameProduct(tab[0]).size() == 0) { //brak takiego produktu, dodać do bazy
-                System.out.println("można dodać do bazy");
-                insertToDataBase();
-                NAME.setText("");
-                PRICE.setText("");
-                AMOUNT.setText("");
-                showSuccesAllert();
-            } else { //produkt jest już w bazie
-                System.out.println("Jest w bazie " + getNameProduct(tab[0]).get(0).getProductId());
-                newAlertCustom("Niepowodzenie", "Produkt jest już w bazie");
-            }
-        } else {
-            newAlertCustom("Niepowodzenie", "Wprowadzono złe dane");
-            System.out.println("Wprowadź poprawne dane");
+    /**
+     * Metoda sprawdza czy łańcóch znaków zawiera liczby.
+     *
+     * @param str łańcuch znaków dla którego sprawdzamy warunek
+     * @return true jezeli parsowanie do typu int jest możliwe false w przeciwnym wypadku
+     */
+    // brak isDigit/isNumeric
+    public static boolean isNumeric(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
 
@@ -107,13 +107,25 @@ public class WarehouseNewProductController implements Initializable {
         }
     }
 
-    // brak isDigit/isNumeric
-    public static boolean isNumeric(String str) {
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+    /**
+     * Metoda sprawdza wpisane dane oraz dodaje rekord do bazy danych.
+     */
+    public void addInsert() {
+        if (isNumeric(AMOUNT.getText()) && isBigDeciaml(PRICE.getText())) { //wprowadzono liczby
+            if (getNameProduct(tab[0]).size() == 0) { //brak takiego produktu, dodać do bazy
+                System.out.println("można dodać do bazy");
+                insertToDataBase();
+                NAME.setText("");
+                PRICE.setText("");
+                AMOUNT.setText("");
+                showSuccesAllert();
+            } else { //produkt jest już w bazie
+                System.out.println("Jest w bazie " + getNameProduct(tab[0]).get(0).getProductId());
+                newAlertCustom("Niepowodzenie", "Produkt jest już w bazie");
+            }
+        } else {
+            newAlertCustom("Niepowodzenie", "Wprowadzono złe dane");
+            System.out.println("Wprowadź poprawne dane");
         }
     }
 }

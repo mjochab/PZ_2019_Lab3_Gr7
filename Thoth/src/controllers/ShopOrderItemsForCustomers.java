@@ -27,6 +27,9 @@ import static controllers.MainWindowController.sessionFactory;
 import static controllers.WarehouseNewProductController.isNumeric;
 import static utils.Alerts.*;
 
+/**
+ * Kontroler widoku sklepu w którym pracownik może zgłosić braki magazynowe
+ */
 public class ShopOrderItemsForCustomers implements Initializable {
 
     @FXML
@@ -154,6 +157,9 @@ public class ShopOrderItemsForCustomers implements Initializable {
         WAREHOUSE_SHORTAGES_TABLE.setItems(list);
     }
 
+    /**
+     * Metoda wyświetla w tabeli z produktami rekordy zawierające text z pola searchTF.
+     */
     public void searchStateShop() {
         PRODUCTS_TABLE.setItems(getProducts(searchTF.getText()));
     }
@@ -187,6 +193,10 @@ public class ShopOrderItemsForCustomers implements Initializable {
         });
     }
 
+    /**
+     * Metoda służąca do potwierdzenia zgłaszania braków magazynowych.
+     * Aktualizuje odpowiednie rekordy w bazie danych oraż odświeża widok
+     */
     public void confirm() {
         if (!list.isEmpty()) {
             System.out.println("Przygotowane dane do wysłąnia " + list + " " + nameTF.getText() + " " + lastNameTF.getText() + " " + numerPhoneTF.getText());

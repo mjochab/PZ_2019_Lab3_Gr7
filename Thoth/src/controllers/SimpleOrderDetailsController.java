@@ -31,6 +31,9 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionFactory;
 
+/**
+ * Kontroler prostego zamówienia
+ */
 public class SimpleOrderDetailsController implements Initializable {
     @FXML
     private TableView<IndentProductsView> orderProducts;

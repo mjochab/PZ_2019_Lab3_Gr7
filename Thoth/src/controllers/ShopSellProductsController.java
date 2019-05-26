@@ -1,12 +1,17 @@
 package controllers;
 
-import entity.*;
+import entity.Product_receipt;
+import entity.Receipt;
+import entity.State_on_shop;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import models.StateOnShop;
@@ -19,12 +24,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static utils.Alerts.*;
-
 import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
 import static controllers.WarehouseNewProductController.isNumeric;
+import static utils.Alerts.*;
 
+/**
+ * Kontroler widoku sprzedaży produktów
+ */
 public class ShopSellProductsController implements Initializable {
 
     @FXML
@@ -146,7 +153,7 @@ public class ShopSellProductsController implements Initializable {
                 new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getPrice()
                         .multiply(BigDecimal.ONE
                                 .subtract(BigDecimal.valueOf(produktData.getValue().getStateOnShop().getProductId().getDiscount())
-                                        .divide(BigDecimal.valueOf(100)))).setScale(2,BigDecimal.ROUND_UP))));
+                                        .divide(BigDecimal.valueOf(100)))).setScale(2, BigDecimal.ROUND_UP))));
         AMOUNT_RECEIPT.setCellValueFactory(produktData ->
                 new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
         System.out.println("Odebrane " + list.toString() + " rozmiar " + list.size());
@@ -154,6 +161,9 @@ public class ShopSellProductsController implements Initializable {
         TOTALVALUE.setText(getTotalValue(this.list).toString());
     }
 
+    /**
+     * Metoda wyświetla w tabeli rekordy z bazy pasujące to wzory z pola searchShop.
+     */
     public void searchStateShop() {
         PRODUCT_TABLE.setItems(getProducts(serachShop.getText()));
     }
@@ -188,6 +198,10 @@ public class ShopSellProductsController implements Initializable {
         });
     }
 
+    /**
+     * Metoda służy do potwierdzenia sprzedaży.
+     * Aktualizuje rekordy w bazie danych oraz tworzy nowy paragon.
+     */
     public void confirm() {
         if (!list.isEmpty()) {
             System.out.println("Przygotowana list do zapytania " + list.toString());
@@ -241,7 +255,7 @@ public class ShopSellProductsController implements Initializable {
                     .multiply(BigDecimal.valueOf(sos.getAmount()))
                     .multiply(BigDecimal.ONE
                             .subtract(BigDecimal.valueOf(sos.getStateOnShop().getProductId().getDiscount())
-                                    .divide(BigDecimal.valueOf(100))))).setScale(2,BigDecimal.ROUND_UP);
+                                    .divide(BigDecimal.valueOf(100))))).setScale(2, BigDecimal.ROUND_UP);
         }
         return totalValue;
     }
@@ -252,7 +266,7 @@ public class ShopSellProductsController implements Initializable {
                 .multiply(BigDecimal.valueOf(sos.getAmount()))
                 .multiply(BigDecimal.ONE
                         .subtract(BigDecimal.valueOf(sos.getStateOnShop().getProductId().getDiscount())
-                                .divide(BigDecimal.valueOf(100))))).setScale(2,BigDecimal.ROUND_UP);
+                                .divide(BigDecimal.valueOf(100))))).setScale(2, BigDecimal.ROUND_UP);
         return totalValue;
     }
 

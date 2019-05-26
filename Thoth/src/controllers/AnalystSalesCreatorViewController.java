@@ -39,6 +39,12 @@ public class AnalystSalesCreatorViewController implements Initializable {
     private String nazwaProduktu = null;
     private final ObservableList<Product> lista = FXCollections.observableArrayList();
 
+    /**
+     * Metoda inicjalizuje dane w tabeli wyświetlającej produkty oraz tabeli do której dodajemy produkty dla których wartość zniżka ma zostać zmieniona.
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
@@ -81,7 +87,8 @@ public class AnalystSalesCreatorViewController implements Initializable {
     }
 
     /**
-     * Metoda zwraca listę produktów. Jeżeli pole wyszukiwania nie jest puste, zwraca liste produktów których nazwa zawiera ciąg znaków zawarty w polu wyszukiwania.
+     * Metoda zwraca listę produktów. Jeżeli pole wyszukiwania nie jest puste,
+     * zwraca liste produktów których nazwa zawiera ciąg znaków zawarty w polu wyszukiwania.
      *
      * @return Zwraca ObservableList<Product>
      * @see Product
@@ -91,9 +98,12 @@ public class AnalystSalesCreatorViewController implements Initializable {
         Session session = sessionFactory.openSession();
         List<State_on_shop> eList;
         if (nazwaProduktu == null || nazwaProduktu.equals("")) {
-            eList = session.createQuery("SELECT new entity.State_on_shop(sos.id, sos.productId, sos.shopId, SUM(sos.amount)) FROM State_on_shop sos GROUP by sos.productId ORDER BY SUM(sos.amount) DESC").list();
+            eList = session.createQuery("SELECT new entity.State_on_shop(sos.id, sos.productId, sos.shopId, SUM(sos.amount)) " +
+                    "FROM State_on_shop sos GROUP by sos.productId ORDER BY SUM(sos.amount) DESC").list();
         } else {
-            eList = session.createQuery("SELECT new entity.State_on_shop(sos.id, sos.productId, sos.shopId, SUM(sos.amount)) FROM State_on_shop sos WHERE name like :produkt GROUP by sos.productId ORDER BY SUM(sos.amount) DESC ").setParameter("produkt", "%" + nazwaProduktu + "%").list();
+            eList = session.createQuery("SELECT new entity.State_on_shop(sos.id, sos.productId, sos.shopId, SUM(sos.amount)) " +
+                    "FROM State_on_shop sos WHERE name like :produkt GROUP by sos.productId ORDER BY SUM(sos.amount) DESC ")
+                    .setParameter("produkt", "%" + nazwaProduktu + "%").list();
             searchTF.setText("");
             nazwaProduktu = null;
         }
@@ -121,10 +131,14 @@ public class AnalystSalesCreatorViewController implements Initializable {
      * @param item obiekt klasy Product.
      */
     private void addToTable(ObservableList<Product> item) {
-        PRODUCTID_CHANGE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId())));
-        NAME_CHANGE.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getName()));
-        PRICE_CHANGE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
-        DISCOUNT_CHANGE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getDiscount())));
+        PRODUCTID_CHANGE.setCellValueFactory(produktData ->
+                new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId())));
+        NAME_CHANGE.setCellValueFactory(produktData ->
+                new SimpleStringProperty(produktData.getValue().getName()));
+        PRICE_CHANGE.setCellValueFactory(produktData ->
+                new SimpleStringProperty(String.valueOf(produktData.getValue().getPrice())));
+        DISCOUNT_CHANGE.setCellValueFactory(produktData ->
+                new SimpleStringProperty(String.valueOf(produktData.getValue().getDiscount())));
         System.out.println("Odebrane " + item.toString() + " rozmiar " + item.size());
         try {
             if (!item.isEmpty()) {
@@ -137,7 +151,7 @@ public class AnalystSalesCreatorViewController implements Initializable {
     }
 
     /**
-     * Metoda wysyła update do bazy danych dla produktów przechowywanych w zmiennej lista.
+     * Metoda aktualizuje dane w bazie danych na podstawie obiektów przechowywanych w zmiennej lista tego kontrollera.
      */
     public void changeDiscount() {
         if (!lista.isEmpty()) {

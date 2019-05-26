@@ -36,6 +36,9 @@ import static controllers.WarehouseNewProductController.isNumeric;
 import static utils.Alerts.*;
 
 
+/**
+ * Kontroler widoku magazynu
+ */
 public class StateWarehouseController implements Initializable {
     @FXML
     public TableView stateWarehouse;
@@ -100,6 +103,13 @@ public class StateWarehouseController implements Initializable {
 
     private String nazwaProduktu = null;
 
+    /**
+     * Metoda obsługijąca prycik powrotu i wylogowywania.
+     * Wczytuje odpowiedni widok w zależności w któryym oknie się znajdujemy.
+     *
+     * @param actionEvent pozwala zlokalizować z jakiego okna wywołano metodę
+     * @throws IOException występuje przy odczycie/zapisie pliku
+     */
     public void menuItemAction(ActionEvent actionEvent) throws IOException { //powrót , wylogowanie na MENU ITEM
         Stage stage = (Stage) root.getScene().getWindow();
         if (actionEvent.getSource() == logout) {
@@ -116,6 +126,12 @@ public class StateWarehouseController implements Initializable {
     }
 
 
+    /**
+     * Metoda inicjalizuje wszystkie zakładki.
+     *
+     * @param location  pozwala na przechwycenie informacji z którego okna zmieniamy widok.
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (location.toString().contains("main_window_warehouse.fxml")) {
@@ -148,8 +164,9 @@ public class StateWarehouseController implements Initializable {
         System.out.println("SESSION LOGGED USER:" + sessionContext.getCurrentLoggedUser().toString());
     }
 
-    //ZAKŁADKA(1) STAN MAGAZYNU----------------------------------------------------------------------------------------------------------------------------
-
+    /**
+     * Metoda wczytuje stan magazynu.
+     */
     private void overlapStateWarehouse() {
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
@@ -222,8 +239,9 @@ public class StateWarehouseController implements Initializable {
         });
     }
 
-    //ZAKŁADKA(3) NOWE ZAMÓWIENIE----------------------------------------------------------------------------------------------------------------------------
-
+    /**
+     * Metoda wczytuje nowe zamówienie
+     */
     private void overlapNewOrderWarehouse() {
         setComboList();
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
@@ -461,7 +479,9 @@ public class StateWarehouseController implements Initializable {
         new_order.setItems(getProductsForOtherShop(sessionContext.getCurrentLoggedShop().getShopId()));
     }
 
-    //ZAKŁADKA(4) NOWE ZAMÓWIENIE ZE SKLEPU----------------------------------------------------------------------------------------------------
+    /**
+     * Metoda wczytuje braki magazynowe
+     */
 
     private void overlapNewOrderShop() {
         PRODUCTID_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
@@ -504,7 +524,7 @@ public class StateWarehouseController implements Initializable {
         newOrderShop.setItems(getOrderProducts());
     }
 
-    //ZAKŁADKA(5) ZMIANA STATUSU---------------------------------------------------------------------------------------------------------------
+    //ZAKŁADKA(5) ZMIANA STATUSU
 
     private void overlapStateOrderWarehouse() {
         CITY.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getIndentId().getShopId_delivery().getCity()));
@@ -591,8 +611,9 @@ public class StateWarehouseController implements Initializable {
     }
 
 
-    //ZAKŁADKA(6) ZAMOWIENIA DO PRZYGOtOWANIA---------------------------------------------------------------------------------------------------------------
-
+    /**
+     * Metoda wczytuje zamówienia do przygotowania.
+     */
     private void overlapOrdersToPrepareWarehouse() {
         CITY.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getIndentId().getShopId_need().getCity()));
         STATE.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getStateId().getName()));
@@ -676,7 +697,6 @@ public class StateWarehouseController implements Initializable {
 
         stg.setScene(new Scene(pane));
     }
-
 
 
 }

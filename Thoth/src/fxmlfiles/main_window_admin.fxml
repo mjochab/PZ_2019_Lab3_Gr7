@@ -6,7 +6,7 @@
             minHeight="-Infinity"
             minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background"
             stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea"
-            fx:controller="controllers.AdminController">
+            fx:controller="controllers.MainViewAdminController">
     <VBox layoutX="93.0" layoutY="14.0" prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0"
           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <HBox prefHeight="0.0" prefWidth="1280.0">
@@ -25,12 +25,12 @@
             <Tab fx:id="viewEmployeeTab" onSelectionChanged="#reloadEmployeeView" text="Pracownicy">
 
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="390.0" prefWidth="1280.0">
-                    <fx:include fx:id="employeeView" source="view_employee.fxml"/>
+                    <fx:include fx:id="employeeView" source="admin_employee_view.fxml"/>
                 </AnchorPane>
             </Tab>
             <Tab fx:id="addEmployeeTab" text="Dodaj pracownika">
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                    <fx:include fx:id="addEmployee" source="add_employee.fxml"/>
+                    <fx:include fx:id="addEmployee" source="admin_add_employee.fxml"/>
                 </AnchorPane>
             </Tab>
         </TabPane>

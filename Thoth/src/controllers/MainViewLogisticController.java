@@ -16,6 +16,9 @@ import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionContext;
 
+/**
+ * Kontroler głównego widoku logistyka
+ */
 public class MainViewLogisticController implements Initializable {
     @FXML
     MenuItem logout, back;
@@ -25,6 +28,13 @@ public class MainViewLogisticController implements Initializable {
     private Label sessionInfo;
 
 
+    /**
+     * Metoda obsługijąca prycik powrotu i wylogowywania.
+     * Wczytuje odpowiedni widok w zależności w któryym oknie się znajdujemy.
+     *
+     * @param actionEvent pozwala zlokalizować z jakiego okna wywołano metodę
+     * @throws IOException występuje przy odczycie/zapisie pliku
+     */
     public void menuItemAction(ActionEvent actionEvent) throws IOException { //wylogowanie na MENU ITEM
         Stage stage = (Stage) root.getScene().getWindow();
         if (actionEvent.getSource() == logout) {

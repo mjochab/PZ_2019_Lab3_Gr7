@@ -7,8 +7,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Główna klasa aplikacji.
+ * Obsługuje metodę start która wczytuje główny widok aplikacji, style css oraz tworzy scenę główną.
+ */
 public class Thoth extends Application {
-    
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
@@ -17,9 +20,10 @@ public class Thoth extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
 
