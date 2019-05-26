@@ -11,20 +11,23 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import models.IndentTableView;
 import org.hibernate.Session;
 
-import javax.swing.text.StyledEditorKit;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static utils.Alerts.*;
 import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
+import static utils.Alerts.showPrductPickedByCustomer;
+import static utils.Alerts.showProductInTransport;
 
 public class ShopShowOrdersController implements Initializable {
     @FXML
@@ -65,7 +68,7 @@ public class ShopShowOrdersController implements Initializable {
     }
 
 
-    public ObservableList<IndentTableView> getOrders() {
+    private ObservableList<IndentTableView> getOrders() {
         ObservableList<IndentTableView> enseignantList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<State_on_shop> sos = session.createQuery("from State_on_shop where shopId = :shopId").setParameter("shopId", sessionContext.getCurrentLoggedShop()).list();
@@ -80,9 +83,9 @@ public class ShopShowOrdersController implements Initializable {
         }
         for (Indent ind : indents) {
             List<Indent_product> ip = session.createQuery("from Indent_product where indentId = :ip").setParameter("ip", ind).list();
-            Boolean isIndentComplete = false;
+            boolean isIndentComplete = false;
             for (Indent_product indent_product : ip) {
-                Boolean isProductAvilable = false;
+                boolean isProductAvilable = false;
                 for (State_on_shop state_on_shop : sos) {
                     if (indent_product.getProductId() == state_on_shop.getProductId() && indent_product.getAmount() <= (state_on_shop.getAmount() - state_on_shop.getLocked())) {
                         isProductAvilable = true;
@@ -137,10 +140,6 @@ public class ShopShowOrdersController implements Initializable {
         searchTF.setText("");
     }
 
-    public void confirm() {
-        //button
-    }
-
 
     @FXML
     public void inRealizationDetailsAction(ActionEvent event) throws IOException {
@@ -167,7 +166,7 @@ public class ShopShowOrdersController implements Initializable {
     }
 
     @FXML
-    public void setAsPickedUp(ActionEvent event) throws IOException {
+    public void setAsPickedUp() {
 
         IndentTableView orderView = ordersTable.getSelectionModel().getSelectedItem();
 

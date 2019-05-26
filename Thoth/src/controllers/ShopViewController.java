@@ -24,10 +24,8 @@ public class ShopViewController implements Initializable {
     @FXML
     private Label sessionInfo;
 
-    Stage stage;
-
     public void menuItemAction(ActionEvent actionEvent) throws IOException {
-        stage = (Stage) root.getScene().getWindow();
+        Stage stage = (Stage) root.getScene().getWindow();
         if (actionEvent.getSource() == logout) {
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
         } else {

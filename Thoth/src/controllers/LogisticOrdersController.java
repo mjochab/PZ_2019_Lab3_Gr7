@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionContext;
@@ -65,8 +66,8 @@ public class LogisticOrdersController implements Initializable {
     @FXML
     private TableColumn<IndentTableView, String> stateInRealization;
 
-    private ObservableList<IndentTableView> displayedOrdersReadyForShipment = FXCollections.observableArrayList();
-    private ObservableList displayedOrdersInRealization = FXCollections.observableArrayList();
+    private final ObservableList<IndentTableView> displayedOrdersReadyForShipment = FXCollections.observableArrayList();
+    private final ObservableList displayedOrdersInRealization = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -96,7 +97,7 @@ public class LogisticOrdersController implements Initializable {
      * @param state stan zamowien
      * @return Lista obiektow {@link State_of_indent} State_of_indent
      */
-    public List<State_of_indent> getIndentsByState(String state) {
+    private List<State_of_indent> getIndentsByState(String state) {
         Session session = sessionFactory.openSession();
 
         // pobranie odpowiedniego stanu
@@ -108,7 +109,7 @@ public class LogisticOrdersController implements Initializable {
 
         // pobranie zamowien o stanie pobranym wyzej
         List<State_of_indent> state_of_indents = session.createQuery("from State_of_indent where StateId = :sid")
-                .setParameter("sid", stateObject.getStateId()).list();
+                .setParameter("sid", Objects.requireNonNull(stateObject).getStateId()).list();
 
         List<State_of_indent> state_of_indents_shop_delivery = new ArrayList<>();
 
@@ -145,7 +146,7 @@ public class LogisticOrdersController implements Initializable {
      *
      * @return Lista obserwowalna obiektow {@link IndentTableView}
      */
-    public ObservableList<IndentTableView> getIndentsReadyForShipment() {
+    private ObservableList<IndentTableView> getIndentsReadyForShipment() {
         ObservableList<IndentTableView> listOfIndents = FXCollections.observableArrayList();
 
         for (State_of_indent soi : getIndentsByState("Oczekuje na transport")) {
@@ -175,7 +176,7 @@ public class LogisticOrdersController implements Initializable {
      *
      * @return Lista obserwowalna obiektow {@link IndentTableView}
      */
-    public ObservableList<IndentTableView> getIndentsInRealization() {
+    private ObservableList<IndentTableView> getIndentsInRealization() {
         ObservableList<IndentTableView> listOfIndents = FXCollections.observableArrayList();
 
         for (State_of_indent soi : getIndentsByState("W transporcie")) {
@@ -280,7 +281,7 @@ public class LogisticOrdersController implements Initializable {
         stg.setScene(new Scene(pane));
     }
 
-    public void changeOrderState(Indent indentToStateChange, String state) {
+    private void changeOrderState(Indent indentToStateChange, String state) {
         Session session = sessionFactory.openSession();
 
         session.beginTransaction();
@@ -305,7 +306,7 @@ public class LogisticOrdersController implements Initializable {
     }
 
     @FXML
-    public void takeOrderHandler(ActionEvent event) {
+    public void takeOrderHandler() {
         if (ordersReadyForShipment.getSelectionModel().getSelectedItem() == null) {
             return;
         }
@@ -324,7 +325,7 @@ public class LogisticOrdersController implements Initializable {
     }
 
     @FXML
-    public void deliverOrderHandler(ActionEvent event) {
+    public void deliverOrderHandler() {
         if (ordersInRealization.getSelectionModel().getSelectedItem() == null) {
             return;
         }

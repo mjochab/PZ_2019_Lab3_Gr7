@@ -26,6 +26,7 @@ import org.hibernate.Session;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionFactory;
@@ -44,7 +45,6 @@ public class ShopOrderDetailsController implements Initializable {
     @FXML
     private Label operatingShop;
     private Indent order;
-    private ObservableList products;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -59,7 +59,7 @@ public class ShopOrderDetailsController implements Initializable {
     public void initController() {
         productName.setCellValueFactory(indent -> new SimpleStringProperty(indent.getValue().getProducts().getProductId().getName()));
         productQuantity.setCellValueFactory(indent -> new SimpleIntegerProperty(indent.getValue().getProducts().getAmount()).asObject());
-        products = getIndentProducts(order.getIndentId());
+        ObservableList products = getIndentProducts(order.getIndentId());
         orderProducts.setItems(products);
     }
 
@@ -72,7 +72,7 @@ public class ShopOrderDetailsController implements Initializable {
     }
 
 
-    public State getOrderStatus() {
+    private State getOrderStatus() {
         Session session = sessionFactory.openSession();
         List<State_of_indent> soi = session.createQuery("from State_of_indent where IndentId = :iid").setParameter("iid", order.getIndentId()).list();
         // wybierz pierwszy (jedyny) element z listy i zwroc jego status (obiekt State)
@@ -80,7 +80,7 @@ public class ShopOrderDetailsController implements Initializable {
     }
 
 
-    public ObservableList<IndentProductsView> getIndentProducts(int indentId) {
+    private ObservableList<IndentProductsView> getIndentProducts(int indentId) {
         ObservableList<IndentProductsView> products = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<Indent_product> indent_products = session.createQuery("from Indent_product where IndentId = :iid").setParameter("iid", indentId).list();
@@ -105,6 +105,6 @@ public class ShopOrderDetailsController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        stg.setScene(new Scene(par));
+        stg.setScene(new Scene(Objects.requireNonNull(par)));
     }
 }

@@ -15,7 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
-import models.IndentTableView;
 import models.StateOnShop;
 import org.hibernate.Session;
 
@@ -31,7 +30,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static controllers.MainWindowController.*;
+import static controllers.MainWindowController.sessionContext;
+import static controllers.MainWindowController.sessionFactory;
 import static controllers.WarehouseNewProductController.isNumeric;
 import static utils.Alerts.*;
 
@@ -96,14 +96,12 @@ public class StateWarehouseController implements Initializable {
     @FXML
     private Label sessionInfo;
 
-    private Stage stage;
-
-    private ObservableList<StateOnShop> list = FXCollections.observableArrayList();
+    private final ObservableList<StateOnShop> list = FXCollections.observableArrayList();
 
     private String nazwaProduktu = null;
 
     public void menuItemAction(ActionEvent actionEvent) throws IOException { //powrót , wylogowanie na MENU ITEM
-        stage = (Stage) root.getScene().getWindow();
+        Stage stage = (Stage) root.getScene().getWindow();
         if (actionEvent.getSource() == logout) {
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
         } else {
@@ -152,7 +150,7 @@ public class StateWarehouseController implements Initializable {
 
     //ZAKŁADKA(1) STAN MAGAZYNU----------------------------------------------------------------------------------------------------------------------------
 
-    public void overlapStateWarehouse() {
+    private void overlapStateWarehouse() {
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
         PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
@@ -226,7 +224,7 @@ public class StateWarehouseController implements Initializable {
 
     //ZAKŁADKA(3) NOWE ZAMÓWIENIE----------------------------------------------------------------------------------------------------------------------------
 
-    public void overlapNewOrderWarehouse() {
+    private void overlapNewOrderWarehouse() {
         setComboList();
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
@@ -359,7 +357,7 @@ public class StateWarehouseController implements Initializable {
         Date date = format.parse(dtf.format(now));
         System.out.println(date);
 
-        ArrayList<Integer> listOfStores = new ArrayList<Integer>();
+        ArrayList<Integer> listOfStores = new ArrayList<>();
         if (!list.isEmpty()) {
             System.out.println(list.get(0).toString());
             for (StateOnShop state_on_shop : list) {
@@ -379,34 +377,30 @@ public class StateWarehouseController implements Initializable {
         add_new_order.getItems().clear();
     }
 
-    public boolean simpleOrComplex(ArrayList list) {
+    private boolean simpleOrComplex(ArrayList list) {
         boolean result = true;
         for (int i = 1; i < list.size(); i++) {
-            if (list.get(i) != list.get(0)) {
-                result = false;
-            } else {
-                result = true;
-            }
+            result = list.get(i) == list.get(0);
         }
         return result;
     }
 
-    public void simpleOrder(Date date, int id) {
+    private void simpleOrder(Date date, int id) {
         Session session = sessionFactory.openSession();
         session.getTransaction().begin();
-        Shop shopIdNeed = (Shop) session.get(Shop.class, sessionContext.getCurrentLoggedShop().getShopId());
-        Shop shopIdDelivery = (Shop) session.get(Shop.class, id);
-        State state = (State) session.get(State.class, 1);
+        Shop shopIdNeed = session.get(Shop.class, sessionContext.getCurrentLoggedShop().getShopId());
+        Shop shopIdDelivery = session.get(Shop.class, id);
+        State state = session.get(State.class, 1);
         System.out.println("to jest status mojego zamowienia" + state.toString());
 
         System.out.println("need " + shopIdNeed.getShopId() + " delivery " + shopIdDelivery.getShopId());
         Indent simpleOrder = new Indent(shopIdNeed, shopIdDelivery, null, date, null, false);
         session.save(simpleOrder);
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getStateOnShop().getShopId().getShopId() == id) {
-                System.out.println(list.get(i).getStateOnShop().getLocked() + " LOCKED oraz AMOUNT " + list.get(i).getAmount());
-                State_on_shop newLocked = (State_on_shop) session.get(State_on_shop.class, list.get(i).getStateOnShop().getId());
-                newLocked.setLocked(newLocked.getLocked() + list.get(i).getAmount());
+        for (StateOnShop stateOnShop : list) {
+            if (stateOnShop.getStateOnShop().getShopId().getShopId() == id) {
+                System.out.println(stateOnShop.getStateOnShop().getLocked() + " LOCKED oraz AMOUNT " + stateOnShop.getAmount());
+                State_on_shop newLocked = session.get(State_on_shop.class, stateOnShop.getStateOnShop().getId());
+                newLocked.setLocked(newLocked.getLocked() + stateOnShop.getAmount());
                 session.update(newLocked);
             }
         }
@@ -421,11 +415,11 @@ public class StateWarehouseController implements Initializable {
         session.close();
     }
 
-    public void complexOrder(Date date, ArrayList idShops) {
+    private void complexOrder(Date date, ArrayList idShops) {
         Session session = sessionFactory.openSession();
         session.getTransaction().begin();
-        Shop shopIdNeed = (Shop) session.get(Shop.class, sessionContext.getCurrentLoggedShop().getShopId());
-        State state = (State) session.get(State.class, 1);
+        Shop shopIdNeed = session.get(Shop.class, sessionContext.getCurrentLoggedShop().getShopId());
+        State state = session.get(State.class, 1);
         //COMPLEX
         Indent complexOrder = new Indent(shopIdNeed, null, null, date, null, true);
         session.save(complexOrder);
@@ -434,19 +428,18 @@ public class StateWarehouseController implements Initializable {
         while (!idShops.isEmpty()) {
             int id = (int) idShops.get(0);
             idShops.remove(0);
-            Shop shopIdDelivery = (Shop) session.get(Shop.class, id);
+            Shop shopIdDelivery = session.get(Shop.class, id);
             System.out.println("need " + shopIdNeed.getShopId() + " delivery " + shopIdDelivery.getShopId());
             ObservableList<StateOnShop> products = FXCollections.observableArrayList();
             if (idShops.contains(id)) {
-                continue;
             } else { //SIMPLE
                 //Odseparowanie produktów dla danego sklepu
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getStateOnShop().getShopId().getShopId() == id) {
-                        products.add(list.get(i));
-                        System.out.println(list.get(i).getStateOnShop().getLocked() + " LOCKED oraz AMOUNT " + list.get(i).getAmount());
-                        State_on_shop newLocked = (State_on_shop) session.get(State_on_shop.class, list.get(i).getStateOnShop().getId());
-                        newLocked.setLocked(newLocked.getLocked() + list.get(i).getAmount());
+                for (StateOnShop stateOnShop : list) {
+                    if (stateOnShop.getStateOnShop().getShopId().getShopId() == id) {
+                        products.add(stateOnShop);
+                        System.out.println(stateOnShop.getStateOnShop().getLocked() + " LOCKED oraz AMOUNT " + stateOnShop.getAmount());
+                        State_on_shop newLocked = session.get(State_on_shop.class, stateOnShop.getStateOnShop().getId());
+                        newLocked.setLocked(newLocked.getLocked() + stateOnShop.getAmount());
                         session.update(newLocked);
                     }
                 }
@@ -470,7 +463,7 @@ public class StateWarehouseController implements Initializable {
 
     //ZAKŁADKA(4) NOWE ZAMÓWIENIE ZE SKLEPU----------------------------------------------------------------------------------------------------
 
-    public void overlapNewOrderShop() {
+    private void overlapNewOrderShop() {
         PRODUCTID_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
         NAME_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
         PRICE_ORDER.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
@@ -513,7 +506,7 @@ public class StateWarehouseController implements Initializable {
 
     //ZAKŁADKA(5) ZMIANA STATUSU---------------------------------------------------------------------------------------------------------------
 
-    public void overlapStateOrderWarehouse() {
+    private void overlapStateOrderWarehouse() {
         CITY.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getIndentId().getShopId_delivery().getCity()));
         STATE.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getStateId().getName()));
         ORDERNR.setCellValueFactory(orderData -> new SimpleStringProperty(String.valueOf(orderData.getValue().getIndentId().getIndentId())));
@@ -537,12 +530,12 @@ public class StateWarehouseController implements Initializable {
     public void changeOrderStatus() {
         if (stateOrderWarehouse.getSelectionModel().getSelectedItem() != null) {
             System.out.println(stateOrderWarehouse.getSelectionModel().getSelectedItem().toString());
-            State_of_indent model = (State_of_indent) stateOrderWarehouse.getSelectionModel().getSelectedItem();
+            State_of_indent model = stateOrderWarehouse.getSelectionModel().getSelectedItem();
             if (model.getStateId().getStateId() == 4) {
                 System.out.println(model);
                 Session session = sessionFactory.openSession();
                 session.beginTransaction();
-                State_of_indent p = (State_of_indent) stateOrderWarehouse.getSelectionModel().getSelectedItem();
+                State_of_indent p = stateOrderWarehouse.getSelectionModel().getSelectedItem();
                 System.out.println(p.getStateId().getName());
                 p.getStateId().setStateId(5);
                 session.update(p);
@@ -600,7 +593,7 @@ public class StateWarehouseController implements Initializable {
 
     //ZAKŁADKA(6) ZAMOWIENIA DO PRZYGOtOWANIA---------------------------------------------------------------------------------------------------------------
 
-    public void overlapOrdersToPrepareWarehouse() {
+    private void overlapOrdersToPrepareWarehouse() {
         CITY.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getIndentId().getShopId_need().getCity()));
         STATE.setCellValueFactory(orderData -> new SimpleStringProperty(orderData.getValue().getStateId().getName()));
         ORDERNR.setCellValueFactory(orderData -> new SimpleStringProperty(String.valueOf(orderData.getValue().getIndentId().getIndentId())));
@@ -624,12 +617,12 @@ public class StateWarehouseController implements Initializable {
     public void changeOrderToPrepareStatus() {
         if (stateOrderToPrepareWarehouse.getSelectionModel().getSelectedItem() != null) {
             System.out.println(stateOrderToPrepareWarehouse.getSelectionModel().getSelectedItem().toString());
-            State_of_indent model = (State_of_indent) stateOrderToPrepareWarehouse.getSelectionModel().getSelectedItem();
+            State_of_indent model = stateOrderToPrepareWarehouse.getSelectionModel().getSelectedItem();
             if (model.getStateId().getStateId() == 1) {
                 System.out.println(model);
                 Session session = sessionFactory.openSession();
                 session.beginTransaction();
-                State_of_indent p = (State_of_indent) stateOrderToPrepareWarehouse.getSelectionModel().getSelectedItem();
+                State_of_indent p = stateOrderToPrepareWarehouse.getSelectionModel().getSelectedItem();
                 System.out.println(p.getStateId().getName());
                 p.getStateId().setStateId(2);
                 session.update(p);

@@ -6,24 +6,26 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import models.StateOnShop;
 import org.hibernate.Session;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static utils.Alerts.*;
-
-import static controllers.MainWindowController.sessionFactory;
 import static controllers.MainWindowController.sessionContext;
+import static controllers.MainWindowController.sessionFactory;
 import static controllers.WarehouseNewProductController.isNumeric;
+import static utils.Alerts.*;
 
 public class ShopOrderItemsForCustomers implements Initializable {
 
@@ -54,7 +56,7 @@ public class ShopOrderItemsForCustomers implements Initializable {
 
     Stage stage;
 
-    private ObservableList<StateOnShop> list = FXCollections.observableArrayList();
+    private final ObservableList<StateOnShop> list = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -64,7 +66,7 @@ public class ShopOrderItemsForCustomers implements Initializable {
                 if (event.getClickCount() == 2) {
                     if (PRODUCTS_TABLE.getSelectionModel().getSelectedItem() != null) {
                         StateOnShop sos = new StateOnShop();
-                        sos.setStateOnShop((State_on_shop) PRODUCTS_TABLE.getSelectionModel().getSelectedItem());
+                        sos.setStateOnShop(PRODUCTS_TABLE.getSelectionModel().getSelectedItem());
                         sos.setAmount(1);
                         System.out.println("Wysłany " + PRODUCTS_TABLE.getSelectionModel().getSelectedItem().toString());
                         if (list.isEmpty()) {
@@ -101,7 +103,7 @@ public class ShopOrderItemsForCustomers implements Initializable {
 
     }
 
-    public ObservableList<State_on_shop> getProducts(String productName) {
+    private ObservableList<State_on_shop> getProducts(String productName) {
         ObservableList<State_on_shop> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<State_on_shop> eList;
@@ -143,7 +145,7 @@ public class ShopOrderItemsForCustomers implements Initializable {
                 new SimpleStringProperty(produktData.getValue().getStateOnShop().getProductId().getName()));
         //noinspection BigDecimalMethodWithoutRoundingCalled
         PRICE_RECEIPT.setCellValueFactory(produktData ->
-                new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getPrice())));
+                new SimpleStringProperty(String.valueOf(produktData.getValue().getStateOnShop().getProductId().getPrice().setScale(2, BigDecimal.ROUND_UP))));
         DISCOUNT_RECEIPT.setCellValueFactory(productData ->
                 new SimpleStringProperty(String.valueOf(productData.getValue().getStateOnShop().getProductId().getDiscount())));
         AMOUNT_RECEIPT.setCellValueFactory(produktData ->

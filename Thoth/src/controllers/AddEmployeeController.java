@@ -7,20 +7,18 @@ import entity.User;
 import entity.UserShop;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import org.hibernate.Session;
 
-import static controllers.MainWindowController.sessionFactory;
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import static utils.Validation.*;
-import static utils.Alerts.*;
+
+import static controllers.MainWindowController.sessionFactory;
+import static utils.Alerts.shownotNameAlert;
+import static utils.Validation.nameValidation;
 
 public class AddEmployeeController implements Initializable {
 
@@ -40,7 +38,7 @@ public class AddEmployeeController implements Initializable {
     private Button btnAddEmployee;
 
     @FXML
-    public void saveEmployee(ActionEvent actionEvent) throws IOException { //dodawanie użytkownika do bazy
+    public void saveEmployee() { //dodawanie użytkownika do bazy
         User u = new User();
         UserShop us = new UserShop();
 
@@ -82,7 +80,7 @@ public class AddEmployeeController implements Initializable {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        boolean isValid = session.createQuery(new String("from User where Login = :login"))
+        boolean isValid = session.createQuery("from User where Login = :login")
                 .setParameter("login", u.getLogin()).getResultList().isEmpty();
 
         if (isValid) {
@@ -153,7 +151,7 @@ public class AddEmployeeController implements Initializable {
         return shops;
     }
 
-    public void setComboShopList() {
+    private void setComboShopList() {
         this.comboShopList.getItems().addAll(getShops());
     }
 
@@ -173,7 +171,7 @@ public class AddEmployeeController implements Initializable {
         return roles;
     }
 
-    public void setComboRoleList() {
+    private void setComboRoleList() {
         this.comboRoleList.getItems().addAll(getRoles());
     }
 

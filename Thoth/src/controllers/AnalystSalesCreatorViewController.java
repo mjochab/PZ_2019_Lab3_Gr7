@@ -37,7 +37,7 @@ public class AnalystSalesCreatorViewController implements Initializable {
     @FXML
     public TextField searchTF, DISCOUNT_TF;
     private String nazwaProduktu = null;
-    private ObservableList<Product> lista = FXCollections.observableArrayList();
+    private final ObservableList<Product> lista = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

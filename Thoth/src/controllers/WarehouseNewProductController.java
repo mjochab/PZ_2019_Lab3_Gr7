@@ -9,17 +9,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.event.ActionEvent;
 import models.ObservablePriceModel;
 import org.hibernate.Session;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static controllers.MainWindowController.*;
+import static controllers.MainWindowController.sessionContext;
+import static controllers.MainWindowController.sessionFactory;
 import static utils.Alerts.newAlertCustom;
 import static utils.Alerts.showSuccesAllert;
 
@@ -35,14 +34,14 @@ public class WarehouseNewProductController implements Initializable {
     @FXML
     public Button addInsert;
 
-    String[] tab = {"SELECT new models.ObservablePriceModel(p.productId ) FROM Product p WHERE p.name like "};
+    private final String[] tab = {"SELECT new models.ObservablePriceModel(p.productId ) FROM Product p WHERE p.name like "};
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
 
-    public void addInsert(ActionEvent event) throws IOException {
+    public void addInsert() {
         if (isNumeric(AMOUNT.getText()) && isBigDeciaml(PRICE.getText())) { //wprowadzono liczby
             if (getNameProduct(tab[0]).size() == 0) { //brak takiego produktu, dodać do bazy
                 System.out.println("można dodać do bazy");
@@ -61,32 +60,28 @@ public class WarehouseNewProductController implements Initializable {
         }
     }
 
-    public ObservableList<ObservablePriceModel> getNameProduct(String qry) {
+    private ObservableList<ObservablePriceModel> getNameProduct(String qry) {
         ObservableList<ObservablePriceModel> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<ObservablePriceModel> eList = session.createQuery(qry + ":nameDevice "
         ).setParameter("nameDevice", NAME.getText()).list();
         System.out.println("getNameProduct " + eList);
-        for (ObservablePriceModel ent : eList) {
-            productList.add(ent);
-        }
+        productList.addAll(eList);
         session.close();
         return productList;
     }
 
-    public ObservableList<Shop> getObjectShop() {
+    private ObservableList<Shop> getObjectShop() {
         ObservableList<Shop> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<Shop> eList = session.createQuery("from Shop where shopId = :pid").setParameter("pid", sessionContext.getCurrentLoggedShop().getShopId()).list();
         System.out.println("getObjectShop " + eList);
-        for (Shop ent : eList) {
-            productList.add(ent);
-        }
+        productList.addAll(eList);
         session.close();
         return productList;
     }
 
-    public void insertToDataBase() {
+    private void insertToDataBase() {
         Session session = sessionFactory.openSession();
         BigDecimal big = new BigDecimal(PRICE.getText());
         Product productOB = new Product(NAME.getText(), big, 0);
@@ -103,7 +98,7 @@ public class WarehouseNewProductController implements Initializable {
         AMOUNT.setText("");
     }
 
-    public boolean isBigDeciaml(String str) {
+    private boolean isBigDeciaml(String str) {
         try{
             BigDecimal big = new BigDecimal(str);
             return true;

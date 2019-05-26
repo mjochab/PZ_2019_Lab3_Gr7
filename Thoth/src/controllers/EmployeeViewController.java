@@ -5,6 +5,7 @@ import entity.Shop;
 import entity.User;
 import entity.UserShop;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,16 +14,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import models.EmployeeView;
 import org.hibernate.Session;
-import javafx.beans.property.SimpleStringProperty;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static utils.Validation.*;
-import static utils.Alerts.*;
-
 import static controllers.MainWindowController.sessionFactory;
+import static utils.Alerts.showNotBoolean;
+import static utils.Validation.isBolean;
 
 public class EmployeeViewController implements Initializable {
     @FXML
@@ -68,18 +67,16 @@ public class EmployeeViewController implements Initializable {
     }
 
 
-    public List<User> getUsers(String searchValue) {
+    private List<User> getUsers(String searchValue) {
         String searchParam = "%" + searchValue + "%";
         Session session = sessionFactory.openSession();
 
-        List<User> userList = session.createQuery("from User where FirstName LIKE :searchParam OR LastName LIKE :searchParam")
+        return (List<User>) session.createQuery("from User where FirstName LIKE :searchParam OR LastName LIKE :searchParam")
                 .setParameter("searchParam", searchParam)
                 .list();
-
-        return userList;
     }
 
-    public ObservableList<EmployeeView> mapUsersToEmployeeView(List<User> userList) {
+    private ObservableList<EmployeeView> mapUsersToEmployeeView(List<User> userList) {
         ObservableList<EmployeeView> employeeViewList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         for (User us : userList) {
@@ -99,7 +96,7 @@ public class EmployeeViewController implements Initializable {
         return employeeViewList;
     }
 
-    public ObservableList<EmployeeView> getEmployee() {
+    private ObservableList<EmployeeView> getEmployee() {
         return mapUsersToEmployeeView(getUsers(""));
     }
 

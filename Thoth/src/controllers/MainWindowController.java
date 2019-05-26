@@ -3,8 +3,6 @@ package controllers;
 import entity.Shop;
 import entity.User;
 import entity.UserShop;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,14 +23,11 @@ import org.hibernate.query.Query;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
-    private String ADMIN = "Admin";
-    private String STOREKEEPER = "Magazynier";
-    private String SHOP_ASSISTANT = "Sprzedawca";
-    private String ANALYST = "Analityk";
-    private String LOGISTICIAN = "Logistyk";
+    private final String ADMIN = "Admin";
 
     @FXML
     private ComboBox<Shop> comboList;
@@ -73,36 +68,36 @@ public class MainWindowController implements Initializable {
         }
 
         Parent temporaryLoginParent = null;
-        if (event.getSource().toString().contains("back") == true) //tu bedzie id = "back", przycisk powrotu
+        if (event.getSource().toString().contains("back")) //tu bedzie id = "back", przycisk powrotu
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
         }
-        if (event.getSource().toString().contains("employee_warehouse") == true) //okno magazynu
+        if (event.getSource().toString().contains("employee_warehouse")) //okno magazynu
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_warehouse.fxml"));
         }
-        if (event.getSource().toString().contains("employee_shop") == true) //okno sklepu
+        if (event.getSource().toString().contains("employee_shop")) //okno sklepu
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_shop.fxml"));
         }
-        if (event.getSource().toString().contains("analyst") == true) //okno analityka
+        if (event.getSource().toString().contains("analyst")) //okno analityka
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_analyst.fxml"));
         }
-        if (event.getSource().toString().contains("employee_logistic") == true) // okno widoku pracownika działy logistycznego
+        if (event.getSource().toString().contains("employee_logistic")) // okno widoku pracownika działy logistycznego
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_view_logistic.fxml"));
         }
-        if (event.getSource().toString().contains("admin_view") == true) // okno widoku admina - panel administracyjny, wybor sklepu/magazynu
+        if (event.getSource().toString().contains("admin_view")) // okno widoku admina - panel administracyjny, wybor sklepu/magazynu
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_admin.fxml"));
         }
-        if (event.getSource().toString().contains("admin_choose_employee") == true) // okno widoku admina - pracownicy
+        if (event.getSource().toString().contains("admin_choose_employee")) // okno widoku admina - pracownicy
         {
             temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
         }
 
-        Scene temporaryLoginScene = new Scene(temporaryLoginParent);
+        Scene temporaryLoginScene = new Scene(Objects.requireNonNull(temporaryLoginParent));
         // To pobiera informacje o scenie
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(temporaryLoginScene);
@@ -149,18 +144,22 @@ public class MainWindowController implements Initializable {
 
             Parent temporaryLoginParent = null;
 
+            String STOREKEEPER = "Magazynier";
             if (STOREKEEPER.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) //okno magazynu
             {
                 temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_warehouse.fxml"));
             }
+            String SHOP_ASSISTANT = "Sprzedawca";
             if (SHOP_ASSISTANT.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) //okno sklepu
             {
                 temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_shop.fxml"));
             }
+            String ANALYST = "Analityk";
             if (ANALYST.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) //okno analityka
             {
                 temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_analyst.fxml"));
             }
+            String LOGISTICIAN = "Logistyk";
             if (LOGISTICIAN.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) // okno widoku pracownika działy logistycznego
             {
                 temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_view_logistic.fxml"));
@@ -191,7 +190,7 @@ public class MainWindowController implements Initializable {
     }
 
 
-    public void resetdb(ActionEvent event) throws IOException {
+    public void resetdb() {
         System.out.println(resetDbButton.getText());
         if (resetDbButton.getText().contentEquals("DELETE")) {
             SessionFactory factory = new Configuration()
@@ -219,14 +218,11 @@ public class MainWindowController implements Initializable {
     public void setComboList() {
         this.comboList.getItems().addAll(getShops());
         // jezeli zostanie wybrany inny sklep w comboboxie, zostanie on ustawiony w sessionContext
-        this.comboList.valueProperty().addListener(new ChangeListener<Shop>() {
-            @Override
-            public void changed(ObservableValue<? extends Shop> observable, Shop oldValue, Shop newValue) {
-                System.out.println("Poprzednia wartosc: " + oldValue);
-                System.out.println("Nowa wartosc: " + newValue);
+        this.comboList.valueProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("Poprzednia wartosc: " + oldValue);
+            System.out.println("Nowa wartosc: " + newValue);
 
-                sessionContext.setCurrentLoggedShop(newValue);
-            }
+            sessionContext.setCurrentLoggedShop(newValue);
         });
     }
 
@@ -244,7 +240,7 @@ public class MainWindowController implements Initializable {
         }
     }
 
-    public UserShop getLoggedUserData(User userToLogin) {
+    private UserShop getLoggedUserData(User userToLogin) {
         Session session = sessionFactory.openSession();
 
         List<UserShop> userDataList;

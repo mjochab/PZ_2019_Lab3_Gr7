@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionContext;
@@ -28,23 +29,22 @@ public class AdminController implements Initializable {
     @FXML
     AddEmployeeController addEmployeeController;
     @FXML
+    private
     EmployeeViewController employeeViewController;
     @FXML
     private Label sessionInfo;
 
-
-    Stage stage;
 
     @FXML
     public void reloadEmployeeView() {
         employeeViewController.reloadTableView();
     }
 
-    public void switchscene(ActionEvent event) throws IOException { //zmiana sceny BUTTON
+    public void switchscene(ActionEvent event) { //zmiana sceny BUTTON
         System.out.println(event.getSource().toString());
         Parent temporaryLoginParent = null;
         Scene temporaryLoginScene = null;
-        temporaryLoginScene = new Scene(temporaryLoginParent);
+        temporaryLoginScene = new Scene(Objects.requireNonNull(temporaryLoginParent));
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(temporaryLoginScene);
         window.show();
@@ -52,7 +52,7 @@ public class AdminController implements Initializable {
 
     public void menuItemAction(ActionEvent actionEvent) throws IOException { //powrót , wylogowanie na MENU ITEM
         System.out.println("ACTION EVENT"+actionEvent);
-        stage = (Stage) root.getScene().getWindow();
+        Stage stage = (Stage) root.getScene().getWindow();
         if (actionEvent.getSource() == logout) {
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
         } else {

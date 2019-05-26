@@ -13,12 +13,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
 import javafx.stage.Stage;
 import org.hibernate.Session;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionFactory;
@@ -67,16 +67,14 @@ public class ComplexOrderDetailsController implements Initializable {
     }
 
 
-    public TitledPane createSubOrderPane(Indent order) throws IOException {
+    private TitledPane createSubOrderPane(Indent order) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/suborder_details.fxml"));
         Parent parent = loader.load();
         SimpleOrderDetailsController controller = loader.getController();
         controller.setOrder(order);
         controller.initSubOrderController();
 
-        TitledPane subOrderPane = new TitledPane("Zamowienie nr: " + String.valueOf(order.getIndentId()), parent);
-
-        return subOrderPane;
+        return new TitledPane("Zamowienie nr: " + order.getIndentId(), parent);
     }
 
 
@@ -91,6 +89,6 @@ public class ComplexOrderDetailsController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        stg.setScene(new Scene(par));
+        stg.setScene(new Scene(Objects.requireNonNull(par)));
     }
 }

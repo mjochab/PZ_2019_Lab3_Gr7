@@ -13,18 +13,19 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ViewUsersController implements Initializable {
+class ViewUsersController implements Initializable {
     @FXML
+    private
     MenuItem logout;
     @FXML
     MenuItem back;
     @FXML
+    private
     Parent root;
-    Stage stage;
 
     public void logout(ActionEvent actionEvent) throws IOException {
         if (actionEvent.getSource() == logout) {
-            stage = (Stage) root.getScene().getWindow();
+            Stage stage = (Stage) root.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
