@@ -3,9 +3,9 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.text.Font?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../thoth/style.css"
-            xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="controllers.AddEmployeeController">
+            xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="controllers.AddShopController">
     <VBox layoutX="-14.0" prefHeight="761.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0"
           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <padding>
@@ -18,7 +18,7 @@
             <padding>
                 <Insets bottom="10.0"/>
             </padding>
-            <Label prefHeight="5.0" prefWidth="120.0" styleClass="whitelabel" text="Imię:" textFill="WHITE">
+            <Label prefHeight="5.0" prefWidth="120.0" styleClass="whitelabel" text="ZipCode" textFill="WHITE">
                 <font>
                     <Font name="Arial" size="18.0"/>
                 </font>
@@ -26,14 +26,14 @@
                     <Insets/>
                 </HBox.margin>
             </Label>
-            <TextField fx:id="tfFirstName" prefHeight="25.0" prefWidth="300.0" styleClass="textarea"/>
+            <TextField fx:id="ZIPCODE" prefHeight="25.0" prefWidth="300.0" styleClass="textarea"/>
         </HBox>
         <HBox alignment="CENTER_LEFT">
             <VBox.margin>
                 <Insets bottom="10.0"/>
             </VBox.margin>
             <Label prefHeight="5.0" prefWidth="120.0" styleClass="whitelabel" stylesheets="@../thoth/style.css"
-                   text="Nazwisko:" textFill="WHITE">
+                   text="City" textFill="WHITE">
                 <font>
                     <Font name="Arial" size="18.0"/>
                 </font>
@@ -41,13 +41,13 @@
                     <Insets/>
                 </HBox.margin>
             </Label>
-            <TextField fx:id="tfLastName" prefHeight="25.0" prefWidth="300.0" styleClass="textarea"/>
+            <TextField fx:id="CITY" prefHeight="25.0" prefWidth="300.0" styleClass="textarea"/>
         </HBox>
         <HBox alignment="CENTER_LEFT">
             <VBox.margin>
                 <Insets bottom="10.0"/>
             </VBox.margin>
-            <Label prefHeight="5.0" prefWidth="120.0" styleClass="whitelabel" text="Login:" textFill="WHITE">
+            <Label prefHeight="5.0" prefWidth="120.0" styleClass="whitelabel" text="Street" textFill="WHITE">
                 <font>
                     <Font size="18.0"/>
                 </font>
@@ -55,54 +55,25 @@
                     <Insets/>
                 </HBox.margin>
             </Label>
-            <TextField fx:id="tfLogin" prefHeight="25.0" prefWidth="300.0" styleClass="textarea"/>
+            <TextField fx:id="STREET" prefHeight="25.0" prefWidth="300.0" styleClass="textarea"/>
         </HBox>
         <HBox alignment="CENTER_LEFT">
             <VBox.margin>
                 <Insets bottom="10.0"/>
             </VBox.margin>
-            <Label prefHeight="5.0" prefWidth="120.0" styleClass="whitelabel" text="Hasło:" textFill="WHITE">
-                <font>
-                    <Font size="18.0"/>
-                </font>
-                <HBox.margin>
-                    <Insets/>
-                </HBox.margin>
-            </Label>
-            <PasswordField fx:id="tfPassword" prefHeight="25.0" prefWidth="299.0" styleClass="textarea"/>
         </HBox>
         <HBox alignment="CENTER_LEFT">
             <VBox.margin>
                 <Insets bottom="10.0"/>
             </VBox.margin>
-            <Label prefHeight="0.0" prefWidth="120.0" styleClass="whitelabel" text="Rola:" textFill="WHITE">
-                <font>
-                    <Font size="18.0"/>
-                </font>
-                <HBox.margin>
-                    <Insets/>
-                </HBox.margin>
-            </Label>
-            <ComboBox fx:id="comboRoleList" prefHeight="25.0" prefWidth="300.0" promptText="Wybierz stanowisko"
-                      stylesheets="@../thoth/style.css"/>
         </HBox>
         <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="195.0">
             <VBox.margin>
                 <Insets bottom="10.0"/>
             </VBox.margin>
-            <Label prefHeight="0.0" prefWidth="120.0" styleClass="whitelabel" text="Obiekt:" textFill="WHITE">
-                <font>
-                    <Font size="18.0"/>
-                </font>
-                <HBox.margin>
-                    <Insets/>
-                </HBox.margin>
-            </Label>
-            <ComboBox fx:id="comboShopList" prefHeight="25.0" prefWidth="300.0" promptText="Wybierz obiekt"
-                      stylesheets="@../thoth/style.css"/>
         </HBox>
-        <Button fx:id="btnAddEmployee" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
-                onAction="#saveEmployee" prefHeight="26.0" prefWidth="420.0" styleClass="bluebutton"
+        <Button fx:id="btnAddShop" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                onAction="#saveShop" prefHeight="26.0" prefWidth="420.0" styleClass="bluebutton"
                 stylesheets="@../thoth/style.css" text="Zatwierdź">
             <font>
                 <Font size="18.0"/>

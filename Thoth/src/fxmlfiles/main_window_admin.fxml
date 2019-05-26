@@ -3,8 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background"
+            minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background"
             stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea"
             fx:controller="controllers.AdminController">
     <VBox layoutX="93.0" layoutY="14.0" prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0"
@@ -14,8 +13,7 @@
                 <Menu mnemonicParsing="false" text="Menu">
                     <MenuItem fx:id="back" mnemonicParsing="false" onAction="#menuItemAction" text="Powrót"
                               visible="false"/>
-                    <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#menuItemAction"
-                              text="Wyloguj"/>
+                    <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#menuItemAction" text="Wyloguj"/>
                 </Menu>
             </MenuBar>
             <Label fx:id="sessionInfo" prefHeight="42.0" prefWidth="498.0" text="gfds" textAlignment="JUSTIFY"
@@ -32,6 +30,15 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                     <fx:include fx:id="addEmployee" source="add_employee.fxml"/>
                 </AnchorPane>
+            </Tab>
+            <Tab fx:id="addEmployeeTab1" text="Dodaj sklep">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <children>
+                            <fx:include fx:id="addEmployee1" source="add_shop.fxml"/>
+                        </children>
+                    </AnchorPane>
+                </content>
             </Tab>
         </TabPane>
     </VBox>

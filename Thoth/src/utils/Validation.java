@@ -20,4 +20,20 @@ public class Validation {
     public static Boolean isBolean(String string) {
         return string.equals("0") || string.equals("1");
     }
+
+    public static Boolean zipCodeValidation(String string) {
+        Pattern pattern = Pattern.compile("[0-9][0-9]" + "-" + "[0-9][0-9][0-9]");
+        return (pattern.matcher(string).matches());
+    }
+
+    public static Boolean onlyCharsValidation(String string) {
+        Pattern pattern = Pattern.compile("[ a-zA-Z]+");
+        return (pattern.matcher(string).matches());
+    }
+
+    public static Boolean streetValidation(String string) {
+        Pattern pattern = Pattern.compile("[ a-zA-Z]+ [0-9]+");
+        return (pattern.matcher(string).matches());
+    }
+
 }
