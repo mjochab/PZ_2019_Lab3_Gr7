@@ -115,6 +115,9 @@ public class AnalystSalesDataController implements Initializable {
         if (file != null) {
             path = file.getAbsolutePath();
         }
+        if (path == null) {
+            return;
+        }
 
         Session session = sessionFactory.openSession();
         List<RaportModel> shops = session.createQuery("SELECT new com.pdfgeneratorlib.RaportModel(s.shopId, s.street, s.zipCode, " +
