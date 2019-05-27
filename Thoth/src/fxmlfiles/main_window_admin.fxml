@@ -26,7 +26,7 @@
                     <fx:include fx:id="employeeView" source="view_employee.fxml"/>
                 </AnchorPane>
             </Tab>
-            <Tab fx:id="addEmployeeTab" text="Dodaj pracownika">
+            <Tab fx:id="addEmployeeTab" onSelectionChanged="#reloadAddEmployeeView" text="Dodaj pracownika">
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                     <fx:include fx:id="addEmployee" source="add_employee.fxml"/>
                 </AnchorPane>
