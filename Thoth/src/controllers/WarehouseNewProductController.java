@@ -96,8 +96,7 @@ public class WarehouseNewProductController implements Initializable {
         for (Shop shop : shops) {
             if (shop.getShopId() == sessionContext.getCurrentLoggedShop().getShopId()) {
                 State_on_shop product = new State_on_shop(productOB, sessionContext.getCurrentLoggedShop(), Integer.parseInt(AMOUNT.getText()));
-                session.saveOrUpdate(product);
-                continue;
+                session.saveOrUpdate(product); continue;
             }
             State_on_shop productOther = new State_on_shop(productOB, shop, 0);
             session.saveOrUpdate(productOther);
