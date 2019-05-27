@@ -111,7 +111,7 @@ public class ShopOrderDetailsController implements Initializable {
         Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent par = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/main_window_shop.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfiles/main_window_shop.fxml"));
             par = loader.load();
 
         } catch (IOException e) {

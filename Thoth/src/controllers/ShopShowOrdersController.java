@@ -159,7 +159,7 @@ public class ShopShowOrdersController implements Initializable {
             return;
         }
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/shop_order_details.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfiles/shop_order_details.fxml"));
 
 
         Parent pane = loader.load();

@@ -67,9 +67,9 @@ public class AdminController implements Initializable {
         logger.warn("ACTION EVENT" + actionEvent);
         Stage stage = (Stage) root.getScene().getWindow();
         if (actionEvent.getSource() == logout) {
-            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/fxmlfiles/MainWindow.fxml"));
         } else {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfiles/choose_employee.fxml"));
             root = loader.load();
             MainWindowController mainController = loader.getController();
             mainController.setComboList();

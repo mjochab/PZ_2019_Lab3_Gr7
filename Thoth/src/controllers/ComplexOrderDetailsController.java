@@ -60,7 +60,7 @@ public class ComplexOrderDetailsController implements Initializable {
     public void initController() throws IOException {
         indentsAccordion.getPanes().clear();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/suborder_details.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfiles/suborder_details.fxml"));
 
         Session session = sessionFactory.openSession();
 
@@ -80,7 +80,7 @@ public class ComplexOrderDetailsController implements Initializable {
 
 
     private TitledPane createSubOrderPane(Indent order) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/suborder_details.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfiles/suborder_details.fxml"));
         Parent parent = loader.load();
         SimpleOrderDetailsController controller = loader.getController();
         controller.setOrder(order);

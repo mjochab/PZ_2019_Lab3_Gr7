@@ -223,9 +223,9 @@ public class LogisticOrdersController implements Initializable {
         // nie -> zaladuj widok zamowienia prostego
         logger.warn(orderView.getOrder().isComplex());
         if (orderView.getOrder().isComplex()) {
-            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/fxmlfiles/complex_order_details.fxml"));
         } else {
-            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/simple_order_details.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/fxmlfiles/simple_order_details.fxml"));
         }
 
         Parent pane = loader.load();
@@ -234,13 +234,13 @@ public class LogisticOrdersController implements Initializable {
         if (orderView.getOrder().isComplex()) {
             ComplexOrderDetailsController controller = loader.getController();
             //ustawienie ścieżki powrotu
-            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
+            controller.setLoader("/fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         } else {
             SimpleOrderDetailsController controller = loader.getController();
             //ustawienie ścieżki powrotu
-            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
+            controller.setLoader("/fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         }
@@ -262,9 +262,9 @@ public class LogisticOrdersController implements Initializable {
         FXMLLoader loader = null;
 
         if (orderView.getOrder().isComplex()) {
-            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/fxmlfiles/complex_order_details.fxml"));
         } else {
-            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/simple_order_details.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/fxmlfiles/simple_order_details.fxml"));
         }
 
         Parent pane = loader.load();
@@ -272,12 +272,12 @@ public class LogisticOrdersController implements Initializable {
         // wstrzykniecie wybranego obiektu do widoku szczegolowego
         if (orderView.getOrder().isComplex()) {
             ComplexOrderDetailsController controller = loader.getController();
-            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
+            controller.setLoader("/fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         } else {
             SimpleOrderDetailsController controller = loader.getController();
-            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
+            controller.setLoader("/fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         }

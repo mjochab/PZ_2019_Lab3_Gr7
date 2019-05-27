@@ -82,31 +82,31 @@ public class MainWindowController implements Initializable {
         Parent temporaryLoginParent = null;
         if (event.getSource().toString().contains("back")) //tu bedzie id = "back", przycisk powrotu
         {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/MainWindow.fxml"));
         }
         if (event.getSource().toString().contains("employee_warehouse")) //okno magazynu
         {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_warehouse.fxml"));
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_window_warehouse.fxml"));
         }
         if (event.getSource().toString().contains("employee_shop")) //okno sklepu
         {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_shop.fxml"));
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_window_shop.fxml"));
         }
         if (event.getSource().toString().contains("analyst")) //okno analityka
         {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_analyst.fxml"));
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_window_analyst.fxml"));
         }
         if (event.getSource().toString().contains("employee_logistic")) // okno widoku pracownika działy logistycznego
         {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_view_logistic.fxml"));
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_view_logistic.fxml"));
         }
         if (event.getSource().toString().contains("admin_view")) // okno widoku admina - panel administracyjny, wybor sklepu/magazynu
         {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_admin.fxml"));
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_window_admin.fxml"));
         }
         if (event.getSource().toString().contains("admin_choose_employee")) // okno widoku admina - pracownicy
         {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/choose_employee.fxml"));
         }
 
         Scene temporaryLoginScene = new Scene(Objects.requireNonNull(temporaryLoginParent));
@@ -165,26 +165,26 @@ public class MainWindowController implements Initializable {
             String STOREKEEPER = "Magazynier";
             if (STOREKEEPER.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) //okno magazynu
             {
-                temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_warehouse.fxml"));
+                temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_window_warehouse.fxml"));
             }
             String SHOP_ASSISTANT = "Sprzedawca";
             if (SHOP_ASSISTANT.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) //okno sklepu
             {
-                temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_shop.fxml"));
+                temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_window_shop.fxml"));
             }
             String ANALYST = "Analityk";
             if (ANALYST.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) //okno analityka
             {
-                temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_analyst.fxml"));
+                temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_window_analyst.fxml"));
             }
             String LOGISTICIAN = "Logistyk";
             if (LOGISTICIAN.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) // okno widoku pracownika działy logistycznego
             {
-                temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_view_logistic.fxml"));
+                temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_view_logistic.fxml"));
             }
             if (ADMIN.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) // okno widoku admina
             {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfiles/choose_employee.fxml"));
                 temporaryLoginParent = loader.load();
                 MainWindowController mainController = loader.getController();
                 mainController.setComboList();

@@ -116,9 +116,9 @@ public class StateWarehouseController implements Initializable {
     public void menuItemAction(ActionEvent actionEvent) throws IOException { //powrót , wylogowanie na MENU ITEM
         Stage stage = (Stage) root.getScene().getWindow();
         if (actionEvent.getSource() == logout) {
-            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/fxmlfiles/MainWindow.fxml"));
         } else {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfiles/choose_employee.fxml"));
             root = loader.load();
             MainWindowController mainController = loader.getController();
             mainController.setComboList();
@@ -592,9 +592,9 @@ public class StateWarehouseController implements Initializable {
         FXMLLoader loader = null;
 
         if (orderView.getIndentId().isComplex()) {
-            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/fxmlfiles/complex_order_details.fxml"));
         } else {
-            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/simple_order_details.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/fxmlfiles/simple_order_details.fxml"));
         }
 
         Parent pane = loader.load();
@@ -602,12 +602,12 @@ public class StateWarehouseController implements Initializable {
         // wstrzykniecie wybranego obiektu do widoku szczegolowego
         if (orderView.getIndentId().isComplex()) {
             ComplexOrderDetailsController controller = loader.getController();
-            controller.setLoader("../fxmlfiles/main_window_warehouse.fxml");
+            controller.setLoader("/fxmlfiles/main_window_warehouse.fxml");
             controller.setOrder(orderView.getIndentId());
             controller.initController();
         } else {
             SimpleOrderDetailsController controller = loader.getController();
-            controller.setLoader("../fxmlfiles/main_window_warehouse.fxml");
+            controller.setLoader("/fxmlfiles/main_window_warehouse.fxml");
             controller.setOrder(orderView.getIndentId());
             controller.initController();
         }
@@ -680,9 +680,9 @@ public class StateWarehouseController implements Initializable {
         FXMLLoader loader = null;
 
         if (orderView.getIndentId().isComplex()) {
-            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/fxmlfiles/complex_order_details.fxml"));
         } else {
-            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/simple_order_details.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/fxmlfiles/simple_order_details.fxml"));
         }
 
         Parent pane = loader.load();
@@ -690,12 +690,12 @@ public class StateWarehouseController implements Initializable {
         // wstrzykniecie wybranego obiektu do widoku szczegolowego
         if (orderView.getIndentId().isComplex()) {
             ComplexOrderDetailsController controller = loader.getController();
-            controller.setLoader("../fxmlfiles/main_window_warehouse.fxml");
+            controller.setLoader("/fxmlfiles/main_window_warehouse.fxml");
             controller.setOrder(orderView.getIndentId());
             controller.initController();
         } else {
             SimpleOrderDetailsController controller = loader.getController();
-            controller.setLoader("../fxmlfiles/main_window_warehouse.fxml");
+            controller.setLoader("/fxmlfiles/main_window_warehouse.fxml");
             controller.setOrder(orderView.getIndentId());
             controller.initController();
         }
