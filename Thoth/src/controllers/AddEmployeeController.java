@@ -7,22 +7,27 @@ import entity.User;
 import entity.UserShop;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import log.ThothLoggerConfigurator;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-import static controllers.MainWindowController.sessionFactory;
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import static utils.Validation.*;
-import static utils.Alerts.*;
 
+import static controllers.MainWindowController.sessionFactory;
+import static utils.Alerts.shownotNameAlert;
+import static utils.Validation.nameValidation;
+
+/**
+ * Kontroller okna dodawania użytkowników w panelu administratora
+ */
 public class AddEmployeeController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(AddEmployeeController.class);
 
     @FXML
     private TextField tfFirstName;
@@ -39,8 +44,12 @@ public class AddEmployeeController implements Initializable {
     @FXML
     private Button btnAddEmployee;
 
+    /**
+     * Metoda odczytuje pola znajdujące się w formularzu dodawania pracownika.
+     * Jeżeli wpisane wartości nie sa puste metoda zapisuje wpisane wartości do bazy danych.
+     */
     @FXML
-    public void saveEmployee(ActionEvent actionEvent) throws IOException { //dodawanie użytkownika do bazy
+    public void saveEmployee() { //dodawanie użytkownika do bazy
         User u = new User();
         UserShop us = new UserShop();
 
@@ -62,7 +71,9 @@ public class AddEmployeeController implements Initializable {
                 || comboShopList.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Niepowodzenie");
+            logger.warn("Niepowodzenie");
             alert.setContentText("Nie wybrano wszystkich danych!");
+            logger.warn("Nie wybrano wszystkich danych");
             alert.showAndWait();
 
             return;
@@ -82,7 +93,7 @@ public class AddEmployeeController implements Initializable {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        boolean isValid = session.createQuery(new String("from User where Login = :login"))
+        boolean isValid = session.createQuery("from User where Login = :login")
                 .setParameter("login", u.getLogin()).getResultList().isEmpty();
 
         if (isValid) {
@@ -90,7 +101,7 @@ public class AddEmployeeController implements Initializable {
             try {
                 session.save(u);
             } catch (Exception e) {
-                System.out.println("Nie udalo sie zapisac usera do bazy");
+                logger.warn("Nie udalo sie zapisac usera do bazy");
                 session.getTransaction().rollback();
                 session.close();
                 return;
@@ -100,7 +111,7 @@ public class AddEmployeeController implements Initializable {
             try {
                 session.save(us);
             } catch (Exception e) {
-                System.out.println("Nie udalo sie zapisac UserShop do bazy");
+                logger.warn("Nie udalo sie zapisac UserShop do bazy");
                 session.getTransaction().rollback();
                 session.close();
                 return;
@@ -127,23 +138,13 @@ public class AddEmployeeController implements Initializable {
         }
     }
 
-
-    public void addEmployee() { //dodawanie użytkownika do bazy
-        User u = new User();
-        UserShop us = new UserShop();
-        u.setFirstName(tfFirstName.getText());
-        u.setLastName(tfLastName.getText());
-        u.setPassword(tfPassword.getText());
-        //combo
-    }
-
     private ObservableList<Shop> getShops() { // wybiera listę sklepów z bazy
         ObservableList<Shop> shops = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<Shop> shopsList = session.createQuery("from Shop").list();
 
         for (Shop s : shopsList) {
-            System.out.println(s.toString());
+            logger.warn(s.toString());
         }
 
         if (shopsList.size() > 0) {
@@ -153,7 +154,8 @@ public class AddEmployeeController implements Initializable {
         return shops;
     }
 
-    public void setComboShopList() {
+    private void setComboShopList() {
+        this.comboShopList.getItems().clear();
         this.comboShopList.getItems().addAll(getShops());
     }
 
@@ -173,12 +175,21 @@ public class AddEmployeeController implements Initializable {
         return roles;
     }
 
-    public void setComboRoleList() {
+    private void setComboRoleList() {
+        this.comboRoleList.getItems().clear();
         this.comboRoleList.getItems().addAll(getRoles());
     }
 
+    /**
+     * Metoda przeładowuje dane w ComboBox'ach
+     */
+    public void reloadView() {
+        setComboShopList();
+        setComboRoleList();
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         this.setComboRoleList();
         this.setComboShopList();
     }

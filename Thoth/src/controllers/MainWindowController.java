@@ -3,8 +3,6 @@ package controllers;
 import entity.Shop;
 import entity.User;
 import entity.UserShop;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,7 +14,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
 import models.SessionContext;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -25,15 +25,15 @@ import org.hibernate.query.Query;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Kontroller głównego okna aplikacji
+ */
 public class MainWindowController implements Initializable {
-    private String ADMIN = "Admin";
-    private String STOREKEEPER = "Magazynier";
-    private String SHOP_ASSISTANT = "Sprzedawca";
-    private String ANALYST = "Analityk";
-    private String LOGISTICIAN = "Logistyk";
-
+    private static final Logger logger = Logger.getLogger(MainWindowController.class);
+    private final String ADMIN = "Admin";
     @FXML
     private ComboBox<Shop> comboList;
     @FXML
@@ -45,7 +45,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private Button loginButton;
     @FXML
-    private TextField resetDbButton;
+    private TextField resetDbButton, CLEAR;
     @FXML
     private Label resetDbLabel;
 
@@ -53,14 +53,21 @@ public class MainWindowController implements Initializable {
 
     public static SessionContext sessionContext;
 
+    /**
+     * Metoda służy do przełączania pomiędzy widokami.
+     * W zależności od zdarzenia wczytuje odpowiednie widoki.
+     *
+     * @param event pozwala zlokalizować z jakiego okna wywołano metodę
+     * @throws IOException występuje przy odczycie/zapisie pliku
+     */
     public void switchscene(ActionEvent event) throws IOException {
-        System.out.println("URL " + event.getSource().toString());
+        logger.warn("URL " + event.getSource().toString());
 
         if (sessionContext.getCurrentLoggedUser().getRoleId().getPosition().equals(ADMIN)) {
             if (!event.getSource().toString().contains("admin_view") &&             // jezeli nie wybrano panelu admina lub
                     !event.getSource().toString().contains("analyst")) {                // panelu analityka
                 if (this.comboList.getSelectionModel().getSelectedItem() == null) { // i nie wybrano zadnego sklepu
-                    System.out.println("Nie wybrano sklepu!");                      // wyswietl ostrzezenie
+                    logger.warn("Nie wybrano sklepu!");                      // wyswietl ostrzezenie
 
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Napotkano blad");
@@ -73,36 +80,36 @@ public class MainWindowController implements Initializable {
         }
 
         Parent temporaryLoginParent = null;
-        if (event.getSource().toString().contains("back") == true) //tu bedzie id = "back", przycisk powrotu
+        if (event.getSource().toString().contains("back")) //tu bedzie id = "back", przycisk powrotu
         {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/MainWindow.fxml"));
         }
-        if (event.getSource().toString().contains("employee_warehouse") == true) //okno magazynu
+        if (event.getSource().toString().contains("employee_warehouse")) //okno magazynu
         {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_warehouse.fxml"));
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_window_warehouse.fxml"));
         }
-        if (event.getSource().toString().contains("employee_shop") == true) //okno sklepu
+        if (event.getSource().toString().contains("employee_shop")) //okno sklepu
         {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_shop.fxml"));
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_window_shop.fxml"));
         }
-        if (event.getSource().toString().contains("analyst") == true) //okno analityka
+        if (event.getSource().toString().contains("analyst")) //okno analityka
         {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_analyst.fxml"));
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_window_analyst.fxml"));
         }
-        if (event.getSource().toString().contains("employee_logistic") == true) // okno widoku pracownika działy logistycznego
+        if (event.getSource().toString().contains("employee_logistic")) // okno widoku pracownika działy logistycznego
         {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_view_logistic.fxml"));
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_view_logistic.fxml"));
         }
-        if (event.getSource().toString().contains("admin_view") == true) // okno widoku admina - panel administracyjny, wybor sklepu/magazynu
+        if (event.getSource().toString().contains("admin_view")) // okno widoku admina - panel administracyjny, wybor sklepu/magazynu
         {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_admin.fxml"));
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_window_admin.fxml"));
         }
-        if (event.getSource().toString().contains("admin_choose_employee") == true) // okno widoku admina - pracownicy
+        if (event.getSource().toString().contains("admin_choose_employee")) // okno widoku admina - pracownicy
         {
-            temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
+            temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/choose_employee.fxml"));
         }
 
-        Scene temporaryLoginScene = new Scene(temporaryLoginParent);
+        Scene temporaryLoginScene = new Scene(Objects.requireNonNull(temporaryLoginParent));
         // To pobiera informacje o scenie
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(temporaryLoginScene);
@@ -110,6 +117,12 @@ public class MainWindowController implements Initializable {
     }
 
 
+    /**
+     * Metoda pobiera z bazy rekord zawierający login i hasło wpisane w polach klasy: loginTextField, passwordTextField.
+     *
+     * @param event
+     * @throws IOException
+     */
     public void login(ActionEvent event) throws IOException {
         loginErrorLabel.setText("");
         List<User> user;
@@ -120,7 +133,7 @@ public class MainWindowController implements Initializable {
         user = query.list();
         session.close();
         try {
-            System.out.println(user.get(0).getRoleId().getPosition().getClass());
+            logger.warn(user.get(0).getRoleId().getPosition().getClass());
 
             UserShop userShopToLoadToSession;
 
@@ -142,32 +155,36 @@ public class MainWindowController implements Initializable {
                 if (userShopToLoadToSession != null) {
                     sessionContext = new SessionContext(userShopToLoadToSession);
                 } else {
-                    System.out.println("Failed to load sessionContext");
+                    logger.warn("Failed to load sessionContext");
                     sessionContext = null;
                 }
             }
 
             Parent temporaryLoginParent = null;
 
+            String STOREKEEPER = "Magazynier";
             if (STOREKEEPER.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) //okno magazynu
             {
-                temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_warehouse.fxml"));
+                temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_window_warehouse.fxml"));
             }
+            String SHOP_ASSISTANT = "Sprzedawca";
             if (SHOP_ASSISTANT.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) //okno sklepu
             {
-                temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_shop.fxml"));
+                temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_window_shop.fxml"));
             }
+            String ANALYST = "Analityk";
             if (ANALYST.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) //okno analityka
             {
-                temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_window_analyst.fxml"));
+                temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_window_analyst.fxml"));
             }
+            String LOGISTICIAN = "Logistyk";
             if (LOGISTICIAN.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) // okno widoku pracownika działy logistycznego
             {
-                temporaryLoginParent = FXMLLoader.load(getClass().getResource("../fxmlfiles/main_view_logistic.fxml"));
+                temporaryLoginParent = FXMLLoader.load(getClass().getResource("/fxmlfiles/main_view_logistic.fxml"));
             }
             if (ADMIN.equals(user.get(0).getRoleId().getPosition()) && user.get(0).getState() == 1) // okno widoku admina
             {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/choose_employee.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfiles/choose_employee.fxml"));
                 temporaryLoginParent = loader.load();
                 MainWindowController mainController = loader.getController();
                 mainController.setComboList();
@@ -191,14 +208,24 @@ public class MainWindowController implements Initializable {
     }
 
 
-    public void resetdb(ActionEvent event) throws IOException {
-        System.out.println(resetDbButton.getText());
+    /**
+     * Metoda resetuje bazę danych i wczytuje pliki z pliku import_1.sql
+     */
+    public void resetdb() {
+        logger.warn(resetDbButton.getText());
         if (resetDbButton.getText().contentEquals("DELETE")) {
             SessionFactory factory = new Configuration()
                     .configure("create.cfg.xml").buildSessionFactory();
             resetDbLabel.setText("");
             factory.close();
-        } else resetDbLabel.setText("Niepoprawny ciąg znaków");
+        } else if (CLEAR.getText().contentEquals("CLEAR")) {
+            SessionFactory factory = new Configuration()
+                    .configure("clear.cfg.xml").buildSessionFactory();
+            resetDbLabel.setText("");
+            factory.close();
+        } else {
+            resetDbLabel.setText("Niepoprawny ciąg znaków");
+        }
     }
 
 
@@ -210,32 +237,32 @@ public class MainWindowController implements Initializable {
         shops.addAll(shopsList);
 
         session.close();
-        System.out.println("Zwracam sklepy");
+        logger.warn("Zwracam sklepy");
         return shops;
 
     }
 
-
+    /**
+     * Ustawia ComboBox'a ze sklepami oraz podpina listener ktory odpowiada za zmiane obiektu sklepu w sesji
+     */
     public void setComboList() {
         this.comboList.getItems().addAll(getShops());
         // jezeli zostanie wybrany inny sklep w comboboxie, zostanie on ustawiony w sessionContext
-        this.comboList.valueProperty().addListener(new ChangeListener<Shop>() {
-            @Override
-            public void changed(ObservableValue<? extends Shop> observable, Shop oldValue, Shop newValue) {
-                System.out.println("Poprzednia wartosc: " + oldValue);
-                System.out.println("Nowa wartosc: " + newValue);
+        this.comboList.valueProperty().addListener((observable, oldValue, newValue) -> {
+            logger.warn("Poprzednia wartosc: " + oldValue);
+            logger.warn("Nowa wartosc: " + newValue);
 
-                sessionContext.setCurrentLoggedShop(newValue);
-            }
+            sessionContext.setCurrentLoggedShop(newValue);
         });
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         try {
             sessionFactory = new Configuration().configure("update.cfg.xml").buildSessionFactory();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.warn(e.getMessage());
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Niepowodzenie");
             alert.setContentText("NIe udało się nawiązać połączenia z bazą danych!");
@@ -244,7 +271,7 @@ public class MainWindowController implements Initializable {
         }
     }
 
-    public UserShop getLoggedUserData(User userToLogin) {
+    private UserShop getLoggedUserData(User userToLogin) {
         Session session = sessionFactory.openSession();
 
         List<UserShop> userDataList;
@@ -257,10 +284,10 @@ public class MainWindowController implements Initializable {
             if (userDataList.size() == 1) {
                 userData = userDataList.get(0);
             } else {
-                System.out.println("Znaleziono 0 lub > 1 encji w UserShop");
+                logger.warn("Znaleziono 0 lub > 1 encji w UserShop");
             }
         } catch (Exception e) {
-            System.out.println("Blad pobierania z bazy danych");
+            logger.warn("Blad pobierania z bazy danych");
         }
 
         session.close();

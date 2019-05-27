@@ -1,42 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.StateWarehouseController">
-   <children>
-      <VBox layoutX="258.0" layoutY="111.0" prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <HBox>
-               <children>
-                  <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#changeOrderStatus" prefHeight="26.0" prefWidth="242.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Potwierdź odebranie zamówienia">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#refreshStateOrderWarehouse" prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Odśwież">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="SHOW_DETAILS" contentDisplay="RIGHT" layoutX="272.0" layoutY="20.0" mnemonicParsing="false" onAction="#inRealizationDetailsAction" prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Podgląd">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Button>
-                  <!--<Button contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Podgląd zamówienia">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity"
+            prefHeight="800.0" prefWidth="1280.0" stylesheets="@../thoth/style.css"
+            xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="controllers.StateWarehouseController">
+    <VBox layoutX="258.0" layoutY="111.0" prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <HBox>
+            <VBox.margin>
+                <Insets/>
+            </VBox.margin>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#changeOrderStatus" prefHeight="26.0"
+                    prefWidth="242.0" styleClass="bluebutton" stylesheets="@../thoth/style.css"
+                    text="Potwierdź odebranie zamówienia">
+                <font>
+                    <Font size="18.0"/>
+                </font>
+                <HBox.margin>
+                    <Insets right="10.0"/>
+                </HBox.margin>
+            </Button>
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#refreshStateOrderWarehouse"
+                    prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css"
+                    text="Odśwież">
+                <font>
+                    <Font size="18.0"/>
+                </font>
+                <HBox.margin>
+                    <Insets right="10.0"/>
+                </HBox.margin>
+            </Button>
+            <Button fx:id="SHOW_DETAILS" contentDisplay="RIGHT" layoutX="272.0" layoutY="20.0"
+                    mnemonicParsing="false" onAction="#inRealizationDetailsAction" prefHeight="26.0"
+                    prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Podgląd">
+                <font>
+                    <Font size="18.0"/>
+                </font>
+            </Button>
+            <!--<Button contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="26.0" prefWidth="184.0" styleClass="bluebutton" stylesheets="@../thoth/style.css" text="Podgląd zamówienia">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -44,29 +52,18 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Button> -->
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </HBox>
-            <HBox prefHeight="781.0" prefWidth="1280.0">
-               <children>
-                  <TableView fx:id="stateOrderWarehouse" editable="true" prefHeight="754.0" prefWidth="1325.0">
-                     <columns>
-                        <TableColumn fx:id="CITY" prefWidth="408.0" text="Skąd" />
-                        <TableColumn fx:id="STATE" minWidth="0.0" prefWidth="503.0" text="Status" />
-                        <TableColumn fx:id="ORDERNR" minWidth="0.0" prefWidth="368.0" text="Numer zamówienia" />
-                     </columns>
-                  </TableView>
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </HBox>
-         </children>
-      </VBox>
-   </children>
+        </HBox>
+        <HBox prefHeight="781.0" prefWidth="1280.0">
+            <VBox.margin>
+                <Insets/>
+            </VBox.margin>
+            <TableView fx:id="stateOrderWarehouse" editable="true" prefHeight="754.0" prefWidth="1325.0">
+                <columns>
+                    <TableColumn fx:id="CITY" prefWidth="408.0" text="Skąd"/>
+                    <TableColumn fx:id="STATE" minWidth="0.0" prefWidth="503.0" text="Status"/>
+                    <TableColumn fx:id="ORDERNR" minWidth="0.0" prefWidth="368.0" text="Numer zamówienia"/>
+                </columns>
+            </TableView>
+        </HBox>
+    </VBox>
 </AnchorPane>

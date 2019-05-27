@@ -1,7 +1,7 @@
 package models;
 
 
-public class ProductShop {
+class ProductShop {
     private Integer id;
     private String name;
     private Double price;

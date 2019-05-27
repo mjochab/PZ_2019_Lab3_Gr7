@@ -32,7 +32,7 @@ public class ObservablePriceModel {
         this.name = name;
         this.price = price;
         this.discount = discount;
-        this.amount = Integer.valueOf(amount.intValue());
+        this.amount = amount.intValue();
     }
 
     public ObservablePriceModel(Integer productId) {

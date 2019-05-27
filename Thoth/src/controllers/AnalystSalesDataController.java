@@ -1,5 +1,9 @@
 package controllers;
 
+import com.pdfgeneratorlib.CreatePDF;
+import com.pdfgeneratorlib.RaportModel;
+import com.pdfgeneratorlib.RaportProductModel;
+import com.pdfgeneratorlib.RaportUserModel;
 import entity.Product;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,10 +14,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import models.*;
+import log.ThothLoggerConfigurator;
+import models.SalesDataModel;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Date;
@@ -21,15 +28,13 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import com.pdfgeneratorlib.*;
-
 import static controllers.MainWindowController.sessionFactory;
 
 /**
  * Konstroler zakładki Okna Analityka dotyczącej zysków danego sklepu.
  */
 public class AnalystSalesDataController implements Initializable {
-
+    private static final Logger logger = Logger.getLogger(AnalystSalesDataController.class);
     @FXML
     private AnchorPane pane;
     @FXML
@@ -45,14 +50,21 @@ public class AnalystSalesDataController implements Initializable {
     @FXML
     private DatePicker START_DATE, END_DATE;
 
+    /**
+     * Metoda inicjalizuje dane w tabeli przechowującej dane sprzedażowe.
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         ZIPCODE.setCellValueFactory(new PropertyValueFactory<>("zipCode"));
         CITY.setCellValueFactory(new PropertyValueFactory<Product, String>("city"));
         STREET.setCellValueFactory(new PropertyValueFactory<Product, BigDecimal>("street"));
         PROFIT.setCellValueFactory(new PropertyValueFactory<Product, Integer>("profit"));
         salesDataTable.setItems(getRaport());
-        System.out.println(getRaport().toString());
+        logger.warn(getRaport().toString());
     }
 
 
@@ -82,7 +94,7 @@ public class AnalystSalesDataController implements Initializable {
             START_DATE.setValue(null);
             END_DATE.setValue(null);
         }
-        System.out.println(eList);
+        logger.warn(eList);
         productList.addAll(eList);
         session.close();
         return productList;
@@ -91,6 +103,7 @@ public class AnalystSalesDataController implements Initializable {
 
     /**
      * Metoda generująca raport w określonym przez nas folderze.
+     *
      * @throws IOException Występuje gdy ścieżka do folderu jest niepoprawna.
      */
     public void generateRaport() throws IOException {
@@ -129,8 +142,8 @@ public class AnalystSalesDataController implements Initializable {
         }
         session.close();
 
-        System.out.println(shops.size());
-        System.out.println(shops.toString());
+        logger.warn(shops.size());
+        logger.warn(shops.toString());
 
         CreatePDF.createPdf(shops, path);
 
@@ -149,7 +162,7 @@ public class AnalystSalesDataController implements Initializable {
      * Metoda odświeża tabelę z Raportami sprzedaży.
      */
     public void showRaportForDate() {
-        System.out.println("startdate:" + START_DATE.getValue() + "enddate:" + END_DATE.getValue());
+        logger.warn("startdate:" + START_DATE.getValue() + "enddate:" + END_DATE.getValue());
         salesDataTable.setItems(getRaport());
     }
 }

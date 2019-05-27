@@ -5,26 +5,31 @@ import entity.Shop;
 import entity.User;
 import entity.UserShop;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
+import log.ThothLoggerConfigurator;
 import models.EmployeeView;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
-import javafx.beans.property.SimpleStringProperty;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static utils.Validation.*;
-import static utils.Alerts.*;
-
 import static controllers.MainWindowController.sessionFactory;
+import static utils.Alerts.showNotBoolean;
+import static utils.Validation.isBolean;
 
+/**
+ * Kontroler okna administratora wyświetlającego dane o użytkownikach
+ */
 public class EmployeeViewController implements Initializable {
+    private static final Logger logger = Logger.getLogger(EmployeeViewController.class);
     @FXML
     public TableView<EmployeeView> employeeTable;
     @FXML
@@ -50,8 +55,15 @@ public class EmployeeViewController implements Initializable {
     public Button btnSearch;
 
 
+    /**
+     * Metoda inicjalizuje dane w tabeli
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         USERID.setCellValueFactory(userData -> new SimpleIntegerProperty(userData.getValue().getUser().getUserId()).asObject());
         FIRSTNAME.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getFirstName()));
         LASTNAME.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getLastName()));
@@ -62,24 +74,22 @@ public class EmployeeViewController implements Initializable {
         OBJECTID.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getShop().toString()));
         employeeTable.setItems(getEmployee());
         setEditableStatus();
-        System.out.println(getEmployee().toString());
+        logger.warn(getEmployee().toString());
 
 
     }
 
 
-    public List<User> getUsers(String searchValue) {
+    private List<User> getUsers(String searchValue) {
         String searchParam = "%" + searchValue + "%";
         Session session = sessionFactory.openSession();
 
-        List<User> userList = session.createQuery("from User where FirstName LIKE :searchParam OR LastName LIKE :searchParam")
+        return (List<User>) session.createQuery("from User where FirstName LIKE :searchParam OR LastName LIKE :searchParam")
                 .setParameter("searchParam", searchParam)
                 .list();
-
-        return userList;
     }
 
-    public ObservableList<EmployeeView> mapUsersToEmployeeView(List<User> userList) {
+    private ObservableList<EmployeeView> mapUsersToEmployeeView(List<User> userList) {
         ObservableList<EmployeeView> employeeViewList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         for (User us : userList) {
@@ -99,10 +109,13 @@ public class EmployeeViewController implements Initializable {
         return employeeViewList;
     }
 
-    public ObservableList<EmployeeView> getEmployee() {
+    private ObservableList<EmployeeView> getEmployee() {
         return mapUsersToEmployeeView(getUsers(""));
     }
 
+    /**
+     * Metoda zastępuje dane w tabeli danymi które pasują do wzoru z pola wyszukiwania.
+     */
     public void searchButtonHandler() {
         ObservableList<EmployeeView> userSearchList = FXCollections.observableArrayList();
 
@@ -110,6 +123,9 @@ public class EmployeeViewController implements Initializable {
         employeeTable.setItems(mapUsersToEmployeeView(getUsers(tfSearch.getText())));
     }
 
+    /**
+     * Metoda odświeża widok w tabeli wyświetlającej użytkowników
+     */
     public void reloadTableView() {
         employeeTable.getItems().clear();
         employeeTable.getItems().addAll(getEmployee());
@@ -120,13 +136,13 @@ public class EmployeeViewController implements Initializable {
 
         STATE.setOnEditCommit(e -> {
             if (!isBolean(e.getNewValue())) {
-                System.out.println("Nowa wartość: "+e.getNewValue());
+                logger.warn("Nowa wartość: " + e.getNewValue());
                 showNotBoolean("Wpriwadź 1 jeżeli użytkownik aktywny lub 0 by dezaktyowować konto użytkownika.");
                 employeeTable.refresh();
                 return;
             }
             e.getTableView().getItems().get(e.getTablePosition().getRow()).getUser().setState(Integer.parseInt(e.getNewValue()));
-            System.out.println((e.getTableView().getSelectionModel().getSelectedItem().getUser().toString()));
+            logger.warn((e.getTableView().getSelectionModel().getSelectedItem().getUser().toString()));
 
             Session session = sessionFactory.openSession();
 
@@ -142,7 +158,7 @@ public class EmployeeViewController implements Initializable {
                 alert.setContentText("Dane użytkownika zostaly zaktualizowane");
                 alert.showAndWait();
             } catch (Exception exc) {
-                System.out.println(exc);
+                logger.warn(exc);
                 session.getTransaction().rollback();
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);

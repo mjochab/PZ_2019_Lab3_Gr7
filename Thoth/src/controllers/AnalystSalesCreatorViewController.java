@@ -37,8 +37,14 @@ public class AnalystSalesCreatorViewController implements Initializable {
     @FXML
     public TextField searchTF, DISCOUNT_TF;
     private String nazwaProduktu = null;
-    private ObservableList<Product> lista = FXCollections.observableArrayList();
+    private final ObservableList<Product> lista = FXCollections.observableArrayList();
 
+    /**
+     * Metoda inicjalizuje dane w tabeli wyświetlającej produkty oraz tabeli do której dodajemy produkty dla których wartość zniżka ma zostać zmieniona.
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         PRODUCTID.setCellValueFactory(new PropertyValueFactory<>("productId"));
@@ -81,7 +87,8 @@ public class AnalystSalesCreatorViewController implements Initializable {
     }
 
     /**
-     * Metoda zwraca listę produktów. Jeżeli pole wyszukiwania nie jest puste, zwraca liste produktów których nazwa zawiera ciąg znaków zawarty w polu wyszukiwania.
+     * Metoda zwraca listę produktów. Jeżeli pole wyszukiwania nie jest puste,
+     * zwraca liste produktów których nazwa zawiera ciąg znaków zawarty w polu wyszukiwania.
      *
      * @return Zwraca ObservableList<Product>
      * @see Product
@@ -137,7 +144,7 @@ public class AnalystSalesCreatorViewController implements Initializable {
     }
 
     /**
-     * Metoda wysyła update do bazy danych dla produktów przechowywanych w zmiennej lista.
+     * Metoda aktualizuje dane w bazie danych na podstawie obiektów przechowywanych w zmiennej lista tego kontrollera.
      */
     public void changeDiscount() {
         if (!lista.isEmpty()) {
@@ -156,5 +163,10 @@ public class AnalystSalesCreatorViewController implements Initializable {
         System.out.println("remove all products from lista:" + lista);
         discountTable.refresh();
         productsTable.refresh();
+    }
+
+    public void refreshProductTable(){
+        productsTable.getItems().clear();
+        productsTable.setItems(getProducts());
     }
 }
