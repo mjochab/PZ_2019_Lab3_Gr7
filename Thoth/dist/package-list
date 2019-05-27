@@ -1,5 +1,6 @@
 controllers
 entity
+log
 models
 thoth
 utils
