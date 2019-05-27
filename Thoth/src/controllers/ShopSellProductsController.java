@@ -117,11 +117,11 @@ public class ShopSellProductsController implements Initializable {
         Session session = sessionFactory.openSession();
         List<State_on_shop> eList;
         if (productName == null || productName.equals("")) {
-            eList = session.createQuery("FROM State_on_shop s WHERE s.amount > 0 AND s.shopId.shopId = :idsklepu")
+            eList = session.createQuery("FROM State_on_shop s WHERE s.amount - locked > 0 AND s.shopId.shopId = :idsklepu")
                     .setParameter("idsklepu", sessionContext.getCurrentLoggedShop().getShopId())
                     .list();
         } else {
-            eList = session.createQuery("FROM State_on_shop s WHERE s.amount > 0 AND s.shopId.shopId = :idsklepu AND s.productId.name like :produkt")
+            eList = session.createQuery("FROM State_on_shop s WHERE s.amount - locked > 0 AND s.shopId.shopId = :idsklepu AND s.productId.name like :produkt")
                     .setParameter("idsklepu", sessionContext.getCurrentLoggedShop().getShopId())
                     .setParameter("produkt", "%" + productName + "%").list();
             serachShop.setText("");
