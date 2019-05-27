@@ -180,6 +180,9 @@ public class AddEmployeeController implements Initializable {
         this.comboRoleList.getItems().addAll(getRoles());
     }
 
+    /**
+     * Metoda przeładowuje dane w ComboBox'ach
+     */
     public void reloadView() {
         setComboShopList();
         setComboRoleList();

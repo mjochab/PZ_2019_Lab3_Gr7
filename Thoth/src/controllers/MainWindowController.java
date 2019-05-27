@@ -242,7 +242,9 @@ public class MainWindowController implements Initializable {
 
     }
 
-
+    /**
+     * Ustawia ComboBox'a ze sklepami oraz podpina listener ktory odpowiada za zmiane obiektu sklepu w sesji
+     */
     public void setComboList() {
         this.comboList.getItems().addAll(getShops());
         // jezeli zostanie wybrany inny sklep w comboboxie, zostanie on ustawiony w sessionContext
