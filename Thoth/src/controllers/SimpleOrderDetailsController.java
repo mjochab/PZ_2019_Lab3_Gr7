@@ -86,6 +86,7 @@ public class SimpleOrderDetailsController implements Initializable {
 
 
     private State getOrderStatus() {
+        logger.warn("użyto metody getOrderStatus()");
         Session session = sessionFactory.openSession();
         List<State_of_indent> soi = session.createQuery("from State_of_indent where IndentId = :iid").setParameter("iid", order.getIndentId()).list();
         // wybierz pierwszy (jedyny) element z listy i zwroc jego status (obiekt State)
@@ -109,6 +110,7 @@ public class SimpleOrderDetailsController implements Initializable {
 
     @FXML
     public void goBack(ActionEvent event) {
+        logger.warn("użyto metody goBack()");
         Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent par = null;
         try {
