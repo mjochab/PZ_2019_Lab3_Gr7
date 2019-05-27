@@ -113,6 +113,7 @@ public class ShopSellProductsController implements Initializable {
 
 
     private ObservableList<State_on_shop> getProducts(String productName) {
+        logger.warn("użyto metody getProducts");
         ObservableList<State_on_shop> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<State_on_shop> eList;
