@@ -40,6 +40,14 @@ public class AdminController implements Initializable {
     private Label sessionInfo;
 
     /**
+     * Metoda odświeża widok tworzenia nowego pracownika
+     */
+    @FXML
+    public void reloadAddEmployeeView() {
+        addEmployeeController.reloadView();
+    }
+
+    /**
      * Metoda odświeża tabelę przecohwującą informacje o kontach użytkowników.
      */
     @FXML
