@@ -587,7 +587,7 @@ public class StateWarehouseController implements Initializable {
                                 .setParameter("pid", product.getProductId())
                                 .getSingleResult();
                     } catch (Exception e) {
-                        stateOnShopDestination = new State_on_shop(product,shopDestination,0);
+                        stateOnShopDestination = new State_on_shop(product, shopDestination,0);
                         session.save(stateOnShopDestination);
                     }
 
