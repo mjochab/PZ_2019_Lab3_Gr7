@@ -58,9 +58,9 @@ class ValidationTest {
     @Test
     void onlyCharsValidation() {
         String valid = "Kraków";
-        assertEquals(true, Validation.onlyCharsValidation(valid));
+        assertEquals(false, Validation.onlyCharsValidation(valid));
         String valid2 = "Gorzów wielkopolski";
-        assertEquals(true, Validation.onlyCharsValidation(valid2));
+        assertEquals(false, Validation.onlyCharsValidation(valid2));
         String invalid1 = "Gorzów wielkopolski2";
         assertEquals(false, Validation.onlyCharsValidation(invalid1));
         String invalid2 = ".Gorzów wielkopolski";

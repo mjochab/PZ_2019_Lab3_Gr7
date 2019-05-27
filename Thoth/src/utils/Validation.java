@@ -32,7 +32,7 @@ public class Validation {
     }
 
     public static Boolean streetValidation(String string) {
-        Pattern pattern = Pattern.compile("[ a-zA-Z]+ [0-9]+");
+        Pattern pattern = Pattern.compile("[ a-zA-Z0-9]+");
         return (pattern.matcher(string).matches());
     }
 
