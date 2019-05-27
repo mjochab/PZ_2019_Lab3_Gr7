@@ -138,16 +138,6 @@ public class AddEmployeeController implements Initializable {
         }
     }
 
-
-    public void addEmployee() { //dodawanie użytkownika do bazy
-        User u = new User();
-        UserShop us = new UserShop();
-        u.setFirstName(tfFirstName.getText());
-        u.setLastName(tfLastName.getText());
-        u.setPassword(tfPassword.getText());
-        //combo
-    }
-
     private ObservableList<Shop> getShops() { // wybiera listę sklepów z bazy
         ObservableList<Shop> shops = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
@@ -165,6 +155,7 @@ public class AddEmployeeController implements Initializable {
     }
 
     private void setComboShopList() {
+        this.comboShopList.getItems().clear();
         this.comboShopList.getItems().addAll(getShops());
     }
 
@@ -185,9 +176,14 @@ public class AddEmployeeController implements Initializable {
     }
 
     private void setComboRoleList() {
+        this.comboRoleList.getItems().clear();
         this.comboRoleList.getItems().addAll(getRoles());
     }
 
+    public void reloadView() {
+        setComboShopList();
+        setComboRoleList();
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         logger.addAppender(ThothLoggerConfigurator.getFileAppender());
