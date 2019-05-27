@@ -158,13 +158,6 @@ public class LogisticOrdersController implements Initializable {
             indentTableView.setOrder(soi.getIndentId());
             indentTableView.setState(soi);
 
-            /*
-            // jesli zamowienie jest podzamowieniem, nie wyswietlaj go w glownej liscie
-            if (soi.getIndentId().getParentId() != null) {
-                continue;
-            }
-            */
-
             if (soi.getIndentId().isComplex()) {
                 continue;
             }
@@ -205,6 +198,11 @@ public class LogisticOrdersController implements Initializable {
         return listOfIndents;
     }
 
+    /**
+     * Metoda obslugujaca wyswietlenie szczegolow zamowienia oczekujacego na transport
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void toShipmentDetailsAction(ActionEvent event) throws IOException {
         Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -248,7 +246,11 @@ public class LogisticOrdersController implements Initializable {
         stg.setScene(new Scene(pane));
     }
 
-
+    /**
+     * Metoda obslugujaca wyswietlenie szczegolow zamowienia w transporcie
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void inRealizationDetailsAction(ActionEvent event) throws IOException {
 
@@ -285,6 +287,11 @@ public class LogisticOrdersController implements Initializable {
         stg.setScene(new Scene(pane));
     }
 
+    /**
+     * Metoda zmienia stan zamowienia
+     * @param indentToStateChange Zamowienie ktorego stan ma zostac zmieniony
+     * @param state Nowy stan zamowienia
+     */
     private void changeOrderState(Indent indentToStateChange, String state) {
         Session session = sessionFactory.openSession();
 
@@ -309,6 +316,9 @@ public class LogisticOrdersController implements Initializable {
         }
     }
 
+    /**
+     * Metoda obslugujaca przycisk odebrania do transportu
+     */
     @FXML
     public void takeOrderHandler() {
         if (ordersReadyForShipment.getSelectionModel().getSelectedItem() == null) {
@@ -328,6 +338,9 @@ public class LogisticOrdersController implements Initializable {
         ordersInRealization.setItems(getIndentsInRealization());
     }
 
+    /**
+     * Metoda obslugujaca przycisniecie przycisku "Dostarcz"
+     */
     @FXML
     public void deliverOrderHandler() {
         if (ordersInRealization.getSelectionModel().getSelectedItem() == null) {
@@ -338,73 +351,8 @@ public class LogisticOrdersController implements Initializable {
 
         Indent indentToStateChange = indentToTake.getOrder();
 
-        /*
-            for produkt in zamowienie
-                pobirz ilosc produktu na magazynie dostarczajacym
-                pobirz ilosc produktu na magazynie docelowym
-                zmniejsz ilosc produktu na magazyne dostarczajacym
-                zmniejsz ilosc zablokowanych produktow na magazynie dostarczajacym
-                zwieksz ilosc produktu na magazynie docelowym
-
-         */
-        Session session = sessionFactory.openSession();
-        List<Indent_product> productsToDeliver = session.createQuery("from Indent_product where IndentId = :iid")
-                .setParameter("iid", indentToStateChange.getIndentId())
-                .getResultList();
-        Shop shopSource = indentToStateChange.getShopId_delivery();
-        Shop shopDestination = indentToStateChange.getShopId_need();
-
-        boolean success = true;
-
-        for (Indent_product indentProduct : productsToDeliver) {
-            Product product = indentProduct.getProductId();
-            int amountOfProduct = indentProduct.getAmount();
-
-            State_on_shop stateOnShopSource = (State_on_shop) session.createQuery("from State_on_shop where ShopId = :sid and ProductId = :pid")
-                    .setParameter("sid", shopSource.getShopId())
-                    .setParameter("pid", product.getProductId())
-                    .getSingleResult();
-
-            State_on_shop stateOnShopDestination;
-            //jeżeli produkt jeszcze nie istnieje w danym sklepie to utworz stan produktu
-            try {
-                stateOnShopDestination = (State_on_shop) session.createQuery("from State_on_shop where ShopId = :sid and ProductId = :pid")
-                        .setParameter("sid", shopDestination.getShopId())
-                        .setParameter("pid", product.getProductId())
-                        .getSingleResult();
-            } catch (Exception e) {
-                stateOnShopDestination = new State_on_shop(product,shopDestination,0);
-                session.save(stateOnShopDestination);
-            }
-
-
-            try {
-                // odejmuje z magazynu ktory dostarczyl produkt
-                stateOnShopSource.setAmount(stateOnShopSource.getAmount() - amountOfProduct);
-                stateOnShopSource.setLocked(stateOnShopSource.getLocked() - amountOfProduct);
-                session.update(stateOnShopSource);
-                // dodaje do magazynu ktory zamowil produkt
-                stateOnShopDestination.setAmount(stateOnShopDestination.getAmount() + amountOfProduct);
-                session.update(stateOnShopDestination);
-                session.beginTransaction().commit();
-                logger.warn("Pomyslnie zakonczono zmiane ilosc produktu");
-            } catch (Exception e) {
-                logger.warn("Nastapil blad, wycofuje zmiany");
-                logger.warn(e.getMessage());
-                session.getTransaction().rollback();
-                success = false;
-                break;
-            }
-        }
-
-        session.close();
-
-        if (success) {
-            changeOrderState(indentToStateChange, "Oczekuje na potwierdzenie odbioru");
-            ordersInRealization.getItems().clear();
-            ordersInRealization.setItems(getIndentsInRealization());
-        } else {
-            logger.warn("Nie udalo sie dostarczyc zamowienia");
-        }
+        changeOrderState(indentToStateChange, "Oczekuje na potwierdzenie odbioru");
+        ordersInRealization.getItems().clear();
+        ordersInRealization.setItems(getIndentsInRealization());
     }
 }

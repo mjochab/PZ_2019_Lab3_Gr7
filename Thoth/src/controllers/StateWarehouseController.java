@@ -552,6 +552,9 @@ public class StateWarehouseController implements Initializable {
         return orderList;
     }
 
+    /**
+     * Metoda zmienia stan zamowienia na Zrealizowane i zmienia stany magazynowe
+     */
     public void changeOrderStatus() {
         if (stateOrderWarehouse.getSelectionModel().getSelectedItem() != null) {
             logger.warn(stateOrderWarehouse.getSelectionModel().getSelectedItem().toString());
@@ -560,16 +563,68 @@ public class StateWarehouseController implements Initializable {
                 logger.warn(model);
                 Session session = sessionFactory.openSession();
                 session.beginTransaction();
-                State_of_indent p = stateOrderWarehouse.getSelectionModel().getSelectedItem();
-                logger.warn(p.getStateId().getName());
-                p.getStateId().setStateId(5);
-                session.update(p);
-                session.getTransaction().commit();
+
+                List<Indent_product> productsToDeliver = session.createQuery("from Indent_product where IndentId = :iid")
+                        .setParameter("iid", model.getIndentId())
+                        .getResultList();
+                Shop shopSource = model.getIndentId().getShopId_delivery();
+                Shop shopDestination = model.getIndentId().getShopId_need();
+
+                for (Indent_product indentProduct : productsToDeliver) {
+                    Product product = indentProduct.getProductId();
+                    int amountOfProduct = indentProduct.getAmount();
+
+                    State_on_shop stateOnShopSource = (State_on_shop) session.createQuery("from State_on_shop where ShopId = :sid and ProductId = :pid")
+                            .setParameter("sid", shopSource.getShopId())
+                            .setParameter("pid", product.getProductId())
+                            .getSingleResult();
+
+                    State_on_shop stateOnShopDestination;
+                    //jeżeli produkt jeszcze nie istnieje w danym sklepie to utworz stan produktu
+                    try {
+                        stateOnShopDestination = (State_on_shop) session.createQuery("from State_on_shop where ShopId = :sid and ProductId = :pid")
+                                .setParameter("sid", shopDestination.getShopId())
+                                .setParameter("pid", product.getProductId())
+                                .getSingleResult();
+                    } catch (Exception e) {
+                        stateOnShopDestination = new State_on_shop(product,shopDestination,0);
+                        session.save(stateOnShopDestination);
+                    }
+
+
+                    try {
+                        // odejmuje z magazynu ktory dostarczyl produkt
+                        stateOnShopSource.setAmount(stateOnShopSource.getAmount() - amountOfProduct);
+                        stateOnShopSource.setLocked(stateOnShopSource.getLocked() - amountOfProduct);
+                        session.update(stateOnShopSource);
+
+                        // dodaje do magazynu ktory zamowil produkt
+                        stateOnShopDestination.setAmount(stateOnShopDestination.getAmount() + amountOfProduct);
+                        session.update(stateOnShopDestination);
+
+                        // update stanu zamowienia
+                        model.getStateId().setStateId(5);
+                        session.update(model);
+
+                        session.getTransaction().commit();
+                        logger.warn("Pomyslnie zakonczono zmiane ilosc produktu");
+                    } catch (Exception e) {
+                        logger.warn("Nastapil blad, wycofuje zmiany");
+                        logger.warn(e.getMessage());
+                        session.getTransaction().rollback();
+                        break;
+                    }
+                }
+
                 session.close();
                 refreshStateOrderWarehouse();
+
+            } else if(model.getStateId().getStateId() == 5){
+                newAlertCustom("Niepowodzenie", "Zamowienie juz zostalo zrealizowane");
             } else {
                 showProductInTransport();
             }
+
 
         }
     }
