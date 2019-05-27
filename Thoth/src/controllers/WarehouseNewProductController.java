@@ -88,10 +88,16 @@ public class WarehouseNewProductController implements Initializable {
         Product productOB = new Product(NAME.getText(), big, 0);
         session.save(productOB);
         logger.warn("Dodano produkt");
-        session.close();
-        session = sessionFactory.openSession();
-        State_on_shop product = new State_on_shop(productOB, getObjectShop().get(0), Integer.parseInt(AMOUNT.getText()));
-        session.save(product);
+        List<Shop> shops = session.createQuery("from Shop ").list();
+        for (Shop shop : shops) {
+            if (shop.getShopId() == sessionContext.getCurrentLoggedShop().getShopId()) {
+                State_on_shop product = new State_on_shop(productOB, sessionContext.getCurrentLoggedShop(), Integer.parseInt(AMOUNT.getText()));
+                session.saveOrUpdate(product);
+                continue;
+            }
+            State_on_shop productOther = new State_on_shop(productOB, shop, 0);
+            session.saveOrUpdate(productOther);
+        }
         session.close();
         logger.warn("Dodano ID sklepu do produktu");
         NAME.setText("");
