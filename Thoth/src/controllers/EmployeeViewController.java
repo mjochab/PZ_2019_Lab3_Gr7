@@ -134,6 +134,7 @@ public class EmployeeViewController implements Initializable {
      * Metoda odświeża widok w tabeli wyświetlającej użytkowników
      */
     public void reloadTableView() {
+        logger.warn("użyto metody reloadTableVIew() w klasie emloyeeviewcontroller");
         employeeTable.getItems().clear();
         employeeTable.getItems().addAll(getEmployee());
     }
