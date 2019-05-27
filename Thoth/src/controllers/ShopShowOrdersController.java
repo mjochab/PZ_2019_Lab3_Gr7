@@ -177,7 +177,6 @@ public class ShopShowOrdersController implements Initializable {
      */
     @FXML
     public void setAsPickedUp() {
-        System.out.println("DUPA");
         try {
             IndentTableView orderView = ordersTable.getSelectionModel().getSelectedItem();
 
@@ -207,7 +206,6 @@ public class ShopShowOrdersController implements Initializable {
                     }
                     catch(Exception e) {
                         logger.warn("Nie udalo sie zaktualizowac danych");
-                        System.out.println("DUUUUUPAAA");
                         session.getTransaction().rollback();
                         break;
                     }
