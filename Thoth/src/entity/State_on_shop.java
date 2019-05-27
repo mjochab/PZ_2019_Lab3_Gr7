@@ -23,8 +23,31 @@ public class State_on_shop {
     @Column(name = "Amount",nullable = false)
     private int amount;
 
+    @Column(name = "Locked", columnDefinition = "int default 0")
+    private int locked;
+
     public State_on_shop(){
 
+    }
+
+    public State_on_shop(Product productId, Shop shopId, int amount) {
+        this.productId = productId;
+        this.shopId = shopId;
+        this.amount = amount;
+    }
+
+    public State_on_shop(int id,Product productId, Shop shopId, long amount) {
+        this.id = id;
+        this.productId = productId;
+        this.shopId = shopId;
+        this.amount = (int)amount;
+    }
+
+    public State_on_shop(Product productId, Shop shopId, long amount, long locked) {
+        this.productId = productId;
+        this.shopId = shopId;
+        this.amount = (int)amount;
+        this.locked = (int)locked;
     }
 
     public int getId() {
@@ -57,5 +80,24 @@ public class State_on_shop {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public int getLocked() {
+        return locked;
+    }
+
+    public void setLocked(int locked) {
+        this.locked = locked;
+    }
+
+    @Override
+    public String toString() {
+        return "State_on_shop{" +
+                "id=" + id +
+                ", productId=" + productId +
+                ", shopId=" + shopId +
+                ", amount=" + amount +
+                ", locked=" + locked +
+                '}';
     }
 }

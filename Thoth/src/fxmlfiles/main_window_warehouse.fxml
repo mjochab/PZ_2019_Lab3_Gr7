@@ -1,78 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.StateWarehouseController">
-    <children>
-        <VBox layoutX="93.0" layoutY="14.0" prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <children>
-                <MenuBar>
-                    <menus>
-                        <Menu mnemonicParsing="false" text="Menu">
-                            <items>
-                                <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#menuitemaction" text="Wyloguj" />
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Pomoc">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="About" />
-                            </items>
-                        </Menu>
-                    </menus>
-                </MenuBar>
-                <TabPane prefHeight="777.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE">
-                    <tabs>
-                        <Tab text="Stan magazynu">
-                            <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                    <children>
-                                        <fx:include source="state_warehouse.fxml" />
-                                    </children></AnchorPane>
-                            </content>
-                        </Tab>
-                        <Tab text="Dodaj nowy produkt">
-                            <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                    <children>
-                                        <fx:include source="new_product.fxml" />
-                                    </children></AnchorPane>
-                            </content>
-                        </Tab>
-                        <Tab text="Nowe zamówienie">
-                            <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                    <children>
-                                        <fx:include source="new_order_warehouse.fxml" />
-                                    </children>
-                                </AnchorPane>
-                            </content>
-                        </Tab>
-                        <Tab text="Zamówienia ze sklepu">
-                            <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                    <children>
-                                        <fx:include source="new_order_shop.fxml" />
-                                    </children>
-                                </AnchorPane>
-                            </content>
-                        </Tab>
-                        <Tab text="Status zamówienia">
-                            <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                    <children>
-                                        <fx:include source="state_order_warehouse.fxml" />
-                                    </children>
-                                </AnchorPane>
-                            </content>
-                        </Tab>
-                    </tabs>
-                </TabPane>
-            </children>
-        </VBox>
-    </children>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background"
+            stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8"
+            fx:controller="controllers.StateWarehouseController">
+    <VBox layoutX="93.0" layoutY="14.0" prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <HBox prefHeight="0.0" prefWidth="1280.0">
+            <MenuBar prefHeight="25.0" prefWidth="900.0">
+                <Menu mnemonicParsing="false" text="Menu">
+                    <MenuItem fx:id="back" mnemonicParsing="false" onAction="#menuItemAction"
+                              text="Powrót" visible="false"/>
+                    <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#menuItemAction"
+                              text="Wyloguj"/>
+                </Menu>
+            </MenuBar>
+            <Label fx:id="sessionInfo" prefHeight="42.0" prefWidth="498.0" text="gfds" textAlignment="JUSTIFY"
+                   textFill="WHITE"/>
+        </HBox>
+        <TabPane prefHeight="777.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE">
+            <Tab text="Stan aktualnego magazynu">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <fx:include source="state_warehouse.fxml"/>
+                </AnchorPane>
+            </Tab>
+            <Tab text="Nowy produkt ">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <fx:include source="new_product.fxml"/>
+                </AnchorPane>
+            </Tab>
+            <Tab text="Sprowadź z innego magazynu">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <fx:include source="new_order_warehouse.fxml"/>
+                </AnchorPane>
+            </Tab>
+            <Tab text="Zapotrzebowanie na produkty">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <fx:include source="new_order_shop.fxml"/>
+                </AnchorPane>
+            </Tab>
+            <Tab text="Moje zamówienia">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <fx:include source="state_order_warehouse.fxml"/>
+                </AnchorPane>
+            </Tab>
+            <Tab text="Zamówienia do przygotowania">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <fx:include source="state_prepare_order_warehouse.fxml"/>
+                </AnchorPane>
+            </Tab>
+        </TabPane>
+    </VBox>
 </AnchorPane>

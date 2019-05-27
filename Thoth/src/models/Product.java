@@ -10,11 +10,13 @@ public class Product {
         setPrice(price);
     }
 
+
+
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
         this.name = name;
     }
 
@@ -22,7 +24,7 @@ public class Product {
         return price;
     }
 
-    public void setPrice(Double price) {
+    private void setPrice(Double price) {
         if(price < 0)
             price *= -1;
 

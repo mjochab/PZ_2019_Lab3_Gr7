@@ -21,7 +21,7 @@ public class Product {
     @Column(name = "Discount")
     private int discount;
 
-    public Product(){
+    public Product() {
 
     }
 
@@ -30,6 +30,7 @@ public class Product {
         this.price = price;
         this.discount = discount;
     }
+
 
     public int getProductId() {
         return productId;

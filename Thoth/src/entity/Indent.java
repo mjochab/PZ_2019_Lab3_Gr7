@@ -13,11 +13,11 @@ public class Indent {
     private int indentId;
 
     @ManyToOne
-    @JoinColumn(name = "ShopId_need", referencedColumnName = "ShopId",nullable = false)
+    @JoinColumn(name = "ShopId_need", referencedColumnName = "ShopId")
     private Shop shopId_need;
 
     @ManyToOne
-    @JoinColumn(name = "ShopId_delivery", referencedColumnName = "ShopId",nullable = false)
+    @JoinColumn(name = "ShopId_delivery", referencedColumnName = "ShopId")
     private Shop shopId_delivery;
 
     @ManyToOne
@@ -35,6 +35,21 @@ public class Indent {
 
     public Indent(){
 
+    }
+
+    public Indent(Shop shopId_need, Shop shopId_delivery, Customer customerId, Date dateOfOrder, Indent parentId, Boolean isComplex) {
+        this.shopId_need = shopId_need;
+        this.shopId_delivery = shopId_delivery;
+        this.customerId = customerId;
+        this.dateOfOrder = dateOfOrder;
+        this.parentId = parentId;
+        this.isComplex = isComplex;
+    }
+
+    public Indent(Shop shopId_need, Customer customerId, Date dateOfOrder) {
+        this.shopId_need = shopId_need;
+        this.customerId = customerId;
+        this.dateOfOrder = dateOfOrder;
     }
 
     public int getIndentId() {
@@ -93,5 +108,18 @@ public class Indent {
     public void setIsComplex(Boolean isComplex)
     {
         this.isComplex = isComplex;
+    }
+
+    @Override
+    public String toString() {
+        return "Indent{" +
+                "indentId=" + indentId +
+                ", shopId_need=" + shopId_need +
+                ", shopId_delivery=" + shopId_delivery +
+                ", customerId=" + customerId +
+                ", dateOfOrder=" + dateOfOrder +
+                ", parentId=" + parentId +
+                ", isComplex=" + isComplex +
+                '}';
     }
 }

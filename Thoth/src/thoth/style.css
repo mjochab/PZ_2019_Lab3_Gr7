@@ -23,3 +23,10 @@
     -fx-font-family:  Arial;
     -fx-font-size: 14px;
 }
+
+.table-view .column-header.editable-column {
+    -fx-base: Orange;
+}
+.table-view *.editable-column { /* FX theme stylesheet */
+-fx-font-weight: Bold;
+}

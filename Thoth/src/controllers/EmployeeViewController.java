@@ -5,24 +5,31 @@ import entity.Shop;
 import entity.User;
 import entity.UserShop;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldTableCell;
+import log.ThothLoggerConfigurator;
 import models.EmployeeView;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
-import javafx.beans.property.SimpleStringProperty;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionFactory;
+import static utils.Alerts.showNotBoolean;
+import static utils.Validation.isBolean;
 
+/**
+ * Kontroler okna administratora wyświetlającego dane o użytkownikach
+ */
 public class EmployeeViewController implements Initializable {
+    private static final Logger logger = Logger.getLogger(EmployeeViewController.class);
     @FXML
     public TableView<EmployeeView> employeeTable;
     @FXML
@@ -36,49 +43,141 @@ public class EmployeeViewController implements Initializable {
     @FXML
     public TableColumn<EmployeeView, String> PASSWORD;
     @FXML
-    public TableColumn<EmployeeView, Integer> STATE;
+    public TableColumn<EmployeeView, String> STATE;
     @FXML
     public TableColumn<EmployeeView, String> ROLEID;
     @FXML
     public TableColumn<EmployeeView, String> OBJECTID;
 
+    @FXML
+    public TextField tfSearch;
+    @FXML
+    public Button btnSearch;
 
+
+    /**
+     * Metoda inicjalizuje dane w tabeli
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         USERID.setCellValueFactory(userData -> new SimpleIntegerProperty(userData.getValue().getUser().getUserId()).asObject());
         FIRSTNAME.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getFirstName()));
         LASTNAME.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getLastName()));
         LOGIN.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getLogin()));
         PASSWORD.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getPassword()));
-        STATE.setCellValueFactory(userData -> new SimpleIntegerProperty(userData.getValue().getUser().getState()).asObject());
+        STATE.setCellValueFactory(userData -> new SimpleStringProperty(String.valueOf(userData.getValue().getUser().getState())));
         ROLEID.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getRoleId().getPosition()));
-        OBJECTID.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getShop().toString()));
+        OBJECTID.setCellValueFactory(userData -> {
+            if(userData.getValue().getShop() == null) {
+                return new SimpleStringProperty("Nie przypisano");
+            }
+            else {
+                return new SimpleStringProperty(userData.getValue().getShop().toString());
+            }
+        });
         employeeTable.setItems(getEmployee());
-        System.out.println(getEmployee().toString());
+        setEditableStatus();
+        logger.warn(getEmployee().toString());
+
+
     }
 
 
-    public ObservableList<EmployeeView> getEmployee() {
-        ObservableList<EmployeeView> userList = FXCollections.observableArrayList();
+    private List<User> getUsers(String searchValue) {
+        String searchParam = "%" + searchValue + "%";
         Session session = sessionFactory.openSession();
-        List<User> usList = session.createQuery("from User").list();
-        for (User us : usList) {
+
+        return (List<User>) session.createQuery("from User where FirstName LIKE :searchParam OR LastName LIKE :searchParam")
+                .setParameter("searchParam", searchParam)
+                .list();
+    }
+
+    private ObservableList<EmployeeView> mapUsersToEmployeeView(List<User> userList) {
+        ObservableList<EmployeeView> employeeViewList = FXCollections.observableArrayList();
+        Session session = sessionFactory.openSession();
+        for (User us : userList) {
             EmployeeView ev = new EmployeeView();
             ev.setUser(us);
             List<UserShop> shops = session.createQuery("from UserShop WHERE userId = :uid").setInteger("uid", us.getUserId()).list();
             if (shops.size() > 0) {
-                System.out.println("Sa elementy!");
                 ev.setShop(shops.get(0).getShopId());
             } else {
-                System.out.println("Brak elementow!");
                 ev.setShop(new Shop());
             }
 
-            userList.add(ev);
+            employeeViewList.add(ev);
 
         }
         session.close();
-        return userList;
+        return employeeViewList;
     }
 
+    private ObservableList<EmployeeView> getEmployee() {
+        return mapUsersToEmployeeView(getUsers(""));
+    }
+
+    /**
+     * Metoda zastępuje dane w tabeli danymi które pasują do wzoru z pola wyszukiwania.
+     */
+    public void searchButtonHandler() {
+        ObservableList<EmployeeView> userSearchList = FXCollections.observableArrayList();
+
+        employeeTable.getItems().clear();
+        employeeTable.setItems(mapUsersToEmployeeView(getUsers(tfSearch.getText())));
+    }
+
+    /**
+     * Metoda odświeża widok w tabeli wyświetlającej użytkowników
+     */
+    public void reloadTableView() {
+        logger.warn("użyto metody reloadTableVIew() w klasie emloyeeviewcontroller");
+        employeeTable.getItems().clear();
+        employeeTable.getItems().addAll(getEmployee());
+    }
+
+    private void setEditableStatus() {
+        STATE.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        STATE.setOnEditCommit(e -> {
+            if (!isBolean(e.getNewValue())) {
+                logger.warn("Nowa wartość: " + e.getNewValue());
+                showNotBoolean("Wpriwadź 1 jeżeli użytkownik aktywny lub 0 by dezaktyowować konto użytkownika.");
+                employeeTable.refresh();
+                return;
+            }
+            e.getTableView().getItems().get(e.getTablePosition().getRow()).getUser().setState(Integer.parseInt(e.getNewValue()));
+            logger.warn((e.getTableView().getSelectionModel().getSelectedItem().getUser().toString()));
+
+            Session session = sessionFactory.openSession();
+
+            session.getTransaction().begin();
+            User userToUpdate = e.getTableView().getSelectionModel().getSelectedItem().getUser();
+
+            try {
+                session.update(userToUpdate);
+                session.getTransaction().commit();
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Powodzenie");
+                alert.setContentText("Dane użytkownika zostaly zaktualizowane");
+                alert.showAndWait();
+            } catch (Exception exc) {
+                logger.warn(exc);
+                session.getTransaction().rollback();
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Niepowodzenie");
+                alert.setContentText("Niepowodzenie aktualizacji danych");
+                alert.showAndWait();
+            }
+
+            session.close();
+        });
+
+        employeeTable.setEditable(true);
+    }
 }

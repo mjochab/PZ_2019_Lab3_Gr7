@@ -1,21 +1,13 @@
 package models;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class Order {
+class Order {
     private Boolean isComplex;
     private SimpleStringProperty number;
-    private ArrayList<OrderProductRecord> productList;
+    private final ArrayList<OrderProductRecord> productList;
 
     public Order()
     {

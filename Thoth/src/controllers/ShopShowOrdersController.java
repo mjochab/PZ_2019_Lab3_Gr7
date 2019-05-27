@@ -1,77 +1,233 @@
 package controllers;
 
-import entity.Customer;
-import entity.Indent;
-import entity.State_of_indent;
-import entity.State;
-import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import models.ShopOrders;
+import entity.*;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.MenuItem;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
+import models.IndentTableView;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static controllers.MainWindowController.sessionContext;
 import static controllers.MainWindowController.sessionFactory;
+import static utils.Alerts.showPrductPickedByCustomer;
+import static utils.Alerts.showProductInTransport;
 
+/**
+ * Kontroler widoku z modułu sklep wyświetlający zamówienia klientów
+ */
 public class ShopShowOrdersController implements Initializable {
+    private static final Logger logger = Logger.getLogger(ShopShowOrdersController.class);
     @FXML
-    MenuItem logout;
+    private TableView<IndentTableView> ordersTable;
     @FXML
-    private TableView ordersTable;
+    public TableColumn<IndentTableView, String> ID;
     @FXML
-    public TableColumn checkbox_fld;
+    public TableColumn<IndentTableView, String> STATUS;
     @FXML
-    public TableColumn id_order;
+    public TableColumn<IndentTableView, String> DATE;
     @FXML
-    public TableColumn status;
+    public TableColumn<IndentTableView, String> FIRST_NAME;
     @FXML
-    public TableColumn date;
+    public TableColumn<IndentTableView, String> LAST_NAME;
     @FXML
-    public TableColumn customer_name;
-    @FXML
-    public TableColumn customer_surname;
-    @FXML
-    public TableColumn phone_number;
-    @FXML
-    Parent root;
-
+    public TableColumn<IndentTableView, String> PHONE_NUMBER;
     Stage stage;
+
+    public TextField searchTF;
+    public Button SEARCH, SHOWORDER, DELETE;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        checkbox_fld.setCellValueFactory(new PropertyValueFactory<>("checkbox_fld"));
-        id_order.setCellValueFactory(new PropertyValueFactory<>("id_order"));
-        status.setCellValueFactory(new PropertyValueFactory<>("status"));
-        date.setCellValueFactory(new PropertyValueFactory<>("date"));
-        customer_name.setCellValueFactory(new PropertyValueFactory<>("customer_name"));
-        customer_surname.setCellValueFactory(new PropertyValueFactory<>("customer_surname"));
-        phone_number.setCellValueFactory(new PropertyValueFactory<>("phone_number"));
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
+        ID.setCellValueFactory(orderData ->
+                new SimpleStringProperty(String.valueOf(orderData.getValue().getOrder().getIndentId())));
+        STATUS.setCellValueFactory(orderData ->
+                new SimpleStringProperty(orderData.getValue().getState().getStateId().getName()));
+        DATE.setCellValueFactory(orderData ->
+                new SimpleStringProperty(String.valueOf(orderData.getValue().getOrder().getDateOfOrder())));
+        FIRST_NAME.setCellValueFactory(orderData ->
+                new SimpleStringProperty(orderData.getValue().getOrder().getCustomerId().getFirstName()));
+        LAST_NAME.setCellValueFactory(orderData ->
+                new SimpleStringProperty(orderData.getValue().getOrder().getCustomerId().getLastName()));
+        PHONE_NUMBER.setCellValueFactory(orderData ->
+                new SimpleStringProperty(String.valueOf(orderData.getValue().getOrder().getCustomerId().getPhoneNumber())));
         ordersTable.setItems(getOrders());
+        logger.warn(getOrders());
     }
 
 
-    public ObservableList<ShopOrders> getOrders() {
-        ObservableList<ShopOrders> enseignantList = FXCollections.observableArrayList();
+    private ObservableList<IndentTableView> getOrders() {
+        ObservableList<IndentTableView> enseignantList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
-        List<ShopOrders> eList = session.createQuery("select new models.ShopOrders(ind.indentId, st.name, ind.dateOfOrder, cus.firstName, cus.lastName, cus.phoneNumber) from Indent ind, State_of_indent soi, State st, Customer cus " +
-                "where st.stateId = soi.stateId AND soi.indentId = ind.indentId AND cus.customerId = ind.customerId").list();
-        System.out.println(eList.toString());
-        for (ShopOrders ent : eList) {
-            enseignantList.add(ent);
-            System.out.println(ent.getCustomer_name() + ent.getId_order() + ent.getStatus());
+        List<State_on_shop> sos = session.createQuery("from State_on_shop where shopId = :shopId").setParameter("shopId", sessionContext.getCurrentLoggedShop()).list();
+        List<Indent> indents;
+        if (searchTF.getText().isEmpty()) {
+            indents = session.createQuery("from Indent i where i.customerId is not null and i.shopId_need = :curentShop")
+                    .setParameter("curentShop", sessionContext.getCurrentLoggedShop()).list();
+        } else {
+            indents = session.createQuery("from Indent i where i.customerId is not null AND i.customerId.phoneNumber like :searchPhoneNumber AND i.shopId_need = :curentShop")
+                    .setParameter("curentShop", sessionContext.getCurrentLoggedShop())
+                    .setParameter("searchPhoneNumber", Integer.valueOf(searchTF.getText())).list();
+        }
+        for (Indent ind : indents) {
+            List<Indent_product> ip = session.createQuery("from Indent_product where indentId = :ip").setParameter("ip", ind).list();
+            boolean isIndentComplete = false;
+            for (Indent_product indent_product : ip) {
+                boolean isProductAvilable = false;
+                for (State_on_shop state_on_shop : sos) {
+                    if (indent_product.getProductId() == state_on_shop.getProductId() && indent_product.getAmount() <= (state_on_shop.getAmount() - state_on_shop.getLocked())) {
+                        isProductAvilable = true;
+                        isIndentComplete = true;
+                    }
+                }
+                if (!isProductAvilable) {
+                    break;
+                }
+            }
+            if (!isIndentComplete) {
+                break;
+            }
+            try {
+                State_of_indent soi = (State_of_indent) session.createQuery("from State_of_indent where indentId = :soi AND stateId.stateId = :stateid").setParameter("soi", ind).setParameter("stateid", 64).getSingleResult();
+                State state = (State) session.createQuery("from State where stateId = :stateid").setParameter("stateid", 65).getSingleResult();
+                soi.setStateId(state);
+                session.update(soi);
+                session.beginTransaction().commit();
+            } catch (Exception e) {
+                logger.warn("brak zamowien do zmiany statusu");
+                logger.warn(e.getMessage());
+            }
+        }
+
+        List<State_of_indent> stateofindents = session.createQuery("from State_of_indent soi where soi.indentId.shopId_need = :shopId")
+                .setParameter("shopId", sessionContext.getCurrentLoggedShop()).list();
+        for (Indent ent : indents) {
+            IndentTableView indentTableView = new IndentTableView();
+            indentTableView.setOrder(ent);
+            for (State_of_indent soi : stateofindents) {
+                if (ent.getIndentId() == soi.getIndentId().getIndentId()) {
+                    indentTableView.setState(soi);
+                }
+            }
+            enseignantList.add(indentTableView);
         }
         session.close();
         return enseignantList;
     }
+
+    public String setStatus(IndentTableView is) {
+        if (is.getState() == null) {
+            return "Oczekuje na potwierdzenie";
+        } else {
+            return is.getState().getStateId().getName();
+        }
+    }
+
+    public void search() {
+        ordersTable.setItems(getOrders());
+        searchTF.setText("");
+    }
+
+
+    @FXML
+    public void inRealizationDetailsAction(ActionEvent event) throws IOException {
+
+        Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        IndentTableView orderView = ordersTable.getSelectionModel().getSelectedItem();
+
+        if (orderView == null) {
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfiles/shop_order_details.fxml"));
+
+
+        Parent pane = loader.load();
+
+        // wstrzykniecie wybranego obiektu do widoku szczegolowego
+        ShopOrderDetailsController controller = loader.getController();
+        controller.setOrder(orderView.getOrder());
+        controller.initController();
+
+        stg.setScene(new Scene(pane));
+    }
+
+    /**
+     * Metoda aktualizująca status zamowienia klienta w bazie danych.
+     */
+    @FXML
+    public void setAsPickedUp() {
+        try {
+            IndentTableView orderView = ordersTable.getSelectionModel().getSelectedItem();
+
+            if (orderView.getState().getStateId().getStateId() == 65) {
+                Session session = sessionFactory.openSession();
+                session.beginTransaction();
+                State state = (State) session.createQuery("from State where stateId = 66").getSingleResult();
+                orderView.getState().setStateId(state);
+                session.saveOrUpdate(orderView.getState());
+
+                List<Indent_product> indent_product_list = session.createQuery("from Indent_product where IndentId = :indent ")
+                        .setParameter("indent", orderView.getOrder().getIndentId()).list();
+
+                for(Indent_product indent_product : indent_product_list ){
+                    Indent indent = indent_product.getIndentId();
+                    State_on_shop state_on_shop = (State_on_shop) session.createQuery("from State_on_shop where ProductId = :pid and ShopId = :sid")
+                                                                         .setParameter("pid", indent_product.getProductId().getProductId() )
+                                                                         .setParameter("sid", sessionContext.getCurrentLoggedShop().getShopId()).getSingleResult();
+
+                    try {
+                        System.out.println(state_on_shop.getAmount());
+                        state_on_shop.setAmount(state_on_shop.getAmount() - indent_product.getAmount());
+                        System.out.println(state_on_shop.getAmount());
+                        session.saveOrUpdate(state_on_shop);
+                        logger.info("Zaktualizowano stan na magazynie");
+                        System.out.println("Sukces");
+                    }
+                    catch(Exception e) {
+                        logger.warn("Nie udalo sie zaktualizowac danych");
+                        session.getTransaction().rollback();
+                        break;
+                    }
+                }
+                session.getTransaction().commit();
+                session.close();
+                showPrductPickedByCustomer();
+            } else {
+                showProductInTransport();
+            }
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
+    }
+
+    /**
+     * Metoda odświeża tabelę z zamówieniami oraz aktualizuje statusy
+     */
+    public void refreshAndChangeStatus() {
+        ordersTable.getItems().clear();
+        ordersTable.setItems(getOrders());
+    }
+
+
 }

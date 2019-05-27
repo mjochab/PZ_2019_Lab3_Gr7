@@ -27,6 +27,13 @@ public class Shop {
 
     }
 
+    public Shop(String zipCode, String city, String street, Boolean idShop) {
+        this.zipCode = zipCode;
+        this.city = city;
+        this.street = street;
+        this.idShop = idShop;
+    }
+
     public int getShopId() {
         return shopId;
     }
@@ -35,7 +42,7 @@ public class Shop {
         this.shopId = shopId;
     }
 
-    public String getZipCode() {
+    private String getZipCode() {
         return zipCode;
     }
 
@@ -51,7 +58,7 @@ public class Shop {
         this.city = city;
     }
 
-    public String getStreet() {
+    private String getStreet() {
         return street;
     }
 

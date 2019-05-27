@@ -1,15 +1,14 @@
 package models;
 
 import entity.Indent;
-import entity.Indent_product;
-import entity.Shop;
 import entity.State_of_indent;
 
 public class IndentTableView {
     private Indent order;
     private State_of_indent state;
 
-    public IndentTableView() {}
+    public IndentTableView() {
+    }
 
     public Indent getOrder() {
         return order;
