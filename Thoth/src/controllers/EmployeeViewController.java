@@ -71,7 +71,14 @@ public class EmployeeViewController implements Initializable {
         PASSWORD.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getPassword()));
         STATE.setCellValueFactory(userData -> new SimpleStringProperty(String.valueOf(userData.getValue().getUser().getState())));
         ROLEID.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getUser().getRoleId().getPosition()));
-        OBJECTID.setCellValueFactory(userData -> new SimpleStringProperty(userData.getValue().getShop().toString()));
+        OBJECTID.setCellValueFactory(userData -> {
+            if(userData.getValue().getShop() == null) {
+                return new SimpleStringProperty("Nie przypisano");
+            }
+            else {
+                return new SimpleStringProperty(userData.getValue().getShop().toString());
+            }
+        });
         employeeTable.setItems(getEmployee());
         setEditableStatus();
         logger.warn(getEmployee().toString());

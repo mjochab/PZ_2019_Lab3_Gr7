@@ -62,22 +62,45 @@ public class AddEmployeeController implements Initializable {
             return;
         }
 
+        Shop shopToSet = null;
 
-        if (tfFirstName.getText() == ""
-                || tfLastName.getText() == ""
-                || tfLogin.getText() == ""
-                || tfPassword.getText() == ""
-                || comboRoleList.getSelectionModel().getSelectedItem() == null
-                || comboShopList.getSelectionModel().getSelectedItem() == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Niepowodzenie");
-            logger.warn("Niepowodzenie");
-            alert.setContentText("Nie wybrano wszystkich danych!");
-            logger.warn("Nie wybrano wszystkich danych");
-            alert.showAndWait();
+        if(comboShopList.isDisabled()) {
+            if (tfFirstName.getText() == ""
+                    || tfLastName.getText() == ""
+                    || tfLogin.getText() == ""
+                    || tfPassword.getText() == ""
+                    || comboRoleList.getSelectionModel().getSelectedItem() == null) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Niepowodzenie");
+                logger.warn("Niepowodzenie");
+                alert.setContentText("Nie wybrano wszystkich danych!");
+                logger.warn("Nie wybrano wszystkich danych");
+                alert.showAndWait();
 
-            return;
+                return;
+            }
         }
+        else {
+            if (tfFirstName.getText() == ""
+                    || tfLastName.getText() == ""
+                    || tfLogin.getText() == ""
+                    || tfPassword.getText() == ""
+                    || comboRoleList.getSelectionModel().getSelectedItem() == null
+                    || comboShopList.getSelectionModel().getSelectedItem() == null) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Niepowodzenie");
+                logger.warn("Niepowodzenie");
+                alert.setContentText("Nie wybrano wszystkich danych!");
+                logger.warn("Nie wybrano wszystkich danych");
+                alert.showAndWait();
+
+                return;
+            }
+
+            shopToSet = comboShopList.getSelectionModel().getSelectedItem();
+        }
+
+
         // ustawiam pracownika
         u.setFirstName(tfFirstName.getText());
         u.setLastName(tfLastName.getText());
@@ -88,7 +111,7 @@ public class AddEmployeeController implements Initializable {
 
         //ustawiam relacje pracownik-obiekt
         // ustawiam Shop
-        us.setShopId(comboShopList.getSelectionModel().getSelectedItem());
+        us.setShopId(shopToSet);
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -178,6 +201,19 @@ public class AddEmployeeController implements Initializable {
     private void setComboRoleList() {
         this.comboRoleList.getItems().clear();
         this.comboRoleList.getItems().addAll(getRoles());
+
+        this.comboRoleList.valueProperty().addListener((observable, oldValue, newValue) -> {
+            logger.warn("Poprzednia wartosc: " + oldValue);
+            logger.warn("Nowa wartosc: " + newValue);
+
+            if(newValue.getPosition().equals("Admin") ||
+               newValue.getPosition().equals("Analityk")) {
+                this.comboShopList.setDisable(true);
+            }
+            else {
+                this.comboShopList.setDisable(false);
+            }
+        });
     }
 
     /**
