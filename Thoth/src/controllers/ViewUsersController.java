@@ -8,24 +8,28 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ViewUsersController implements Initializable {
+class ViewUsersController implements Initializable {
+    private static final Logger logger = Logger.getLogger(ViewUsersController.class);
     @FXML
+    private
     MenuItem logout;
     @FXML
     MenuItem back;
     @FXML
+    private
     Parent root;
-    Stage stage;
 
     public void logout(ActionEvent actionEvent) throws IOException {
         if (actionEvent.getSource() == logout) {
-            stage = (Stage) root.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("../fxmlfiles/MainWindow.fxml"));
+            Stage stage = (Stage) root.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/fxmlfiles/MainWindow.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -36,6 +40,7 @@ public class ViewUsersController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
     }
 
 }

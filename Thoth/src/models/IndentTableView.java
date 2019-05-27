@@ -1,8 +1,6 @@
 package models;
 
 import entity.Indent;
-import entity.Indent_product;
-import entity.Shop;
 import entity.State_of_indent;
 
 public class IndentTableView {

@@ -1,6 +1,6 @@
 package models;
 
-public class StateOrderModel {
+class StateOrderModel {
 
     private String city;
     private String state;

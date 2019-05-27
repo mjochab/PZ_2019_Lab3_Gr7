@@ -1,70 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-
-<AnchorPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background" stylesheets="@../thoth/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ShopViewController">
-    <children>
-        <VBox layoutX="93.0" layoutY="14.0" prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <children>
-            <HBox prefHeight="0.0" prefWidth="1280.0">
-               <children>
-                      <MenuBar prefHeight="25.0" prefWidth="900.0">
-                          <menus>
-                              <Menu mnemonicParsing="false" text="Menu">
-                                  <items>
-                                      <MenuItem fx:id="back" mnemonicParsing="false" onAction="#menuItemAction" text="Powrót" visible="false" />
-                                      <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#menuItemAction" text="Wyloguj" />
-                                  </items>
-                              </Menu>
-                          </menus>
-                      </MenuBar>
-                  <Label fx:id="sessionInfo" prefHeight="42.0" prefWidth="498.0" text="gfds" textAlignment="JUSTIFY" textFill="WHITE" />
-               </children>
-            </HBox>
-                <TabPane prefHeight="777.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE">
-                    <tabs>
-                        <Tab text="Sprzedaż produktów">
-                            <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="1280.0">
-                           <children>
-                              <fx:include source="shop_sell_products.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                           </children>
-                        </AnchorPane>
-                            </content>
-                        </Tab>
-                        <Tab text="Zgłoś zapotrzebowanie">
-                            <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <fx:include source="shop_order_items_for_customers.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                           </children>
-                        </AnchorPane>
-                            </content>
-                        </Tab>
-                  <Tab text="Zamówienia klientów">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <fx:include source="shop_show_orders.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                           </children>
-                        </AnchorPane>
-                    </content>
-                  </Tab>
-                    </tabs>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-                </TabPane>
-            </children>
-        </VBox>
-    </children>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="800.0"
+            prefWidth="1280.0" styleClass="background" stylesheets="@../thoth/style.css"
+            xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="controllers.ShopViewController">
+    <VBox layoutX="93.0" layoutY="14.0" prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <HBox prefHeight="0.0" prefWidth="1280.0">
+            <MenuBar prefHeight="25.0" prefWidth="900.0">
+                <Menu mnemonicParsing="false" text="Menu">
+                    <MenuItem fx:id="back" mnemonicParsing="false" onAction="#menuItemAction"
+                              text="Powrót" visible="false"/>
+                    <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#menuItemAction"
+                              text="Wyloguj"/>
+                </Menu>
+            </MenuBar>
+            <Label fx:id="sessionInfo" prefHeight="42.0" prefWidth="498.0" text="gfds" textAlignment="JUSTIFY"
+                   textFill="WHITE"/>
+        </HBox>
+        <TabPane prefHeight="777.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE">
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+            <Tab text="Sprzedaż produktów">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="1280.0">
+                    <fx:include source="shop_sell_products.fxml" AnchorPane.bottomAnchor="0.0"
+                                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                AnchorPane.topAnchor="0.0"/>
+                </AnchorPane>
+            </Tab>
+            <Tab text="Zgłoś zapotrzebowanie">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <fx:include source="shop_order_items_for_customers.fxml"
+                                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                </AnchorPane>
+            </Tab>
+            <Tab text="Zamówienia klientów">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <fx:include source="shop_show_orders.fxml" AnchorPane.bottomAnchor="0.0"
+                                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                AnchorPane.topAnchor="0.0"/>
+                </AnchorPane>
+            </Tab>
+        </TabPane>
+    </VBox>
 </AnchorPane>

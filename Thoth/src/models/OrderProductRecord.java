@@ -1,6 +1,6 @@
 package models;
 
-public class OrderProductRecord {
+class OrderProductRecord {
     private Product product;
     private Integer count;
     private Double totalPrice;
@@ -16,7 +16,7 @@ public class OrderProductRecord {
         return product;
     }
 
-    public void setProduct(Product product) {
+    private void setProduct(Product product) {
         this.product = product;
     }
 
@@ -24,7 +24,7 @@ public class OrderProductRecord {
         return count;
     }
 
-    public void setCount(Integer count) {
+    private void setCount(Integer count) {
         if(count < 0)
             count *= -1;
 
@@ -35,12 +35,12 @@ public class OrderProductRecord {
         return totalPrice;
     }
 
-    public void calculateTotalPrice()
+    private void calculateTotalPrice()
     {
         if(this.product != null)
             this.totalPrice = this.product.getPrice() * this.count;
         else
-            this.totalPrice = new Double(0);
+            this.totalPrice = (double) 0;
     }
 
 

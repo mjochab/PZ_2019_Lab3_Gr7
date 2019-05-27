@@ -12,18 +12,24 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionFactory;
 
+/**
+ * Kontroler widoku zamówienia składającego się z kilku zamówień
+ */
 public class ComplexOrderDetailsController implements Initializable {
+    private static final Logger logger = Logger.getLogger(ComplexOrderDetailsController.class);
     @FXML
     private Button backButton;
     @FXML
@@ -34,6 +40,7 @@ public class ComplexOrderDetailsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
     }
 
 
@@ -45,10 +52,15 @@ public class ComplexOrderDetailsController implements Initializable {
         this.loader = loader;
     }
 
+    /**
+     * Metoda inicjalizująca dane potrzebne do wyświetlenia okna zamówienia które składa się z kilu zamówień
+     *
+     * @throws IOException występuje przy próbie odczytu/zapisu pliku.
+     */
     public void initController() throws IOException {
         indentsAccordion.getPanes().clear();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/suborder_details.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfiles/suborder_details.fxml"));
 
         Session session = sessionFactory.openSession();
 
@@ -67,19 +79,22 @@ public class ComplexOrderDetailsController implements Initializable {
     }
 
 
-    public TitledPane createSubOrderPane(Indent order) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmlfiles/suborder_details.fxml"));
+    private TitledPane createSubOrderPane(Indent order) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfiles/suborder_details.fxml"));
         Parent parent = loader.load();
         SimpleOrderDetailsController controller = loader.getController();
         controller.setOrder(order);
         controller.initSubOrderController();
 
-        TitledPane subOrderPane = new TitledPane("Zamowienie nr: " + String.valueOf(order.getIndentId()), parent);
-
-        return subOrderPane;
+        return new TitledPane("Zamowienie nr: " + order.getIndentId(), parent);
     }
 
 
+    /**
+     * Metoda pozwalająca na powrót do poprzedniego okna.
+     *
+     * @param event pozwala sprawdzić z jakiego widoku została wywołana metoda
+     */
     @FXML
     public void goBack(ActionEvent event) {
         Stage stg = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -91,6 +106,6 @@ public class ComplexOrderDetailsController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        stg.setScene(new Scene(par));
+        stg.setScene(new Scene(Objects.requireNonNull(par)));
     }
 }

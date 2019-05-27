@@ -1,7 +1,5 @@
 package models;
 
-import entity.Product;
-import entity.Shop;
 import entity.State_on_shop;
 
 public class StateOnShop {

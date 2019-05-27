@@ -1,6 +1,6 @@
 package models;
 
-public class Shop {
+class Shop {
 
     private int shopId;
     private String zipCode;

@@ -9,23 +9,27 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.event.ActionEvent;
+import log.ThothLoggerConfigurator;
 import models.ObservablePriceModel;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static controllers.MainWindowController.*;
+import static controllers.MainWindowController.sessionContext;
+import static controllers.MainWindowController.sessionFactory;
 import static utils.Alerts.newAlertCustom;
 import static utils.Alerts.showSuccesAllert;
 
 
+/**
+ * Kontroler dodawania noweho produktu z oknie magazynu
+ */
 public class WarehouseNewProductController implements Initializable {
-
+    private static final Logger logger = Logger.getLogger(WarehouseNewProductController.class);
     @FXML
     public TextField NAME;
     @FXML
@@ -35,76 +39,74 @@ public class WarehouseNewProductController implements Initializable {
     @FXML
     public Button addInsert;
 
-    String[] tab = {"SELECT new models.ObservablePriceModel(p.productId ) FROM Product p WHERE p.name like "};
+    private final String[] tab = {"SELECT new models.ObservablePriceModel(p.productId ) FROM Product p WHERE p.name like "};
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
     }
 
-    public void addInsert(ActionEvent event) throws IOException {
-        if (isNumeric(AMOUNT.getText()) && isBigDeciaml(PRICE.getText())) { //wprowadzono liczby
-            if (getNameProduct(tab[0]).size() == 0) { //brak takiego produktu, dodać do bazy
-                System.out.println("można dodać do bazy");
-                insertToDataBase();
-                NAME.setText("");
-                PRICE.setText("");
-                AMOUNT.setText("");
-                showSuccesAllert();
-            } else { //produkt jest już w bazie
-                System.out.println("Jest w bazie " + getNameProduct(tab[0]).get(0).getProductId());
-                newAlertCustom("Niepowodzenie", "Produkt jest już w bazie");
-            }
-        } else {
-            newAlertCustom("Niepowodzenie", "Wprowadzono złe dane");
-            System.out.println("Wprowadź poprawne dane");
+    /**
+     * Metoda sprawdza czy łańcóch znaków zawiera liczby.
+     *
+     * @param str łańcuch znaków dla którego sprawdzamy warunek
+     * @return true jezeli parsowanie do typu int jest możliwe false w przeciwnym wypadku
+     */
+    public static boolean isNumeric(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
 
-    public ObservableList<ObservablePriceModel> getNameProduct(String qry) {
+    private ObservableList<ObservablePriceModel> getNameProduct(String qry) {
         ObservableList<ObservablePriceModel> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<ObservablePriceModel> eList = session.createQuery(qry + ":nameDevice "
         ).setParameter("nameDevice", NAME.getText()).list();
-        System.out.println("getNameProduct " + eList);
-        for (ObservablePriceModel ent : eList) {
-            productList.add(ent);
-        }
+        logger.warn("getNameProduct " + eList);
+        productList.addAll(eList);
         session.close();
         return productList;
     }
 
-    public ObservableList<Shop> getObjectShop() {
+    private ObservableList<Shop> getObjectShop() {
         ObservableList<Shop> productList = FXCollections.observableArrayList();
         Session session = sessionFactory.openSession();
         List<Shop> eList = session.createQuery("from Shop where shopId = :pid").setParameter("pid", sessionContext.getCurrentLoggedShop().getShopId()).list();
-        System.out.println("getObjectShop " + eList);
-        for (Shop ent : eList) {
-            productList.add(ent);
-        }
+        logger.warn("getObjectShop " + eList);
+        productList.addAll(eList);
         session.close();
         return productList;
     }
 
-    public void insertToDataBase() {
+    private void insertToDataBase() {
         Session session = sessionFactory.openSession();
         BigDecimal big = new BigDecimal(PRICE.getText());
         Product productOB = new Product(NAME.getText(), big, 0);
         session.save(productOB);
-        System.out.println("Dodano produkt");
+        logger.warn("Dodano produkt");
+        List<Shop> shops = session.createQuery("from Shop ").list();
+        for (Shop shop : shops) {
+            if (shop.getShopId() == sessionContext.getCurrentLoggedShop().getShopId()) {
+                State_on_shop product = new State_on_shop(productOB, sessionContext.getCurrentLoggedShop(), Integer.parseInt(AMOUNT.getText()));
+                session.saveOrUpdate(product);
+                continue;
+            }
+            State_on_shop productOther = new State_on_shop(productOB, shop, 0);
+            session.saveOrUpdate(productOther);
+        }
         session.close();
-        session = sessionFactory.openSession();
-        State_on_shop product = new State_on_shop(productOB, getObjectShop().get(0), Integer.parseInt(AMOUNT.getText()));
-        session.save(product);
-        session.close();
-        System.out.println("Dodano ID sklepu do produktu");
+        logger.warn("Dodano ID sklepu do produktu");
         NAME.setText("");
         PRICE.setText("");
         AMOUNT.setText("");
     }
 
-    public boolean isBigDeciaml(String str) {
-        try{
+    private boolean isBigDeciaml(String str) {
+        try {
             BigDecimal big = new BigDecimal(str);
             return true;
         } catch (NumberFormatException e) {
@@ -112,13 +114,25 @@ public class WarehouseNewProductController implements Initializable {
         }
     }
 
-    // brak isDigit/isNumeric
-    public static boolean isNumeric(String str) {
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+    /**
+     * Metoda sprawdza wpisane dane oraz dodaje rekord do bazy danych.
+     */
+    public void addInsert() {
+        if (isNumeric(AMOUNT.getText()) && isBigDeciaml(PRICE.getText())) { //wprowadzono liczby
+            if (getNameProduct(tab[0]).size() == 0) { //brak takiego produktu, dodać do bazy
+                logger.warn("można dodać do bazy");
+                insertToDataBase();
+                NAME.setText("");
+                PRICE.setText("");
+                AMOUNT.setText("");
+                showSuccesAllert();
+            } else { //produkt jest już w bazie
+                logger.warn("Jest w bazie " + getNameProduct(tab[0]).get(0).getProductId());
+                newAlertCustom("Niepowodzenie", "Produkt jest już w bazie");
+            }
+        } else {
+            newAlertCustom("Niepowodzenie", "Wprowadzono złe dane");
+            logger.warn("Wprowadź poprawne dane");
         }
     }
 }

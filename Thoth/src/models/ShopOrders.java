@@ -1,16 +1,15 @@
 package models;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Date;
 
-public class ShopOrders {
+class ShopOrders {
 
-    public Integer id_order;
-    public String status;
-    public Date date;
-    public String customer_name;
-    public String customer_surname;
-    public Integer phone_number;
+    private Integer id_order;
+    private String status;
+    private Date date;
+    private String customer_name;
+    private String customer_surname;
+    private Integer phone_number;
 
     public ShopOrders(Integer id_order, String status, Date date, String customer_name, String customer_surname, Integer phone_number) {
         this.id_order = id_order;

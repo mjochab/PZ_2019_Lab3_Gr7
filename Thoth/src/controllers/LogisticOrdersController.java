@@ -16,13 +16,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import log.ThothLoggerConfigurator;
 import models.IndentTableView;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static controllers.MainWindowController.sessionContext;
@@ -32,6 +35,7 @@ import static controllers.MainWindowController.sessionFactory;
  * Kontroler glownego okna modulu logistyki
  */
 public class LogisticOrdersController implements Initializable {
+    private static final Logger logger = Logger.getLogger(ComplexOrderDetailsController.class);
     @FXML
     private TableView<IndentTableView> ordersReadyForShipment;
     @FXML
@@ -65,11 +69,12 @@ public class LogisticOrdersController implements Initializable {
     @FXML
     private TableColumn<IndentTableView, String> stateInRealization;
 
-    private ObservableList<IndentTableView> displayedOrdersReadyForShipment = FXCollections.observableArrayList();
-    private ObservableList displayedOrdersInRealization = FXCollections.observableArrayList();
+    private final ObservableList<IndentTableView> displayedOrdersReadyForShipment = FXCollections.observableArrayList();
+    private final ObservableList displayedOrdersInRealization = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.addAppender(ThothLoggerConfigurator.getFileAppender());
         // value factories dla tableview z zamowieniami oczekujacymi na transport
         fromForShipment.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getOrder().getShopId_delivery().getCity()));
         toForShipment.setCellValueFactory(indentData -> new SimpleStringProperty(indentData.getValue().getOrder().getShopId_need().getCity()));
@@ -92,40 +97,41 @@ public class LogisticOrdersController implements Initializable {
 
     /**
      * Metooda pobiera z bazy wszystkie zamowienia o okreslonym stanie
+     *
      * @param state stan zamowien
      * @return Lista obiektow {@link State_of_indent} State_of_indent
      */
-    public List<State_of_indent> getIndentsByState(String state) {
+    private List<State_of_indent> getIndentsByState(String state) {
         Session session = sessionFactory.openSession();
 
         // pobranie odpowiedniego stanu
         State stateObject = (State) session.createQuery("from State where name = :state")
-                                                     .setParameter("state", state)
-                                                     .getSingleResult();
+                .setParameter("state", state)
+                .getSingleResult();
 
-        System.out.println(stateObject == null);
+        logger.warn(stateObject == null);
 
         // pobranie zamowien o stanie pobranym wyzej
         List<State_of_indent> state_of_indents = session.createQuery("from State_of_indent where StateId = :sid")
-                .setParameter("sid", stateObject.getStateId()).list();
+                .setParameter("sid", Objects.requireNonNull(stateObject).getStateId()).list();
 
         List<State_of_indent> state_of_indents_shop_delivery = new ArrayList<>();
 
-        for(State_of_indent soi : state_of_indents) {
-            if(soi.getIndentId().getShopId_delivery().getShopId() == sessionContext.getCurrentLoggedShop().getShopId()) {
-                System.out.println("Ten sam sklep!");
+        for (State_of_indent soi : state_of_indents) {
+            if (soi.getIndentId().getShopId_delivery().getShopId() == sessionContext.getCurrentLoggedShop().getShopId()) {
+                logger.warn("Ten sam sklep!");
                 state_of_indents_shop_delivery.add(soi);
             }
         }
 
-        System.out.println(state_of_indents.size());
+        logger.warn(state_of_indents.size());
 
         for (State_of_indent soi : state_of_indents_shop_delivery) {
-            System.out.println("parent id = " + soi.getIndentId().getIndentId());
+            logger.warn("parent id = " + soi.getIndentId().getIndentId());
             List<Indent> subIndents = session.createQuery("From Indent indent where ParentId = :pid")
                     .setParameter("pid", soi.getIndentId().getIndentId()).list();
 
-            System.out.println(subIndents.size());
+            logger.warn(subIndents.size());
 
             if (subIndents.size() > 0) {
                 soi.getIndentId().setIsComplex(true);
@@ -141,12 +147,13 @@ public class LogisticOrdersController implements Initializable {
 
     /**
      * Metoda zwraca {@link ObservableList} reprezentujaca zamowienia o stanie "Oczekuje na transport"
+     *
      * @return Lista obserwowalna obiektow {@link IndentTableView}
      */
-    public ObservableList<IndentTableView> getIndentsReadyForShipment() {
+    private ObservableList<IndentTableView> getIndentsReadyForShipment() {
         ObservableList<IndentTableView> listOfIndents = FXCollections.observableArrayList();
 
-        for(State_of_indent soi : getIndentsByState("Oczekuje na transport")) {
+        for (State_of_indent soi : getIndentsByState("Oczekuje na transport")) {
             IndentTableView indentTableView = new IndentTableView();
             indentTableView.setOrder(soi.getIndentId());
             indentTableView.setState(soi);
@@ -158,7 +165,7 @@ public class LogisticOrdersController implements Initializable {
             }
             */
 
-            if(soi.getIndentId().isComplex()) {
+            if (soi.getIndentId().isComplex()) {
                 continue;
             }
 
@@ -170,12 +177,13 @@ public class LogisticOrdersController implements Initializable {
 
     /**
      * Metoda zwraca {@link ObservableList} reprezentujaca zamowienia o stanie "Oczekuje potwierdzenie odbioru"
+     *
      * @return Lista obserwowalna obiektow {@link IndentTableView}
      */
-    public ObservableList<IndentTableView> getIndentsInRealization() {
+    private ObservableList<IndentTableView> getIndentsInRealization() {
         ObservableList<IndentTableView> listOfIndents = FXCollections.observableArrayList();
 
-        for(State_of_indent soi : getIndentsByState("W transporcie")) {
+        for (State_of_indent soi : getIndentsByState("W transporcie")) {
             IndentTableView indentTableView = new IndentTableView();
             indentTableView.setOrder(soi.getIndentId());
             indentTableView.setState(soi);
@@ -187,7 +195,7 @@ public class LogisticOrdersController implements Initializable {
             }
             */
 
-            if(soi.getIndentId().isComplex()) {
+            if (soi.getIndentId().isComplex()) {
                 continue;
             }
 
@@ -213,11 +221,11 @@ public class LogisticOrdersController implements Initializable {
         // czy wybrany wiersz zawiera zamowienie zlozone
         // tak -> zaladuj widok zamowienia zlozonego (complex)
         // nie -> zaladuj widok zamowienia prostego
-        System.out.println(orderView.getOrder().isComplex());
+        logger.warn(orderView.getOrder().isComplex());
         if (orderView.getOrder().isComplex()) {
-            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/fxmlfiles/complex_order_details.fxml"));
         } else {
-            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/simple_order_details.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/fxmlfiles/simple_order_details.fxml"));
         }
 
         Parent pane = loader.load();
@@ -226,13 +234,13 @@ public class LogisticOrdersController implements Initializable {
         if (orderView.getOrder().isComplex()) {
             ComplexOrderDetailsController controller = loader.getController();
             //ustawienie ścieżki powrotu
-            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
+            controller.setLoader("/fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         } else {
             SimpleOrderDetailsController controller = loader.getController();
             //ustawienie ścieżki powrotu
-            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
+            controller.setLoader("/fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         }
@@ -254,9 +262,9 @@ public class LogisticOrdersController implements Initializable {
         FXMLLoader loader = null;
 
         if (orderView.getOrder().isComplex()) {
-            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/complex_order_details.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/fxmlfiles/complex_order_details.fxml"));
         } else {
-            loader = new FXMLLoader(getClass().getResource("../fxmlfiles/simple_order_details.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/fxmlfiles/simple_order_details.fxml"));
         }
 
         Parent pane = loader.load();
@@ -264,12 +272,12 @@ public class LogisticOrdersController implements Initializable {
         // wstrzykniecie wybranego obiektu do widoku szczegolowego
         if (orderView.getOrder().isComplex()) {
             ComplexOrderDetailsController controller = loader.getController();
-            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
+            controller.setLoader("/fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         } else {
             SimpleOrderDetailsController controller = loader.getController();
-            controller.setLoader("../fxmlfiles/main_view_logistic.fxml");
+            controller.setLoader("/fxmlfiles/main_view_logistic.fxml");
             controller.setOrder(orderView.getOrder());
             controller.initController();
         }
@@ -277,7 +285,7 @@ public class LogisticOrdersController implements Initializable {
         stg.setScene(new Scene(pane));
     }
 
-    public void changeOrderState(Indent indentToStateChange, String state) {
+    private void changeOrderState(Indent indentToStateChange, String state) {
         Session session = sessionFactory.openSession();
 
         session.beginTransaction();
@@ -295,16 +303,15 @@ public class LogisticOrdersController implements Initializable {
 
             session.update(newIndentState);
             session.getTransaction().commit();
-        }
-        catch(Exception e) {
-            System.out.println("Nie udalo sie zmienic stanu!");
+        } catch (Exception e) {
+            logger.warn("Nie udalo sie zmienic stanu!");
             session.getTransaction().rollback();
         }
     }
 
     @FXML
-    public void takeOrderHandler(ActionEvent event) {
-        if(ordersReadyForShipment.getSelectionModel().getSelectedItem() == null) {
+    public void takeOrderHandler() {
+        if (ordersReadyForShipment.getSelectionModel().getSelectedItem() == null) {
             return;
         }
 
@@ -322,8 +329,8 @@ public class LogisticOrdersController implements Initializable {
     }
 
     @FXML
-    public void deliverOrderHandler(ActionEvent event) {
-        if(ordersInRealization.getSelectionModel().getSelectedItem() == null) {
+    public void deliverOrderHandler() {
+        if (ordersInRealization.getSelectionModel().getSelectedItem() == null) {
             return;
         }
 
@@ -342,25 +349,34 @@ public class LogisticOrdersController implements Initializable {
          */
         Session session = sessionFactory.openSession();
         List<Indent_product> productsToDeliver = session.createQuery("from Indent_product where IndentId = :iid")
-                                                       .setParameter("iid", indentToStateChange.getIndentId())
-                                                       .getResultList();
+                .setParameter("iid", indentToStateChange.getIndentId())
+                .getResultList();
         Shop shopSource = indentToStateChange.getShopId_delivery();
         Shop shopDestination = indentToStateChange.getShopId_need();
 
         boolean success = true;
 
-        for(Indent_product indentProduct : productsToDeliver) {
+        for (Indent_product indentProduct : productsToDeliver) {
             Product product = indentProduct.getProductId();
             int amountOfProduct = indentProduct.getAmount();
 
             State_on_shop stateOnShopSource = (State_on_shop) session.createQuery("from State_on_shop where ShopId = :sid and ProductId = :pid")
-                                                     .setParameter("sid", shopSource.getShopId())
-                                                     .setParameter("pid", product.getProductId())
-                                                     .getSingleResult();
-            State_on_shop stateOnShopDestination = (State_on_shop) session.createQuery("from State_on_shop where ShopId = :sid and ProductId = :pid")
-                                                                            .setParameter("sid", shopDestination.getShopId())
-                                                                            .setParameter("pid", product.getProductId())
-                                                                            .getSingleResult();
+                    .setParameter("sid", shopSource.getShopId())
+                    .setParameter("pid", product.getProductId())
+                    .getSingleResult();
+
+            State_on_shop stateOnShopDestination;
+            //jeżeli produkt jeszcze nie istnieje w danym sklepie to utworz stan produktu
+            try {
+                stateOnShopDestination = (State_on_shop) session.createQuery("from State_on_shop where ShopId = :sid and ProductId = :pid")
+                        .setParameter("sid", shopDestination.getShopId())
+                        .setParameter("pid", product.getProductId())
+                        .getSingleResult();
+            } catch (Exception e) {
+                stateOnShopDestination = new State_on_shop(product,shopDestination,0);
+                session.save(stateOnShopDestination);
+            }
+
 
             try {
                 // odejmuje z magazynu ktory dostarczyl produkt
@@ -371,12 +387,10 @@ public class LogisticOrdersController implements Initializable {
                 stateOnShopDestination.setAmount(stateOnShopDestination.getAmount() + amountOfProduct);
                 session.update(stateOnShopDestination);
                 session.beginTransaction().commit();
-                session.close();
-                System.out.println("Pomyslnie zakonczono zmiane ilosc produktu");
-            }
-            catch(Exception e) {
-                System.out.println("Nastapil blad, wycofuje zmiany");
-                System.out.println(e.getMessage());
+                logger.warn("Pomyslnie zakonczono zmiane ilosc produktu");
+            } catch (Exception e) {
+                logger.warn("Nastapil blad, wycofuje zmiany");
+                logger.warn(e.getMessage());
                 session.getTransaction().rollback();
                 success = false;
                 break;
@@ -385,13 +399,12 @@ public class LogisticOrdersController implements Initializable {
 
         session.close();
 
-        if(success) {
+        if (success) {
             changeOrderState(indentToStateChange, "Oczekuje na potwierdzenie odbioru");
             ordersInRealization.getItems().clear();
             ordersInRealization.setItems(getIndentsInRealization());
-        }
-        else {
-            System.out.println("Nie udalo sie dostarczyc zamowienia");
+        } else {
+            logger.warn("Nie udalo sie dostarczyc zamowienia");
         }
     }
 }

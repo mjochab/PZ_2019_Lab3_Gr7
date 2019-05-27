@@ -2,7 +2,7 @@ package models;
 
 import entity.Product;
 
-public class ProductsAmount {
+class ProductsAmount {
     private Product product;
     private int amount;
 
