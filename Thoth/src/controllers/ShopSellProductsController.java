@@ -251,25 +251,25 @@ public class ShopSellProductsController implements Initializable {
         }
     }
 
-    private BigDecimal getTotalValue(ObservableList<StateOnShop> list) {
+    public BigDecimal getTotalValue(ObservableList<StateOnShop> list) {
         BigDecimal totalValue = BigDecimal.ZERO;
         for (StateOnShop sos : list) {
             totalValue = totalValue.add(sos.getStateOnShop().getProductId().getPrice()
                     .multiply(BigDecimal.valueOf(sos.getAmount()))
                     .multiply(BigDecimal.ONE
                             .subtract(BigDecimal.valueOf(sos.getStateOnShop().getProductId().getDiscount())
-                                    .divide(BigDecimal.valueOf(100))))).setScale(2, BigDecimal.ROUND_UP);
+                                    .divide(BigDecimal.valueOf(100))))).setScale(2, BigDecimal.ROUND_HALF_DOWN);
         }
         return totalValue;
     }
 
-    private BigDecimal getSingleValue(StateOnShop sos) {
+    public BigDecimal getSingleValue(StateOnShop sos) {
         BigDecimal totalValue = BigDecimal.ZERO;
         totalValue = totalValue.add(sos.getStateOnShop().getProductId().getPrice()
                 .multiply(BigDecimal.valueOf(sos.getAmount()))
                 .multiply(BigDecimal.ONE
                         .subtract(BigDecimal.valueOf(sos.getStateOnShop().getProductId().getDiscount())
-                                .divide(BigDecimal.valueOf(100))))).setScale(2, BigDecimal.ROUND_UP);
+                                .divide(BigDecimal.valueOf(100))))).setScale(2, BigDecimal.ROUND_HALF_DOWN);
         return totalValue;
     }
 

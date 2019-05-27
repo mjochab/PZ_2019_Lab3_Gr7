@@ -177,15 +177,43 @@ public class ShopShowOrdersController implements Initializable {
      */
     @FXML
     public void setAsPickedUp() {
+        System.out.println("DUPA");
         try {
             IndentTableView orderView = ordersTable.getSelectionModel().getSelectedItem();
 
             if (orderView.getState().getStateId().getStateId() == 65) {
                 Session session = sessionFactory.openSession();
+                session.beginTransaction();
                 State state = (State) session.createQuery("from State where stateId = 66").getSingleResult();
                 orderView.getState().setStateId(state);
                 session.saveOrUpdate(orderView.getState());
-                session.beginTransaction().commit();
+
+                List<Indent_product> indent_product_list = session.createQuery("from Indent_product where IndentId = :indent ")
+                        .setParameter("indent", orderView.getOrder().getIndentId()).list();
+
+                for(Indent_product indent_product : indent_product_list ){
+                    Indent indent = indent_product.getIndentId();
+                    State_on_shop state_on_shop = (State_on_shop) session.createQuery("from State_on_shop where ProductId = :pid and ShopId = :sid")
+                                                                         .setParameter("pid", indent_product.getProductId().getProductId() )
+                                                                         .setParameter("sid", sessionContext.getCurrentLoggedShop().getShopId()).getSingleResult();
+
+                    try {
+                        System.out.println(state_on_shop.getAmount());
+                        state_on_shop.setAmount(state_on_shop.getAmount() - indent_product.getAmount());
+                        System.out.println(state_on_shop.getAmount());
+                        session.saveOrUpdate(state_on_shop);
+                        logger.info("Zaktualizowano stan na magazynie");
+                        System.out.println("Sukces");
+                    }
+                    catch(Exception e) {
+                        logger.warn("Nie udalo sie zaktualizowac danych");
+                        System.out.println("DUUUUUPAAA");
+                        session.getTransaction().rollback();
+                        break;
+                    }
+                }
+                session.getTransaction().commit();
+                session.close();
                 showPrductPickedByCustomer();
             } else {
                 showProductInTransport();
