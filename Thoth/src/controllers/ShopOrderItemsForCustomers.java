@@ -114,11 +114,11 @@ public class ShopOrderItemsForCustomers implements Initializable {
         Session session = sessionFactory.openSession();
         List<State_on_shop> eList;
         if (productName == null || productName.equals("")) {
-            eList = session.createQuery("FROM State_on_shop s WHERE s.amount > 0 AND s.shopId.shopId <> :idsklepu ORDER BY amount ")
+            eList = session.createQuery("FROM State_on_shop s WHERE s.amount - locked > 0 AND s.shopId.shopId <> :idsklepu ORDER BY amount ")
                     .setParameter("idsklepu", sessionContext.getCurrentLoggedShop().getShopId())
                     .list();
         } else {
-            eList = session.createQuery("FROM State_on_shop s WHERE s.amount > 0 AND s.shopId.shopId <> :idsklepu AND s.productId.name like :produkt ORDER BY AMOUNT")
+            eList = session.createQuery("FROM State_on_shop s WHERE s.amount - locked > 0 AND s.shopId.shopId <> :idsklepu AND s.productId.name like :produkt ORDER BY AMOUNT")
                     .setParameter("idsklepu", sessionContext.getCurrentLoggedShop().getShopId())
                     .setParameter("produkt", "%" + productName + "%").list(); //za wyjątkiem własnego sklepu!! poprawić
             searchTF.setText("");

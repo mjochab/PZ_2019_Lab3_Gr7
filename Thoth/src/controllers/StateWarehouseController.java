@@ -175,7 +175,7 @@ public class StateWarehouseController implements Initializable {
         PRODUCTID.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getProductId())));
         NAME.setCellValueFactory(produktData -> new SimpleStringProperty(produktData.getValue().getProductId().getName()));
         PRICE.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getPrice())));
-        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount())));
+        AMOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getAmount() - produktData.getValue().getLocked())));
         DISCOUNT.setCellValueFactory(produktData -> new SimpleStringProperty(String.valueOf(produktData.getValue().getProductId().getDiscount())));
         stateWarehouse.setItems(getProducts(nazwaProduktu));
         logger.warn(getProducts(nazwaProduktu).toString());
@@ -187,10 +187,10 @@ public class StateWarehouseController implements Initializable {
         Session session = sessionFactory.openSession();
         List<State_on_shop> eList;
         if (nazwaProduktu == null || nazwaProduktu.equals("")) {
-            eList = session.createQuery("FROM State_on_shop WHERE shopId.shopId = :idshop GROUP by productId"
+            eList = session.createQuery("FROM State_on_shop WHERE shopId.shopId = :idshop and amount - locked > 0 GROUP by productId"
             ).setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId()).list();
         } else {
-            eList = session.createQuery("FROM State_on_shop WHERE shopId.shopId = :idshop AND productId.name like :produkt GROUP by productId")
+            eList = session.createQuery("FROM State_on_shop WHERE shopId.shopId = :idshop and amount - locked > 0 AND productId.name like :produkt GROUP by productId")
                     .setParameter("idshop", sessionContext.getCurrentLoggedShop().getShopId())
                     .setParameter("produkt", "%" + nazwaProduktu + "%").list();
             searchSWCity.setText("");
@@ -507,20 +507,6 @@ public class StateWarehouseController implements Initializable {
         productList.addAll(eList);
         session.close();
         return productList;
-    }
-
-    public void confirmOrder() { //button
-        if (!newOrderShop.getItems().isEmpty()) {
-            Session session = sessionFactory.openSession();
-            session.beginTransaction();
-            Indent_product p = (Indent_product) newOrderShop.getSelectionModel().getSelectedItem();
-            logger.warn(p.getProductId().getName());
-            p.getIndentId().setIndentId(2);
-            session.save(p);
-            session.getTransaction().commit();
-            session.close();
-            refreshTableOrderShop();
-        }
     }
 
     public void refreshTableOrderShop() {
