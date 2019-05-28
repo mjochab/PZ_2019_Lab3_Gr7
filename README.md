@@ -82,8 +82,7 @@ przechodzimy do zakładki ```Libraries``` wciskamy ```+``` a nastepnie ```java``
 
 ![3 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/3.PNG)
 
-4. Wybierz lokalizację w której ma zostać zainstalowana aplikacja a nastepnie kliknij next.
-
+4. Wybierz lokalizację w której ma zostać zainstalowana aplikacja a nastepnie kliknij next. (!WAŻNEZalecana lokalizacja to folder na pulpicie. W przeciwnym wypadku wymagana jest zmiana ścieżki otwierającej program)
 ![4 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/4.PNG)
 
 5. Informacja ze ścieżką instalacji programu kliknij next.
