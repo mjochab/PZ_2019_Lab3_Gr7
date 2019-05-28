@@ -68,6 +68,22 @@ w oknie projektu wciskamy kombinację
 ``` CTRL + SHIFT + ALT + S```
 przechodzimy do zakładki ```Libraries``` wciskamy ```+``` a nastepnie ```java``` i wybieramy odpowiednie pliki jar:
 
+## Instalacja
+
+1. Powitanie instalatora wciśnij next.
+![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/1.png)
+2. Informacja o wymaganej wersji JAVA wciśnij next.
+![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/2.png)
+3. Zaakceptowanie warunków licencji jeżeli zgadzasz się na warunki licencji zaznacz I agree.. i wciśnij next.
+![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/3.png)
+4. Wybierz lokalizację w której ma zostać zainstalowana aplikacja a nastepnie kliknij next.
+![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/4.png)
+5. Informacja ze ścieżką instalacji programu kliknij next.
+![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/5.png)
+6. poczekaj aż instalator zakończy pracę
+![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/6.png)
+7. instalacja zakonczona pomyślnie kliknij next
+![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/7.png)
 ### Hibernate 
 
 ![Diagram ERD](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/DEVELOPE/diagramy/hibernatejars.png)
