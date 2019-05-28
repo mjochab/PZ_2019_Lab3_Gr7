@@ -71,19 +71,20 @@ przechodzimy do zakładki ```Libraries``` wciskamy ```+``` a nastepnie ```java``
 ## Instalacja
 
 1. Powitanie instalatora wciśnij next.
-![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/1.png)
+![1 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/1.PNG)
 2. Informacja o wymaganej wersji JAVA wciśnij next.
-![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/2.png)
+![2 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/2.PNG)
 3. Zaakceptowanie warunków licencji jeżeli zgadzasz się na warunki licencji zaznacz I agree.. i wciśnij next.
-![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/3.png)
+![3 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/3.PNG)
 4. Wybierz lokalizację w której ma zostać zainstalowana aplikacja a nastepnie kliknij next.
-![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/4.png)
+![4 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/4.PNG)
 5. Informacja ze ścieżką instalacji programu kliknij next.
-![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/5.png)
+![5 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/5.PNG)
 6. poczekaj aż instalator zakończy pracę
-![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/6.png)
+![6 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/6.PNG)
 7. instalacja zakonczona pomyślnie kliknij next
-![Diagram stanów](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/7.png)
+![7 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/7.PNG)
+
 ### Hibernate 
 
 ![Diagram ERD](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/DEVELOPE/diagramy/hibernatejars.png)
