@@ -72,18 +72,25 @@ przechodzimy do zakładki ```Libraries``` wciskamy ```+``` a nastepnie ```java``
 
 1. Powitanie instalatora wciśnij next.
 ![1 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/1.PNG)
+
 2. Informacja o wymaganej wersji JAVA wciśnij next.
 ![2 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/2.PNG)
+
 3. Zaakceptowanie warunków licencji jeżeli zgadzasz się na warunki licencji zaznacz I agree.. i wciśnij next.
 ![3 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/3.PNG)
+
 4. Wybierz lokalizację w której ma zostać zainstalowana aplikacja a nastepnie kliknij next.
 ![4 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/4.PNG)
+
 5. Informacja ze ścieżką instalacji programu kliknij next.
 ![5 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/5.PNG)
+
 6. poczekaj aż instalator zakończy pracę
 ![6 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/6.PNG)
+
 7. instalacja zakonczona pomyślnie kliknij next
 ![7 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/7.PNG)
+
 
 ### Hibernate 
 
