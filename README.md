@@ -103,11 +103,20 @@ przechodzimy do zakładki ```Libraries``` wciskamy ```+``` a nastepnie ```java``
 1. Po instalacji na pulpicie powinien pojawić się sktót do aplikacji o nazwie thoth. Uruchom go.
 2. Program działa poprawie jeżeli widzisz główne okno aplikacji 
 
+![1 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/uzytkowanie/2.PNG)
+
 oraz otwarta w tle konsola poprawnie wystartowala serwer bazodanowy.
+
+![Server running](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/uzytkowanie/3.PNG)
 
 3. zaloguj się na konto administratora login: admin hasło: amdin
 
+![1 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/uzytkowanie/2.PNG)
+
 4. Wybierz jedną z dostępnych opcji
+
+![4 krok](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/master/diagramy/uzytkowanie/4.PNG)
+
 ### Hibernate 
 
 ![Diagram ERD](https://github.com/mjochab/PZ_2019_Lab3_Gr7/blob/DEVELOPE/diagramy/hibernatejars.png)
